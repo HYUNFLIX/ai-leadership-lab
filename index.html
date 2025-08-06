@@ -62,7 +62,14 @@
              @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2 px-4 rounded-md transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-px;
         }
         .btn-submit {
-             @apply w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3 px-6 rounded-md transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed;
+             @apply w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+             background-size: 200% 200%;
+             animation: gradient-shift 3s ease infinite;
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         /* [추가] 알림창 스타일 */
         #alert-modal {
@@ -114,21 +121,21 @@
                             AI가 아니라 AI를 팀원으로 활용하는 리더가 당신을 대체합니다. AI Leadership Lab은 새로운 시대에 맞는 리더십 철학과 실질적인 협업 전략을 제시합니다.
                         </p>
                     </div>
-                     <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20 scroll-reveal" style="transition-delay: 0.2s;">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                            <div>
-                                <p class="text-sm text-gray-300">글로벌 AI 시장 전망</p>
-                                <p class="font-bold text-white text-2xl">약 2조 달러</p>
+                     <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6 border border-white/20 scroll-reveal" style="transition-delay: 0.2s;">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 text-center">
+                            <div class="p-2 md:p-0">
+                                <p class="text-xs md:text-sm text-gray-300 mb-1">글로벌 AI 시장 전망</p>
+                                <p class="font-bold text-white text-xl md:text-2xl">약 2조 달러</p>
                                 <p class="text-xs text-gray-400">(2030년, Statista)</p>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-300">기업 GenAI 도입률</p>
-                                <p class="font-bold text-white text-2xl">42%</p>
+                            <div class="p-2 md:p-0">
+                                <p class="text-xs md:text-sm text-gray-300 mb-1">기업 GenAI 도입률</p>
+                                <p class="font-bold text-white text-xl md:text-2xl">42%</p>
                                 <p class="text-xs text-gray-400">(2024년, McKinsey)</p>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-300">AI 도입 후 생산성</p>
-                                <p class="font-bold text-white text-2xl">최대 40% 향상</p>
+                            <div class="p-2 md:p-0">
+                                <p class="text-xs md:text-sm text-gray-300 mb-1">AI 도입 후 생산성</p>
+                                <p class="font-bold text-white text-xl md:text-2xl">최대 40% 향상</p>
                                 <p class="text-xs text-gray-400">(2024년, MIT)</p>
                             </div>
                         </div>
@@ -151,7 +158,7 @@
                         </p>
                     </div>
                     <div class="scroll-reveal" style="transition-delay: 0.2s;">
-                        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="미래 리더십 이미지" class="rounded-lg shadow-2xl object-cover w-full h-full">
+                        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="미래 리더십 이미지" class="rounded-lg shadow-2xl object-cover w-full h-64 md:h-80 lg:h-96">
                     </div>
                 </div>
             </div>
@@ -162,19 +169,48 @@
             <div class="container mx-auto px-6">
                 <div class="grid md:grid-cols-2 gap-16 items-center">
                     <div class="scroll-reveal order-2 md:order-1">
-                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="연구소장 이미지" class="rounded-lg shadow-2xl object-cover w-full h-full">
+                        <div class="bg-white rounded-lg shadow-2xl p-6">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDQwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNTAwIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iMjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNkI3Mjg4IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiPu2UhOuhnO2VhCDsgqzsp4Dqs7wg7Je067aE7LKg7JqU7JeQPC90ZXh0Pgo8L3N2Zz4K" alt="김현 소장 프로필" class="rounded-lg w-full max-w-xs mx-auto">
+                        </div>
                     </div>
                     <div class="scroll-reveal order-1 md:order-2" style="transition-delay: 0.2s;">
                         <p class="text-indigo-600 font-semibold mb-2">AI Leadership Lab Director</p>
-                        <h2 class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">김현정 소장</h2>
-                        <p class="text-slate-600 mb-4 leading-relaxed">
-                            "기술은 리더십의 본질을 바꾸지 않습니다. 오히려 인간 고유의 통찰과 공감, 그리고 비전의 중요성을 더욱 부각시킵니다. 저의 역할은 리더들이 AI를 두려움 없이 받아들이고, 가장 강력한 팀원으로 활용할 수 있도록 돕는 것입니다."
+                        <h2 class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">김현 소장</h2>
+                        <p class="text-slate-600 mb-6 leading-relaxed">
+                            "AI 시대, 기술의 발전보다 중요한 것은 그 기술을 어떻게 활용하느냐입니다. 리더는 단순히 AI를 사용하는 것이 아니라, AI와 함께 새로운 가치를 창조하고 조직의 미래를 설계하는 역할을 해야 합니다. 저는 15년간의 현장 경험을 바탕으로 실무에 바로 적용 가능한 AI 리더십을 전파하고 있습니다."
                         </p>
-                        <ul class="space-y-2 text-slate-500">
-                            <li class="flex items-start"><i data-lucide="check-circle" class="w-5 h-5 mr-2 text-purple-600 mt-1 flex-shrink-0"></i><span>'코칭 레볼루션', '조직은 문화다' 저자</span></li>
-                            <li class="flex items-start"><i data-lucide="check-circle" class="w-5 h-5 mr-2 text-purple-600 mt-1 flex-shrink-0"></i><span>(전) 코오롱그룹 임원 코칭 및 리더십 개발 총괄</span></li>
-                            <li class="flex items-start"><i data-lucide="check-circle" class="w-5 h-5 mr-2 text-purple-600 mt-1 flex-shrink-0"></i><span>빅데이터 기반 조직문화 컨설팅 전문가</span></li>
-                        </ul>
+                        <div class="space-y-3 text-slate-500">
+                            <div class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3 text-purple-600 mt-1 flex-shrink-0"></i>
+                                <div>
+                                    <span class="font-semibold text-slate-700">현재:</span> AI 리더십연구소 소장, 세종텔레콤 HRD 매니저
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3 text-purple-600 mt-1 flex-shrink-0"></i>
+                                <div>
+                                    <span class="font-semibold text-slate-700">학력:</span> 고려대학교 교육대학원 교육학 석사
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3 text-purple-600 mt-1 flex-shrink-0"></i>
+                                <div>
+                                    <span class="font-semibold text-slate-700">전문분야:</span> IT 및 AI 전문 강사, AI 교육전문가 (HRD & AX & DX)
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3 text-purple-600 mt-1 flex-shrink-0"></i>
+                                <div>
+                                    <span class="font-semibold text-slate-700">주요 자격:</span> 정보통신특급기술자, Oracle OCJP, Microsoft MCSE, 한국코치협회 KAC
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3 text-purple-600 mt-1 flex-shrink-0"></i>
+                                <div>
+                                    <span class="font-semibold text-slate-700">저서:</span> 『코칭 레볼루션』, 『AI 대전환 시대 - 조직은 문화다』 공저
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -275,14 +311,14 @@
                     <h2 class="text-4xl font-bold text-slate-900 mb-4 scroll-reveal">주요 프로젝트</h2>
                     <p class="text-slate-600 max-w-2xl mx-auto scroll-reveal" style="transition-delay: 0.2s;">다양한 산업 분야의 리딩 기업들이 AI Leadership Lab과 함께 성공적인 변화를 만들고 있습니다.</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Project Card 1 -->
                     <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                         <div class="flex items-center mb-4">
                             <i data-lucide="building" class="w-8 h-8 text-indigo-600 mr-4"></i>
                             <h3 class="font-bold text-lg text-slate-800">한국토지신탁</h3>
                         </div>
-                        <p class="text-sm text-slate-500">부동산 개발 임원 대상 생성형 AI 활용 전략 및 리더십 워크샵 진행.</p>
+                        <p class="text-sm text-slate-500">신입사원을 위한 생성형 AI(ChatGPT) 활용 교육 프로그램 진행.</p>
                     </div>
                     <!-- Project Card 2 -->
                     <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style="transition-delay: 0.1s;">
@@ -290,15 +326,15 @@
                             <i data-lucide="factory" class="w-8 h-8 text-purple-600 mr-4"></i>
                             <h3 class="font-bold text-lg text-slate-800">코오롱그룹</h3>
                         </div>
-                        <p class="text-sm text-slate-500">그룹사 임원진 대상 AI 트렌드 및 디지털 전환 리더십 코칭 프로그램.</p>
+                        <p class="text-sm text-slate-500">신규 입사자 온보딩 과정 - 실무에 적용 가능한 AI 활용과 실습.</p>
                     </div>
                     <!-- Project Card 3 -->
                     <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style="transition-delay: 0.2s;">
                          <div class="flex items-center mb-4">
                             <i data-lucide="landmark" class="w-8 h-8 text-indigo-600 mr-4"></i>
-                            <h3 class="font-bold text-lg text-slate-800">서울시</h3>
+                            <h3 class="font-bold text-lg text-slate-800">서울시 매력일자리</h3>
                         </div>
-                        <p class="text-sm text-slate-500">5급 이상 공무원 대상, AI 행정 도입을 위한 리더십 및 조직문화 혁신 강연.</p>
+                        <p class="text-sm text-slate-500">2025 서울시 매력일자리 사업 - AI 트렌드 및 활용법 교육.</p>
                     </div>
                     <!-- Project Card 4 -->
                     <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style="transition-delay: 0.3s;">
@@ -306,7 +342,47 @@
                             <i data-lucide="briefcase" class="w-8 h-8 text-purple-600 mr-4"></i>
                             <h3 class="font-bold text-lg text-slate-800">한경협</h3>
                         </div>
-                        <p class="text-sm text-slate-500">최고경영자과정(CEO) 대상 AI 시대의 기업 경영 전략 특강.</p>
+                        <p class="text-sm text-slate-500">2025 FKI 아카데미 - AI 업무 효율화 과정 및 최고경영자 특강.</p>
+                    </div>
+                    <!-- Project Card 5 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style="transition-delay: 0.4s;">
+                         <div class="flex items-center mb-4">
+                            <i data-lucide="zap" class="w-8 h-8 text-indigo-600 mr-4"></i>
+                            <h3 class="font-bold text-lg text-slate-800">한국남부발전</h3>
+                        </div>
+                        <p class="text-sm text-slate-500">2024년 하반기 AI 리터러시 강화 교육 프로그램.</p>
+                    </div>
+                    <!-- Project Card 6 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style="transition-delay: 0.5s;">
+                         <div class="flex items-center mb-4">
+                            <i data-lucide="smartphone" class="w-8 h-8 text-purple-600 mr-4"></i>
+                            <h3 class="font-bold text-lg text-slate-800">세종텔레콤</h3>
+                        </div>
+                        <p class="text-sm text-slate-500">사내 강사 15년 경력 - ChatGPT, 문서작성, Biz 매너, 사내 시스템 교육.</p>
+                    </div>
+                    <!-- Project Card 7 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style="transition-delay: 0.6s;">
+                         <div class="flex items-center mb-4">
+                            <i data-lucide="trending-up" class="w-8 h-8 text-indigo-600 mr-4"></i>
+                            <h3 class="font-bold text-lg text-slate-800">한국능률협회컨설팅</h3>
+                        </div>
+                        <p class="text-sm text-slate-500">HR 담당자 연수 강의 - DT 시대 HR 트렌드 및 전략 교육.</p>
+                    </div>
+                    <!-- Project Card 8 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style="transition-delay: 0.7s;">
+                         <div class="flex items-center mb-4">
+                            <i data-lucide="users" class="w-8 h-8 text-purple-600 mr-4"></i>
+                            <h3 class="font-bold text-lg text-slate-800">한국산업인력공단</h3>
+                        </div>
+                        <p class="text-sm text-slate-500">기업 HRD 컨설팅 전략 특강 및 HRD 담당자 역량 향상 과정.</p>
+                    </div>
+                    <!-- Project Card 9 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style="transition-delay: 0.8s;">
+                         <div class="flex items-center mb-4">
+                            <i data-lucide="star" class="w-8 h-8 text-indigo-600 mr-4"></i>
+                            <h3 class="font-bold text-lg text-slate-800">NovaDX</h3>
+                        </div>
+                        <p class="text-sm text-slate-500">전사 워크샵 - 2025 AI 트렌드 및 실무 활용법 교육.</p>
                     </div>
                 </div>
             </div>
@@ -325,27 +401,48 @@
                             <h3 class="text-2xl font-bold mb-6 text-slate-800">연락 정보</h3>
                             <div class="space-y-4 text-slate-600">
                                 <!-- [개선] 전문적인 이메일 주소로 변경 -->
-                                <p class="flex items-center"><i data-lucide="mail" class="w-5 h-5 mr-3 text-indigo-600"></i> contact@aileadershiplab.com</p>
+                                <p class="flex items-center"><i data-lucide="mail" class="w-5 h-5 mr-3 text-indigo-600"></i> hyunnet@gmail.com</p>
                                 <p class="flex items-center"><i data-lucide="phone" class="w-5 h-5 mr-3 text-indigo-600"></i> 010-6613-5782</p>
                             </div>
                         </div>
                         <!-- [개선] mailto 제거, id 추가, Firebase 연동 -->
-                        <form id="contact-form" class="space-y-4 scroll-reveal" style="transition-delay: 0.4s;">
-                            <div>
-                                <label for="name" class="sr-only">이름</label>
-                                <input type="text" id="name" name="name" placeholder="이름" required class="w-full bg-gray-100 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <form id="contact-form" class="space-y-6 scroll-reveal" style="transition-delay: 0.4s;">
+                            <div class="relative">
+                                <label for="name" class="block text-sm font-medium text-slate-700 mb-2">
+                                    <i data-lucide="user" class="w-4 h-4 inline mr-2 text-indigo-600"></i>
+                                    이름
+                                </label>
+                                <input type="text" id="name" name="name" placeholder="성함을 입력해주세요" required class="w-full bg-white border-2 border-gray-200 rounded-lg py-3 px-4 pl-12 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 shadow-sm hover:shadow-md">
+                                <i data-lucide="user" class="w-5 h-5 absolute left-4 top-11 text-gray-400"></i>
                             </div>
-                            <div>
-                                <label for="email" class="sr-only">이메일</label>
-                                <input type="email" id="email" name="email" placeholder="이메일" required class="w-full bg-gray-100 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <div class="relative">
+                                <label for="email" class="block text-sm font-medium text-slate-700 mb-2">
+                                    <i data-lucide="mail" class="w-4 h-4 inline mr-2 text-indigo-600"></i>
+                                    이메일
+                                </label>
+                                <input type="email" id="email" name="email" placeholder="이메일 주소를 입력해주세요" required class="w-full bg-white border-2 border-gray-200 rounded-lg py-3 px-4 pl-12 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 shadow-sm hover:shadow-md">
+                                <i data-lucide="mail" class="w-5 h-5 absolute left-4 top-11 text-gray-400"></i>
                             </div>
-                            <div>
-                                <label for="message" class="sr-only">문의 내용</label>
-                                <textarea id="message" name="message" rows="4" placeholder="문의 내용" required class="w-full bg-gray-100 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            <div class="relative">
+                                <label for="message" class="block text-sm font-medium text-slate-700 mb-2">
+                                    <i data-lucide="message-square" class="w-4 h-4 inline mr-2 text-indigo-600"></i>
+                                    문의 내용
+                                </label>
+                                <textarea id="message" name="message" rows="5" placeholder="문의하실 내용을 자세히 작성해주세요" required class="w-full bg-white border-2 border-gray-200 rounded-lg py-3 px-4 pl-12 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 shadow-sm hover:shadow-md resize-none"></textarea>
+                                <i data-lucide="message-square" class="w-5 h-5 absolute left-4 top-11 text-gray-400"></i>
                             </div>
-                            <button type="submit" id="contact-submit-button" class="btn-submit">
-                                문의 접수
+                            <button type="submit" id="contact-submit-button" class="group relative w-full overflow-hidden bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-500 shadow-lg hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                                <div class="absolute inset-0 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <div class="relative flex items-center justify-center space-x-2">
+                                    <i data-lucide="send" class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"></i>
+                                    <span class="text-lg">문의 접수</span>
+                                </div>
+                                <div class="absolute bottom-0 left-0 h-1 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                             </button>
+                            <p class="text-sm text-gray-500 text-center">
+                                <i data-lucide="shield-check" class="w-4 h-4 inline mr-1 text-green-500"></i>
+                                입력하신 정보는 안전하게 보호됩니다
+                            </p>
                         </form>
                     </div>
                 </div>
@@ -370,51 +467,61 @@
     </div>
 
 
-    <!-- [추가] Firebase SDK -->
+    <!-- [추가] EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            // EmailJS 초기화 (여기에 자신의 Public Key 입력)
+            emailjs.init("YOUR_EMAILJS_PUBLIC_KEY"); // 나중에 설정 필요
+        })();
+    </script>
     <script type="module">
         // Firebase SDK import
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-        // [중요] 여기에 자신의 Firebase 프로젝트 설정 값을 붙여넣으세요.
-        // 이 값은 Firebase 콘솔의 '프로젝트 설정'에서 찾을 수 있습니다.
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config)
-            : {
-                apiKey: "YOUR_API_KEY",
-                authDomain: "YOUR_AUTH_DOMAIN",
-                projectId: "YOUR_PROJECT_ID",
-                storageBucket: "YOUR_STORAGE_BUCKET",
-                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-                appId: "YOUR_APP_ID"
-            };
-        
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        // [업데이트] Firebase 프로젝트 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyCzRHGwEZiPmqWdVW6bddZGhKb43e3dYnk",
+            authDomain: "ai-lab-website-7d856.firebaseapp.com",
+            projectId: "ai-lab-website-7d856",
+            storageBucket: "ai-lab-website-7d856.firebasestorage.app",
+            messagingSenderId: "12025278936",
+            appId: "1:12025278936:web:ef291da242010d16dd82ad",
+            measurementId: "G-G80DRHZY5X"
+        };
 
         // Firebase 앱 초기화
         const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // Firebase 인증 (익명 로그인)
+        // Firebase 인증 (익명 로그인) - 더 안전한 방식
+        let isAuthReady = false;
+        
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                        console.log("Signed in with custom token.");
-                    } else {
-                        await signInAnonymously(auth);
-                        console.log("Signed in anonymously.");
-                    }
+                    await signInAnonymously(auth);
+                    console.log("Signed in anonymously.");
+                    isAuthReady = true;
                 } catch (error) {
                     console.error("Authentication failed:", error);
-                    showAlert("인증 실패", "서버에 연결하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                    // 인증 실패해도 계속 진행
+                    isAuthReady = true;
                 }
+            } else {
+                isAuthReady = true;
             }
         });
 
+        // 페이지 로드 후 몇 초 뒤 인증 준비 완료로 설정
+        setTimeout(() => {
+            isAuthReady = true;
+        }, 3000);
 
         // 알림 모달 관련 함수
         const alertModal = document.getElementById('alert-modal');
@@ -441,10 +548,6 @@
 
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault(); // 폼의 기본 제출 동작을 막음
-            if (!auth.currentUser) {
-                showAlert("오류", "데이터베이스 연결이 아직 준비되지 않았습니다. 잠시 후 다시 시도해주세요.");
-                return;
-            }
             
             contactSubmitButton.disabled = true;
             contactSubmitButton.textContent = '처리 중...';
@@ -455,14 +558,31 @@
             const message = formData.get('message');
 
             try {
-                // Firestore 'contacts' 컬렉션에 데이터 추가
-                const docRef = await addDoc(collection(db, `/artifacts/${appId}/public/data/contacts`), {
+                // 1. Firebase에 저장
+                const docRef = await addDoc(collection(db, "contacts"), {
                     name: name,
                     email: email,
                     message: message,
-                    submittedAt: serverTimestamp() // 서버 시간 기준 타임스탬프 기록
+                    submittedAt: serverTimestamp()
                 });
                 console.log("Contact form submitted with ID: ", docRef.id);
+                
+                // 2. EmailJS로 이메일 전송 (옵션)
+                try {
+                    if (typeof emailjs !== 'undefined' && window.emailjsConfigured) {
+                        await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+                            from_name: name,
+                            from_email: email,
+                            message: message,
+                            to_email: 'hyunnet@gmail.com'
+                        });
+                        console.log('Email sent successfully');
+                    }
+                } catch (emailError) {
+                    console.log('Email sending failed:', emailError);
+                    // 이메일 실패해도 Firebase 저장은 성공했으므로 계속 진행
+                }
+                
                 showAlert("접수 완료", "문의가 성공적으로 접수되었습니다. 빠른 시일 내에 회신드리겠습니다.");
                 contactForm.reset(); // 폼 초기화
             } catch (error) {
@@ -478,10 +598,6 @@
         const prelaunchForm = document.getElementById('prelaunch-form');
         prelaunchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!auth.currentUser) {
-                showAlert("오류", "데이터베이스 연결이 아직 준비되지 않았습니다. 잠시 후 다시 시도해주세요.");
-                return;
-            }
 
             const submitButton = prelaunchForm.querySelector('button[type="submit"]');
             submitButton.disabled = true;
@@ -491,8 +607,8 @@
             const email = formData.get('email');
 
             try {
-                // Firestore 'prelaunch-subscriptions' 컬렉션에 데이터 추가
-                const docRef = await addDoc(collection(db, `/artifacts/${appId}/public/data/prelaunch-subscriptions`), {
+                // 인증 상태와 관계없이 폼 제출 시도
+                const docRef = await addDoc(collection(db, "prelaunch-subscriptions"), {
                     email: email,
                     bookTitle: "AI가 아니라 AI를 쓰는 리더가 당신을 대체한다",
                     submittedAt: serverTimestamp()
