@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- [개선] SEO를 위한 meta description 태그 추가 -->
+    <meta name="description" content="AI Leadership Lab은 AI 시대 리더를 위한 전략적 파트너입니다. 리더십 철학, 저서, 주요 프로젝트를 확인하고 미래를 선도하세요.">
     <title>AI Leadership Lab</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
@@ -13,7 +15,7 @@
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            color: #334155; /* 기본 텍스트 색상 변경 */
+            color: #334155;
         }
         /* 헤더 스크롤 시 그림자 효과 */
         .header-scrolled {
@@ -60,7 +62,11 @@
              @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2 px-4 rounded-md transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-px;
         }
         .btn-submit {
-             @apply w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3 px-6 rounded-md transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+             @apply w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3 px-6 rounded-md transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed;
+        }
+        /* [추가] 알림창 스타일 */
+        #alert-modal {
+            transition: opacity 0.3s ease-in-out;
         }
     </style>
 </head>
@@ -74,8 +80,9 @@
             </a>
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#about" class="nav-link text-slate-600 hover:text-indigo-600 transition-colors">연구소 소개</a>
-                <a href="#inspiration" class="nav-link text-slate-600 hover:text-indigo-600 transition-colors">시대의 통찰</a>
+                <a href="#director" class="nav-link text-slate-600 hover:text-indigo-600 transition-colors">연구소장</a>
                 <a href="#publications" class="nav-link text-slate-600 hover:text-indigo-600 transition-colors">저서 소개</a>
+                 <a href="#projects" class="nav-link text-slate-600 hover:text-indigo-600 transition-colors">프로젝트</a>
                 <a href="#contact" class="btn-primary">문의하기</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden text-slate-800">
@@ -85,8 +92,9 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
             <a href="#about" class="nav-link block py-3 px-6 text-slate-700 hover:bg-gray-50">연구소 소개</a>
-            <a href="#inspiration" class="nav-link block py-3 px-6 text-slate-700 hover:bg-gray-50">시대의 통찰</a>
+            <a href="#director" class="nav-link block py-3 px-6 text-slate-700 hover:bg-gray-50">연구소장</a>
             <a href="#publications" class="nav-link block py-3 px-6 text-slate-700 hover:bg-gray-50">저서 소개</a>
+            <a href="#projects" class="nav-link block py-3 px-6 text-slate-700 hover:bg-gray-50">프로젝트</a>
             <a href="#contact" class="nav-link block py-3 px-6 text-slate-700 hover:bg-gray-50">문의하기</a>
         </div>
     </header>
@@ -149,8 +157,32 @@
             </div>
         </section>
 
+        <!-- [신규] Director Section -->
+        <section id="director" class="py-20 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="scroll-reveal order-2 md:order-1">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="연구소장 이미지" class="rounded-lg shadow-2xl object-cover w-full h-full">
+                    </div>
+                    <div class="scroll-reveal order-1 md:order-2" style="transition-delay: 0.2s;">
+                        <p class="text-indigo-600 font-semibold mb-2">AI Leadership Lab Director</p>
+                        <h2 class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">김현정 소장</h2>
+                        <p class="text-slate-600 mb-4 leading-relaxed">
+                            "기술은 리더십의 본질을 바꾸지 않습니다. 오히려 인간 고유의 통찰과 공감, 그리고 비전의 중요성을 더욱 부각시킵니다. 저의 역할은 리더들이 AI를 두려움 없이 받아들이고, 가장 강력한 팀원으로 활용할 수 있도록 돕는 것입니다."
+                        </p>
+                        <ul class="space-y-2 text-slate-500">
+                            <li class="flex items-start"><i data-lucide="check-circle" class="w-5 h-5 mr-2 text-purple-600 mt-1 flex-shrink-0"></i><span>'코칭 레볼루션', '조직은 문화다' 저자</span></li>
+                            <li class="flex items-start"><i data-lucide="check-circle" class="w-5 h-5 mr-2 text-purple-600 mt-1 flex-shrink-0"></i><span>(전) 코오롱그룹 임원 코칭 및 리더십 개발 총괄</span></li>
+                            <li class="flex items-start"><i data-lucide="check-circle" class="w-5 h-5 mr-2 text-purple-600 mt-1 flex-shrink-0"></i><span>빅데이터 기반 조직문화 컨설팅 전문가</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
         <!-- Inspiration Section -->
-        <section id="inspiration" class="py-20 md:py-32 bg-gray-50">
+        <section id="inspiration" class="py-20 md:py-32 bg-white">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl font-bold text-slate-900 mb-4 scroll-reveal">시대의 통찰: 새로운 리더십의 좌표</h2>
@@ -159,7 +191,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
                      <!-- Geoffrey Hinton -->
                     <div class="flex flex-col items-center text-center scroll-reveal">
-                        <div class="p-4 bg-white shadow-md rounded-full mb-4 border-2 border-purple-200">
+                        <div class="p-4 bg-gray-50 shadow-md rounded-full mb-4 border-2 border-purple-200">
                            <i data-lucide="brain-circuit" class="text-purple-600"></i>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800">제프리 힌튼</h3>
@@ -170,7 +202,7 @@
                     </div>
                     <!-- Yuval Noah Harari -->
                     <div class="flex flex-col items-center text-center scroll-reveal" style="transition-delay: 0.2s;">
-                         <div class="p-4 bg-white shadow-md rounded-full mb-4 border-2 border-indigo-200">
+                         <div class="p-4 bg-gray-50 shadow-md rounded-full mb-4 border-2 border-indigo-200">
                            <i data-lucide="book-open-check" class="text-indigo-600"></i>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800">유발 하라리</h3>
@@ -181,7 +213,7 @@
                     </div>
                     <!-- Song Gil-young -->
                     <div class="flex flex-col items-center text-center scroll-reveal" style="transition-delay: 0.4s;">
-                        <div class="p-4 bg-white shadow-md rounded-full mb-4 border-2 border-purple-200">
+                        <div class="p-4 bg-gray-50 shadow-md rounded-full mb-4 border-2 border-purple-200">
                            <i data-lucide="bar-chart-3" class="text-purple-600"></i>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800">송길영</h3>
@@ -195,91 +227,123 @@
         </section>
 
         <!-- Publications Section -->
-        <section id="publications" class="py-20 md:py-32 bg-white">
+        <section id="publications" class="py-20 md:py-32 bg-gray-50">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl font-bold text-slate-900 mb-4 scroll-reveal">저서 소개 (Publications)</h2>
                     <p class="text-slate-600 max-w-2xl mx-auto scroll-reveal" style="transition-delay: 0.2s;">AI 리더십에 대한 깊이 있는 통찰과 실용적인 지혜를 책으로 만나보세요.</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-stretch">
                     <!-- Book 1: AI 리더십 (가제) -->
-                    <div class="bg-gray-50 rounded-lg shadow-lg p-6 flex flex-col items-center text-center scroll-reveal border border-gray-200">
+                    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center scroll-reveal border border-gray-200">
                         <div class="relative">
                             <img src="https://placehold.co/400x600/E5E7EB/4B5563?text=AI+%EB%A6%AC%EB%8D%94%EC%8B%AD" alt="AI 리더십" class="rounded-md shadow-md w-full max-w-[200px] h-auto">
                             <span class="absolute top-2 right-2 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full">출간 예정</span>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800 mt-6 mb-2">AI가 아니라 AI를 쓰는 리더가 당신을 대체한다</h3>
                         <p class="text-slate-500 text-sm flex-grow">AI 시대, 리더의 역할은 어떻게 변해야 하는가? 단순한 AI 활용법을 넘어 팀의 성과를 극대화하고 조직의 변화를 이끄는 '리더의 AI 사용법'을 제시합니다.</p>
-                        <button class="mt-6 w-full bg-gray-300 text-gray-500 font-semibold py-2 px-4 rounded-md cursor-not-allowed">출간 준비 중</button>
+                        <!-- [개선] 출간 알림 신청 폼 -->
+                        <form id="prelaunch-form" class="mt-6 w-full space-y-2">
+                             <input type="email" name="email" placeholder="이메일 주소 입력" required class="w-full bg-gray-100 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                             <button type="submit" class="w-full bg-purple-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-purple-700 transition-colors">출간 시 알림 받기</button>
+                        </form>
                     </div>
                     <!-- Book 2: AI 대전환 시대 – 조직은 문화다 -->
-                    <div class="bg-gray-50 rounded-lg shadow-lg p-6 flex flex-col items-center text-center scroll-reveal border border-gray-200" style="transition-delay: 0.2s;">
+                    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center scroll-reveal border border-gray-200" style="transition-delay: 0.2s;">
                         <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791199224612.jpg" alt="AI 대전환 시대, 조직은 문화다: WHO AM I?" class="rounded-md shadow-md w-full max-w-[200px] h-auto">
                         <h3 class="text-xl font-bold text-slate-800 mt-6 mb-2">AI 대전환 시대, 조직은 문화다: WHO AM I?</h3>
                         <p class="text-slate-500 text-sm flex-grow">AI 시대, 기술보다 중요한 것은 사람과 문화입니다. 성공적인 디지털 전환을 위해 조직 문화를 어떻게 혁신해야 하는지에 대한 통찰을 제공합니다.</p>
-                        <a href="https://product.kyobobook.co.kr/detail/S000216754567" target="_blank" class="btn-secondary mt-6 w-full">자세히 보기</a>
+                        <!-- [개선] target="_blank" 추가 -->
+                        <a href="https://product.kyobobook.co.kr/detail/S000216754567" target="_blank" rel="noopener noreferrer" class="btn-secondary mt-6 w-full">자세히 보기</a>
                     </div>
                     <!-- Book 3: 코칭레볼루션 -->
-                    <div class="bg-gray-50 rounded-lg shadow-lg p-6 flex flex-col items-center text-center scroll-reveal border border-gray-200" style="transition-delay: 0.4s;">
+                    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center scroll-reveal border border-gray-200" style="transition-delay: 0.4s;">
                         <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791198345370.jpg" alt="코칭 레볼루션: AI 시대, 코치형 리더의 탄생" class="rounded-md shadow-md w-full max-w-[200px] h-auto">
                         <h3 class="text-xl font-bold text-slate-800 mt-6 mb-2">코칭 레볼루션: AI 시대, 코치형 리더의 탄생</h3>
                         <p class="text-slate-500 text-sm flex-grow">AI 시대에 더욱 중요해진 인간 고유의 역량, 코칭. 기술과 공존하며 팀원의 잠재력을 이끌어내는 코치형 리더의 모든 것을 담았습니다.</p>
-                        <a href="https://product.kyobobook.co.kr/detail/S000214511968" target="_blank" class="btn-secondary mt-6 w-full">자세히 보기</a>
+                        <!-- [개선] target="_blank" 추가 -->
+                        <a href="https://product.kyobobook.co.kr/detail/S000214511968" target="_blank" rel="noopener noreferrer" class="btn-secondary mt-6 w-full">자세히 보기</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Projects Section -->
-        <section id="projects" class="py-20 md:py-32 bg-gray-50">
+        <!-- [개선] Projects Section -->
+        <section id="projects" class="py-20 md:py-32 bg-white">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl font-bold text-slate-900 mb-4 scroll-reveal">주요 프로젝트</h2>
-                    <p class="text-slate-600 max-w-2xl mx-auto scroll-reveal" style="transition-delay: 0.2s;">다양한 산업 분야의 리딩 기업들이 AI Leadership Lab과 함께하고 있습니다.</p>
+                    <p class="text-slate-600 max-w-2xl mx-auto scroll-reveal" style="transition-delay: 0.2s;">다양한 산업 분야의 리딩 기업들이 AI Leadership Lab과 함께 성공적인 변화를 만들고 있습니다.</p>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal"><p class="font-semibold text-indigo-600">한국토지신탁</p></div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal" style="transition-delay: 0.1s;"><p class="font-semibold text-purple-600">코오롱그룹</p></div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal" style="transition-delay: 0.2s;"><p class="font-semibold text-indigo-600">서울시</p></div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal" style="transition-delay: 0.3s;"><p class="font-semibold text-purple-600">한경협</p></div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal" style="transition-delay: 0.4s;"><p class="font-semibold text-indigo-600">한국남부발전</p></div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal" style="transition-delay: 0.5s;"><p class="font-semibold text-purple-600">세종텔레콤</p></div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal" style="transition-delay: 0.6s;"><p class="font-semibold text-indigo-600">한국능률협회</p></div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal" style="transition-delay: 0.7s;"><p class="font-semibold text-purple-600">한국산업인력공단</p></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Project Card 1 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center mb-4">
+                            <i data-lucide="building" class="w-8 h-8 text-indigo-600 mr-4"></i>
+                            <h3 class="font-bold text-lg text-slate-800">한국토지신탁</h3>
+                        </div>
+                        <p class="text-sm text-slate-500">부동산 개발 임원 대상 생성형 AI 활용 전략 및 리더십 워크샵 진행.</p>
+                    </div>
+                    <!-- Project Card 2 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style="transition-delay: 0.1s;">
+                        <div class="flex items-center mb-4">
+                            <i data-lucide="factory" class="w-8 h-8 text-purple-600 mr-4"></i>
+                            <h3 class="font-bold text-lg text-slate-800">코오롱그룹</h3>
+                        </div>
+                        <p class="text-sm text-slate-500">그룹사 임원진 대상 AI 트렌드 및 디지털 전환 리더십 코칭 프로그램.</p>
+                    </div>
+                    <!-- Project Card 3 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style="transition-delay: 0.2s;">
+                         <div class="flex items-center mb-4">
+                            <i data-lucide="landmark" class="w-8 h-8 text-indigo-600 mr-4"></i>
+                            <h3 class="font-bold text-lg text-slate-800">서울시</h3>
+                        </div>
+                        <p class="text-sm text-slate-500">5급 이상 공무원 대상, AI 행정 도입을 위한 리더십 및 조직문화 혁신 강연.</p>
+                    </div>
+                    <!-- Project Card 4 -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200 scroll-reveal hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style="transition-delay: 0.3s;">
+                         <div class="flex items-center mb-4">
+                            <i data-lucide="briefcase" class="w-8 h-8 text-purple-600 mr-4"></i>
+                            <h3 class="font-bold text-lg text-slate-800">한경협</h3>
+                        </div>
+                        <p class="text-sm text-slate-500">최고경영자과정(CEO) 대상 AI 시대의 기업 경영 전략 특강.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="py-20 md:py-32 bg-white">
+        <section id="contact" class="py-20 md:py-32 bg-gray-50">
             <div class="container mx-auto px-6">
-                <div class="bg-gray-50 rounded-2xl p-8 md:p-16">
+                <div class="bg-white rounded-2xl p-8 md:p-16 shadow-2xl">
                     <div class="text-center mb-12">
                         <h2 class="text-4xl font-bold text-slate-900 mb-4 scroll-reveal">문의하기</h2>
                         <p class="text-slate-600 max-w-2xl mx-auto scroll-reveal" style="transition-delay: 0.2s;">궁금한 점이 있으신가요? 지금 바로 문의하세요.<br>최고의 전문가가 신속하고 친절하게 답변해 드립니다.</p>
                     </div>
-                    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 bg-white p-8 md:p-12 rounded-lg shadow-xl">
+                    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12">
                         <div class="scroll-reveal" style="transition-delay: 0.3s;">
                             <h3 class="text-2xl font-bold mb-6 text-slate-800">연락 정보</h3>
                             <div class="space-y-4 text-slate-600">
-                                <p class="flex items-center"><i data-lucide="mail" class="w-5 h-5 mr-3 text-indigo-600"></i> hyunnet@gmail.com</p>
+                                <!-- [개선] 전문적인 이메일 주소로 변경 -->
+                                <p class="flex items-center"><i data-lucide="mail" class="w-5 h-5 mr-3 text-indigo-600"></i> contact@aileadershiplab.com</p>
                                 <p class="flex items-center"><i data-lucide="phone" class="w-5 h-5 mr-3 text-indigo-600"></i> 010-6613-5782</p>
                             </div>
                         </div>
-                        <form action="mailto:hyunnet@gmail.com" method="post" enctype="text/plain" class="space-y-4 scroll-reveal" style="transition-delay: 0.4s;">
+                        <!-- [개선] mailto 제거, id 추가, Firebase 연동 -->
+                        <form id="contact-form" class="space-y-4 scroll-reveal" style="transition-delay: 0.4s;">
                             <div>
                                 <label for="name" class="sr-only">이름</label>
-                                <input type="text" id="name" name="성함" placeholder="이름" class="w-full bg-gray-100 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <input type="text" id="name" name="name" placeholder="이름" required class="w-full bg-gray-100 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             </div>
                             <div>
                                 <label for="email" class="sr-only">이메일</label>
-                                <input type="email" id="email" name="회신받을 이메일" placeholder="이메일" class="w-full bg-gray-100 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <input type="email" id="email" name="email" placeholder="이메일" required class="w-full bg-gray-100 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             </div>
                             <div>
                                 <label for="message" class="sr-only">문의 내용</label>
-                                <textarea id="message" name="문의내용" rows="4" placeholder="문의 내용" class="w-full bg-gray-100 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                                <textarea id="message" name="message" rows="4" placeholder="문의 내용" required class="w-full bg-gray-100 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                             </div>
-                            <button type="submit" class="btn-submit">
+                            <button type="submit" id="contact-submit-button" class="btn-submit">
                                 문의 접수
                             </button>
                         </form>
@@ -295,6 +359,157 @@
             <p>&copy; 2025 AI Leadership Lab. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- [추가] 알림 모달 -->
+    <div id="alert-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+        <div id="alert-box" class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-sm w-full text-center transform scale-95 transition-transform duration-300">
+            <h3 id="alert-title" class="text-xl font-bold text-slate-800 mb-4"></h3>
+            <p id="alert-message" class="text-slate-600 mb-6"></p>
+            <button id="alert-close-button" class="btn-primary">확인</button>
+        </div>
+    </div>
+
+
+    <!-- [추가] Firebase SDK -->
+    <script type="module">
+        // Firebase SDK import
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // [중요] 여기에 자신의 Firebase 프로젝트 설정 값을 붙여넣으세요.
+        // 이 값은 Firebase 콘솔의 '프로젝트 설정'에서 찾을 수 있습니다.
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config)
+            : {
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_AUTH_DOMAIN",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_STORAGE_BUCKET",
+                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            };
+        
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // Firebase 앱 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Firebase 인증 (익명 로그인)
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                        console.log("Signed in with custom token.");
+                    } else {
+                        await signInAnonymously(auth);
+                        console.log("Signed in anonymously.");
+                    }
+                } catch (error) {
+                    console.error("Authentication failed:", error);
+                    showAlert("인증 실패", "서버에 연결하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                }
+            }
+        });
+
+
+        // 알림 모달 관련 함수
+        const alertModal = document.getElementById('alert-modal');
+        const alertBox = document.getElementById('alert-box');
+        const alertTitle = document.getElementById('alert-title');
+        const alertMessage = document.getElementById('alert-message');
+        const alertCloseButton = document.getElementById('alert-close-button');
+
+        function showAlert(title, message) {
+            alertTitle.textContent = title;
+            alertMessage.textContent = message;
+            alertModal.classList.remove('opacity-0', 'pointer-events-none');
+            alertBox.classList.add('scale-100');
+        }
+
+        alertCloseButton.addEventListener('click', () => {
+            alertModal.classList.add('opacity-0', 'pointer-events-none');
+            alertBox.classList.remove('scale-100');
+        });
+
+        // 문의하기 폼 제출 처리
+        const contactForm = document.getElementById('contact-form');
+        const contactSubmitButton = document.getElementById('contact-submit-button');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // 폼의 기본 제출 동작을 막음
+            if (!auth.currentUser) {
+                showAlert("오류", "데이터베이스 연결이 아직 준비되지 않았습니다. 잠시 후 다시 시도해주세요.");
+                return;
+            }
+            
+            contactSubmitButton.disabled = true;
+            contactSubmitButton.textContent = '처리 중...';
+
+            const formData = new FormData(contactForm);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const message = formData.get('message');
+
+            try {
+                // Firestore 'contacts' 컬렉션에 데이터 추가
+                const docRef = await addDoc(collection(db, `/artifacts/${appId}/public/data/contacts`), {
+                    name: name,
+                    email: email,
+                    message: message,
+                    submittedAt: serverTimestamp() // 서버 시간 기준 타임스탬프 기록
+                });
+                console.log("Contact form submitted with ID: ", docRef.id);
+                showAlert("접수 완료", "문의가 성공적으로 접수되었습니다. 빠른 시일 내에 회신드리겠습니다.");
+                contactForm.reset(); // 폼 초기화
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                showAlert("오류", "문의 접수 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+            } finally {
+                contactSubmitButton.disabled = false;
+                contactSubmitButton.textContent = '문의 접수';
+            }
+        });
+
+        // 출간 알림 신청 폼 제출 처리
+        const prelaunchForm = document.getElementById('prelaunch-form');
+        prelaunchForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!auth.currentUser) {
+                showAlert("오류", "데이터베이스 연결이 아직 준비되지 않았습니다. 잠시 후 다시 시도해주세요.");
+                return;
+            }
+
+            const submitButton = prelaunchForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = '신청 중...';
+            
+            const formData = new FormData(prelaunchForm);
+            const email = formData.get('email');
+
+            try {
+                // Firestore 'prelaunch-subscriptions' 컬렉션에 데이터 추가
+                const docRef = await addDoc(collection(db, `/artifacts/${appId}/public/data/prelaunch-subscriptions`), {
+                    email: email,
+                    bookTitle: "AI가 아니라 AI를 쓰는 리더가 당신을 대체한다",
+                    submittedAt: serverTimestamp()
+                });
+                console.log("Pre-launch subscription submitted with ID: ", docRef.id);
+                showAlert("신청 완료", "출간 시 가장 먼저 알려드리겠습니다. 감사합니다!");
+                prelaunchForm.reset();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                showAlert("오류", "신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = '출간 시 알림 받기';
+            }
+        });
+
+    </script>
 
     <script>
         // Lucide 아이콘 초기화
@@ -313,7 +528,6 @@
                 const targetElement = document.querySelector(targetId);
 
                 if (targetElement) {
-                    // 헤더 높이를 고려하여 스크롤 위치 조정
                     const headerOffset = document.getElementById('header').offsetHeight;
                     const elementPosition = targetElement.getBoundingClientRect().top;
                     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -324,14 +538,12 @@
                     });
                 }
 
-                // 모바일 메뉴가 열려있으면 닫기
                 if (!mobileMenu.classList.contains('hidden')) {
                     mobileMenu.classList.add('hidden');
                 }
             });
         });
 
-        // 모바일 메뉴 버튼 클릭 이벤트
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
