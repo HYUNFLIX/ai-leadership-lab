@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRD 실무 & AI 특강 | 작은 기업도 바로 실천하는 Excellence Program</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom configurations */
+        * { font-family: 'Pretendard', sans-serif; }
+        :root {
+            --primary: #2563eb;
+            --secondary: #fbbf24;
+            --purple: #7c3aed;
+            --gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+        }
+        html { scroll-behavior: smooth; }
+        .gradient-primary { background: var(--gradient); }
+        .text-gradient {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        .floating { animation: float 4s ease-in-out infinite; }
+        
+        /* Pulse animation */
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(251, 191, 36, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+        }
+        .pulse-animation { animation: pulse-ring 2s infinite; }
+        
+        /* Gradient animation */
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gradient-animate {
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+        }
+        
+        /* Glass effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Scroll reveal */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-white antialiased">
+    <!-- Enhanced Fixed Header -->
+    <header class="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">H</span>
+                    </div>
+                    <span class="font-bold text-xl text-gray-900">HRD Excellence</span>
+                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#about" class="text-gray-600 hover:text-blue-600 transition-colors">프로그램 소개</a>
+                    <a href="#benefits" class="text-gray-600 hover:text-blue-600 transition-colors">혜택</a>
+                    <a href="#curriculum" class="text-gray-600 hover:text-blue-600 transition-colors">커리큘럼</a>
+                    <a href="#instructor" class="text-gray-600 hover:text-blue-600 transition-colors">강사진</a>
+                    <button onclick="scrollToForm()" 
+                            class="px-6 py-2.5 bg-yellow-400 text-gray-900 rounded-full font-semibold 
+                                   hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                        무료 신청
+                    </button>
+                </nav>
+                <!-- Mobile menu button -->
+                <button class="md:hidden p-2" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section with Background Pattern -->
+    <section class="relative min-h-screen flex items-center justify-center px-4 pt-20 overflow-hidden">
+        <!-- Animated Background -->
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-60"></div>
+        <div class="absolute top-20 right-10 w-72 h-72 bg-yellow-300 rounded-full blur-3xl opacity-20 floating"></div>
+        <div class="absolute bottom-20 left-10 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20 floating" style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-80 h-80 bg-purple-400 rounded-full blur-3xl opacity-10 floating" style="animation-delay: 4s;"></div>
+        
+        <div class="relative text-center max-w-5xl mx-auto">
+            <!-- Badge -->
+            <div class="inline-flex items-center px-4 py-2 bg-red-100 rounded-full mb-6 animate-bounce">
+                <span class="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>
+                <span class="text-sm font-medium text-red-600">HRD? 처음이어도 걱정 마세요!</span>
+            </div>
+            
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <span class="text-gray-900">작은 기업도 </span>
+                <span class="text-gradient">바로 실천</span>
+                <span class="text-gray-900">하는</span><br>
+                <span class="text-gradient">HRD 실무</span>
+                <span class="text-gray-900"> & </span>
+                <span class="text-gradient">AI 특강</span>
+            </h1>
+            
+            <p class="text-xl sm:text-2xl text-gray-600 mb-4 font-medium">
+                4시간 집중 Excellence Program
+            </p>
+            <p class="text-lg text-gray-500 mb-10">
+                한국공학대학교 | 2025.09.05(금) | 선착순 40명
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button onclick="scrollToForm()" 
+                        class="group px-8 py-4 gradient-primary text-white rounded-2xl text-lg font-bold 
+                               shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300
+                               flex items-center space-x-2">
+                    <span>지금 바로 무료 신청</span>
+                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </button>
+                <button class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-2xl font-semibold
+                             hover:border-blue-600 hover:text-blue-600 transition-colors">
+                    프로그램 소개서 다운로드
+                </button>
+            </div>
+            
+            <!-- Trust indicators -->
+            <div class="mt-16 flex flex-wrap justify-center gap-8 text-sm text-gray-500">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                    </svg>
+                    <span>수료율 98%</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                    <span>만족도 4.9/5.0</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                    </svg>
+                    <span>누적 수료생 1,200명+</span>
+                </div>
+            </div>
+            
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+                <div class="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
+                    <div class="w-1 h-3 bg-gray-400 rounded-full mt-2 animate-bounce"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white gradient-animate">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="scroll-reveal">
+                    <div class="text-3xl md:text-4xl font-bold mb-2">200%</div>
+                    <div class="text-sm md:text-base opacity-90">정부지원 활용법</div>
+                </div>
+                <div class="scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="text-3xl md:text-4xl font-bold mb-2">4시간</div>
+                    <div class="text-sm md:text-base opacity-90">집중 교육</div>
+                </div>
+                <div class="scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="text-3xl md:text-4xl font-bold mb-2">1:1</div>
+                    <div class="text-sm md:text-base opacity-90">맞춤 컨설팅</div>
+                </div>
+                <div class="scroll-reveal" style="transition-delay: 0.3s;">
+                    <div class="text-3xl md:text-4xl font-bold mb-2">40명</div>
+                    <div class="text-sm md:text-base opacity-90">소수정예 운영</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="about" class="py-20 px-4 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    이런 고민 있으신가요?
+                </h2>
+                <p class="text-xl text-gray-600">HRD 담당자들의 실제 고민을 해결해드립니다</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden scroll-reveal">
+                    <div class="p-8">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mb-6 
+                                    group-hover:scale-110 transition-transform">
+                            <span class="text-3xl">🤔</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">HRD가 뭔지 몰라서</h3>
+                        <p class="text-gray-600">어디서부터 시작해야 할지 막막해요.</p>
+                    </div>
+                    <div class="h-2 bg-gradient-to-r from-purple-500 to-purple-600"></div>
+                </div>
+
+                <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="p-8">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mb-6 
+                                    group-hover:scale-110 transition-transform">
+                            <span class="text-3xl">😕</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">사업주훈련, 일학습병행?</h3>
+                        <p class="text-gray-600">들어는 봤지만 우리 회사에 적용하긴 어려워요.</p>
+                    </div>
+                    <div class="h-2 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+                </div>
+
+                <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="p-8">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl flex items-center justify-center mb-6 
+                                    group-hover:scale-110 transition-transform">
+                            <span class="text-3xl">🤖</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">AI 시대라는데</h3>
+                        <p class="text-gray-600">우리 회사 HR 업무에 어떻게 적용해야할지 모르겠어요</p>
+                    </div>
+                    <div class="h-2 bg-gradient-to-r from-green-500 to-green-600"></div>
+                </div>
+
+                <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden scroll-reveal" style="transition-delay: 0.3s;">
+                    <div class="p-8">
+                        <div class="w-16 h-16 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl flex items-center justify-center mb-6 
+                                    group-hover:scale-110 transition-transform">
+                            <span class="text-3xl">📚</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">교육, 직무분석, 채용까지...</h3>
+                        <p class="text-gray-600">혼자 하려니 벅차요.</p>
+                    </div>
+                    <div class="h-2 bg-gradient-to-r from-orange-500 to-orange-600"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Benefits Section -->
+    <section id="benefits" class="py-20 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    왜 이 프로그램인가?
+                </h2>
+                <p class="text-xl text-gray-600">검증된 커리큘럼으로 즉시 실무 적용 가능</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Benefit Card 1 -->
+                <div class="group bg-gradient-to-br from-blue-50 to-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 scroll-reveal">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 
+                                group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">실무 즉시 적용</h3>
+                    <p class="text-gray-600 mb-4">중소기업 맞춤형 HRD 전략 수립 및 실행</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            HRD 전략 템플릿 제공
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            실습 위주 교육
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            사례 중심 학습
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Benefit Card 2 -->
+                <div class="group bg-gradient-to-br from-yellow-50 to-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-2xl flex items-center justify-center mb-6 
+                                group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">전문가 직강</h3>
+                    <p class="text-gray-600 mb-4">현업 전문가의 실전 노하우 전수</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            10년 이상 경력 강사진
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            AI 활용 실습
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Q&A 세션
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Benefit Card 3 -->
+                <div class="group bg-gradient-to-br from-purple-50 to-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 
+                                group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">네트워킹 기회</h3>
+                    <p class="text-gray-600 mb-4">HR 담당자들과의 지속 가능한 인맥 구축</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            동종업계 HR 네트워크
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            사후 스터디 그룹
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            온라인 커뮤니티
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Curriculum Section -->
+    <section id="curriculum" class="py-20 px-4 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">4시간 완성 커리큘럼</h2>
+                <p class="text-xl text-gray-600">체계적이고 실용적인 교육 프로그램</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Session 1 -->
+                <div class="relative group scroll-reveal">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-200"></div>
+                    <div class="relative bg-white p-6 rounded-lg border border-gray-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-4xl font-bold text-blue-600">01</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">13:00-14:00</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">HRD 기초 이해</h3>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• HRD 개념과 중요성</li>
+                            <li>• 중소기업 HRD 전략</li>
+                            <li>• 정부지원제도 소개</li>
+                            <li>• 성공 사례 분석</li>
+                        </ul>
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <p class="text-xs text-gray-500">📍 이론 + 사례</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session 2 -->
+                <div class="relative group scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-200"></div>
+                    <div class="relative bg-white p-6 rounded-lg border border-gray-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-4xl font-bold text-yellow-500">02</span>
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium">14:00-15:00</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">정부지원 활용법</h3>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• 사업주훈련 200% 활용</li>
+                            <li>• 일학습병행제 이해</li>
+                            <li>• 지원금 신청 방법</li>
+                            <li>• 실습: 신청서 작성</li>
+                        </ul>
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <p class="text-xs text-gray-500">📍 실습 중심</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session 3 -->
+                <div class="relative group scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-200"></div>
+                    <div class="relative bg-white p-6 rounded-lg border border-gray-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-4xl font-bold text-green-600">03</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">15:00-16:00</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">AI 활용 HR</h3>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• ChatGPT 활용법</li>
+                            <li>• HR 업무 자동화</li>
+                            <li>• AI 도구 실습</li>
+                            <li>• 템플릿 제공</li>
+                        </ul>
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <p class="text-xs text-gray-500">📍 실습 + 체험</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session 4 -->
+                <div class="relative group scroll-reveal" style="transition-delay: 0.3s;">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-200"></div>
+                    <div class="relative bg-white p-6 rounded-lg border border-gray-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-4xl font-bold text-purple-600">04</span>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">16:00-17:00</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">실전 워크샵</h3>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• 우리 회사 HRD 계획</li>
+                            <li>• 1:1 컨설팅</li>
+                            <li>• Q&A 세션</li>
+                            <li>• 네트워킹</li>
+                        </ul>
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <p class="text-xs text-gray-500">📍 워크샵 + 네트워킹</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instructor Section -->
+    <section id="instructor" class="py-20 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">최고의 교육진</h2>
+                <p class="text-xl text-gray-600">각 분야 최고 전문가가 직접 강의합니다</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-1 scroll-reveal">
+                    <div class="bg-white rounded-3xl p-8 md:p-12">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                                <div class="w-32 h-32 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full mb-6 flex items-center justify-center text-white text-4xl font-bold">
+                                    KH
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-2">김현 소장</h3>
+                                <p class="text-lg text-blue-600 font-medium mb-4">
+                                    한국교육정보연구소 & AI 리더십 연구소
+                                </p>
+                            </div>
+                            <div class="space-y-3">
+                                <h4 class="text-lg font-bold text-gray-900 mb-3">주요 경력</h4>
+                                <div class="space-y-2">
+                                    <p class="flex items-start gap-2 text-gray-700">
+                                        <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                                        </svg>
+                                        세종텔레콤 HRD 매니저
+                                    </p>
+                                    <p class="flex items-start gap-2 text-gray-700">
+                                        <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                                        </svg>
+                                        고려대학교 교육대학원 교육학 석사
+                                    </p>
+                                    <p class="flex items-start gap-2 text-gray-700">
+                                        <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                                        </svg>
+                                        서울시 매력일자리 사업 AI 트렌드 특강
+                                    </p>
+                                    <p class="flex items-start gap-2 text-gray-700">
+                                        <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                                        </svg>
+                                        한국산업인력공단 기업 HRD 컨설팅 전문
+                                    </p>
+                                </div>
+                                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                                    <p class="text-sm text-gray-600 italic">
+                                        "작은 기업도 충분히 훌륭한 HRD 시스템을 구축할 수 있습니다. 
+                                        실무에 바로 적용 가능한 노하우를 전해드리겠습니다."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">수료생 후기</h2>
+                <p class="text-xl text-gray-600">실제 참가자들의 생생한 경험담</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border border-blue-100 scroll-reveal">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                        <span class="ml-2 text-sm text-gray-500">2024년 11월 수료</span>
+                    </div>
+                    <p class="text-gray-700 mb-4 italic">
+                        "막막했던 HRD 업무가 명확해졌습니다. 특히 정부지원제도 활용법을 배운 후 
+                        실제로 지원금을 받게 되어 회사에서 인정받았습니다. AI 도구 활용법도 
+                        바로 업무에 적용해서 효율이 크게 올랐어요!"
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mr-3"></div>
+                        <div>
+                            <p class="font-semibold text-gray-900">김민수</p>
+                            <p class="text-sm text-gray-500">제조업 / HR팀 대리</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-yellow-50 to-white p-8 rounded-2xl border border-yellow-100 scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                        <span class="ml-2 text-sm text-gray-500">2024년 8월 수료</span>
+                    </div>
+                    <p class="text-gray-700 mb-4 italic">
+                        "소규모 기업이라 HRD 체계가 전무했는데, 이 교육을 통해 기초부터 
+                        차근차근 구축할 수 있었습니다. 강사님의 1:1 컨설팅이 정말 도움이 
+                        많이 되었고, 네트워킹을 통해 다른 회사 사례도 배울 수 있었습니다."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full mr-3"></div>
+                        <div>
+                            <p class="font-semibold text-gray-900">이서진</p>
+                            <p class="text-sm text-gray-500">IT 스타트업 / 경영지원팀</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section id="apply-form" class="py-24 px-4 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 text-white relative overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-yellow-400/10 rounded-full blur-3xl"></div>
+        
+        <div class="max-w-4xl mx-auto text-center relative scroll-reveal">
+            <div class="inline-flex items-center px-4 py-2 bg-yellow-400 text-gray-900 rounded-full mb-6 font-semibold pulse-animation">
+                ⚡ 마감 임박 - 남은 자리 7석
+            </div>
+            
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                당신의 HRD 역량을<br>
+                한 단계 업그레이드하세요
+            </h2>
+            
+            <p class="text-xl mb-4 opacity-90">2025년 9월 5일 (금) 개강</p>
+            <p class="text-lg mb-10 opacity-80">
+                📍 한국공학대학교 제2생활관 208호<br>
+                ⏰ 13:00 - 17:00 (4시간)
+            </p>
+            
+            <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl max-w-2xl mx-auto glass">
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="text-left">
+                        <p class="text-sm opacity-80 mb-1">교육 일시</p>
+                        <p class="text-lg font-semibold">2025.09.05 (금)</p>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm opacity-80 mb-1">교육 비용</p>
+                        <p class="text-lg font-semibold">전액 무료</p>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm opacity-80 mb-1">모집 인원</p>
+                        <p class="text-lg font-semibold">40명 (선착순)</p>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm opacity-80 mb-1">신청 마감</p>
+                        <p class="text-lg font-semibold">2025.08.29 (금)</p>
+                    </div>
+                </div>
+                
+                <a href="mailto:wgg@hrdkorea.or.kr" 
+                   class="block w-full py-5 bg-yellow-400 text-gray-900 rounded-2xl text-xl font-bold
+                          hover:bg-yellow-300 transform hover:scale-105 transition-all duration-300 shadow-2xl">
+                    지금 바로 무료 신청하기
+                </a>
+                
+                <p class="mt-6 text-sm opacity-80">
+                    문의: wgg@hrdkorea.or.kr | 032-719-0805, 0808
+                </p>
+            </div>
+            
+            <!-- Special Benefit -->
+            <div class="mt-12 p-6 bg-white/10 backdrop-blur-md rounded-2xl inline-block glass">
+                <h3 class="text-2xl font-bold mb-3 flex items-center justify-center gap-2">
+                    <span class="text-3xl">🎁</span> 특별 혜택
+                </h3>
+                <p class="text-lg">
+                    교육 종료 후 능력개발전담주치의 개별 상담 기회 제공
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 bg-gray-900 text-gray-400">
+        <div class="max-w-7xl mx-auto text-center">
+            <h3 class="text-xl font-bold text-white mb-2">HRDK 한국산업인력공단 경기서부지사</h3>
+            <p class="text-sm">
+                © 2025 HRDK. All rights reserved. | 
+                주소: 경기도 시흥시 산기대학로 237
+            </p>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu (Hidden by default) -->
+    <div id="mobileMenu" class="fixed inset-0 bg-black/50 z-40 hidden">
+        <div class="fixed right-0 top-0 h-full w-64 bg-white shadow-xl">
+            <div class="p-4">
+                <button onclick="toggleMobileMenu()" class="mb-8">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+                <nav class="space-y-4">
+                    <a href="#about" onclick="toggleMobileMenu()" class="block py-2 text-gray-700 hover:text-blue-600">프로그램 소개</a>
+                    <a href="#benefits" onclick="toggleMobileMenu()" class="block py-2 text-gray-700 hover:text-blue-600">혜택</a>
+                    <a href="#curriculum" onclick="toggleMobileMenu()" class="block py-2 text-gray-700 hover:text-blue-600">커리큘럼</a>
+                    <a href="#instructor" onclick="toggleMobileMenu()" class="block py-2 text-gray-700 hover:text-blue-600">강사진</a>
+                    <button onclick="scrollToForm(); toggleMobileMenu();" class="w-full mt-4 px-6 py-3 bg-yellow-400 text-gray-900 rounded-full font-semibold">
+                        무료 신청
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll to form
+        function scrollToForm() {
+            document.getElementById('apply-form').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Close mobile menu when clicking outside
+        document.getElementById('mobileMenu').addEventListener('click', function(e) {
+            if (e.target === this) {
+                toggleMobileMenu();
+            }
+        });
+        
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all scroll-reveal elements
+        document.querySelectorAll('.scroll-reveal').forEach(element => {
+            observer.observe(element);
+        });
+        
+        // Performance tracking
+        window.addEventListener('load', () => {
+            console.log('Page Load Time:', performance.now());
+        });
+    </script>
+</body>
+</html>
