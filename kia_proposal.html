@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIA AI Workshop 2026 - Business Proposal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #ea580c;
+            --accent-color: #0891b2;
+            --dark-gray: #111827;
+            --medium-gray: #6b7280;
+            --light-gray: #f9fafb;
+            --border-color: #e5e7eb;
+        }
+        
+        * {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Professional Typography */
+        .heading-primary {
+            font-weight: 900;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+        }
+        
+        .heading-secondary {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        
+        .body-text {
+            font-weight: 400;
+            line-height: 1.6;
+            color: var(--medium-gray);
+        }
+        
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Professional Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2563eb 100%);
+            color: white;
+            padding: 14px 32px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            padding: 14px 32px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* Professional Card Styles */
+        .business-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .business-card:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+        
+        /* Navigation Styles */
+        .nav-fixed {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        /* Section Padding */
+        .section-padding {
+            padding: 40px 0;
+        }
+        
+        @media (min-width: 640px) {
+            .section-padding {
+                padding: 60px 0;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .section-padding {
+                padding: 80px 0;
+            }
+        }
+        
+        /* Professional Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+        
+        .badge-blue {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .badge-orange {
+            background: #fed7aa;
+            color: #ea580c;
+        }
+        
+        .badge-green {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .badge-purple {
+            background: #e9d5ff;
+            color: #7c3aed;
+        }
+        
+        /* Table Styles */
+        .professional-table {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        
+        .professional-table thead {
+            background: linear-gradient(to bottom, #f9fafb, #f3f4f6);
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .professional-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s ease;
+        }
+        
+        .professional-table tbody tr:hover {
+            background-color: #f9fafb;
+        }
+        
+        /* Subtle Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        /* Progress Indicators */
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 9999px;
+            height: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            height: 100%;
+            transition: width 1s ease-out;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f3f4f6;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #9ca3af;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    
+    <!-- Professional Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-fixed">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-xl sm:text-2xl font-black text-gray-900">KIA</span>
+                    <span class="ml-2 text-xs sm:text-sm font-medium text-gray-600">AI Workshop 2026</span>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                
+                <!-- Desktop menu -->
+                <div class="hidden md:flex items-center space-x-4 lg:space-x-8">
+                    <a href="#overview" class="text-gray-600 hover:text-gray-900 font-medium transition text-sm lg:text-base">개요</a>
+                    <a href="#curriculum" class="text-gray-600 hover:text-gray-900 font-medium transition text-sm lg:text-base">커리큘럼</a>
+                    <a href="#roadmap" class="text-gray-600 hover:text-gray-900 font-medium transition text-sm lg:text-base">로드맵</a>
+                    <a href="#management" class="text-gray-600 hover:text-gray-900 font-medium transition text-sm lg:text-base">관리체계</a>
+                    <a href="#awards" class="text-gray-600 hover:text-gray-900 font-medium transition text-sm lg:text-base">성과</a>
+                    <button class="btn-primary text-sm lg:text-base px-4 lg:px-8">제안서 다운로드</button>
+                </div>
+            </div>
+            
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="hidden md:hidden py-4 border-t">
+                <a href="#overview" class="block py-2 text-gray-600 hover:text-gray-900 font-medium">개요</a>
+                <a href="#curriculum" class="block py-2 text-gray-600 hover:text-gray-900 font-medium">커리큘럼</a>
+                <a href="#roadmap" class="block py-2 text-gray-600 hover:text-gray-900 font-medium">로드맵</a>
+                <a href="#management" class="block py-2 text-gray-600 hover:text-gray-900 font-medium">관리체계</a>
+                <a href="#awards" class="block py-2 text-gray-600 hover:text-gray-900 font-medium">성과</a>
+                <button class="btn-primary w-full mt-4">제안서 다운로드</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section - Professional -->
+    <section class="relative min-h-screen flex items-center pt-16" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+            <div class="grid lg:grid-cols-2 gap-8 sm:gap-16 items-center">
+                <div class="fade-in">
+                    <div class="inline-flex items-center space-x-2 mb-4 sm:mb-6">
+                        <span class="badge badge-blue text-xs sm:text-sm">2026 Enterprise AI Training</span>
+                    </div>
+                    <h1 class="heading-primary text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-gray-900 mb-4 sm:mb-6">
+                        AI 시대,<br>
+                        <span class="text-blue-600">KIA의 디지털 혁신</span>을<br>
+                        주도합니다
+                    </h1>
+                    <p class="text-base sm:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed">
+                        310개 부서, 4,000명 임직원의 AI 역량 강화를 통한<br class="hidden sm:inline">
+                        업무 생산성 혁신 프로그램
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12">
+                        <button class="btn-primary text-sm sm:text-base">프로그램 상세 안내</button>
+                        <button class="btn-secondary text-sm sm:text-base">교육 일정 확인</button>
+                    </div>
+                    
+                    <!-- Key Metrics -->
+                    <div class="grid grid-cols-3 gap-4 sm:gap-6">
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold text-blue-600">70%</div>
+                            <div class="text-xs sm:text-sm text-gray-600 mt-1">업무 효율 향상</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold text-blue-600">4,000명</div>
+                            <div class="text-xs sm:text-sm text-gray-600 mt-1">교육 대상 인원</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold text-blue-600">6개월</div>
+                            <div class="text-xs sm:text-sm text-gray-600 mt-1">체계적 교육</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative fade-in mt-8 lg:mt-0" style="animation-delay: 0.2s;">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <div class="business-card p-4 sm:p-6 lg:p-8">
+                            <div class="text-blue-600 text-2xl sm:text-3xl mb-2 sm:mb-3">🎯</div>
+                            <h3 class="font-bold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">맞춤형 교육</h3>
+                            <p class="text-xs sm:text-sm text-gray-600">부서별 특성에 최적화된 AI 솔루션</p>
+                        </div>
+                        <div class="business-card p-4 sm:p-6 lg:p-8">
+                            <div class="text-blue-600 text-2xl sm:text-3xl mb-2 sm:mb-3">⚡</div>
+                            <h3 class="font-bold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">즉시 활용</h3>
+                            <p class="text-xs sm:text-sm text-gray-600">당일 개발한 도구 바로 적용</p>
+                        </div>
+                        <div class="business-card p-4 sm:p-6 lg:p-8">
+                            <div class="text-blue-600 text-2xl sm:text-3xl mb-2 sm:mb-3">🤝</div>
+                            <h3 class="font-bold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">지속 지원</h3>
+                            <p class="text-xs sm:text-sm text-gray-600">3개월 멘토링 프로그램</p>
+                        </div>
+                        <div class="business-card p-4 sm:p-6 lg:p-8">
+                            <div class="text-blue-600 text-2xl sm:text-3xl mb-2 sm:mb-3">📊</div>
+                            <h3 class="font-bold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">성과 측정</h3>
+                            <p class="text-xs sm:text-sm text-gray-600">데이터 기반 효과 분석</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Overview Section -->
+    <section id="overview" class="section-padding">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-8 sm:mb-16">
+                <h2 class="heading-secondary text-3xl sm:text-4xl text-gray-900 mb-3 sm:mb-4">프로그램 개요</h2>
+                <p class="text-base sm:text-lg text-gray-600">체계적인 단계별 AI 역량 강화 프로그램</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+                <!-- 교육 대상 -->
+                <div class="business-card p-6 sm:p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 sm:w-12 h-10 sm:h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+                            <svg class="w-5 sm:w-6 h-5 sm:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg ml-3">교육 대상</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between py-2 border-b text-sm sm:text-base">
+                            <span class="text-gray-600">총 인원</span>
+                            <span class="font-semibold">4,000명</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b text-sm sm:text-base">
+                            <span class="text-gray-600">참여 부서</span>
+                            <span class="font-semibold">310개</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b text-sm sm:text-base">
+                            <span class="text-gray-600">직급</span>
+                            <span class="font-semibold">사원~부장</span>
+                        </div>
+                        <div class="flex justify-between py-2 text-sm sm:text-base">
+                            <span class="text-gray-600">교육 방식</span>
+                            <span class="font-semibold">대면/실습</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 교육 일정 -->
+                <div class="business-card p-6 sm:p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 sm:w-12 h-10 sm:h-12 rounded-lg bg-green-100 flex items-center justify-center">
+                            <svg class="w-5 sm:w-6 h-5 sm:h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg ml-3">교육 일정</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between py-2 border-b text-sm sm:text-base">
+                            <span class="text-gray-600">교육 기간</span>
+                            <span class="font-semibold">6개월</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b text-sm sm:text-base">
+                            <span class="text-gray-600">시작일</span>
+                            <span class="font-semibold">2026.3.2</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b text-sm sm:text-base">
+                            <span class="text-gray-600">종료일</span>
+                            <span class="font-semibold">2026.8.31</span>
+                        </div>
+                        <div class="flex justify-between py-2 text-sm sm:text-base">
+                            <span class="text-gray-600">교육 시간</span>
+                            <span class="font-semibold">6시간/일</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 기대 효과 -->
+                <div class="business-card p-6 sm:p-8 sm:col-span-2 lg:col-span-1">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 sm:w-12 h-10 sm:h-12 rounded-lg bg-purple-100 flex items-center justify-center">
+                            <svg class="w-5 sm:w-6 h-5 sm:h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg ml-3">기대 효과</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs sm:text-sm mb-1">
+                                <span>업무 효율성</span>
+                                <span class="font-semibold">70%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs sm:text-sm mb-1">
+                                <span>고객 만족도</span>
+                                <span class="font-semibold">85%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs sm:text-sm mb-1">
+                                <span>직원 만족도</span>
+                                <span class="font-semibold">92%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 92%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Curriculum Section -->
+    <section id="curriculum" class="section-padding bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-8 sm:mb-16">
+                <h2 class="heading-secondary text-3xl sm:text-4xl text-gray-900 mb-3 sm:mb-4">교육 커리큘럼</h2>
+                <p class="text-base sm:text-lg text-gray-600">Gemini Canvas 기반 실무 중심 교육 과정 (총 6시간)</p>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <div class="professional-table bg-white min-w-[800px]">
+                    <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 w-36">구분</th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 w-56">Key Word</th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-700">주요 내용</th>
+                            <th class="px-6 py-4 text-center text-sm font-bold text-gray-700 w-24">시간</th>
+                            <th class="px-6 py-4 text-center text-sm font-bold text-gray-700 w-32">방법</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 도입 -->
+                        <tr>
+                            <td class="px-6 py-5">
+                                <span class="badge badge-blue">도입</span>
+                            </td>
+                            <td class="px-6 py-5 font-semibold">AI 이해와<br>트렌드</td>
+                            <td class="px-6 py-5">
+                                <ul class="space-y-2 text-sm">
+                                    <li class="flex items-start">
+                                        <span class="text-blue-600 mr-2 mt-0.5">•</span>
+                                        <div>
+                                            <strong>AI 기술 동향과 비즈니스 임팩트</strong>
+                                            <p class="text-gray-600 mt-1">생성형 AI가 바꾸는 업무 혁신 사례, 자동차 업계 AI 활용 베스트 프랙티스</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-blue-600 mr-2 mt-0.5">•</span>
+                                        <div>
+                                            <strong>KIA의 디지털 전환 비전</strong>
+                                            <p class="text-gray-600 mt-1">AI Native 조직으로의 여정, 우리 부서의 AI 도입 기회</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <span class="text-lg font-bold">1.0H</span>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <div class="space-y-1">
+                                    <span class="badge badge-blue">강의</span>
+                                    <span class="badge badge-blue">동영상</span>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- 핵심 -->
+                        <tr class="bg-blue-50/30">
+                            <td class="px-6 py-5">
+                                <span class="badge badge-orange">핵심</span>
+                            </td>
+                            <td class="px-6 py-5 font-semibold">김과장의<br>하루</td>
+                            <td class="px-6 py-5">
+                                <div class="grid grid-cols-3 gap-2 text-sm">
+                                    <span class="text-gray-700">• HRD 브리핑</span>
+                                    <span class="text-gray-700">• 프롬프트 엔지니어링</span>
+                                    <span class="text-gray-700">• 트렌드 분석</span>
+                                    <span class="text-gray-700">• 회의록 작성</span>
+                                    <span class="text-gray-700">• 문서 자동화</span>
+                                    <span class="text-gray-700">• 랜딩페이지 제작</span>
+                                    <span class="text-gray-700">• 교육 동영상 제작</span>
+                                    <span class="text-gray-700">• 홍보 영상 제작</span>
+                                    <span class="text-gray-700">• 설문지 생성</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <span class="text-xl font-black text-orange-600">2.5H</span>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <div class="space-y-1">
+                                    <span class="badge badge-orange">시연</span>
+                                    <span class="badge badge-orange">체험</span>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- 준비 -->
+                        <tr>
+                            <td class="px-6 py-5">
+                                <span class="badge badge-green">준비</span>
+                            </td>
+                            <td class="px-6 py-5 font-semibold">Gemini<br>실습 준비</td>
+                            <td class="px-6 py-5">
+                                <ul class="space-y-2 text-sm">
+                                    <li><span class="text-green-600">•</span> <strong>제미나이 소개</strong> - Google AI Studio 특징과 장점</li>
+                                    <li><span class="text-green-600">•</span> <strong>사례 소개</strong> - 실제 기업 활용 사례</li>
+                                    <li><span class="text-green-600">•</span> <strong>캔버스 환경 구축</strong> - 계정 생성, 인터페이스 익히기</li>
+                                    <li><span class="text-green-600">•</span> <strong>바이브코딩</strong> - 자연어로 AI와 대화하는 방법</li>
+                                </ul>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <span class="text-lg font-bold">0.5H</span>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <div class="space-y-1">
+                                    <span class="badge badge-green">시연</span>
+                                    <span class="badge badge-green">실습</span>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- 점심시간 -->
+                        <tr class="bg-gray-50">
+                            <td colspan="5" class="px-6 py-3 text-center text-gray-500">
+                                🍽️ 점심시간 (12:30 ~ 13:30)
+                            </td>
+                        </tr>
+                        
+                        <!-- 실습 1 -->
+                        <tr>
+                            <td class="px-6 py-5">
+                                <span class="badge badge-purple">실습1</span>
+                            </td>
+                            <td class="px-6 py-5 font-semibold">개인<br>프로젝트</td>
+                            <td class="px-6 py-5">
+                                <ul class="space-y-2 text-sm">
+                                    <li><span class="text-purple-600">•</span> <strong>서비스 기획</strong> - 내 업무 중 자동화하고 싶은 것 1개 선정</li>
+                                    <li><span class="text-purple-600">•</span> <strong>실전 서비스 구현</strong> - Gemini Canvas 활용, 서비스 개발</li>
+                                </ul>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <span class="text-lg font-bold">0.5H</span>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <span class="badge badge-purple">개인실습</span>
+                            </td>
+                        </tr>
+                        
+                        <!-- 실습 2 -->
+                        <tr>
+                            <td class="px-6 py-5">
+                                <span class="badge badge-purple">실습2</span>
+                            </td>
+                            <td class="px-6 py-5 font-semibold">팀<br>프로젝트</td>
+                            <td class="px-6 py-5">
+                                <ul class="space-y-2 text-sm">
+                                    <li><span class="text-purple-600">•</span> <strong>팀별 서비스 선정</strong> - 부서 공통 페인포인트 도출</li>
+                                    <li><span class="text-purple-600">•</span> <strong>서비스 배포·공유</strong> - 링크 생성 및 QR코드 제작</li>
+                                </ul>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <span class="text-lg font-bold">0.5H</span>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <span class="badge badge-purple">팀실습</span>
+                            </td>
+                        </tr>
+                        
+                        <!-- 발표 -->
+                        <tr>
+                            <td class="px-6 py-5">
+                                <span class="badge badge-blue">발표</span>
+                            </td>
+                            <td class="px-6 py-5 font-semibold">성과<br>공유</td>
+                            <td class="px-6 py-5">
+                                <ul class="space-y-1 text-sm">
+                                    <li><span class="text-blue-600">•</span> 팀별 2분 발표 + 1분 시연</li>
+                                    <li><span class="text-blue-600">•</span> 실시간 투표로 우수작 선정</li>
+                                    <li><span class="text-blue-600">•</span> Best Practice 시상</li>
+                                </ul>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <span class="text-lg font-bold">0.5H</span>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <div class="space-y-1">
+                                    <span class="badge badge-blue">발표</span>
+                                    <span class="badge badge-blue">평가</span>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- 마무리 -->
+                        <tr>
+                            <td class="px-6 py-5">
+                                <span class="badge badge-green">마무리</span>
+                            </td>
+                            <td class="px-6 py-5 font-semibold">Action<br>Plan</td>
+                            <td class="px-6 py-5">
+                                <ul class="space-y-1 text-sm text-gray-600">
+                                    <li>• 내일부터 활용할 도구 3개 선정</li>
+                                    <li>• 부서 전파 계획 수립</li>
+                                    <li>• 노션 워크스페이스 안내</li>
+                                    <li>• 후속 멘토링 프로그램 안내</li>
+                                </ul>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <span class="text-lg font-bold">0.5H</span>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <span class="badge badge-green">토론</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="section-padding" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-8 sm:mb-16">
+                <h2 class="heading-secondary text-3xl sm:text-4xl text-gray-900 mb-3 sm:mb-4">2026 실행 로드맵</h2>
+                <p class="text-base sm:text-lg text-gray-600">체계적인 3단계 추진 전략</p>
+            </div>
+            
+            <!-- Three Phase Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                <!-- Phase 1 Card -->
+                <div class="relative group">
+                    <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
+                        <div class="mb-6">
+                            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg mb-4">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full uppercase tracking-wide mb-3">Phase 1</span>
+                            <h3 class="text-2xl font-black text-gray-900 mb-2">PREPARATION</h3>
+                            <p class="text-gray-600 font-medium">준비기간: 1-2월</p>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-6 leading-relaxed">
+                            AI 교육 인프라 구축과 부서별 니즈 분석을 통해 맞춤형 커리큘럼을 설계하고 교육 환경을 조성합니다.
+                        </p>
+                        
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5 mr-3 flex-shrink-0">
+                                    <svg class="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-sm text-gray-700">AI 리더십 Pool 구성</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5 mr-3 flex-shrink-0">
+                                    <svg class="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-sm text-gray-700">310개 부서 니즈 조사</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5 mr-3 flex-shrink-0">
+                                    <svg class="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-sm text-gray-700">커리큘럼 커스터마이징</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Phase 2 Card -->
+                <div class="relative group">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition duration-300"></div>
+                    <div class="relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
+                        <div class="mb-6">
+                            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl shadow-lg mb-4">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                                </svg>
+                            </div>
+                            <span class="inline-block px-3 py-1 bg-orange-100 text-orange-700 text-xs font-bold rounded-full uppercase tracking-wide mb-3">Phase 2</span>
+                            <h3 class="text-2xl font-black text-gray-900 mb-2">EXECUTION</h3>
+                            <p class="text-gray-600 font-medium">실행기간: 3-8월</p>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-6 leading-relaxed">
+                            총 4,000명의 임직원을 대상으로 부서별 맞춤형 AI 교육을 단계적으로 실시합니다.
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-gradient-to-r from-orange-50 to-yellow-50 p-4 rounded-xl border border-orange-200">
+                                <p class="font-bold text-sm text-orange-900 mb-2">1차 교육 (3-5월)</p>
+                                <p class="text-xs text-gray-700">영업/마케팅/생산 • 120개 부서 • 2,000명</p>
+                            </div>
+                            <div class="bg-gradient-to-r from-orange-50 to-yellow-50 p-4 rounded-xl border border-orange-200">
+                                <p class="font-bold text-sm text-orange-900 mb-2">2차 교육 (6-8월)</p>
+                                <p class="text-xs text-gray-700">기획/재무/R&D/IT • 190개 부서 • 2,000명</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Phase 3 Card -->
+                <div class="relative group">
+                    <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
+                        <div class="mb-6">
+                            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-lg mb-4">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                            <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full uppercase tracking-wide mb-3">Phase 3</span>
+                            <h3 class="text-2xl font-black text-gray-900 mb-2">EXPANSION</h3>
+                            <p class="text-gray-600 font-medium">확산기간: 9-12월</p>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-6 leading-relaxed">
+                            우수사례를 발굴하고 전사적으로 AI 활용 문화를 확산시켜 지속가능한 혁신을 달성합니다.
+                        </p>
+                        
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mt-0.5 mr-3 flex-shrink-0">
+                                    <svg class="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-sm text-gray-700">우수사례 발굴 및 전파</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mt-0.5 mr-3 flex-shrink-0">
+                                    <svg class="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-sm text-gray-700">AI Excellence Awards</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mt-0.5 mr-3 flex-shrink-0">
+                                    <svg class="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-sm text-gray-700">KIA AI Day 개최</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA Card -->
+            <div class="relative">
+                <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-lg opacity-30"></div>
+                <div class="relative bg-gradient-to-r from-blue-600 to-blue-700 rounded-3xl p-8 sm:p-12 text-center text-white shadow-2xl">
+                    <h3 class="text-2xl sm:text-3xl font-bold mb-4">
+                        더플래닛의 역량과 핵심가치가<br class="sm:hidden">
+                        반영된 프로젝트가 궁금하신가요?
+                    </h3>
+                    <p class="text-lg opacity-90 mb-8">
+                        KIA 맞춤형 AI 교육 프로그램의 상세 내용을 확인하세요
+                    </p>
+                    <a href="https://www.theplanetconsulting.co.kr/16" target="_blank" class="inline-flex items-center bg-white text-blue-700 font-bold px-8 py-4 rounded-full hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                        <span class="mr-2">See Our Work</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Management System Section -->
+    <section id="management" class="section-padding bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="heading-secondary text-4xl text-gray-900 mb-4">노션 통합 관리 시스템</h2>
+                <p class="text-lg text-gray-600">실시간 협업과 지속적 학습을 위한 디지털 플랫폼</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="business-card">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center">
+                            <span class="text-white text-xl">📚</span>
+                        </div>
+                        <h3 class="font-bold text-lg ml-3">교육 자료 통합 관리</h3>
+                    </div>
+                    <p class="text-gray-600 mb-6">
+                        모든 교육 자료와 실습 파일을 중앙에서 체계적으로 관리합니다.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div>
+                                <strong>부서별 전용 페이지</strong>
+                                <p class="text-sm text-gray-600 mt-1">310개 부서별 맞춤 교육 자료실</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div>
+                                <strong>실시간 업데이트</strong>
+                                <p class="text-sm text-gray-600 mt-1">최신 AI 트렌드 즉시 반영</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div>
+                                <strong>모바일 접근성</strong>
+                                <p class="text-sm text-gray-600 mt-1">언제 어디서나 학습 가능</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="business-card">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center">
+                            <span class="text-white text-xl">🎯</span>
+                        </div>
+                        <h3 class="font-bold text-lg ml-3">프로젝트 협업 플랫폼</h3>
+                    </div>
+                    <p class="text-gray-600 mb-6">
+                        부서별 AI 프로젝트를 체계적으로 관리하고 협업합니다.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-blue-600 text-lg mr-3">📊</span>
+                            <div>
+                                <strong>칸반 보드 관리</strong>
+                                <p class="text-sm text-gray-600 mt-1">프로젝트 진행 상황 시각화</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 text-lg mr-3">💬</span>
+                            <div>
+                                <strong>실시간 피드백</strong>
+                                <p class="text-sm text-gray-600 mt-1">강사진과 즉각적 소통</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 text-lg mr-3">🏆</span>
+                            <div>
+                                <strong>우수사례 갤러리</strong>
+                                <p class="text-sm text-gray-600 mt-1">성과 공유 및 벤치마킹</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Support Info -->
+            <div class="mt-12 bg-gray-50 rounded-2xl p-8 text-center">
+                <h3 class="text-xl font-bold mb-4">지원 혜택</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div>
+                        <div class="font-semibold text-blue-600">접근 권한</div>
+                        <p class="text-sm text-gray-600 mt-1">전 교육생 계정 제공</p>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-blue-600">지원 기간</div>
+                        <p class="text-sm text-gray-600 mt-1">12개월 무료 이용</p>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-blue-600">추가 혜택</div>
+                        <p class="text-sm text-gray-600 mt-1">노션 AI 3개월 체험</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Awards Section -->
+    <section id="awards" class="section-padding bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="heading-secondary text-4xl text-white mb-4">KIA AI Excellence Awards</h2>
+                <p class="text-lg text-gray-300">부서별 AI 혁신 우수사례 경진대회</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="text-center">
+                    <div class="text-6xl mb-4">🥇</div>
+                    <h3 class="text-2xl font-bold mb-2 text-yellow-400">대상</h3>
+                    <p class="text-gray-300">해외 AI 컨퍼런스 참가</p>
+                    <p class="text-gray-300">포상금 500만원</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-6xl mb-4">🥈</div>
+                    <h3 class="text-2xl font-bold mb-2 text-gray-300">최우수상</h3>
+                    <p class="text-gray-300">국내 AI 연수 기회</p>
+                    <p class="text-gray-300">포상금 300만원</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-6xl mb-4">🥉</div>
+                    <h3 class="text-2xl font-bold mb-2 text-orange-400">우수상</h3>
+                    <p class="text-gray-300">팀 워크샵 지원</p>
+                    <p class="text-gray-300">포상금 100만원</p>
+                </div>
+            </div>
+            
+            <!-- Success Cases -->
+            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
+                <h3 class="text-2xl font-bold mb-6 text-center">AI 혁신 사례</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white/5 rounded-xl p-6 flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-yellow-400">업무 프로세스 자동화</div>
+                            <div class="text-sm text-gray-400 mt-1">기획팀</div>
+                        </div>
+                        <span class="text-green-400 font-bold">85% 단축</span>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-6 flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-yellow-400">영업 AI 어시스턴트</div>
+                            <div class="text-sm text-gray-400 mt-1">영업팀</div>
+                        </div>
+                        <span class="text-green-400 font-bold">60% 절감</span>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-6 flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-yellow-400">데이터 분석 자동화</div>
+                            <div class="text-sm text-gray-400 mt-1">재무팀</div>
+                        </div>
+                        <span class="text-green-400 font-bold">92% 정확도</span>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-6 flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-yellow-400">계약서 AI 리뷰어</div>
+                            <div class="text-sm text-gray-400 mt-1">법무팀</div>
+                        </div>
+                        <span class="text-green-400 font-bold">80% 단축</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="section-padding bg-gradient-to-r from-blue-600 to-blue-700">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6">
+            <h2 class="heading-secondary text-3xl sm:text-4xl text-white mb-4 sm:mb-6">
+                KIA의 미래, AI와 함께 만들어갑니다
+            </h2>
+            <p class="text-lg sm:text-xl text-white/90 mb-8 sm:mb-10">
+                사무직의 도전이 팀의 혁신으로, 팀의 혁신이 기아의 미래로
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-white text-blue-700 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg hover:bg-gray-100 transition-all duration-300 text-sm sm:text-base shadow-lg">
+                    제안서 상세 논의 요청
+                </button>
+                <button class="bg-transparent border-2 border-white text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg hover:bg-white hover:text-blue-700 transition-all duration-300 text-sm sm:text-base">
+                    담당자 연락하기
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="font-bold text-lg mb-4">제안사</h3>
+                    <p class="text-gray-400">AI리더십연구소 × 더플래닛</p>
+                    <p class="text-gray-400 text-sm mt-2">
+                        AI 교육 전문 컨설팅<br>
+                        기업 맞춤형 교육 설계
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">연락처</h3>
+                    <p class="text-gray-400">
+                        김현 소장<br>
+                        hyunnet@gmail.com<br>
+                        010-6613-5782
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">주요 실적</h3>
+                    <p class="text-gray-400 text-sm">
+                        • 삼성전자 AI 교육 (2,000명)<br>
+                        • LG CNS 디지털 전환 교육<br>
+                        • SK텔레콤 AI 리더십 과정<br>
+                        • 현대자동차 AI 워크샵
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-500 text-sm">
+                    © 2025 AI Leadership Institute. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Progress animation on scroll
+        const observerOptions = {
+            threshold: 0.5
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const progressBars = entry.target.querySelectorAll('.progress-fill');
+                    progressBars.forEach(bar => {
+                        bar.style.width = bar.style.width;
+                    });
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.progress-bar').forEach(el => {
+            observer.observe(el.parentElement);
+        });
+    </script>
+</body>
+</html>
