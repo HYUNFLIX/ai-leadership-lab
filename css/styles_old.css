@@ -1,11 +1,11 @@
 /* =====================================
    AI Leadership Lab - Main Stylesheet
-   Version: 2.0
+   Version: 2.1 - Bug Fixed & Enhanced
    ===================================== */
 
 /* ================ Variables ================ */
 :root {
-  /* Colors */
+  /* Colors - Light Mode */
   --primary: #6366f1;
   --primary-dark: #4f46e5;
   --secondary: #a855f7;
@@ -57,6 +57,39 @@
   --radius-full: 9999px;
 }
 
+/* ================ Dark Mode Support ================ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #818cf8;
+    --primary-dark: #6366f1;
+    --secondary: #c084fc;
+    --secondary-dark: #a855f7;
+    
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    
+    --border-color: #475569;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .hero-gradient {
+    opacity: 0.95;
+  }
+  
+  .navbar {
+    background: rgba(15, 23, 42, 0.95);
+  }
+  
+  .navbar.scrolled {
+    background: rgba(15, 23, 42, 0.98);
+  }
+}
+
 /* ================ Reset & Base ================ */
 *,
 *::before,
@@ -82,6 +115,13 @@ body {
   overflow-x: hidden;
 }
 
+/* Fix for mobile menu scroll lock */
+body.menu-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -104,6 +144,25 @@ button {
 
 ul {
   list-style: none;
+}
+
+/* ================ Accessibility ================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus styles for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 /* ================ Utilities ================ */
@@ -157,6 +216,27 @@ ul {
   text-align: center;
 }
 
+/* ================ Form Messages ================ */
+.form-message {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-top: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.form-message.error {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+}
+
+.form-message.success {
+  background-color: #dcfce7;
+  color: #16a34a;
+  border: 1px solid #86efac;
+}
+
 /* ================ Loading Screen ================ */
 .loader {
   position: fixed;
@@ -175,6 +255,7 @@ ul {
 .loader.loaded {
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 }
 
 .loader-content {
@@ -277,7 +358,8 @@ ul {
   transition: var(--transition-base);
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link.active {
   color: var(--primary);
 }
 
@@ -292,7 +374,8 @@ ul {
   transition: width 0.3s ease;
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-link.active::after {
   width: 100%;
 }
 
@@ -387,7 +470,7 @@ ul {
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-size: clamp(2rem, 5vw + 1rem, 4.5rem);
   font-weight: 900;
   line-height: 1.1;
   margin-bottom: var(--spacing-lg);
@@ -396,7 +479,7 @@ ul {
 }
 
 .hero-description {
-  font-size: var(--font-size-xl);
+  font-size: clamp(1rem, 2vw, 1.25rem);
   line-height: 1.7;
   opacity: 1;
   margin-bottom: var(--spacing-xl);
@@ -427,12 +510,17 @@ ul {
   text-decoration: none;
 }
 
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .btn-primary {
   background: white;
   color: var(--primary);
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
@@ -444,7 +532,7 @@ ul {
   border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-.btn-secondary:hover {
+.btn-secondary:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.3);
   border-color: rgba(255, 255, 255, 0.5);
 }
@@ -455,7 +543,7 @@ ul {
   border: 2px solid var(--primary);
 }
 
-.btn-outline:hover {
+.btn-outline:hover:not(:disabled) {
   background: var(--primary);
   color: white;
 }
@@ -630,7 +718,7 @@ ul {
 }
 
 .section-title {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.75rem, 4vw, 3rem);
   font-weight: 900;
   line-height: 1.2;
   color: var(--text-primary);
@@ -638,7 +726,7 @@ ul {
 }
 
 .section-description {
-  font-size: var(--font-size-lg);
+  font-size: clamp(1rem, 2vw, 1.125rem);
   color: var(--text-secondary);
   max-width: 600px;
   margin: 0 auto;
@@ -823,7 +911,7 @@ ul {
 }
 
 .director-name {
-  font-size: var(--font-size-4xl);
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 900;
   color: var(--text-primary);
   margin-bottom: var(--spacing-xs);
@@ -953,7 +1041,7 @@ ul {
 }
 
 .book-card {
-  background: white;
+  background: var(--bg-primary);
   border-radius: var(--radius-xl);
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -1035,18 +1123,25 @@ ul {
   position: relative;
   overflow: hidden;
   padding: var(--spacing-xl) 0;
+  --marquee-width: 100%;
+  --marquee-duration: 30s;
 }
 
 .marquee-track {
   display: flex;
   gap: var(--spacing-xl);
-  animation: marquee 30s linear infinite;
+  animation: marquee var(--marquee-duration) linear infinite;
+  will-change: transform;
+}
+
+.marquee-track.paused {
+  animation-play-state: paused;
 }
 
 .project-item {
   flex-shrink: 0;
   padding: var(--spacing-lg);
-  background: white;
+  background: var(--bg-primary);
   border-radius: var(--radius-lg);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   transition: var(--transition-base);
@@ -1067,7 +1162,7 @@ ul {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(calc(-100% - var(--spacing-xl)));
   }
 }
 
@@ -1440,7 +1535,7 @@ ul {
     right: -100%;
     width: 100%;
     height: calc(100vh - 70px);
-    background: white;
+    background: var(--bg-primary);
     flex-direction: column;
     padding: var(--spacing-xl) var(--spacing-md);
     gap: var(--spacing-lg);
@@ -1457,7 +1552,7 @@ ul {
   }
 
   .hero-title {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 8vw, 2.5rem);
   }
 
   .hero-description {
@@ -1520,11 +1615,11 @@ ul {
 
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 2rem;
+    font-size: clamp(1.75rem, 7vw, 2rem);
   }
   
   .section-title {
-    font-size: 1.75rem;
+    font-size: clamp(1.5rem, 5vw, 1.75rem);
   }
   
   .projects-marquee {
@@ -1553,9 +1648,13 @@ ul {
     --text-primary: #000000;
     --text-secondary: #333333;
   }
-}
-
-/* ================ Dark Mode Support (Optional) ================ */
-@media (prefers-color-scheme: dark) {
-  /* Add dark mode styles here if needed */
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text-primary: #ffffff;
+      --text-secondary: #e5e5e5;
+      --bg-primary: #000000;
+      --bg-secondary: #1a1a1a;
+    }
+  }
 }

@@ -31,6 +31,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
@@ -58,7 +62,15 @@
         "@type": "Person",
         "name": "김현",
         "jobTitle": "소장",
-        "description": "AI 리더십연구소 소장, 세종텔레콤 HRD 매니저"
+        "description": "AI 리더십연구소 소장, 세종텔레콤 HRD 매니저",
+        "alumniOf": {
+          "@type": "EducationalOrganization",
+          "name": "고려대학교"
+        },
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "AI Leadership Lab 소장"
+        }
       },
       "sameAs": [
         "https://www.facebook.com/hyunnet",
@@ -77,6 +89,9 @@
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style">
 </head>
 <body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main" class="sr-only">메인 콘텐츠로 건너뛰기</a>
+    
     <!-- Loading Screen -->
     <div id="loader" class="loader">
         <div class="loader-content">
@@ -90,11 +105,11 @@
     </div>
 
     <!-- Navigation -->
-    <nav id="navbar" class="navbar">
+    <nav id="navbar" class="navbar" role="navigation" aria-label="주 메뉴">
         <div class="container">
             <div class="nav-wrapper">
-                <a href="#" class="nav-logo">
-                    <span class="logo-icon">
+                <a href="#" class="nav-logo" aria-label="AI Leadership Lab 홈">
+                    <span class="logo-icon" aria-hidden="true">
                         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
                             <circle cx="16" cy="16" r="14" stroke="url(#gradient)" stroke-width="2"/>
                             <path d="M16 8v16M8 16h16" stroke="url(#gradient)" stroke-width="2" stroke-linecap="round"/>
@@ -109,15 +124,15 @@
                     <span class="logo-text">AI Leadership Lab</span>
                 </a>
                 
-                <ul class="nav-menu" id="navMenu">
-                    <li><a href="#about" class="nav-link">연구소 소개</a></li>
-                    <li><a href="#director" class="nav-link">연구소장</a></li>
-                    <li><a href="#publications" class="nav-link">저서</a></li>
-                    <li><a href="#projects" class="nav-link">프로젝트</a></li>
-                    <li><a href="#contact" class="nav-link nav-cta">Contact</a></li>
+                <ul class="nav-menu" id="navMenu" role="menubar">
+                    <li role="none"><a href="#about" class="nav-link" role="menuitem">연구소 소개</a></li>
+                    <li role="none"><a href="#director" class="nav-link" role="menuitem">연구소장</a></li>
+                    <li role="none"><a href="#publications" class="nav-link" role="menuitem">저서</a></li>
+                    <li role="none"><a href="#projects" class="nav-link" role="menuitem">프로젝트</a></li>
+                    <li role="none"><a href="#contact" class="nav-link nav-cta" role="menuitem">Contact</a></li>
                 </ul>
                 
-                <button class="nav-toggle" id="navToggle">
+                <button class="nav-toggle" id="navToggle" aria-label="메뉴 토글" aria-expanded="false" aria-controls="navMenu">
                     <span class="bar"></span>
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -126,521 +141,517 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="hero" class="hero">
-        <div class="hero-bg">
-            <div class="hero-gradient"></div>
-            <div class="hero-pattern"></div>
-        </div>
-        <div class="container">
-            <div class="hero-content">
-                <span class="hero-badge animate-fade-in">AI Leadership Innovation</span>
-                <h1 class="hero-title animate-slide-up">
-                    AI가 아니라<br>
-                    <span class="text-highlight">AI를 쓰는 리더</span>가<br>
-                    당신을 대체합니다
-                </h1>
-                <p class="hero-description animate-slide-up-delay">
-                    AI Leadership Lab은 새로운 시대에 맞는 리더십 철학과 
-                    실질적인 협업 전략을 제시합니다.
-                </p>
-                <div class="hero-actions animate-fade-in-delay">
-                    <a href="#about" class="btn btn-primary btn-large">
-                        <span>자세히 알아보기</span>
-                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M7 13l6-6M13 7v6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
-                    <a href="#contact" class="btn btn-secondary btn-large">문의하기</a>
-                </div>
+    <!-- Main Content -->
+    <main id="main">
+        <!-- Hero Section -->
+        <section id="hero" class="hero" aria-labelledby="hero-title">
+            <div class="hero-bg">
+                <div class="hero-gradient"></div>
+                <div class="hero-pattern"></div>
             </div>
-            
-            <!-- Stats Cards -->
-            <div class="stats-grid animate-fade-in-up">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <span class="stat-value">2조 달러</span>
-                        <span class="stat-label">2030년 AI 시장 규모</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <span class="stat-value">42%</span>
-                        <span class="stat-label">기업 AI 도입률</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <span class="stat-value">40%↑</span>
-                        <span class="stat-label">생산성 향상</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="scroll-indicator">
-            <span class="scroll-text">Scroll</span>
-            <div class="scroll-icon">
-                <div class="scroll-dot"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="section section-about">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">About Us</span>
-                <h2 class="section-title">
-                    우리는 <span class="text-gradient">미래의 리더십</span>을
-                    <br>오늘, 여기에서 정의합니다
-                </h2>
-            </div>
-            
-            <div class="about-grid">
-                <div class="about-content">
-                    <p class="lead-text">
-                        AI Leadership Lab은 단순한 기술 교육 기관이 아닙니다. 
-                        우리는 인공지능이라는 거대한 패러다임의 전환 속에서 
-                        조직의 운명을 결정할 리더들을 위한 전략적 파트너입니다.
+            <div class="container">
+                <div class="hero-content">
+                    <span class="hero-badge animate-fade-in">AI Leadership Innovation</span>
+                    <h1 id="hero-title" class="hero-title animate-slide-up">
+                        AI가 아니라<br>
+                        <span class="text-highlight">AI를 쓰는 리더</span>가<br>
+                        당신을 대체합니다
+                    </h1>
+                    <p class="hero-description animate-slide-up-delay">
+                        AI Leadership Lab은 새로운 시대에 맞는 리더십 철학과 
+                        실질적인 협업 전략을 제시합니다.
                     </p>
-                    <p>
-                        기술의 홍수 속에서 길을 잃지 않고, 오히려 그 파도를 타고 
-                        더 높은 곳으로 나아갈 수 있는 통찰과 방법론을 제공합니다.
-                    </p>
-                    
-                    <div class="feature-list">
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M9 11l3 3L22 4"/>
-                                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4>실무 중심 교육</h4>
-                                <p>현장에서 바로 적용 가능한 실용적 커리큘럼</p>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <path d="M12 6v6l4 2"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4>맞춤형 컨설팅</h4>
-                                <p>조직의 특성에 맞는 AI 전략 수립</p>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4>검증된 전문성</h4>
-                                <p>15년 이상의 현장 경험과 노하우</p>
-                            </div>
-                        </div>
+                    <div class="hero-actions animate-fade-in-delay">
+                        <a href="#about" class="btn btn-primary btn-large">
+                            <span>자세히 알아보기</span>
+                            <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                <path d="M7 13l6-6M13 7v6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                        <a href="#contact" class="btn btn-secondary btn-large">문의하기</a>
                     </div>
                 </div>
                 
-                <div class="about-visual">
-                    <div class="image-card">
-                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop" 
-                             alt="Team collaboration" 
-                             loading="lazy">
-                        <div class="image-overlay"></div>
+                <!-- Stats Cards -->
+                <div class="stats-grid animate-fade-in-up">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" data-target="2000">2조 달러</span>
+                            <span class="stat-label">2030년 AI 시장 규모</span>
+                        </div>
                     </div>
-                    <div class="floating-card">
-                        <div class="floating-card-icon">
-                            <svg width="32" height="32" fill="none" stroke="url(#gradient2)" stroke-width="2">
-                                <path d="M16 8c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8z"/>
-                                <path d="M16 12v4l3 3"/>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" data-target="42">42%</span>
+                            <span class="stat-label">기업 AI 도입률</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" data-target="40">40%↑</span>
+                            <span class="stat-label">생산성 향상</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="scroll-indicator" aria-hidden="true">
+                <span class="scroll-text">Scroll</span>
+                <div class="scroll-icon">
+                    <div class="scroll-dot"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section section-about" aria-labelledby="about-title">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">About Us</span>
+                    <h2 id="about-title" class="section-title">
+                        우리는 <span class="text-gradient">미래의 리더십</span>을
+                        <br>오늘, 여기에서 정의합니다
+                    </h2>
+                </div>
+                
+                <div class="about-grid">
+                    <div class="about-content">
+                        <p class="lead-text">
+                            AI Leadership Lab은 단순한 기술 교육 기관이 아닙니다. 
+                            우리는 인공지능이라는 거대한 패러다임의 전환 속에서 
+                            조직의 운명을 결정할 리더들을 위한 전략적 파트너입니다.
+                        </p>
+                        <p>
+                            기술의 홍수 속에서 길을 잃지 않고, 오히려 그 파도를 타고 
+                            더 높은 곳으로 나아갈 수 있는 통찰과 방법론을 제공합니다.
+                        </p>
+                        
+                        <div class="feature-list">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M9 11l3 3L22 4"/>
+                                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4>실무 중심 교육</h4>
+                                    <p>현장에서 바로 적용 가능한 실용적 커리큘럼</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 6v6l4 2"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4>맞춤형 컨설팅</h4>
+                                    <p>조직의 특성에 맞는 AI 전략 수립</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4>검증된 전문성</h4>
+                                    <p>15년 이상의 현장 경험과 노하우</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-visual">
+                        <div class="image-card">
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop" 
+                                 alt="팀 협업 모습" 
+                                 loading="lazy"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'600\' fill=\'%23e5e7eb\'%3E%3Crect width=\'800\' height=\'600\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'sans-serif\' font-size=\'24\'%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E'">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="floating-card">
+                            <div class="floating-card-icon">
+                                <svg width="32" height="32" fill="none" stroke="url(#gradient2)" stroke-width="2" aria-hidden="true">
+                                    <path d="M16 8c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8z"/>
+                                    <path d="M16 12v4l3 3"/>
+                                    <defs>
+                                        <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#6366f1"/>
+                                            <stop offset="100%" style="stop-color:#a855f7"/>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <h4>500+</h4>
+                            <p>교육 수료생</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Director Section -->
+        <section id="director" class="section section-director" aria-labelledby="director-title">
+            <div class="container">
+                <div class="director-wrapper">
+                    <div class="director-image">
+                        <div class="image-frame">
+                            <img src="images/director.jpg" 
+                                 alt="김현 소장" 
+                                 loading="lazy"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'500\' fill=\'%23e5e7eb\'%3E%3Crect width=\'500\' height=\'500\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'sans-serif\' font-size=\'24\'%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E'">
+                            <div class="image-decoration"></div>
+                        </div>
+                        <div class="badge-floating" aria-hidden="true">
+                            <svg width="60" height="60" fill="none">
+                                <circle cx="30" cy="30" r="28" stroke="url(#badge-gradient)" stroke-width="2"/>
+                                <path d="M30 15l3.5 7 7.5 1-5.5 5 1.5 7.5L30 32l-7 3.5 1.5-7.5-5.5-5 7.5-1 3.5-7z" fill="url(#badge-gradient)"/>
                                 <defs>
-                                    <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <linearGradient id="badge-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                         <stop offset="0%" style="stop-color:#6366f1"/>
                                         <stop offset="100%" style="stop-color:#a855f7"/>
                                     </linearGradient>
                                 </defs>
                             </svg>
                         </div>
-                        <h4>500+</h4>
-                        <p>교육 수료생</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Director Section -->
-    <section id="director" class="section section-director">
-        <div class="container">
-            <div class="director-wrapper">
-                <div class="director-image">
-                    <div class="image-frame">
-                        <img src="images/director.jpg" 
-                             alt="김현 소장" 
-                             loading="lazy">
-                        <div class="image-decoration"></div>
-                    </div>
-                    <div class="badge-floating">
-                        <svg width="60" height="60" fill="none">
-                            <circle cx="30" cy="30" r="28" stroke="url(#badge-gradient)" stroke-width="2"/>
-                            <path d="M30 15l3.5 7 7.5 1-5.5 5 1.5 7.5L30 32l-7 3.5 1.5-7.5-5.5-5 7.5-1 3.5-7z" fill="url(#badge-gradient)"/>
-                            <defs>
-                                <linearGradient id="badge-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#6366f1"/>
-                                    <stop offset="100%" style="stop-color:#a855f7"/>
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="director-content">
-                    <span class="section-label">Director</span>
-                    <h2 class="director-name">김현 소장</h2>
-                    <p class="director-title">AI Leadership Lab Director</p>
-                    
-                    <blockquote class="director-quote">
-                        "AI 시대, 기술의 발전보다 중요한 것은 그 기술을 어떻게 활용하느냐입니다. 
-                        리더는 단순히 AI를 사용하는 것이 아니라, AI와 함께 새로운 가치를 창조하고 
-                        조직의 미래를 설계하는 역할을 해야 합니다."
-                    </blockquote>
-                    
-                    <div class="director-credentials">
-                        <div class="credential-item">
-                            <span class="credential-label">현재</span>
-                            <span class="credential-value">AI 리더십연구소 소장, 세종텔레콤 HRD 매니저</span>
-                        </div>
-                        <div class="credential-item">
-                            <span class="credential-label">학력</span>
-                            <span class="credential-value">고려대학교 교육대학원 교육학 석사</span>
-                        </div>
-                        <div class="credential-item">
-                            <span class="credential-label">전문분야</span>
-                            <span class="credential-value">IT 및 AI 전문 강사, AI 교육전문가 (HRD & AX & DX)</span>
-                        </div>
-                        <div class="credential-item">
-                            <span class="credential-label">저서</span>
-                            <span class="credential-value">『코칭 레볼루션』, 『AI 대전환 시대 - 조직은 문화다』</span>
-                        </div>
                     </div>
                     
-                    <div class="director-badges">
-                        <span class="badge">정보통신특급기술자</span>
-                        <span class="badge">Oracle OCJP</span>
-                        <span class="badge">Microsoft MCSE</span>
-                        <span class="badge">한국코치협회 KAC</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quotes Section -->
-    <section class="section section-quotes">
-        <div class="container">
-            <div class="section-header text-center">
-                <span class="section-label">Insights</span>
-                <h2 class="section-title">시대의 통찰</h2>
-            </div>
-            
-            <div class="quotes-grid">
-                <div class="quote-card">
-                    <div class="quote-icon">
-                        <svg width="40" height="40" fill="currentColor" opacity="0.2">
-                            <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
-                        </svg>
-                    </div>
-                    <blockquote>
-                        "AI가 우리를 닭처럼 판단할 수도 있다."
-                    </blockquote>
-                    <footer>
-                        <cite>제프리 힌튼</cite>
-                        <span>AI의 대부</span>
-                    </footer>
-                </div>
-                
-                <div class="quote-card">
-                    <div class="quote-icon">
-                        <svg width="40" height="40" fill="currentColor" opacity="0.2">
-                            <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
-                        </svg>
-                    </div>
-                    <blockquote>
-                        "AI는 도구가 아닌 행위자다. 우리와 독립적으로 결정을 내린다."
-                    </blockquote>
-                    <footer>
-                        <cite>유발 하라리</cite>
-                        <span>'사피엔스' 저자</span>
-                    </footer>
-                </div>
-                
-                <div class="quote-card">
-                    <div class="quote-icon">
-                        <svg width="40" height="40" fill="currentColor" opacity="0.2">
-                            <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
-                        </svg>
-                    </div>
-                    <blockquote>
-                        "AI는 이제 '저렴한 지능'이다. 24시간 지치지 않고 일한다."
-                    </blockquote>
-                    <footer>
-                        <cite>송길영</cite>
-                        <span>빅데이터 전문가</span>
-                    </footer>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Publications Section -->
-    <section id="publications" class="section section-publications">
-        <div class="container">
-            <div class="section-header text-center">
-                <span class="section-label">Publications</span>
-                <h2 class="section-title">저서 소개</h2>
-                <p class="section-description">
-                    AI 리더십에 대한 깊이 있는 통찰과 실용적인 지혜를 책으로 만나보세요.
-                </p>
-            </div>
-            
-            <div class="books-grid">
-                <article class="book-card">
-                    <div class="book-cover">
-                        <img src="https://placehold.co/400x600/E5E7EB/4B5563?text=Coming+Soon" 
-                             alt="AI 리더십" 
-                             loading="lazy">
-                        <span class="book-badge">출간 예정</span>
-                    </div>
-                    <div class="book-content">
-                        <h3 class="book-title">AI가 아니라 AI를 쓰는 리더가 당신을 대체한다</h3>
-                        <p class="book-description">
-                            AI 시대, 리더의 역할은 어떻게 변해야 하는가? 
-                            단순한 AI 활용법을 넘어 팀의 성과를 극대화하고 
-                            조직의 변화를 이끄는 '리더의 AI 사용법'을 제시합니다.
-                        </p>
-                        <button class="btn btn-outline" disabled>출간 준비중</button>
-                    </div>
-                </article>
-                
-                <article class="book-card">
-                    <div class="book-cover">
-                        <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791199224612.jpg" 
-                             alt="AI 대전환 시대, 조직은 문화다" 
-                             loading="lazy">
-                    </div>
-                    <div class="book-content">
-                        <h3 class="book-title">AI 대전환 시대, 조직은 문화다: WHO AM I?</h3>
-                        <p class="book-description">
-                            AI 시대, 기술보다 중요한 것은 사람과 문화입니다. 
-                            성공적인 디지털 전환을 위해 조직 문화를 어떻게 
-                            혁신해야 하는지에 대한 통찰을 제공합니다.
-                        </p>
-                        <a href="https://product.kyobobook.co.kr/detail/S000216754567" 
-                           target="_blank" 
-                           rel="noopener noreferrer" 
-                           class="btn btn-outline">
-                            자세히 보기
-                            <svg class="btn-icon-sm" width="16" height="16" fill="none" stroke="currentColor">
-                                <path d="M7 1l7 7-7 7M14 8H1"/>
-                            </svg>
-                        </a>
-                    </div>
-                </article>
-                
-                <article class="book-card">
-                    <div class="book-cover">
-                        <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791198345370.jpg" 
-                             alt="코칭 레볼루션" 
-                             loading="lazy">
-                    </div>
-                    <div class="book-content">
-                        <h3 class="book-title">코칭 레볼루션: AI 시대, 코치형 리더의 탄생</h3>
-                        <p class="book-description">
-                            AI 시대에 더욱 중요해진 인간 고유의 역량, 코칭. 
-                            기술과 공존하며 팀원의 잠재력을 이끌어내는 
-                            코치형 리더의 모든 것을 담았습니다.
-                        </p>
-                        <a href="https://product.kyobobook.co.kr/detail/S000214511968" 
-                           target="_blank" 
-                           rel="noopener noreferrer" 
-                           class="btn btn-outline">
-                            자세히 보기
-                            <svg class="btn-icon-sm" width="16" height="16" fill="none" stroke="currentColor">
-                                <path d="M7 1l7 7-7 7M14 8H1"/>
-                            </svg>
-                        </a>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="section section-projects">
-        <div class="container">
-            <div class="section-header text-center">
-                <span class="section-label">Projects</span>
-                <h2 class="section-title">주요 프로젝트</h2>
-                <p class="section-description">
-                    다양한 산업 분야의 리딩 기업들이 AI Leadership Lab과 함께 
-                    성공적인 변화를 만들고 있습니다.
-                </p>
-            </div>
-            
-            <div class="projects-marquee">
-                <div class="marquee-track">
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/6366f1?text=한국토지신탁" alt="한국토지신탁">
-                    </div>
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/a855f7?text=코오롱그룹" alt="코오롱그룹">
-                    </div>
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/6366f1?text=서울시" alt="서울시">
-                    </div>
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/a855f7?text=한경협" alt="한경협">
-                    </div>
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/6366f1?text=한국남부발전" alt="한국남부발전">
-                    </div>
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/a855f7?text=세종텔레콤" alt="세종텔레콤">
-                    </div>
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/6366f1?text=능률협회" alt="능률협회컨설팅">
-                    </div>
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/a855f7?text=산업인력공단" alt="산업인력공단">
-                    </div>
-                    <!-- Duplicate for continuous scroll -->
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/6366f1?text=한국토지신탁" alt="한국토지신탁">
-                    </div>
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/a855f7?text=코오롱그룹" alt="코오롱그룹">
-                    </div>
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/6366f1?text=서울시" alt="서울시">
-                    </div>
-                    <div class="project-item">
-                        <img src="https://placehold.co/200x100/f3f4f6/a855f7?text=한경협" alt="한경협">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section section-contact">
-        <div class="container">
-            <div class="contact-wrapper">
-                <div class="contact-info">
-                    <span class="section-label">Contact</span>
-                    <h2 class="section-title">함께 미래를 만들어갑시다</h2>
-                    <p class="contact-description">
-                        AI 리더십 교육, 컨설팅, 강연 문의를 환영합니다.
-                        전문가가 신속하고 친절하게 답변해 드립니다.
-                    </p>
-                    
-                    <div class="contact-methods">
-                        <a href="mailto:hyunnet@gmail.com" class="contact-method">
-                            <div class="contact-icon">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                    <path d="M22 6l-10 7L2 6"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4>이메일</h4>
-                                <p>hyunnet@gmail.com</p>
-                            </div>
-                        </a>
+                    <div class="director-content">
+                        <span class="section-label">Director</span>
+                        <h2 id="director-title" class="director-name">김현 소장</h2>
+                        <p class="director-title">AI Leadership Lab Director</p>
                         
-                        <a href="tel:010-6613-5782" class="contact-method">
-                            <div class="contact-icon">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
-                                </svg>
+                        <blockquote class="director-quote">
+                            "AI 시대, 기술의 발전보다 중요한 것은 그 기술을 어떻게 활용하느냐입니다. 
+                            리더는 단순히 AI를 사용하는 것이 아니라, AI와 함께 새로운 가치를 창조하고 
+                            조직의 미래를 설계하는 역할을 해야 합니다."
+                        </blockquote>
+                        
+                        <div class="director-credentials">
+                            <div class="credential-item">
+                                <span class="credential-label">현재</span>
+                                <span class="credential-value">AI 리더십연구소 소장, 세종텔레콤 HRD 매니저</span>
                             </div>
-                            <div>
-                                <h4>전화</h4>
-                                <p>010-6613-5782</p>
+                            <div class="credential-item">
+                                <span class="credential-label">학력</span>
+                                <span class="credential-value">고려대학교 교육대학원 교육학 석사</span>
                             </div>
-                        </a>
-                    </div>
-                    
-                    <div class="contact-hours">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="10" cy="10" r="8"/>
-                            <path d="M10 4v6l3 3"/>
-                        </svg>
-                        <span>평일 09:00 - 18:00</span>
+                            <div class="credential-item">
+                                <span class="credential-label">전문분야</span>
+                                <span class="credential-value">IT 및 AI 전문 강사, AI 교육전문가 (HRD & AX & DX)</span>
+                            </div>
+                            <div class="credential-item">
+                                <span class="credential-label">저서</span>
+                                <span class="credential-value">『코칭 레볼루션』, 『AI 대전환 시대 - 조직은 문화다』</span>
+                            </div>
+                        </div>
+                        
+                        <div class="director-badges">
+                            <span class="badge">정보통신특급기술자</span>
+                            <span class="badge">Oracle OCJP</span>
+                            <span class="badge">Microsoft MCSE</span>
+                            <span class="badge">한국코치협회 KAC</span>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Quotes Section -->
+        <section class="section section-quotes" aria-labelledby="quotes-title">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-label">Insights</span>
+                    <h2 id="quotes-title" class="section-title">시대의 통찰</h2>
+                </div>
                 
-                <div class="contact-visual">
-                    <div class="contact-card">
-                        <div class="contact-card-header">
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
+                <div class="quotes-grid">
+                    <article class="quote-card">
+                        <div class="quote-icon" aria-hidden="true">
+                            <svg width="40" height="40" fill="currentColor" opacity="0.2">
+                                <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
+                            </svg>
                         </div>
-                        <div class="contact-card-body">
-                            <div class="message-bubble message-received">
-                                안녕하세요! AI 교육 프로그램에 대해 문의드립니다.
+                        <blockquote>
+                            "AI가 우리를 닭처럼 판단할 수도 있다."
+                        </blockquote>
+                        <footer>
+                            <cite>제프리 힌튼</cite>
+                            <span>AI의 대부</span>
+                        </footer>
+                    </article>
+                    
+                    <article class="quote-card">
+                        <div class="quote-icon" aria-hidden="true">
+                            <svg width="40" height="40" fill="currentColor" opacity="0.2">
+                                <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
+                            </svg>
+                        </div>
+                        <blockquote>
+                            "AI는 도구가 아닌 행위자다. 우리와 독립적으로 결정을 내린다."
+                        </blockquote>
+                        <footer>
+                            <cite>유발 하라리</cite>
+                            <span>'사피엔스' 저자</span>
+                        </footer>
+                    </article>
+                    
+                    <article class="quote-card">
+                        <div class="quote-icon" aria-hidden="true">
+                            <svg width="40" height="40" fill="currentColor" opacity="0.2">
+                                <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
+                            </svg>
+                        </div>
+                        <blockquote>
+                            "AI는 이제 '저렴한 지능'이다. 24시간 지치지 않고 일한다."
+                        </blockquote>
+                        <footer>
+                            <cite>송길영</cite>
+                            <span>빅데이터 전문가</span>
+                        </footer>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Publications Section -->
+        <section id="publications" class="section section-publications" aria-labelledby="publications-title">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-label">Publications</span>
+                    <h2 id="publications-title" class="section-title">저서 소개</h2>
+                    <p class="section-description">
+                        AI 리더십에 대한 깊이 있는 통찰과 실용적인 지혜를 책으로 만나보세요.
+                    </p>
+                </div>
+                
+                <div class="books-grid">
+                    <article class="book-card">
+                        <div class="book-cover">
+                            <img src="https://placehold.co/400x600/E5E7EB/4B5563?text=Coming+Soon" 
+                                 alt="AI 리더십 책 표지 - 출간 예정" 
+                                 loading="lazy">
+                            <span class="book-badge">출간 예정</span>
+                        </div>
+                        <div class="book-content">
+                            <h3 class="book-title">AI가 아니라 AI를 쓰는 리더가 당신을 대체한다</h3>
+                            <p class="book-description">
+                                AI 시대, 리더의 역할은 어떻게 변해야 하는가? 
+                                단순한 AI 활용법을 넘어 팀의 성과를 극대화하고 
+                                조직의 변화를 이끄는 '리더의 AI 사용법'을 제시합니다.
+                            </p>
+                            <button class="btn btn-outline" disabled aria-label="출간 준비중">출간 준비중</button>
+                        </div>
+                    </article>
+                    
+                    <article class="book-card">
+                        <div class="book-cover">
+                            <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791199224612.jpg" 
+                                 alt="AI 대전환 시대, 조직은 문화다 책 표지" 
+                                 loading="lazy"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'600\' fill=\'%23e5e7eb\'%3E%3Crect width=\'400\' height=\'600\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'sans-serif\' font-size=\'18\'%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E'">
+                        </div>
+                        <div class="book-content">
+                            <h3 class="book-title">AI 대전환 시대, 조직은 문화다: WHO AM I?</h3>
+                            <p class="book-description">
+                                AI 시대, 기술보다 중요한 것은 사람과 문화입니다. 
+                                성공적인 디지털 전환을 위해 조직 문화를 어떻게 
+                                혁신해야 하는지에 대한 통찰을 제공합니다.
+                            </p>
+                            <a href="https://product.kyobobook.co.kr/detail/S000216754567" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="btn btn-outline"
+                               aria-label="AI 대전환 시대 조직은 문화다 교보문고에서 자세히 보기">
+                                자세히 보기
+                                <svg class="btn-icon-sm" width="16" height="16" fill="none" stroke="currentColor" aria-hidden="true">
+                                    <path d="M7 1l7 7-7 7M14 8H1"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </article>
+                    
+                    <article class="book-card">
+                        <div class="book-cover">
+                            <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791198345370.jpg" 
+                                 alt="코칭 레볼루션 책 표지" 
+                                 loading="lazy"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'600\' fill=\'%23e5e7eb\'%3E%3Crect width=\'400\' height=\'600\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'sans-serif\' font-size=\'18\'%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E'">
+                        </div>
+                        <div class="book-content">
+                            <h3 class="book-title">코칭 레볼루션: AI 시대, 코치형 리더의 탄생</h3>
+                            <p class="book-description">
+                                AI 시대에 더욱 중요해진 인간 고유의 역량, 코칭. 
+                                기술과 공존하며 팀원의 잠재력을 이끌어내는 
+                                코치형 리더의 모든 것을 담았습니다.
+                            </p>
+                            <a href="https://product.kyobobook.co.kr/detail/S000214511968" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="btn btn-outline"
+                               aria-label="코칭 레볼루션 교보문고에서 자세히 보기">
+                                자세히 보기
+                                <svg class="btn-icon-sm" width="16" height="16" fill="none" stroke="currentColor" aria-hidden="true">
+                                    <path d="M7 1l7 7-7 7M14 8H1"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section section-projects" aria-labelledby="projects-title">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-label">Projects</span>
+                    <h2 id="projects-title" class="section-title">주요 프로젝트</h2>
+                    <p class="section-description">
+                        다양한 산업 분야의 리딩 기업들이 AI Leadership Lab과 함께 
+                        성공적인 변화를 만들고 있습니다.
+                    </p>
+                </div>
+                
+                <div class="projects-marquee" aria-label="프로젝트 파트너 기업 목록">
+                    <div class="marquee-track" id="marqueeTrack">
+                        <div class="project-item">
+                            <img src="https://placehold.co/200x100/f3f4f6/6366f1?text=한국토지신탁" alt="한국토지신탁">
+                        </div>
+                        <div class="project-item">
+                            <img src="https://placehold.co/200x100/f3f4f6/a855f7?text=코오롱그룹" alt="코오롱그룹">
+                        </div>
+                        <div class="project-item">
+                            <img src="https://placehold.co/200x100/f3f4f6/6366f1?text=서울시" alt="서울시">
+                        </div>
+                        <div class="project-item">
+                            <img src="https://placehold.co/200x100/f3f4f6/a855f7?text=한경협" alt="한경협">
+                        </div>
+                        <div class="project-item">
+                            <img src="https://placehold.co/200x100/f3f4f6/6366f1?text=한국남부발전" alt="한국남부발전">
+                        </div>
+                        <div class="project-item">
+                            <img src="https://placehold.co/200x100/f3f4f6/a855f7?text=세종텔레콤" alt="세종텔레콤">
+                        </div>
+                        <div class="project-item">
+                            <img src="https://placehold.co/200x100/f3f4f6/6366f1?text=능률협회" alt="능률협회컨설팅">
+                        </div>
+                        <div class="project-item">
+                            <img src="https://placehold.co/200x100/f3f4f6/a855f7?text=산업인력공단" alt="산업인력공단">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section section-contact" aria-labelledby="contact-title">
+            <div class="container">
+                <div class="contact-wrapper">
+                    <div class="contact-info">
+                        <span class="section-label">Contact</span>
+                        <h2 id="contact-title" class="section-title">함께 미래를 만들어갑시다</h2>
+                        <p class="contact-description">
+                            AI 리더십 교육, 컨설팅, 강연 문의를 환영합니다.
+                            전문가가 신속하고 친절하게 답변해 드립니다.
+                        </p>
+                        
+                        <div class="contact-methods">
+                            <a href="mailto:hyunnet@gmail.com" class="contact-method">
+                                <div class="contact-icon">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                                        <path d="M22 6l-10 7L2 6"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4>이메일</h4>
+                                    <p>hyunnet@gmail.com</p>
+                                </div>
+                            </a>
+                            
+                            <a href="tel:010-6613-5782" class="contact-method">
+                                <div class="contact-icon">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4>전화</h4>
+                                    <p>010-6613-5782</p>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <div class="contact-hours">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="10" cy="10" r="8"/>
+                                <path d="M10 4v6l3 3"/>
+                            </svg>
+                            <span>평일 09:00 - 18:00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-visual" aria-hidden="true">
+                        <div class="contact-card">
+                            <div class="contact-card-header">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
                             </div>
-                            <div class="message-bubble message-sent">
-                                안녕하세요! 문의 감사합니다. 
-                                어떤 교육 프로그램에 관심이 있으신가요?
-                            </div>
-                            <div class="typing-indicator">
-                                <span></span>
-                                <span></span>
-                                <span></span>
+                            <div class="contact-card-body">
+                                <div class="message-bubble message-received">
+                                    안녕하세요! AI 교육 프로그램에 대해 문의드립니다.
+                                </div>
+                                <div class="message-bubble message-sent">
+                                    안녕하세요! 문의 감사합니다. 
+                                    어떤 교육 프로그램에 관심이 있으신가요?
+                                </div>
+                                <div class="typing-indicator">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <a href="#" class="footer-logo">
+                    <a href="#" class="footer-logo" aria-label="AI Leadership Lab 홈">
                         <span class="gradient-text">AI</span> Leadership Lab
                     </a>
                     <p class="footer-tagline">AI 시대의 리더십을 정의합니다</p>
                 </div>
                 
-                <div class="footer-links">
+                <nav class="footer-links" aria-label="푸터 메뉴">
                     <div class="footer-column">
                         <h4>Quick Links</h4>
                         <ul>
@@ -659,19 +670,19 @@
                             <li>서울특별시</li>
                         </ul>
                     </div>
-                </div>
+                </nav>
             </div>
             
             <div class="footer-bottom">
                 <p>&copy; 2025 AI Leadership Lab. All rights reserved.</p>
                 <div class="footer-social">
-                    <a href="https://www.facebook.com/hyunnet" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <a href="https://www.facebook.com/hyunnet" target="_blank" rel="noopener noreferrer" aria-label="Facebook 페이지">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                         </svg>
                     </a>
-                    <a href="https://www.instagram.com/hyunnet" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <a href="https://www.instagram.com/hyunnet" target="_blank" rel="noopener noreferrer" aria-label="Instagram 페이지">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.405a1.44 1.44 0 112.881.001 1.44 1.44 0 01-2.881-.001z"/>
                         </svg>
                     </a>
@@ -681,8 +692,8 @@
     </footer>
 
     <!-- Back to Top Button -->
-    <button id="backToTop" class="back-to-top" aria-label="Back to top">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+    <button id="backToTop" class="back-to-top" aria-label="맨 위로 이동">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M12 19V5M5 12l7-7 7 7"/>
         </svg>
     </button>
