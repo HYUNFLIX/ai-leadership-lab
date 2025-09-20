@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Leadership Lab은 AI 시대 리더를 위한 전략적 파트너입니다. 리더십 철학, 저서, 주요 프로젝트를 확인하고 미래를 선도하세요.">
+    <title>AI Leadership Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Pretendard 폰트 적용 */
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #334155;
+        }
+        /* 헤더 스크롤 시 그림자 효과 */
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        /* 스크롤 애니메이션을 위한 초기 상태 */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        /* 스크롤 시 나타나는 효과 */
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* 그라데이션 텍스트 */
+        .gradient-text {
+            background: linear-gradient(to right, #4F46E5, #7C3AED);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        blockquote {
+            border-left: 4px solid #6366f1;
+            padding-left: 1rem;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+        .hero-section {
+            background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2684&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+        }
+        .btn-primary {
+            @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2 px-5 rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-px;
+        }
+        .btn-secondary {
+             @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2 px-4 rounded-md transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-px;
+        }
+        /* 연락처 카드 호버 효과 */
+        .contact-card {
+            transition: all 0.3s ease;
+        }
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+    <!-- Header -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-slate-800">
+                <span class="gradient-text">AI</span> Leadership Lab
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link text-slate-600 hover:text-indigo-600 transition-colors">연구소 소개</a>
+                <a href="#director" class="nav-link text-slate-600 hover:text-indigo-600 transition-colors">연구소장</a>
+                <a href="#publications" class="nav-link text-slate-600 hover:text-indigo-600 transition-colors">저서 소개</a>
+                <a href="#projects" class="nav-link text-slate-600 hover:text-indigo-600 transition-colors">프로젝트</a>
+                <a href="#contact" class="btn-primary">연락처</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-slate-800">
+                <i data-lucide="menu"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
+            <a href="#about" class="nav-link block py-3 px-6 text-slate-700 hover:bg-gray-50">연구소 소개</a>
+            <a href="#director" class="nav-link block py-3 px-6 text-slate-700 hover:bg-gray-50">연구소장</a>
+            <a href="#publications" class="nav-link block py-3 px-6 text-slate-700 hover:bg-gray-50">저서 소개</a>
+            <a href="#projects" class="nav-link block py-3 px-6 text-slate-700 hover:bg-gray-50">프로젝트</a>
+            <a href="#contact" class="nav-link block py-3 px-6 text-slate-700 hover:bg-gray-50">연락처</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative hero-section text-white pt-48 pb-20 md:pt-56 md:pb-28">
+            <div class="absolute inset-0 bg-black opacity-50"></div>
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-3xl">
+                    <div class="scroll-reveal">
+                        <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+                            AI Leadership Lab: <br>
+                            Empowering Decision-Makers to Lead with AI.
+                        </h1>
+                        <p class="text-lg text-gray-200 max-w-xl mb-8">
+                            AI가 아니라 AI를 팀원으로 활용하는 리더가 당신을 대체합니다. AI Leadership Lab은 새로운 시대에 맞는 리더십 철학과 실질적인 협업 전략을 제시합니다.
+                        </p>
+                    </div>
+                     <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6 border border-white/20 scroll-reveal" style="transition-delay: 0.2s;">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 text-center">
+                            <div class="p-2 md:p-0">
+                                <p class="text-xs md:text-sm text-gray-300 mb-1">글로벌 AI 시장 전망</p>
+                                <p class="font-bold text-white text-xl md:text-2xl">약 2조 달러</p>
+                                <p class="text-xs text-gray-400">(2030년, Statista)</p>
+                            </div>
+                            <div class="p-2 md:p-0">
+                                <p class="text-xs md:text-sm text-gray-300 mb-1">기업 GenAI 도입률</p>
+                                <p class="font-bold text-white text-xl md:text-2xl">42%</p>
+                                <p class="text-xs text-gray-400">(2024년, McKinsey)</p>
+                            </div>
+                            <div class="p-2 md:p-0">
+                                <p class="text-xs md:text-sm text-gray-300 mb-1">AI 도입 후 생산성</p>
+                                <p class="font-bold text-white text-xl md:text-2xl">최대 40% 향상</p>
+                                <p class="text-xs text-gray-400">(2024년, MIT)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="scroll-reveal">
+                        <h2 class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">우리는 <span class="gradient-text">미래의 리더십</span>을<br>오늘, 여기에서 정의합니다.</h2>
+                        <p class="text-slate-600 mb-6 leading-relaxed">
+                            AI Leadership Lab은 단순한 기술 교육 기관이 아닙니다. 우리는 인공지능이라는 거대한 패러다임의 전환 속에서 조직의 운명을 결정할 리더들을 위한 전략적 파트너입니다. 기술의 홍수 속에서 길을 잃지 않고, 오히려 그 파도를 타고 더 높은 곳으로 나아갈 수 있는 통찰과 방법론을 제공합니다.
+                        </p>
+                         <p class="text-slate-600 leading-relaxed">
+                            우리의 목표는 명확합니다. AI를 단순한 도구로 취급하는 '사용자'를 넘어, AI와 함께 새로운 가치를 창조하는 '협업가'이자 '설계자'를 양성하는 것입니다. 인간의 창의성과 AI의 분석력을 결합하여 불가능에 도전하는 리더, 바로 당신의 이야기입니다.
+                        </p>
+                    </div>
+                    <div class="scroll-reveal" style="transition-delay: 0.2s;">
+                        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="미래 리더십 이미지" class="rounded-lg shadow-2xl object-cover w-full h-64 md:h-80 lg:h-96">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Director Section -->
+        <section id="director" class="py-20 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="scroll-reveal order-2 md:order-1 flex justify-center">
+                        <div class="relative">
+                            <div class="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gray-100 overflow-hidden shadow-2xl ring-4 ring-white">
+                                <!-- 프로필 이미지를 플레이스홀더로 대체 -->
+                                <img src="https://placehold.co/400x400/E0E7FF/4F46E5?text=김현+소장&font=noto" 
+                                     alt="김현 소장 프로필" 
+                                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-indigo-600/10 to-transparent pointer-events-none"></div>
+                            <!-- 전문성 강조 뱃지 -->
+                            <div class="absolute -bottom-2 -right-2 w-20 h-20 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white shadow-lg animate-pulse">
+                                <i data-lucide="award" class="w-10 h-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scroll-reveal order-1 md:order-2" style="transition-delay: 0.2s;">
+                        <p class="text-indigo-600 font-semibold mb-2">AI Leadership Lab Director</p>
+                        <h2 class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">김현 소장</h2>
+                        <p class="text-slate-600 mb-6 leading-relaxed">
+                            "AI 시대, 기술의 발전보다 중요한 것은 그 기술을 어떻게 활용하느냐입니다. 리더는 단순히 AI를 사용하는 것이 아니라, AI와 함께 새로운 가치를 창조하고 조직의 미래를 설계하는 역할을 해야 합니다. 저는 15년간의 현장 경험을 바탕으로 실무에 바로 적용 가능한 AI 리더십을 전파하고 있습니다."
+                        </p>
+                        <div class="space-y-3 text-slate-500">
+                            <div class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3 text-purple-600 mt-1 flex-shrink-0"></i>
+                                <div>
+                                    <span class="font-semibold text-slate-700">현재:</span> AI 리더십연구소 소장, 세종텔레콤 HRD 매니저
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3 text-purple-600 mt-1 flex-shrink-0"></i>
+                                <div>
+                                    <span class="font-semibold text-slate-700">학력:</span> 고려대학교 교육대학원 교육학 석사
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3 text-purple-600 mt-1 flex-shrink-0"></i>
+                                <div>
+                                    <span class="font-semibold text-slate-700">전문분야:</span> IT 및 AI 전문 강사, AI 교육전문가 (HRD & AX & DX)
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3 text-purple-600 mt-1 flex-shrink-0"></i>
+                                <div>
+                                    <span class="font-semibold text-slate-700">주요 자격:</span> 정보통신특급기술자, Oracle OCJP, Microsoft MCSE, 한국코치협회 KAC
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3 text-purple-600 mt-1 flex-shrink-0"></i>
+                                <div>
+                                    <span class="font-semibold text-slate-700">저서:</span> 『코칭 레볼루션』, 『AI 대전환 시대 - 조직은 문화다』 공저
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inspiration Section -->
+        <section id="inspiration" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-slate-900 mb-4 scroll-reveal">시대의 통찰: 새로운 리더십의 좌표</h2>
+                    <p class="text-slate-600 max-w-3xl mx-auto scroll-reveal" style="transition-delay: 0.2s;">AI 시대, 리더십의 판이 바뀌었습니다.<br>우리는 시대의 선구자들이 던지는 경고와 통찰 속에서 새로운 리더십의 좌표를 찾습니다.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                     <!-- Geoffrey Hinton -->
+                    <div class="flex flex-col items-center text-center scroll-reveal">
+                        <div class="p-4 bg-gray-50 shadow-md rounded-full mb-4 border-2 border-purple-200">
+                           <i data-lucide="brain-circuit" class="text-purple-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">제프리 힌튼</h3>
+                        <p class="text-purple-600 font-semibold">AI의 대부</p>
+                        <blockquote class="text-slate-500 mt-4 text-sm">
+                            "AI가 우리를 닭처럼 판단할 수도 있다."
+                        </blockquote>
+                    </div>
+                    <!-- Yuval Noah Harari -->
+                    <div class="flex flex-col items-center text-center scroll-reveal" style="transition-delay: 0.2s;">
+                         <div class="p-4 bg-gray-50 shadow-md rounded-full mb-4 border-2 border-indigo-200">
+                           <i data-lucide="book-open-check" class="text-indigo-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">유발 하라리</h3>
+                        <p class="text-indigo-600 font-semibold">'사피엔스' 저자</p>
+                        <blockquote class="text-slate-500 mt-4 text-sm">
+                            "AI는 도구가 아닌 행위자다. 우리와 독립적으로 결정을 내린다."
+                        </blockquote>
+                    </div>
+                    <!-- Song Gil-young -->
+                    <div class="flex flex-col items-center text-center scroll-reveal" style="transition-delay: 0.4s;">
+                        <div class="p-4 bg-gray-50 shadow-md rounded-full mb-4 border-2 border-purple-200">
+                           <i data-lucide="bar-chart-3" class="text-purple-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">송길영</h3>
+                        <p class="text-purple-600 font-semibold">빅데이터 전문가</p>
+                        <blockquote class="text-slate-500 mt-4 text-sm">
+                            "AI는 이제 '저렴한 지능'이다. 24시간 지치지 않고 일한다."
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Publications Section -->
+        <section id="publications" class="py-20 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-slate-900 mb-4 scroll-reveal">저서 소개 (Publications)</h2>
+                    <p class="text-slate-600 max-w-2xl mx-auto scroll-reveal" style="transition-delay: 0.2s;">AI 리더십에 대한 깊이 있는 통찰과 실용적인 지혜를 책으로 만나보세요.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-stretch">
+                    <!-- Book 1: AI 리더십 (가제) -->
+                    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center scroll-reveal border border-gray-200">
+                        <div class="relative">
+                            <img src="https://placehold.co/400x600/E5E7EB/4B5563?text=AI+%EB%A6%AC%EB%8D%94%EC%8B%AD" alt="AI 리더십" class="rounded-md shadow-md w-full max-w-[200px] h-auto">
+                            <span class="absolute top-2 right-2 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full">출간 예정</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mt-6 mb-2">AI가 아니라 AI를 쓰는 리더가 당신을 대체한다</h3>
+                        <p class="text-slate-500 text-sm flex-grow mb-6">AI 시대, 리더의 역할은 어떻게 변해야 하는가? 단순한 AI 활용법을 넘어 팀의 성과를 극대화하고 조직의 변화를 이끄는 '리더의 AI 사용법'을 제시합니다.</p>
+                        <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-4 w-full">
+                            <p class="text-sm text-slate-600 mb-2">📚 출간 예정작</p>
+                            <p class="text-xs text-slate-500">자세한 내용은 곧 공개됩니다</p>
+                        </div>
+                    </div>
+                    <!-- Book 2: AI 대전환 시대 – 조직은 문화다 -->
+                    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center scroll-reveal border border-gray-200" style="transition-delay: 0.2s;">
+                        <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791199224612.jpg" alt="AI 대전환 시대, 조직은 문화다: WHO AM I?" class="rounded-md shadow-md w-full max-w-[200px] h-auto">
+                        <h3 class="text-xl font-bold text-slate-800 mt-6 mb-2">AI 대전환 시대, 조직은 문화다: WHO AM I?</h3>
+                        <p class="text-slate-500 text-sm flex-grow">AI 시대, 기술보다 중요한 것은 사람과 문화입니다. 성공적인 디지털 전환을 위해 조직 문화를 어떻게 혁신해야 하는지에 대한 통찰을 제공합니다.</p>
+                        <a href="https://product.kyobobook.co.kr/detail/S000216754567" target="_blank" rel="noopener noreferrer" class="btn-secondary mt-6 w-full">자세히 보기</a>
+                    </div>
+                    <!-- Book 3: 코칭레볼루션 -->
+                    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center scroll-reveal border border-gray-200" style="transition-delay: 0.4s;">
+                        <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791198345370.jpg" alt="코칭 레볼루션: AI 시대, 코치형 리더의 탄생" class="rounded-md shadow-md w-full max-w-[200px] h-auto">
+                        <h3 class="text-xl font-bold text-slate-800 mt-6 mb-2">코칭 레볼루션: AI 시대, 코치형 리더의 탄생</h3>
+                        <p class="text-slate-500 text-sm flex-grow">AI 시대에 더욱 중요해진 인간 고유의 역량, 코칭. 기술과 공존하며 팀원의 잠재력을 이끌어내는 코치형 리더의 모든 것을 담았습니다.</p>
+                        <a href="https://product.kyobobook.co.kr/detail/S000214511968" target="_blank" rel="noopener noreferrer" class="btn-secondary mt-6 w-full">자세히 보기</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-slate-900 mb-4 scroll-reveal">주요 프로젝트</h2>
+                    <p class="text-slate-600 max-w-2xl mx-auto scroll-reveal" style="transition-delay: 0.2s;">다양한 산업 분야의 리딩 기업들이 AI Leadership Lab과 함께 성공적인 변화를 만들고 있습니다.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                    <!-- Project Cards -->
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="building" class="w-6 h-6 text-indigo-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">한국토지신탁</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">신입사원 생성형 AI 교육...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.05s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="factory" class="w-6 h-6 text-purple-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">코오롱그룹</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">신규 입사자 AI 온보딩...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.1s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="landmark" class="w-6 h-6 text-indigo-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">서울시</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">매력일자리 AI 트렌드...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.15s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="briefcase" class="w-6 h-6 text-purple-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">한경협</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">FKI 아카데미 CEO 특강...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.2s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="zap" class="w-6 h-6 text-indigo-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">한국남부발전</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">AI 리터러시 강화...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.25s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="smartphone" class="w-6 h-6 text-purple-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">세종텔레콤</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">사내 ChatGPT 교육...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.3s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="trending-up" class="w-6 h-6 text-indigo-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">능률협회컨설팅</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">HR 담당자 DT 교육...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.35s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="users" class="w-6 h-6 text-purple-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">산업인력공단</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">HRD 컨설팅 전략...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.4s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="star" class="w-6 h-6 text-indigo-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">NovaDX</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">전사 AI 워크샵...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.45s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="zap" class="w-6 h-6 text-purple-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">한국동서발전</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">승진자 AI 문제해결...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.5s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="monitor" class="w-6 h-6 text-indigo-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">전남진흥원</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">AI 트렌드 실무...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.55s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="award" class="w-6 h-6 text-purple-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">경남인자위</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">AI 기술 동향...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 scroll-reveal hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group" style="transition-delay: 0.6s;">
+                        <div class="flex flex-col items-center text-center">
+                            <i data-lucide="edit-3" class="w-6 h-6 text-indigo-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">하남시</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2">AI 블로그 만들기...</p>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg border-2 border-dashed border-gray-300 scroll-reveal hover:border-indigo-400 transition-all duration-300 group" style="transition-delay: 0.65s;">
+                        <div class="flex flex-col items-center justify-center h-full text-center">
+                            <i data-lucide="plus-circle" class="w-6 h-6 text-gray-400 mb-2 group-hover:text-indigo-600 group-hover:scale-110 transition-all"></i>
+                            <p class="text-xs text-gray-500 font-semibold">More Coming</p>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg border-2 border-dashed border-gray-300 scroll-reveal hover:border-indigo-400 transition-all duration-300 group" style="transition-delay: 0.7s;">
+                        <div class="flex flex-col items-center justify-center h-full text-center">
+                            <i data-lucide="plus-circle" class="w-6 h-6 text-gray-400 mb-2 group-hover:text-indigo-600 group-hover:scale-110 transition-all"></i>
+                            <p class="text-xs text-gray-500 font-semibold">More Coming</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Simplified Contact Section -->
+        <section id="contact" class="py-20 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="bg-white rounded-2xl p-8 md:p-16 shadow-2xl">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl font-bold text-slate-900 mb-4 scroll-reveal">Contact Us</h2>
+                        <p class="text-slate-600 max-w-2xl mx-auto scroll-reveal" style="transition-delay: 0.2s;">
+                            AI 리더십 교육, 컨설팅, 강연 문의 환영합니다.<br>
+                            아래 연락처로 편하게 연락주세요.
+                        </p>
+                    </div>
+                    <div class="max-w-3xl mx-auto">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <!-- Email Card -->
+                            <div class="contact-card bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-8 text-center">
+                                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                                    <i data-lucide="mail" class="w-10 h-10 text-indigo-600"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-800 mb-2">이메일</h3>
+                                <a href="mailto:hyunnet@gmail.com" class="text-lg text-indigo-600 hover:text-purple-600 transition-colors font-semibold">
+                                    hyunnet@gmail.com
+                                </a>
+                                <p class="text-sm text-slate-500 mt-2">24시간 문의 가능</p>
+                            </div>
+
+                            <!-- Phone Card -->
+                            <div class="contact-card bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-8 text-center">
+                                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                                    <i data-lucide="phone" class="w-10 h-10 text-purple-600"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-800 mb-2">전화</h3>
+                                <a href="tel:010-6613-5782" class="text-lg text-purple-600 hover:text-indigo-600 transition-colors font-semibold">
+                                    010-6613-5782
+                                </a>
+                                <p class="text-sm text-slate-500 mt-2">평일 09:00 - 18:00</p>
+                            </div>
+                        </div>
+
+                        <!-- Quick Message Info -->
+                        <div class="mt-12 text-center bg-gradient-to-r from-indigo-100 to-purple-100 rounded-xl p-6">
+                            <p class="text-slate-700 mb-3">
+                                <i data-lucide="message-circle" class="inline w-5 h-5 mr-2 text-indigo-600"></i>
+                                <span class="font-semibold">빠른 상담을 원하신다면?</span>
+                            </p>
+                            <p class="text-slate-600 text-sm">
+                                카카오톡 오픈채팅 또는 이메일로 문의주시면<br class="md:hidden">
+                                신속하게 답변드리겠습니다.
+                            </p>
+                        </div>
+
+                        <!-- Business Info -->
+                        <div class="mt-8 flex flex-wrap justify-center gap-6 text-sm text-slate-500">
+                            <div class="flex items-center">
+                                <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-indigo-600"></i>
+                                서울특별시
+                            </div>
+                            <div class="flex items-center">
+                                <i data-lucide="clock" class="w-4 h-4 mr-2 text-indigo-600"></i>
+                                평일 09:00-18:00
+                            </div>
+                            <div class="flex items-center">
+                                <i data-lucide="shield-check" class="w-4 h-4 mr-2 text-green-500"></i>
+                                개인정보 보호
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800">
+        <div class="container mx-auto px-6 py-8 text-center text-slate-400">
+            <p>&copy; 2025 AI Leadership Lab. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Lucide 아이콘 초기화
+        lucide.createIcons();
+
+        // 모바일 메뉴 토글
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        // 네비게이션 링크 스무스 스크롤링
+        document.querySelectorAll('.nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    const headerOffset = document.getElementById('header').offsetHeight;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+
+                // 모바일 메뉴 닫기
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 스크롤 시 헤더 스타일 변경
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // 스크롤 애니메이션
+        const scrollElements = document.querySelectorAll('.scroll-reveal');
+        const elementInView = (el, dividend = 1) => {
+            const elementTop = el.getBoundingClientRect().top;
+            return (
+                elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend
+            );
+        };
+        const displayScrollElement = (element) => {
+            element.classList.add('visible');
+        };
+        const handleScrollAnimation = () => {
+            scrollElements.forEach((el) => {
+                if (elementInView(el, 1.25)) {
+                    displayScrollElement(el);
+                }
+            });
+        };
+        window.addEventListener('scroll', () => {
+            handleScrollAnimation();
+        });
+        // 페이지 로드 시 초기 실행
+        handleScrollAnimation();
+    </script>
+
+</body>
+</html>
