@@ -87,6 +87,9 @@
             font-weight: 700;
             color: var(--text-primary);
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
         .logo span {
@@ -94,6 +97,34 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 9999px;
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+        }
+
+        .sync-status.connected {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .sync-status.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .sync-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
         }
 
         .header-actions {
@@ -106,6 +137,36 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
+        }
+
+        /* ================ Loading ================ */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* ================ Dashboard ================ */
@@ -195,12 +256,17 @@
             text-decoration: none;
         }
 
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
         }
@@ -211,7 +277,7 @@
             border: 1px solid var(--border-color);
         }
 
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
             background: var(--border-color);
         }
 
@@ -480,6 +546,43 @@
             gap: 0.75rem;
         }
 
+        /* ================ Toast ================ */
+        .toast-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            padding: 0.875rem 1.25rem;
+            border-radius: var(--radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
         /* ================ Utilities ================ */
         .text-success { color: var(--success); }
         .text-warning { color: var(--warning); }
@@ -511,11 +614,15 @@
             .table td {
                 padding: 0.625rem 0.5rem;
             }
+
+            .header-actions {
+                display: none;
+            }
         }
 
         /* ================ Print ================ */
         @media print {
-            .header, .section-header button, .actions, .modal-overlay {
+            .header, .section-header button, .actions, .modal-overlay, .toast-container {
                 display: none !important;
             }
 
@@ -527,11 +634,20 @@
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="header-content">
             <a href="index.html" class="logo">
                 <span>AI</span> Leadership Lab
+                <div class="sync-status" id="syncStatus">
+                    <div class="sync-dot"></div>
+                    <span>연결 중...</span>
+                </div>
             </a>
             <div class="header-actions">
                 <button class="btn btn-secondary" onclick="exportData()">
@@ -656,7 +772,7 @@
                         <textarea class="form-control" id="notes" placeholder="추가 메모..."></textarea>
                     </div>
                     <div class="form-group full-width">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
                             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 5v14M5 12h14"/>
                             </svg>
@@ -674,13 +790,13 @@
                 <div class="filters">
                     <div class="filter-group">
                         <label for="yearFilter">연도:</label>
-                        <select class="form-control" id="yearFilter" onchange="renderLectures()">
+                        <select class="form-control" id="yearFilter" onchange="applyFilters()">
                             <option value="all">전체</option>
                         </select>
                     </div>
                     <div class="filter-group">
                         <label for="paymentFilter">입금상태:</label>
-                        <select class="form-control" id="paymentFilter" onchange="renderLectures()">
+                        <select class="form-control" id="paymentFilter" onchange="applyFilters()">
                             <option value="all">전체</option>
                             <option value="pending">대기</option>
                             <option value="paid">완료</option>
@@ -794,34 +910,202 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal()">취소</button>
-                <button class="btn btn-primary" onclick="saveEdit()">저장</button>
+                <button class="btn btn-primary" onclick="saveEdit()" id="saveEditBtn">저장</button>
             </div>
         </div>
     </div>
 
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            updateDoc,
+            deleteDoc,
+            doc,
+            onSnapshot,
+            query,
+            orderBy,
+            Timestamp
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDwcyLezAW4nTlfmv6FYzjEe8RgDUgJXuY",
+            authDomain: "ai-leadership-lectures-d509b.firebaseapp.com",
+            projectId: "ai-leadership-lectures-d509b",
+            storageBucket: "ai-leadership-lectures-d509b.firebasestorage.app",
+            messagingSenderId: "132724154110",
+            appId: "1:132724154110:web:ab5f507a6aee2f583d8faf"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const lecturesCollection = collection(db, 'lectures');
+
+        // Global state
+        let lectures = [];
+        let unsubscribe = null;
+
+        // ================ Connection Status ================
+        function updateSyncStatus(status, message) {
+            const el = document.getElementById('syncStatus');
+            el.className = 'sync-status ' + status;
+            el.querySelector('span').textContent = message;
+        }
+
+        // ================ Real-time Listener ================
+        function startRealtimeSync() {
+            const q = query(lecturesCollection, orderBy('date', 'desc'));
+
+            unsubscribe = onSnapshot(q,
+                (snapshot) => {
+                    lectures = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+
+                    updateSyncStatus('connected', 'Firebase 연결됨');
+                    hideLoading();
+                    updateYearFilter();
+                    applyFilters();
+                    updateDashboard();
+                },
+                (error) => {
+                    console.error('Firestore error:', error);
+                    updateSyncStatus('error', '연결 오류');
+                    showToast('데이터 동기화 오류가 발생했습니다.', 'error');
+                }
+            );
+        }
+
+        // ================ CRUD Operations ================
+        window.addLecture = async function(lectureData) {
+            try {
+                document.getElementById('submitBtn').disabled = true;
+                await addDoc(lecturesCollection, {
+                    ...lectureData,
+                    createdAt: Timestamp.now()
+                });
+                showToast('강의가 등록되었습니다.', 'success');
+                return true;
+            } catch (error) {
+                console.error('Add error:', error);
+                showToast('강의 등록에 실패했습니다.', 'error');
+                return false;
+            } finally {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        };
+
+        window.updateLecture = async function(id, lectureData) {
+            try {
+                document.getElementById('saveEditBtn').disabled = true;
+                const docRef = doc(db, 'lectures', id);
+                await updateDoc(docRef, {
+                    ...lectureData,
+                    updatedAt: Timestamp.now()
+                });
+                showToast('강의가 수정되었습니다.', 'success');
+                return true;
+            } catch (error) {
+                console.error('Update error:', error);
+                showToast('강의 수정에 실패했습니다.', 'error');
+                return false;
+            } finally {
+                document.getElementById('saveEditBtn').disabled = false;
+            }
+        };
+
+        window.deleteLectureFromDB = async function(id) {
+            try {
+                const docRef = doc(db, 'lectures', id);
+                await deleteDoc(docRef);
+                showToast('강의가 삭제되었습니다.', 'success');
+                return true;
+            } catch (error) {
+                console.error('Delete error:', error);
+                showToast('강의 삭제에 실패했습니다.', 'error');
+                return false;
+            }
+        };
+
+        window.importLecturesToDB = async function(lecturesData) {
+            try {
+                let added = 0;
+                const existingDates = new Set(lectures.map(l => l.date + l.name + l.client));
+
+                for (const lecture of lecturesData) {
+                    const key = lecture.date + lecture.name + lecture.client;
+                    if (!existingDates.has(key)) {
+                        await addDoc(lecturesCollection, {
+                            ...lecture,
+                            createdAt: Timestamp.now()
+                        });
+                        added++;
+                    }
+                }
+
+                showToast(`${added}개의 강의가 추가되었습니다.`, 'success');
+                return added;
+            } catch (error) {
+                console.error('Import error:', error);
+                showToast('가져오기에 실패했습니다.', 'error');
+                return 0;
+            }
+        };
+
+        // ================ Expose to global ================
+        window.getLectures = () => lectures;
+
+        // ================ Initialize ================
+        document.addEventListener('DOMContentLoaded', function() {
+            startRealtimeSync();
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (unsubscribe) unsubscribe();
+        });
+    </script>
+
     <script>
-        // ================ Data Management ================
-        const STORAGE_KEY = 'ai_leadership_lectures';
-
-        function getLectures() {
-            const data = localStorage.getItem(STORAGE_KEY);
-            return data ? JSON.parse(data) : [];
+        // ================ UI Functions ================
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
         }
 
-        function saveLectures(lectures) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(lectures));
-        }
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    ${type === 'success'
+                        ? '<path d="M20 6L9 17l-5-5"/>'
+                        : '<circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/>'}
+                </svg>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
 
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
         // ================ Form Handling ================
-        document.getElementById('lectureForm').addEventListener('submit', function(e) {
+        document.getElementById('lectureForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const lecture = {
-                id: generateId(),
+            const lectureData = {
                 date: document.getElementById('lectureDate').value,
                 duration: parseFloat(document.getElementById('duration').value) || 0,
                 name: document.getElementById('lectureName').value,
@@ -832,32 +1116,26 @@
                 fee: parseInt(document.getElementById('fee').value) || 0,
                 taxDeduction: document.getElementById('taxDeduction').value,
                 paymentStatus: document.getElementById('paymentStatus').value,
-                notes: document.getElementById('notes').value,
-                createdAt: new Date().toISOString()
+                notes: document.getElementById('notes').value
             };
 
-            const lectures = getLectures();
-            lectures.push(lecture);
-            saveLectures(lectures);
-
-            this.reset();
-            document.getElementById('lectureDate').focus();
-
-            updateYearFilter();
-            renderLectures();
-            updateDashboard();
+            const success = await window.addLecture(lectureData);
+            if (success) {
+                this.reset();
+                document.getElementById('lectureDate').focus();
+            }
         });
 
         // ================ Rendering ================
-        function renderLectures() {
-            const lectures = getLectures();
+        function applyFilters() {
+            const lectures = window.getLectures();
             const yearFilter = document.getElementById('yearFilter').value;
             const paymentFilter = document.getElementById('paymentFilter').value;
 
-            let filtered = lectures;
+            let filtered = [...lectures];
 
             if (yearFilter !== 'all') {
-                filtered = filtered.filter(l => l.date.startsWith(yearFilter));
+                filtered = filtered.filter(l => l.date && l.date.startsWith(yearFilter));
             }
 
             if (paymentFilter !== 'all') {
@@ -867,6 +1145,11 @@
             // Sort by date descending
             filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
 
+            renderLectures(filtered);
+            updateDashboard(filtered);
+        }
+
+        function renderLectures(filtered) {
             const tbody = document.getElementById('lectureTableBody');
             const emptyState = document.getElementById('emptyState');
             const table = document.getElementById('lectureTable');
@@ -911,14 +1194,9 @@
             `).join('');
         }
 
-        function updateDashboard() {
-            const lectures = getLectures();
-            const currentYear = new Date().getFullYear().toString();
-            const yearFilter = document.getElementById('yearFilter').value;
-
-            let filtered = lectures;
-            if (yearFilter !== 'all') {
-                filtered = filtered.filter(l => l.date.startsWith(yearFilter));
+        function updateDashboard(filtered) {
+            if (!filtered) {
+                filtered = window.getLectures();
             }
 
             const totalLectures = filtered.length;
@@ -933,8 +1211,8 @@
         }
 
         function updateYearFilter() {
-            const lectures = getLectures();
-            const years = [...new Set(lectures.map(l => l.date.substring(0, 4)))].sort().reverse();
+            const lectures = window.getLectures();
+            const years = [...new Set(lectures.filter(l => l.date).map(l => l.date.substring(0, 4)))].sort().reverse();
 
             const select = document.getElementById('yearFilter');
             const currentValue = select.value;
@@ -947,36 +1225,32 @@
             }
         }
 
-        // ================ CRUD Operations ================
+        // ================ Edit/Delete Operations ================
         function editLecture(id) {
-            const lectures = getLectures();
+            const lectures = window.getLectures();
             const lecture = lectures.find(l => l.id === id);
             if (!lecture) return;
 
             document.getElementById('editId').value = lecture.id;
-            document.getElementById('editLectureDate').value = lecture.date;
+            document.getElementById('editLectureDate').value = lecture.date || '';
             document.getElementById('editDuration').value = lecture.duration || '';
-            document.getElementById('editLectureName').value = lecture.name;
-            document.getElementById('editClient').value = lecture.client;
+            document.getElementById('editLectureName').value = lecture.name || '';
+            document.getElementById('editClient').value = lecture.client || '';
             document.getElementById('editAudience').value = lecture.audience || '';
             document.getElementById('editContractor').value = lecture.contractor || '';
             document.getElementById('editLocation').value = lecture.location || '';
             document.getElementById('editFee').value = lecture.fee || '';
-            document.getElementById('editTaxDeduction').value = lecture.taxDeduction;
-            document.getElementById('editPaymentStatus').value = lecture.paymentStatus;
+            document.getElementById('editTaxDeduction').value = lecture.taxDeduction || 'none';
+            document.getElementById('editPaymentStatus').value = lecture.paymentStatus || 'pending';
             document.getElementById('editNotes').value = lecture.notes || '';
 
             document.getElementById('editModal').classList.add('active');
         }
 
-        function saveEdit() {
+        async function saveEdit() {
             const id = document.getElementById('editId').value;
-            const lectures = getLectures();
-            const index = lectures.findIndex(l => l.id === id);
-            if (index === -1) return;
 
-            lectures[index] = {
-                ...lectures[index],
+            const lectureData = {
                 date: document.getElementById('editLectureDate').value,
                 duration: parseFloat(document.getElementById('editDuration').value) || 0,
                 name: document.getElementById('editLectureName').value,
@@ -987,24 +1261,18 @@
                 fee: parseInt(document.getElementById('editFee').value) || 0,
                 taxDeduction: document.getElementById('editTaxDeduction').value,
                 paymentStatus: document.getElementById('editPaymentStatus').value,
-                notes: document.getElementById('editNotes').value,
-                updatedAt: new Date().toISOString()
+                notes: document.getElementById('editNotes').value
             };
 
-            saveLectures(lectures);
-            closeModal();
-            renderLectures();
-            updateDashboard();
+            const success = await window.updateLecture(id, lectureData);
+            if (success) {
+                closeModal();
+            }
         }
 
-        function deleteLecture(id) {
+        async function deleteLecture(id) {
             if (!confirm('정말로 이 강의 이력을 삭제하시겠습니까?')) return;
-
-            const lectures = getLectures().filter(l => l.id !== id);
-            saveLectures(lectures);
-            updateYearFilter();
-            renderLectures();
-            updateDashboard();
+            await window.deleteLectureFromDB(id);
         }
 
         function closeModal() {
@@ -1013,8 +1281,11 @@
 
         // ================ Import/Export ================
         function exportData() {
-            const lectures = getLectures();
-            const dataStr = JSON.stringify(lectures, null, 2);
+            const lectures = window.getLectures();
+            // Remove Firestore-specific fields for export
+            const exportData = lectures.map(({ id, createdAt, updatedAt, ...rest }) => rest);
+
+            const dataStr = JSON.stringify(exportData, null, 2);
             const blob = new Blob([dataStr], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
 
@@ -1025,38 +1296,21 @@
             URL.revokeObjectURL(url);
         }
 
-        function importData(event) {
+        async function importData(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = async function(e) {
                 try {
                     const data = JSON.parse(e.target.result);
                     if (!Array.isArray(data)) {
                         throw new Error('Invalid format');
                     }
 
-                    const existingLectures = getLectures();
-                    const existingIds = new Set(existingLectures.map(l => l.id));
-
-                    // Merge: add new entries, skip duplicates
-                    let added = 0;
-                    data.forEach(lecture => {
-                        if (!existingIds.has(lecture.id)) {
-                            existingLectures.push(lecture);
-                            added++;
-                        }
-                    });
-
-                    saveLectures(existingLectures);
-                    updateYearFilter();
-                    renderLectures();
-                    updateDashboard();
-
-                    alert(`${added}개의 강의가 추가되었습니다.`);
+                    await window.importLecturesToDB(data);
                 } catch (err) {
-                    alert('파일을 읽는 중 오류가 발생했습니다.');
+                    showToast('파일을 읽는 중 오류가 발생했습니다.', 'error');
                 }
             };
             reader.readAsText(file);
@@ -1065,6 +1319,7 @@
 
         // ================ Utility Functions ================
         function formatDate(dateStr) {
+            if (!dateStr) return '-';
             const date = new Date(dateStr);
             return date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
         }
@@ -1081,7 +1336,7 @@
                 '8.8': '8.8%',
                 'vat': 'VAT별도'
             };
-            return labels[tax] || tax;
+            return labels[tax] || tax || '-';
         }
 
         function getPaymentBadge(status) {
@@ -1090,7 +1345,7 @@
                 'paid': '<span class="badge badge-success">완료</span>',
                 'partial': '<span class="badge badge-danger">일부</span>'
             };
-            return badges[status] || status;
+            return badges[status] || status || '-';
         }
 
         function escapeHtml(str) {
@@ -1107,13 +1362,6 @@
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
-        });
-
-        // ================ Initialize ================
-        document.addEventListener('DOMContentLoaded', function() {
-            updateYearFilter();
-            renderLectures();
-            updateDashboard();
         });
     </script>
 </body>
