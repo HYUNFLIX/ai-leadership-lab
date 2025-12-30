@@ -794,8 +794,26 @@
                 <div class="filters">
                     <div class="filter-group">
                         <label for="yearFilter">연도:</label>
-                        <select class="form-control" id="yearFilter" onchange="applyFilters()">
+                        <select class="form-control" id="yearFilter" onchange="updateMonthFilter(); applyFilters();">
                             <option value="all">전체</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="monthFilter">월:</label>
+                        <select class="form-control" id="monthFilter" onchange="applyFilters()">
+                            <option value="all">전체</option>
+                            <option value="01">1월</option>
+                            <option value="02">2월</option>
+                            <option value="03">3월</option>
+                            <option value="04">4월</option>
+                            <option value="05">5월</option>
+                            <option value="06">6월</option>
+                            <option value="07">7월</option>
+                            <option value="08">8월</option>
+                            <option value="09">9월</option>
+                            <option value="10">10월</option>
+                            <option value="11">11월</option>
+                            <option value="12">12월</option>
                         </select>
                     </div>
                     <div class="filter-group">
@@ -1185,12 +1203,18 @@
         function applyFilters() {
             const lectures = window.getLectures();
             const yearFilter = document.getElementById('yearFilter').value;
+            const monthFilter = document.getElementById('monthFilter').value;
             const paymentFilter = document.getElementById('paymentFilter').value;
 
             let filtered = [...lectures];
 
             if (yearFilter !== 'all') {
                 filtered = filtered.filter(l => l.date && l.date.startsWith(yearFilter));
+            }
+
+            if (monthFilter !== 'all' && yearFilter !== 'all') {
+                // Filter by month (format: YYYY-MM)
+                filtered = filtered.filter(l => l.date && l.date.substring(5, 7) === monthFilter);
             }
 
             if (paymentFilter !== 'all') {
@@ -1202,6 +1226,19 @@
 
             renderLectures(filtered);
             updateDashboard(filtered);
+        }
+
+        function updateMonthFilter() {
+            const yearFilter = document.getElementById('yearFilter').value;
+            const monthSelect = document.getElementById('monthFilter');
+
+            if (yearFilter === 'all') {
+                // 연도가 전체이면 월 필터 비활성화
+                monthSelect.value = 'all';
+                monthSelect.disabled = true;
+            } else {
+                monthSelect.disabled = false;
+            }
         }
 
         function renderLectures(filtered) {
@@ -1297,6 +1334,9 @@
             if (years.includes(currentValue) || currentValue === 'all') {
                 select.value = currentValue;
             }
+
+            // 월 필터 상태 업데이트
+            updateMonthFilter();
         }
 
         // ================ Edit/Delete Operations ================
