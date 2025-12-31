@@ -3,19 +3,19 @@
    실시간 데이터베이스를 사용하려면 아래 설정을 입력하세요
    ============================================= */
 
-// Firebase 설정 (Firebase Console에서 가져온 값으로 교체하세요)
+// Firebase 설정
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyAAPuPVGtv5MkNNOlUvY9aevKQhh6VdtA8",
+    authDomain: "thanks-2025-f9429.firebaseapp.com",
+    databaseURL: "https://thanks-2025-f9429-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "thanks-2025-f9429",
+    storageBucket: "thanks-2025-f9429.firebasestorage.app",
+    messagingSenderId: "710804200562",
+    appId: "1:710804200562:web:5b7a4a65273c93022c76eb"
 };
 
-// Firebase 사용 여부 (설정이 완료되면 true로 변경)
-const USE_FIREBASE = false;
+// Firebase 사용 여부
+const USE_FIREBASE = true;
 
 // Firebase 초기화
 let database = null;
