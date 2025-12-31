@@ -98,9 +98,9 @@ function createFloatingNames() {
         const color = categoryColors[nameData.category] || categoryColors.other;
         el.style.color = color;
 
-        // 랜덤 크기 (모바일 대응)
-        const baseSize = isMobile ? 14 : 18;
-        const sizeVariation = isMobile ? 14 : 20;
+        // 랜덤 크기 (모바일에서 더 작게)
+        const baseSize = isMobile ? 10 : 18;
+        const sizeVariation = isMobile ? 8 : 20;
         const size = baseSize + Math.random() * sizeVariation;
         el.style.fontSize = `${size}px`;
 
