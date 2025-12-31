@@ -164,15 +164,28 @@ const DataManager = {
             createdAt: new Date().toISOString()
         };
 
+        // Firebase 시도, 실패하면 LocalStorage 사용
         if (USE_FIREBASE && requestsRef) {
-            await requestsRef.push(request);
+            try {
+                await requestsRef.push(request);
+                console.log('Firebase에 요청 저장 완료');
+            } catch (error) {
+                console.warn('Firebase 저장 실패, LocalStorage 사용:', error);
+                this._saveRequestToLocal(request);
+            }
         } else {
-            const requests = JSON.parse(localStorage.getItem('thanks2025_requests') || '[]');
-            requests.push(request);
-            localStorage.setItem('thanks2025_requests', JSON.stringify(requests));
+            this._saveRequestToLocal(request);
         }
 
         return request;
+    },
+
+    // LocalStorage에 요청 저장 (내부 헬퍼)
+    _saveRequestToLocal(request) {
+        const requests = JSON.parse(localStorage.getItem('thanks2025_requests') || '[]');
+        requests.push(request);
+        localStorage.setItem('thanks2025_requests', JSON.stringify(requests));
+        console.log('LocalStorage에 요청 저장 완료');
     },
 
     // 요청 목록 가져오기
