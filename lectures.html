@@ -379,7 +379,7 @@
             border-collapse: collapse;
             font-size: 0.875rem;
             table-layout: fixed;
-            min-width: 1400px;
+            min-width: 1200px;
         }
 
         .table th,
@@ -405,16 +405,14 @@
         .table .col-no { width: 45px; text-align: center; }
         .table .col-date { width: 100px; }
         .table .col-hours { width: 70px; }
-        .table .col-name { width: 160px; }
-        .table .col-client { width: 120px; }
-        .table .col-audience { width: 100px; }
-        .table .col-contractor { width: 100px; }
-        .table .col-location { width: 120px; }
-        .table .col-fee { width: 100px; }
-        .table .col-tax { width: 70px; }
-        .table .col-net { width: 100px; }
-        .table .col-status { width: 70px; }
-        .table .col-notes { width: 100px; }
+        .table .col-name { width: 180px; }
+        .table .col-client { width: 130px; }
+        .table .col-audience { width: 110px; }
+        .table .col-contractor { width: 110px; }
+        .table .col-location { width: 130px; }
+        .table .col-fee { width: 110px; }
+        .table .col-net { width: 110px; }
+        .table .col-status { width: 80px; }
         .table .col-actions { width: 90px; }
 
         /* Sticky management column */
@@ -894,10 +892,8 @@
                                 <th class="col-contractor">계약주체</th>
                                 <th class="col-location">교육장소</th>
                                 <th class="col-fee amount">강의료</th>
-                                <th class="col-tax">세금공제</th>
                                 <th class="col-net amount">실지급액</th>
                                 <th class="col-status">입금여부</th>
-                                <th class="col-notes">기타</th>
                                 <th class="col-actions">관리</th>
                             </tr>
                         </thead>
@@ -915,10 +911,8 @@
                                 <td class="col-contractor"></td>
                                 <td class="col-location" style="text-align: right;">합계</td>
                                 <td class="col-fee amount" id="totalFeeSum">-</td>
-                                <td class="col-tax"></td>
                                 <td class="col-net amount" id="totalNetSum">-</td>
                                 <td class="col-status"></td>
-                                <td class="col-notes"></td>
                                 <td class="col-actions" style="background: var(--bg-tertiary);"></td>
                             </tr>
                         </tfoot>
@@ -1352,7 +1346,6 @@
                 const audience = escapeHtml(lecture.audience) || '-';
                 const contractor = escapeHtml(lecture.contractor) || '-';
                 const location = escapeHtml(lecture.location) || '-';
-                const notes = escapeHtml(lecture.notes) || '-';
 
                 return `
                 <tr>
@@ -1365,10 +1358,8 @@
                     <td class="col-contractor" title="${contractor}">${contractor}</td>
                     <td class="col-location" title="${location}">${location}</td>
                     <td class="col-fee amount">${formatCurrency(lecture.fee)}</td>
-                    <td class="col-tax">${getTaxLabel(lecture.taxDeduction)}</td>
                     <td class="col-net amount" style="color: var(--success); font-weight: 500;">${formatCurrency(netPayment)}</td>
                     <td class="col-status">${getPaymentBadge(lecture.paymentStatus)}</td>
-                    <td class="col-notes" title="${notes}">${notes}</td>
                     <td class="col-actions">
                         <div class="actions">
                             <button class="btn-icon" onclick="editLecture('${lecture.id}')" title="수정">
