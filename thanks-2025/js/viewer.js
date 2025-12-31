@@ -6,6 +6,10 @@
 // 글로벌 변수
 let names = [];
 let nameElements = [];
+let zoomLevel = 1; // 스크롤 줌 레벨
+const MIN_ZOOM = 0.5;
+const MAX_ZOOM = 2;
+
 const container = document.getElementById('cloud-container');
 const loader = document.getElementById('loader');
 const searchInput = document.getElementById('search-input');
@@ -141,6 +145,40 @@ function setupEventListeners() {
             createFloatingNames();
         }, 300);
     });
+
+    // 스크롤로 줌 인/아웃
+    container.addEventListener('wheel', (e) => {
+        // 검색바에 포커스가 있으면 무시
+        if (document.activeElement === searchInput) return;
+
+        e.preventDefault();
+
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        zoomLevel = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoomLevel + delta));
+
+        applyZoom();
+    }, { passive: false });
+
+    // 모바일 핀치 줌
+    let initialPinchDistance = 0;
+    let initialZoom = 1;
+
+    container.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            initialPinchDistance = getPinchDistance(e.touches);
+            initialZoom = zoomLevel;
+        }
+    }, { passive: true });
+
+    container.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2) {
+            e.preventDefault();
+            const currentDistance = getPinchDistance(e.touches);
+            const scale = currentDistance / initialPinchDistance;
+            zoomLevel = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, initialZoom * scale));
+            applyZoom();
+        }
+    }, { passive: false });
 
     // 검색
     searchBtn.addEventListener('click', searchName);
@@ -282,6 +320,19 @@ function clearHighlight() {
     if (notFoundSection) {
         notFoundSection.classList.add('hidden');
     }
+}
+
+// 줌 적용
+function applyZoom() {
+    container.style.transform = `scale(${zoomLevel})`;
+    container.style.transformOrigin = 'center center';
+}
+
+// 핀치 거리 계산
+function getPinchDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
 }
 
 // 시작
