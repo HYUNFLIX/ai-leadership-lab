@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 감사합니다 | AI Leadership Lab</title>
+    <meta name="description" content="2025년 한 해 동안 도움을 주신 모든 분들께 감사드립니다.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        pretendard: ['Pretendard', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#a855f7',
+                        accent: '#06b6d4',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-pretendard bg-black text-white overflow-hidden">
+    <!-- Loading Screen -->
+    <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div class="text-center">
+            <div class="loading-spinner mb-4"></div>
+            <p class="text-xl text-gray-400 animate-pulse">감사의 마음을 담는 중...</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="app" class="relative w-full h-screen">
+        <!-- 3D Canvas Container -->
+        <div id="canvas-container" class="absolute inset-0"></div>
+
+        <!-- Header Overlay -->
+        <header class="absolute top-0 left-0 right-0 z-10 p-6">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                        2025 감사합니다
+                    </h1>
+                    <p class="text-gray-400 text-sm mt-1">Thank You 2025</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div id="name-count" class="text-sm text-gray-400">
+                        <span class="text-2xl font-bold text-white" id="count-number">0</span>
+                        <span>명의 감사한 분들</span>
+                    </div>
+                    <a href="admin.html" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm transition-all backdrop-blur-sm border border-white/10">
+                        이름 등록
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="absolute top-24 left-1/2 -translate-x-1/2 z-10 w-full max-w-md px-4">
+            <div class="relative">
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="이름을 검색해보세요..."
+                    class="w-full px-5 py-3 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all"
+                >
+                <button id="search-btn" class="absolute right-3 top-1/2 -translate-y-1/2 p-2 hover:bg-white/10 rounded-full transition-all">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+            </div>
+            <p id="search-result" class="text-center text-sm mt-2 text-gray-400 hidden"></p>
+        </div>
+
+        <!-- Instructions -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-center">
+            <p class="text-gray-500 text-sm mb-2">마우스로 드래그하여 회전 | 스크롤로 확대/축소</p>
+            <div class="flex gap-4 justify-center">
+                <button id="auto-rotate-btn" class="px-4 py-2 bg-purple-600/80 hover:bg-purple-600 rounded-lg text-sm transition-all backdrop-blur-sm">
+                    🔄 자동 회전
+                </button>
+                <button id="reset-btn" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm transition-all backdrop-blur-sm border border-white/10">
+                    ↺ 초기화
+                </button>
+            </div>
+        </div>
+
+        <!-- Name Detail Popup -->
+        <div id="name-popup" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+            <div class="bg-gradient-to-br from-indigo-900/90 to-purple-900/90 p-8 rounded-2xl border border-white/20 shadow-2xl max-w-sm mx-4 text-center transform transition-all">
+                <div class="text-6xl mb-4">✨</div>
+                <h2 id="popup-name" class="text-3xl font-bold bg-gradient-to-r from-indigo-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent mb-4"></h2>
+                <p class="text-gray-300 mb-6">2025년 한 해 동안<br>정말 감사했습니다!</p>
+                <button id="close-popup" class="px-6 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-all">
+                    닫기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Viewer Script -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/viewer.js"></script>
+</body>
+</html>
