@@ -482,9 +482,19 @@ function setupEventListeners() {
     const requestSuccess = document.getElementById('request-success');
 
     if (submitRequest) {
-        submitRequest.addEventListener('click', async () => {
+        submitRequest.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
             const name = requestNameInput.value.trim();
-            if (!name) return;
+            if (!name) {
+                requestNameInput.focus();
+                return;
+            }
+
+            // 버튼 비활성화 (중복 클릭 방지)
+            submitRequest.disabled = true;
+            submitRequest.textContent = '요청 중...';
 
             try {
                 await DataManager.saveRequest(name);
@@ -497,9 +507,14 @@ function setupEventListeners() {
                     requestForm.classList.remove('hidden');
                     requestSuccess.classList.add('hidden');
                     document.getElementById('not-found-section').classList.add('hidden');
+                    submitRequest.disabled = false;
+                    submitRequest.textContent = '등록 요청하기';
                 }, 3000);
             } catch (error) {
                 console.error('요청 저장 실패:', error);
+                alert('요청 저장에 실패했습니다. 다시 시도해주세요.');
+                submitRequest.disabled = false;
+                submitRequest.textContent = '등록 요청하기';
             }
         });
     }
