@@ -246,11 +246,11 @@ function updateParticleBursts() {
     }
 }
 
-// 시네마틱 효과 시작
+// 시네마틱 효과 시작 (간결한 버전)
 function startCinematicEffects() {
-    // 랜덤 효과 스케줄링
+    // 랜덤 효과 스케줄링 - 더 긴 간격으로 설정
     function scheduleNextEffect() {
-        const delay = 3000 + Math.random() * 4000; // 3~7초 간격
+        const delay = 8000 + Math.random() * 7000; // 8~15초 간격
         setTimeout(() => {
             if (textLabels.length > 0) {
                 triggerRandomCinematicEffect();
@@ -261,26 +261,17 @@ function startCinematicEffects() {
     scheduleNextEffect();
 }
 
-// 랜덤 시네마틱 효과 트리거
+// 랜덤 시네마틱 효과 트리거 (간결하게 2가지만)
 function triggerRandomCinematicEffect() {
-    const effects = ['spotlight', 'wave', 'pulse', 'colorShift', 'zoomBurst'];
+    const effects = ['spotlight', 'gentleWave'];
     const effect = effects[Math.floor(Math.random() * effects.length)];
 
     switch (effect) {
         case 'spotlight':
             triggerSpotlight();
             break;
-        case 'wave':
-            triggerWave();
-            break;
-        case 'pulse':
-            triggerPulse();
-            break;
-        case 'colorShift':
-            triggerColorShift();
-            break;
-        case 'zoomBurst':
-            triggerZoomBurst();
+        case 'gentleWave':
+            triggerGentleWave();
             break;
     }
 }
@@ -315,116 +306,23 @@ function triggerSpotlight() {
     }, 3000);
 }
 
-// 웨이브 효과 - 물결치듯 순차적으로 커짐
-function triggerWave() {
-    const duration = 2000;
-    const startTime = Date.now();
-
-    function animateWave() {
-        const elapsed = Date.now() - startTime;
-        const progress = elapsed / duration;
-
-        if (progress < 1) {
-            textLabels.forEach((label, index) => {
-                const wavePosition = (index / textLabels.length + progress * 2) % 1;
-                const waveIntensity = Math.sin(wavePosition * Math.PI) * 0.5;
-
-                if (waveIntensity > 0.3) {
-                    label.element.classList.add('wave-active');
-                } else {
-                    label.element.classList.remove('wave-active');
-                }
-            });
-            requestAnimationFrame(animateWave);
-        } else {
-            textLabels.forEach(label => {
-                label.element.classList.remove('wave-active');
-            });
-        }
-    }
-
-    animateWave();
-}
-
-// 펄스 효과 - 모든 이름이 동시에 펄스
-function triggerPulse() {
-    textLabels.forEach(label => {
-        label.element.classList.add('pulse-effect');
-    });
-
-    setTimeout(() => {
-        textLabels.forEach(label => {
-            label.element.classList.remove('pulse-effect');
-        });
-    }, 1500);
-}
-
-// 색상 시프트 효과 - 색상이 무지개처럼 변화
-function triggerColorShift() {
-    const duration = 2500;
-    const startTime = Date.now();
-
-    function animateColorShift() {
-        const elapsed = Date.now() - startTime;
-        const progress = elapsed / duration;
-
-        if (progress < 1) {
-            textLabels.forEach((label, index) => {
-                const colorIndex = Math.floor((index / textLabels.length + progress) * cinematicColors.length) % cinematicColors.length;
-                label.element.style.color = cinematicColors[colorIndex];
-                label.element.classList.add('color-shifting');
-            });
-            requestAnimationFrame(animateColorShift);
-        } else {
-            // 원래 색상으로 복원
-            textLabels.forEach(label => {
-                const originalColor = categoryColors[label.nameData.category] || categoryColors.other;
-                label.element.style.color = originalColor;
-                label.element.classList.remove('color-shifting');
-            });
-        }
-    }
-
-    animateColorShift();
-}
-
-// 줌 버스트 효과 - 카메라가 빠르게 줌인/아웃
-function triggerZoomBurst() {
-    const originalZ = camera.position.z;
-    const targetZ = originalZ - 200;
-    const duration = 800;
-    const startTime = Date.now();
-
-    // 랜덤 라벨에 글로우 효과
-    const randomLabels = textLabels
+// 부드러운 웨이브 효과 - 은은하게 몇 개만 밝아짐
+function triggerGentleWave() {
+    // 랜덤하게 3~5개만 선택해서 잠깐 밝아짐
+    const count = 3 + Math.floor(Math.random() * 3);
+    const selectedLabels = textLabels
+        .slice()
         .sort(() => Math.random() - 0.5)
-        .slice(0, Math.min(5, textLabels.length));
+        .slice(0, count);
 
-    randomLabels.forEach(label => {
-        label.element.classList.add('zoom-glow');
+    selectedLabels.forEach((label, i) => {
+        setTimeout(() => {
+            label.element.classList.add('gentle-glow');
+            setTimeout(() => {
+                label.element.classList.remove('gentle-glow');
+            }, 1500);
+        }, i * 300);
     });
-
-    function animateZoom() {
-        const elapsed = Date.now() - startTime;
-        const progress = elapsed / duration;
-
-        if (progress < 1) {
-            // 이징 함수 (ease-out-back)
-            const easeProgress = progress < 0.5
-                ? 2 * progress * progress
-                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-
-            camera.position.z = originalZ + (targetZ - originalZ) * Math.sin(easeProgress * Math.PI);
-            requestAnimationFrame(animateZoom);
-        } else {
-            camera.position.z = originalZ;
-            randomLabels.forEach(label => {
-                label.element.classList.remove('zoom-glow');
-            });
-        }
-    }
-
-    animateZoom();
 }
 
 // 이름 로드
@@ -576,6 +474,35 @@ function setupEventListeners() {
             namePopup.classList.add('hidden');
         }
     });
+
+    // 이름 등록 요청 제출
+    const submitRequest = document.getElementById('submit-request');
+    const requestNameInput = document.getElementById('request-name');
+    const requestForm = document.getElementById('request-form');
+    const requestSuccess = document.getElementById('request-success');
+
+    if (submitRequest) {
+        submitRequest.addEventListener('click', async () => {
+            const name = requestNameInput.value.trim();
+            if (!name) return;
+
+            try {
+                await DataManager.saveRequest(name);
+                requestForm.classList.add('hidden');
+                requestSuccess.classList.remove('hidden');
+
+                // 3초 후 초기화
+                setTimeout(() => {
+                    requestNameInput.value = '';
+                    requestForm.classList.remove('hidden');
+                    requestSuccess.classList.add('hidden');
+                    document.getElementById('not-found-section').classList.add('hidden');
+                }, 3000);
+            } catch (error) {
+                console.error('요청 저장 실패:', error);
+            }
+        });
+    }
 }
 
 // 윈도우 리사이즈
@@ -669,7 +596,6 @@ function searchName() {
 
     // 검색 결과 없을 때 섹션
     const notFoundSection = document.getElementById('not-found-section');
-    const requestEmail = document.getElementById('request-email');
     notFoundSection.classList.add('hidden');
 
     // 매칭되는 라벨 찾기
@@ -714,14 +640,15 @@ function searchName() {
         }, 5000);
 
     } else {
-        // 못 찾음 - 이메일 요청 섹션 표시
+        // 못 찾음 - 요청 폼 표시
         searchResult.textContent = '해당 이름을 찾을 수 없습니다.';
         searchResult.style.color = '#f87171';
 
-        // 이메일 링크 생성
-        const emailSubject = encodeURIComponent('[2025 감사합니다] 이름 등록 요청');
-        const emailBody = encodeURIComponent(`안녕하세요!\n\n2025 감사합니다 페이지에서 제 이름을 찾을 수 없어 요청드립니다.\n\n이름: ${query}\n\n감사합니다.`);
-        requestEmail.href = `mailto:hyunnet@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+        // 요청 입력 필드에 검색어 자동 채우기
+        const requestNameInput = document.getElementById('request-name');
+        if (requestNameInput) {
+            requestNameInput.value = query;
+        }
 
         notFoundSection.classList.remove('hidden');
     }

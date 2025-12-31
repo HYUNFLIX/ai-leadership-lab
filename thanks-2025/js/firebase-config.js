@@ -20,12 +20,14 @@ const USE_FIREBASE = true;
 // Firebase 초기화
 let database = null;
 let namesRef = null;
+let requestsRef = null;
 
 if (USE_FIREBASE && firebaseConfig.apiKey !== "YOUR_API_KEY") {
     try {
         firebase.initializeApp(firebaseConfig);
         database = firebase.database();
         namesRef = database.ref('thanks2025/names');
+        requestsRef = database.ref('thanks2025/requests');
         console.log('Firebase 연결 성공!');
     } catch (error) {
         console.error('Firebase 초기화 실패:', error);
@@ -151,6 +153,50 @@ const DataManager = {
             }
         } else {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(names));
+        }
+    },
+
+    // 이름 등록 요청 저장
+    async saveRequest(requestName) {
+        const request = {
+            name: requestName,
+            status: 'pending',
+            createdAt: new Date().toISOString()
+        };
+
+        if (USE_FIREBASE && requestsRef) {
+            await requestsRef.push(request);
+        } else {
+            const requests = JSON.parse(localStorage.getItem('thanks2025_requests') || '[]');
+            requests.push(request);
+            localStorage.setItem('thanks2025_requests', JSON.stringify(requests));
+        }
+
+        return request;
+    },
+
+    // 요청 목록 가져오기
+    async getRequests() {
+        if (USE_FIREBASE && requestsRef) {
+            return new Promise((resolve) => {
+                requestsRef.once('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        resolve(Object.entries(data).map(([key, val]) => ({ ...val, key })));
+                    } else {
+                        resolve([]);
+                    }
+                });
+            });
+        } else {
+            return JSON.parse(localStorage.getItem('thanks2025_requests') || '[]');
+        }
+    },
+
+    // 요청 삭제
+    async deleteRequest(key) {
+        if (USE_FIREBASE && requestsRef) {
+            await requestsRef.child(key).remove();
         }
     }
 };
