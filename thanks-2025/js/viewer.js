@@ -10,9 +10,10 @@ let names = [];
 let autoRotate = true;
 let isDragging = false;
 let previousMousePosition = { x: 0, y: 0 };
-let sphereRadius = 300;
+let sphereRadius = window.innerWidth < 768 ? 200 : 300; // 모바일에서 더 작은 구체
 let targetRotation = { x: 0, y: 0 };
 let currentRotation = { x: 0, y: 0 };
+let isMobile = window.innerWidth < 768;
 
 // 파티클 버스트 시스템
 let particleBursts = [];
@@ -84,7 +85,7 @@ function setupScene() {
 
     // 카메라 설정
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
-    camera.position.z = 600;
+    camera.position.z = isMobile ? 450 : 600; // 모바일에서 더 가깝게
 
     // 렌더러 설정
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -373,8 +374,10 @@ function createTextLabels() {
         const color = categoryColors[nameData.category] || categoryColors.other;
         label.style.color = color;
 
-        // 크기 랜덤화 (더 다양하게)
-        const size = 14 + Math.random() * 16;
+        // 크기 랜덤화 (모바일에서 더 작게)
+        const baseSize = isMobile ? 10 : 14;
+        const sizeRange = isMobile ? 10 : 16;
+        const size = baseSize + Math.random() * sizeRange;
         label.style.fontSize = `${size}px`;
 
         // 클릭 이벤트
@@ -522,6 +525,17 @@ function setupEventListeners() {
 
 // 윈도우 리사이즈
 function onWindowResize() {
+    // 모바일 상태 업데이트
+    const wasMobile = isMobile;
+    isMobile = window.innerWidth < 768;
+
+    // 화면 크기가 변경되면 구체 크기와 카메라 조정
+    if (wasMobile !== isMobile) {
+        sphereRadius = isMobile ? 200 : 300;
+        camera.position.z = isMobile ? 450 : 600;
+        createTextLabels(); // 라벨 재생성
+    }
+
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -712,7 +726,7 @@ function toggleAutoRotate() {
 // 뷰 초기화
 function resetView() {
     targetRotation = { x: 0, y: 0 };
-    camera.position.z = 600;
+    camera.position.z = isMobile ? 450 : 600;
     clearHighlight();
     searchInput.value = '';
 }
