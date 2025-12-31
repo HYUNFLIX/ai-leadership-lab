@@ -1,31 +1,20 @@
 /* =============================================
-   3D Word Cloud Viewer - Three.js
+   2D Floating Word Cloud - CSS Animation
    2025 감사합니다 워드클라우드
    ============================================= */
 
 // 글로벌 변수
-let scene, camera, renderer;
-let textLabels = [];
 let names = [];
-let autoRotate = true;
-let isDragging = false;
-let previousMousePosition = { x: 0, y: 0 };
-let sphereRadius = window.innerWidth < 768 ? 200 : 300; // 모바일에서 더 작은 구체
-let targetRotation = { x: 0, y: 0 };
-let currentRotation = { x: 0, y: 0 };
-let isMobile = window.innerWidth < 768;
-
-// 파티클 버스트 시스템
-let particleBursts = [];
-const burstColors = [0x6366f1, 0xa855f7, 0x06b6d4, 0xfbbf24, 0xfb7185];
-
-// 시네마틱 효과 시스템
-let spotlightLabel = null;
-let spotlightTimer = 0;
-let wavePhase = 0;
-let cinematicMode = 'idle'; // idle, spotlight, wave, pulse
-let cinematicTimer = 0;
-const cinematicColors = ['#818cf8', '#c084fc', '#22d3ee', '#4ade80', '#fbbf24', '#fb7185'];
+let nameElements = [];
+const container = document.getElementById('cloud-container');
+const loader = document.getElementById('loader');
+const searchInput = document.getElementById('search-input');
+const searchBtn = document.getElementById('search-btn');
+const searchResult = document.getElementById('search-result');
+const countNumber = document.getElementById('count-number');
+const namePopup = document.getElementById('name-popup');
+const popupName = document.getElementById('popup-name');
+const closePopup = document.getElementById('close-popup');
 
 // 카테고리별 색상
 const categoryColors = {
@@ -38,26 +27,10 @@ const categoryColors = {
     other: '#9ca3af'       // Gray
 };
 
-// DOM 요소
-const container = document.getElementById('canvas-container');
-const loader = document.getElementById('loader');
-const searchInput = document.getElementById('search-input');
-const searchBtn = document.getElementById('search-btn');
-const searchResult = document.getElementById('search-result');
-const autoRotateBtn = document.getElementById('auto-rotate-btn');
-const resetBtn = document.getElementById('reset-btn');
-const countNumber = document.getElementById('count-number');
-const namePopup = document.getElementById('name-popup');
-const popupName = document.getElementById('popup-name');
-const closePopup = document.getElementById('close-popup');
-
 // 초기화
 async function init() {
     // 샘플 데이터 초기화
     await initSampleData();
-
-    // 씬 설정
-    setupScene();
 
     // 이벤트 리스너
     setupEventListeners();
@@ -72,265 +45,14 @@ async function init() {
         setTimeout(() => {
             loader.style.display = 'none';
         }, 500);
-    }, 1500);
-
-    // 애니메이션 시작
-    animate();
-}
-
-// Three.js 씬 설정
-function setupScene() {
-    // 씬 생성
-    scene = new THREE.Scene();
-
-    // 카메라 설정
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
-    camera.position.z = isMobile ? 450 : 600; // 모바일에서 더 가깝게
-
-    // 렌더러 설정
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x000000, 1);
-    container.appendChild(renderer.domElement);
-
-    // 파티클 배경 추가
-    createParticleBackground();
-
-    // 중앙 글로우 구체
-    createGlowSphere();
-
-    // 파티클 버스트 시작
-    startParticleBursts();
-
-    // 시네마틱 효과 시작
-    startCinematicEffects();
-}
-
-// 파티클 배경
-function createParticleBackground() {
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 2000;
-    const posArray = new Float32Array(particlesCount * 3);
-
-    for (let i = 0; i < particlesCount * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 2000;
-    }
-
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-    const particlesMaterial = new THREE.PointsMaterial({
-        size: 1.5,
-        color: 0x6366f1,
-        transparent: true,
-        opacity: 0.6,
-        blending: THREE.AdditiveBlending
-    });
-
-    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particlesMesh);
-}
-
-// 중앙 글로우 구체
-function createGlowSphere() {
-    const geometry = new THREE.SphereGeometry(50, 32, 32);
-    const material = new THREE.MeshBasicMaterial({
-        color: 0x6366f1,
-        transparent: true,
-        opacity: 0.1
-    });
-    const sphere = new THREE.Mesh(geometry, material);
-    scene.add(sphere);
-
-    // 외곽 글로우
-    const glowGeometry = new THREE.SphereGeometry(60, 32, 32);
-    const glowMaterial = new THREE.MeshBasicMaterial({
-        color: 0xa855f7,
-        transparent: true,
-        opacity: 0.05,
-        side: THREE.BackSide
-    });
-    const glowSphere = new THREE.Mesh(glowGeometry, glowMaterial);
-    scene.add(glowSphere);
-}
-
-// 파티클 버스트 시작 (랜덤 간격으로 터짐)
-function startParticleBursts() {
-    function scheduleBurst() {
-        const delay = 500 + Math.random() * 2000; // 0.5초 ~ 2.5초 간격
-        setTimeout(() => {
-            createParticleBurst();
-            scheduleBurst();
-        }, delay);
-    }
-    scheduleBurst();
-}
-
-// 파티클 버스트 생성
-function createParticleBurst() {
-    const particleCount = 20 + Math.floor(Math.random() * 30);
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const velocities = [];
-
-    // 랜덤 위치에서 시작
-    const startX = (Math.random() - 0.5) * 1200;
-    const startY = (Math.random() - 0.5) * 800;
-    const startZ = (Math.random() - 0.5) * 400 - 200;
-
-    for (let i = 0; i < particleCount; i++) {
-        positions[i * 3] = startX;
-        positions[i * 3 + 1] = startY;
-        positions[i * 3 + 2] = startZ;
-
-        // 방사형 속도
-        const angle = Math.random() * Math.PI * 2;
-        const angleY = (Math.random() - 0.5) * Math.PI;
-        const speed = 2 + Math.random() * 4;
-        velocities.push({
-            x: Math.cos(angle) * Math.cos(angleY) * speed,
-            y: Math.sin(angleY) * speed,
-            z: Math.sin(angle) * Math.cos(angleY) * speed
-        });
-    }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    const color = burstColors[Math.floor(Math.random() * burstColors.length)];
-    const material = new THREE.PointsMaterial({
-        size: 3 + Math.random() * 3,
-        color: color,
-        transparent: true,
-        opacity: 1,
-        blending: THREE.AdditiveBlending
-    });
-
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-
-    particleBursts.push({
-        mesh: particles,
-        velocities: velocities,
-        life: 1.0,
-        decay: 0.015 + Math.random() * 0.01
-    });
-}
-
-// 파티클 버스트 업데이트
-function updateParticleBursts() {
-    for (let i = particleBursts.length - 1; i >= 0; i--) {
-        const burst = particleBursts[i];
-        const positions = burst.mesh.geometry.attributes.position.array;
-
-        for (let j = 0; j < burst.velocities.length; j++) {
-            positions[j * 3] += burst.velocities[j].x;
-            positions[j * 3 + 1] += burst.velocities[j].y;
-            positions[j * 3 + 2] += burst.velocities[j].z;
-
-            // 속도 감쇠
-            burst.velocities[j].x *= 0.98;
-            burst.velocities[j].y *= 0.98;
-            burst.velocities[j].z *= 0.98;
-        }
-
-        burst.mesh.geometry.attributes.position.needsUpdate = true;
-        burst.life -= burst.decay;
-        burst.mesh.material.opacity = burst.life;
-
-        // 수명이 다하면 제거
-        if (burst.life <= 0) {
-            scene.remove(burst.mesh);
-            burst.mesh.geometry.dispose();
-            burst.mesh.material.dispose();
-            particleBursts.splice(i, 1);
-        }
-    }
-}
-
-// 시네마틱 효과 시작 (간결한 버전)
-function startCinematicEffects() {
-    // 랜덤 효과 스케줄링 - 더 긴 간격으로 설정
-    function scheduleNextEffect() {
-        const delay = 8000 + Math.random() * 7000; // 8~15초 간격
-        setTimeout(() => {
-            if (textLabels.length > 0) {
-                triggerRandomCinematicEffect();
-            }
-            scheduleNextEffect();
-        }, delay);
-    }
-    scheduleNextEffect();
-}
-
-// 랜덤 시네마틱 효과 트리거 (간결하게 2가지만)
-function triggerRandomCinematicEffect() {
-    const effects = ['spotlight', 'gentleWave'];
-    const effect = effects[Math.floor(Math.random() * effects.length)];
-
-    switch (effect) {
-        case 'spotlight':
-            triggerSpotlight();
-            break;
-        case 'gentleWave':
-            triggerGentleWave();
-            break;
-    }
-}
-
-// 스포트라이트 효과 - 랜덤 이름이 크게 확대
-function triggerSpotlight() {
-    if (textLabels.length === 0) return;
-
-    // 이전 스포트라이트 제거
-    if (spotlightLabel) {
-        spotlightLabel.element.classList.remove('spotlight');
-    }
-
-    // 랜덤 라벨 선택
-    const randomIndex = Math.floor(Math.random() * textLabels.length);
-    spotlightLabel = textLabels[randomIndex];
-
-    // 스포트라이트 클래스 추가
-    spotlightLabel.element.classList.add('spotlight');
-
-    // 해당 방향으로 카메라 회전
-    const pos = spotlightLabel.originalPosition;
-    targetRotation.y = Math.atan2(pos.x, pos.z);
-    targetRotation.x = -Math.asin(pos.y / sphereRadius) * 0.5;
-
-    // 3초 후 제거
-    setTimeout(() => {
-        if (spotlightLabel) {
-            spotlightLabel.element.classList.remove('spotlight');
-            spotlightLabel = null;
-        }
-    }, 3000);
-}
-
-// 부드러운 웨이브 효과 - 은은하게 몇 개만 밝아짐
-function triggerGentleWave() {
-    // 랜덤하게 3~5개만 선택해서 잠깐 밝아짐
-    const count = 3 + Math.floor(Math.random() * 3);
-    const selectedLabels = textLabels
-        .slice()
-        .sort(() => Math.random() - 0.5)
-        .slice(0, count);
-
-    selectedLabels.forEach((label, i) => {
-        setTimeout(() => {
-            label.element.classList.add('gentle-glow');
-            setTimeout(() => {
-                label.element.classList.remove('gentle-glow');
-            }, 1500);
-        }, i * 300);
-    });
+    }, 1000);
 }
 
 // 이름 로드
 async function loadNames() {
     names = await DataManager.getNames();
     updateNameCount();
-    createTextLabels();
+    createFloatingNames();
 }
 
 // 실시간 업데이트 구독
@@ -338,7 +60,7 @@ function subscribeToUpdates() {
     DataManager.subscribe(async (updatedNames) => {
         names = updatedNames;
         updateNameCount();
-        createTextLabels();
+        createFloatingNames();
     });
 }
 
@@ -347,83 +69,60 @@ function updateNameCount() {
     countNumber.textContent = names.length;
 }
 
-// 텍스트 라벨 생성
-function createTextLabels() {
-    // 기존 라벨 제거
-    textLabels.forEach(label => {
-        if (label.element && label.element.parentNode) {
-            label.element.parentNode.removeChild(label.element);
-        }
-    });
-    textLabels = [];
+// 플로팅 이름 생성
+function createFloatingNames() {
+    // 기존 요소 제거
+    nameElements.forEach(el => el.remove());
+    nameElements = [];
 
     if (names.length === 0) return;
 
-    // 구 위에 점들을 균등하게 배치 (피보나치 격자)
-    const points = fibonacciSphere(names.length, sphereRadius);
+    const isMobile = window.innerWidth < 768;
+
+    // 안전 영역 계산 (헤더, 검색바 피하기)
+    const safeTop = isMobile ? 140 : 160;
+    const safeBottom = 40;
+    const safeSide = 20;
 
     names.forEach((nameData, index) => {
-        const point = points[index];
-
-        // HTML 라벨 생성
-        const label = document.createElement('div');
-        label.className = 'text-label';
-        label.textContent = nameData.name;
+        const el = document.createElement('div');
+        el.className = 'floating-name';
+        el.textContent = nameData.name;
+        el.dataset.index = index;
 
         // 카테고리별 색상
         const color = categoryColors[nameData.category] || categoryColors.other;
-        label.style.color = color;
+        el.style.color = color;
 
-        // 크기 랜덤화 (모바일에서 더 작게)
-        const baseSize = isMobile ? 10 : 14;
-        const sizeRange = isMobile ? 10 : 16;
-        const size = baseSize + Math.random() * sizeRange;
-        label.style.fontSize = `${size}px`;
+        // 랜덤 크기 (모바일 대응)
+        const baseSize = isMobile ? 14 : 18;
+        const sizeVariation = isMobile ? 14 : 20;
+        const size = baseSize + Math.random() * sizeVariation;
+        el.style.fontSize = `${size}px`;
+
+        // 랜덤 위치
+        const x = safeSide + Math.random() * (window.innerWidth - safeSide * 2 - 100);
+        const y = safeTop + Math.random() * (window.innerHeight - safeTop - safeBottom - 50);
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
+
+        // 랜덤 애니메이션 설정
+        const duration = 15 + Math.random() * 20; // 15~35초
+        const delay = Math.random() * -30; // 시작 위치 다양화
+        el.style.animationDuration = `${duration}s`;
+        el.style.animationDelay = `${delay}s`;
+
+        // 랜덤 플로팅 방향 (8가지 방향 중 하나)
+        const directions = ['float-1', 'float-2', 'float-3', 'float-4', 'float-5', 'float-6', 'float-7', 'float-8'];
+        const direction = directions[Math.floor(Math.random() * directions.length)];
+        el.classList.add(direction);
 
         // 클릭 이벤트
-        label.addEventListener('click', () => showNamePopup(nameData));
+        el.addEventListener('click', () => showNamePopup(nameData));
 
-        // 마우스 오버 효과
-        label.addEventListener('mouseenter', (e) => {
-            e.target.classList.add('hovered');
-        });
-        label.addEventListener('mouseleave', (e) => {
-            e.target.classList.remove('hovered');
-        });
-
-        container.appendChild(label);
-
-        textLabels.push({
-            element: label,
-            position: new THREE.Vector3(point.x, point.y, point.z),
-            originalPosition: new THREE.Vector3(point.x, point.y, point.z),
-            nameData: nameData
-        });
+        container.appendChild(el);
+        nameElements.push(el);
     });
-}
-
-// 피보나치 구 (균등 분포)
-function fibonacciSphere(samples, radius) {
-    const points = [];
-    const phi = Math.PI * (3 - Math.sqrt(5)); // 황금각
-
-    for (let i = 0; i < samples; i++) {
-        const y = 1 - (i / (samples - 1)) * 2; // -1 to 1
-        const radiusAtY = Math.sqrt(1 - y * y);
-
-        const theta = phi * i;
-
-        const x = Math.cos(theta) * radiusAtY;
-        const z = Math.sin(theta) * radiusAtY;
-
-        points.push({
-            x: x * radius,
-            y: y * radius,
-            z: z * radius
-        });
-    }
-
-    return points;
 }
 
 // 이름 팝업 표시
@@ -435,21 +134,13 @@ function showNamePopup(nameData) {
 // 이벤트 리스너 설정
 function setupEventListeners() {
     // 윈도우 리사이즈
-    window.addEventListener('resize', onWindowResize);
-
-    // 마우스 이벤트
-    container.addEventListener('mousedown', onMouseDown);
-    container.addEventListener('mousemove', onMouseMove);
-    container.addEventListener('mouseup', onMouseUp);
-    container.addEventListener('mouseleave', onMouseUp);
-
-    // 터치 이벤트
-    container.addEventListener('touchstart', onTouchStart, { passive: false });
-    container.addEventListener('touchmove', onTouchMove, { passive: false });
-    container.addEventListener('touchend', onTouchEnd);
-
-    // 스크롤 (줌)
-    container.addEventListener('wheel', onWheel, { passive: false });
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            createFloatingNames();
+        }, 300);
+    });
 
     // 검색
     searchBtn.addEventListener('click', searchName);
@@ -461,12 +152,6 @@ function setupEventListeners() {
             clearHighlight();
         }
     });
-
-    // 자동 회전 토글
-    autoRotateBtn.addEventListener('click', toggleAutoRotate);
-
-    // 초기화 버튼
-    resetBtn.addEventListener('click', resetView);
 
     // 팝업 닫기
     closePopup.addEventListener('click', () => {
@@ -495,7 +180,6 @@ function setupEventListeners() {
                 return;
             }
 
-            // 버튼 비활성화 (중복 클릭 방지)
             submitRequest.disabled = true;
             submitRequest.textContent = '요청 중...';
 
@@ -504,7 +188,6 @@ function setupEventListeners() {
                 requestForm.classList.add('hidden');
                 requestSuccess.classList.remove('hidden');
 
-                // 3초 후 초기화
                 setTimeout(() => {
                     requestNameInput.value = '';
                     requestForm.classList.remove('hidden');
@@ -523,98 +206,6 @@ function setupEventListeners() {
     }
 }
 
-// 윈도우 리사이즈
-function onWindowResize() {
-    // 모바일 상태 업데이트
-    const wasMobile = isMobile;
-    isMobile = window.innerWidth < 768;
-
-    // 화면 크기가 변경되면 구체 크기와 카메라 조정
-    if (wasMobile !== isMobile) {
-        sphereRadius = isMobile ? 200 : 300;
-        camera.position.z = isMobile ? 450 : 600;
-        createTextLabels(); // 라벨 재생성
-    }
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-// 마우스 다운
-function onMouseDown(event) {
-    isDragging = true;
-    autoRotate = false;
-    autoRotateBtn.textContent = '▶️ 자동 회전';
-    previousMousePosition = {
-        x: event.clientX,
-        y: event.clientY
-    };
-}
-
-// 마우스 이동
-function onMouseMove(event) {
-    if (!isDragging) return;
-
-    const deltaX = event.clientX - previousMousePosition.x;
-    const deltaY = event.clientY - previousMousePosition.y;
-
-    targetRotation.y += deltaX * 0.005;
-    targetRotation.x += deltaY * 0.005;
-
-    previousMousePosition = {
-        x: event.clientX,
-        y: event.clientY
-    };
-}
-
-// 마우스 업
-function onMouseUp() {
-    isDragging = false;
-}
-
-// 터치 시작
-function onTouchStart(event) {
-    if (event.touches.length === 1) {
-        isDragging = true;
-        autoRotate = false;
-        autoRotateBtn.textContent = '▶️ 자동 회전';
-        previousMousePosition = {
-            x: event.touches[0].clientX,
-            y: event.touches[0].clientY
-        };
-    }
-}
-
-// 터치 이동
-function onTouchMove(event) {
-    if (!isDragging || event.touches.length !== 1) return;
-    event.preventDefault();
-
-    const deltaX = event.touches[0].clientX - previousMousePosition.x;
-    const deltaY = event.touches[0].clientY - previousMousePosition.y;
-
-    targetRotation.y += deltaX * 0.005;
-    targetRotation.x += deltaY * 0.005;
-
-    previousMousePosition = {
-        x: event.touches[0].clientX,
-        y: event.touches[0].clientY
-    };
-}
-
-// 터치 종료
-function onTouchEnd() {
-    isDragging = false;
-}
-
-// 휠 (줌)
-function onWheel(event) {
-    event.preventDefault();
-    camera.position.z += event.deltaY * 0.5;
-    camera.position.z = Math.max(200, Math.min(1000, camera.position.z));
-}
-
 // 이름 검색
 function searchName() {
     const query = searchInput.value.trim();
@@ -623,57 +214,49 @@ function searchName() {
     const queryLower = query.toLowerCase();
     clearHighlight();
 
-    // 검색 결과 없을 때 섹션
     const notFoundSection = document.getElementById('not-found-section');
     notFoundSection.classList.add('hidden');
 
-    // 매칭되는 라벨 찾기
-    const matchedLabels = textLabels.filter(label =>
-        label.nameData.name.toLowerCase().includes(queryLower)
-    );
+    // 매칭되는 요소 찾기
+    const matchedElements = nameElements.filter((el, index) => {
+        return names[index].name.toLowerCase().includes(queryLower);
+    });
 
     searchResult.classList.remove('hidden');
 
-    if (matchedLabels.length > 0) {
-        // 찾음 - 스포트라이트 효과와 감사 팝업
-        const firstMatch = matchedLabels[0];
-
-        // 모든 매칭 라벨에 found-highlight 클래스 추가
-        matchedLabels.forEach(label => {
-            label.element.classList.add('found-highlight');
+    if (matchedElements.length > 0) {
+        // 찾음 - 하이라이트 효과
+        matchedElements.forEach(el => {
+            el.classList.add('found-highlight');
         });
 
-        // 첫 번째 매칭 라벨로 카메라 이동
-        const pos = firstMatch.originalPosition;
-        targetRotation.y = Math.atan2(pos.x, pos.z);
-        targetRotation.x = -Math.asin(pos.y / sphereRadius) * 0.5;
-
         // 결과 메시지
-        if (matchedLabels.length === 1) {
-            searchResult.innerHTML = `🎉 <strong>${firstMatch.nameData.name}</strong>님을 찾았습니다!`;
+        const firstName = names[parseInt(matchedElements[0].dataset.index)].name;
+        if (matchedElements.length === 1) {
+            searchResult.innerHTML = `🎉 <strong>${firstName}</strong>님을 찾았습니다!`;
         } else {
-            searchResult.innerHTML = `🎉 ${matchedLabels.length}명의 이름을 찾았습니다!`;
+            searchResult.innerHTML = `🎉 ${matchedElements.length}명의 이름을 찾았습니다!`;
         }
         searchResult.style.color = '#4ade80';
 
-        // 1.5초 후 감사 팝업 표시 (첫 번째 매칭만)
+        // 1.5초 후 감사 팝업 표시
         setTimeout(() => {
-            showThankYouPopup(firstMatch.nameData);
+            const nameData = names[parseInt(matchedElements[0].dataset.index)];
+            showNamePopup(nameData);
         }, 1500);
 
         // 5초 후 하이라이트 제거
         setTimeout(() => {
-            matchedLabels.forEach(label => {
-                label.element.classList.remove('found-highlight');
+            matchedElements.forEach(el => {
+                el.classList.remove('found-highlight');
             });
         }, 5000);
 
     } else {
-        // 못 찾음 - 요청 폼 표시
+        // 못 찾음
         searchResult.textContent = '해당 이름을 찾을 수 없습니다.';
         searchResult.style.color = '#f87171';
 
-        // 요청 입력 필드에 검색어 자동 채우기
         const requestNameInput = document.getElementById('request-name');
         if (requestNameInput) {
             requestNameInput.value = query;
@@ -682,125 +265,23 @@ function searchName() {
         notFoundSection.classList.remove('hidden');
     }
 
-    // 검색 결과 메시지는 5초 후 숨김
+    // 5초 후 검색 결과 숨김
     setTimeout(() => {
         searchResult.classList.add('hidden');
     }, 5000);
 }
 
-// 감사 팝업 표시 (검색용)
-function showThankYouPopup(nameData) {
-    popupName.textContent = nameData.name;
-    namePopup.classList.remove('hidden');
-
-    // 팝업에 특별 애니메이션 추가
-    const popupContent = namePopup.querySelector('div');
-    popupContent.classList.add('search-found-popup');
-
-    setTimeout(() => {
-        popupContent.classList.remove('search-found-popup');
-    }, 1000);
-}
-
 // 하이라이트 제거
 function clearHighlight() {
-    textLabels.forEach(label => {
-        label.element.classList.remove('highlighted');
-        label.element.classList.remove('found-highlight');
+    nameElements.forEach(el => {
+        el.classList.remove('found-highlight');
     });
     searchResult.classList.add('hidden');
 
-    // 못찾음 섹션도 숨기기
     const notFoundSection = document.getElementById('not-found-section');
     if (notFoundSection) {
         notFoundSection.classList.add('hidden');
     }
-}
-
-// 자동 회전 토글
-function toggleAutoRotate() {
-    autoRotate = !autoRotate;
-    autoRotateBtn.textContent = autoRotate ? '🔄 자동 회전' : '▶️ 자동 회전';
-}
-
-// 뷰 초기화
-function resetView() {
-    targetRotation = { x: 0, y: 0 };
-    camera.position.z = isMobile ? 450 : 600;
-    clearHighlight();
-    searchInput.value = '';
-}
-
-// 애니메이션 루프
-function animate() {
-    requestAnimationFrame(animate);
-
-    // 자동 회전
-    if (autoRotate) {
-        targetRotation.y += 0.002;
-    }
-
-    // 부드러운 회전 보간
-    currentRotation.x += (targetRotation.x - currentRotation.x) * 0.05;
-    currentRotation.y += (targetRotation.y - currentRotation.y) * 0.05;
-
-    // 텍스트 라벨 업데이트
-    updateTextLabels();
-
-    // 파티클 버스트 업데이트
-    updateParticleBursts();
-
-    // 렌더링
-    renderer.render(scene, camera);
-}
-
-// 텍스트 라벨 위치 업데이트
-function updateTextLabels() {
-    textLabels.forEach(label => {
-        // 회전 적용
-        const pos = label.originalPosition.clone();
-
-        // X축 회전
-        const cosX = Math.cos(currentRotation.x);
-        const sinX = Math.sin(currentRotation.x);
-        const y1 = pos.y * cosX - pos.z * sinX;
-        const z1 = pos.y * sinX + pos.z * cosX;
-        pos.y = y1;
-        pos.z = z1;
-
-        // Y축 회전
-        const cosY = Math.cos(currentRotation.y);
-        const sinY = Math.sin(currentRotation.y);
-        const x2 = pos.x * cosY + pos.z * sinY;
-        const z2 = -pos.x * sinY + pos.z * cosY;
-        pos.x = x2;
-        pos.z = z2;
-
-        label.position.copy(pos);
-
-        // 3D to 2D 변환
-        const vector = pos.clone();
-        vector.project(camera);
-
-        const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
-        const y = (-vector.y * 0.5 + 0.5) * window.innerHeight;
-
-        // 뒤에 있는 라벨은 숨기기
-        const isBehind = pos.z > 0;
-        const opacity = isBehind ? 0.2 : 1;
-        const scale = isBehind ? 0.7 : 1;
-        const zIndex = isBehind ? 1 : 10;
-
-        // 거리에 따른 크기 조절
-        const distance = camera.position.z - pos.z;
-        const distanceScale = Math.max(0.5, Math.min(1.5, 600 / distance));
-
-        label.element.style.transform = `translate(-50%, -50%) scale(${scale * distanceScale})`;
-        label.element.style.left = `${x}px`;
-        label.element.style.top = `${y}px`;
-        label.element.style.opacity = opacity;
-        label.element.style.zIndex = zIndex;
-    });
 }
 
 // 시작

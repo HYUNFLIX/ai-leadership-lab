@@ -1,5 +1,6 @@
 /* =============================================
    2025 Thanks Word Cloud - Custom Styles
+   2D Floating Version
    ============================================= */
 
 /* Loading Spinner */
@@ -42,6 +43,132 @@ select option {
     background-color: #1e1b4b;
     color: white;
 }
+
+/* =============================================
+   Floating Name Styles
+   ============================================= */
+
+.floating-name {
+    position: absolute;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    will-change: transform;
+    z-index: 1;
+}
+
+.floating-name:hover {
+    transform: scale(1.3) !important;
+    text-shadow:
+        0 0 20px currentColor,
+        0 0 40px currentColor;
+    z-index: 100;
+}
+
+/* 8가지 플로팅 방향 애니메이션 */
+.float-1 { animation-name: float-path-1; }
+.float-2 { animation-name: float-path-2; }
+.float-3 { animation-name: float-path-3; }
+.float-4 { animation-name: float-path-4; }
+.float-5 { animation-name: float-path-5; }
+.float-6 { animation-name: float-path-6; }
+.float-7 { animation-name: float-path-7; }
+.float-8 { animation-name: float-path-8; }
+
+@keyframes float-path-1 {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(30px, -20px); }
+    50% { transform: translate(60px, 10px); }
+    75% { transform: translate(30px, 30px); }
+}
+
+@keyframes float-path-2 {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-25px, 25px); }
+    50% { transform: translate(-50px, 0); }
+    75% { transform: translate(-25px, -25px); }
+}
+
+@keyframes float-path-3 {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(20px, 30px); }
+    50% { transform: translate(0, 50px); }
+    75% { transform: translate(-20px, 25px); }
+}
+
+@keyframes float-path-4 {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-30px, -15px); }
+    50% { transform: translate(-15px, -35px); }
+    75% { transform: translate(15px, -20px); }
+}
+
+@keyframes float-path-5 {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(40px, 20px); }
+    66% { transform: translate(20px, -30px); }
+}
+
+@keyframes float-path-6 {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(-35px, -25px); }
+    66% { transform: translate(-20px, 35px); }
+}
+
+@keyframes float-path-7 {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(25px, 15px); }
+    40% { transform: translate(45px, -10px); }
+    60% { transform: translate(30px, -30px); }
+    80% { transform: translate(10px, -15px); }
+}
+
+@keyframes float-path-8 {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-20px, -20px); }
+    40% { transform: translate(-40px, 10px); }
+    60% { transform: translate(-25px, 35px); }
+    80% { transform: translate(-5px, 15px); }
+}
+
+/* 검색으로 찾은 이름 하이라이트 */
+.floating-name.found-highlight {
+    animation-play-state: paused !important;
+    transform: scale(1.8) !important;
+    z-index: 1000 !important;
+    text-shadow:
+        0 0 20px #4ade80,
+        0 0 40px #4ade80,
+        0 0 60px #4ade80 !important;
+    color: #fff !important;
+}
+
+.floating-name.found-highlight::after {
+    content: '감사합니다!';
+    position: absolute;
+    bottom: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #4ade80;
+    white-space: nowrap;
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
+    animation: thank-you-fade 0.5s ease-out forwards;
+}
+
+@keyframes thank-you-fade {
+    0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* =============================================
+   Admin Page Styles
+   ============================================= */
 
 /* Name Card in Admin */
 .name-card {
@@ -100,97 +227,9 @@ select option {
 .category-family { background-color: rgba(244, 63, 94, 0.3) !important; color: #fda4af !important; }
 .category-other { background-color: rgba(156, 163, 175, 0.3) !important; color: #d1d5db !important; }
 
-/* 3D Text Labels */
-.text-label {
-    position: absolute;
-    color: white;
-    font-family: 'Pretendard', sans-serif;
-    font-weight: 600;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    pointer-events: auto;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.text-label:hover,
-.text-label.hovered {
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
-}
-
-/* 마우스 오버 시 확대 효과 */
-.text-label.hovered {
-    font-size: 32px !important;
-    color: #fff !important;
-    text-shadow:
-        0 0 20px currentColor,
-        0 0 40px currentColor,
-        0 0 60px rgba(255, 255, 255, 0.5) !important;
-    z-index: 1000 !important;
-    transition: all 0.2s ease-out !important;
-}
-
-.text-label.highlighted {
-    animation: pulse-glow 1s ease-in-out infinite;
-    color: #fbbf24 !important;
-    text-shadow: 0 0 30px rgba(251, 191, 36, 0.8) !important;
-    z-index: 100 !important;
-}
-
-@keyframes pulse-glow {
-    0%, 100% {
-        text-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
-    }
-    50% {
-        text-shadow: 0 0 40px rgba(251, 191, 36, 1), 0 0 60px rgba(251, 191, 36, 0.5);
-    }
-}
-
-/* Stars Background Effect */
-.stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background:
-        radial-gradient(2px 2px at 20px 30px, white, transparent),
-        radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 90px 40px, white, transparent),
-        radial-gradient(2px 2px at 160px 120px, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(1px 1px at 230px 80px, white, transparent);
-    background-repeat: repeat;
-    background-size: 250px 250px;
-    animation: twinkle 4s ease-in-out infinite;
-}
-
-@keyframes twinkle {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.7; }
-}
-
-/* Particle Effect */
-.particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: white;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0) translateX(0);
-        opacity: 0;
-    }
-    50% {
-        transform: translateY(-20px) translateX(10px);
-        opacity: 1;
-    }
-}
+/* =============================================
+   Common UI Styles
+   ============================================= */
 
 /* Toast Animation */
 .toast-show {
@@ -247,195 +286,44 @@ input:focus, select:focus, textarea:focus {
     }
 }
 
-/* Responsive Adjustments */
+/* =============================================
+   Responsive Adjustments
+   ============================================= */
+
 @media (max-width: 768px) {
-    .text-label {
-        font-size: 11px !important;
+    .floating-name {
+        font-size: 14px;
     }
 
-    .text-label.hovered {
-        font-size: 22px !important;
+    .floating-name:hover {
+        transform: scale(1.2) !important;
     }
 
-    .text-label.spotlight {
-        font-size: 24px !important;
-        transform: translate(-50%, -50%) scale(1.5) !important;
+    .floating-name.found-highlight {
+        transform: scale(1.5) !important;
     }
 
-    .text-label.found-highlight {
-        font-size: 32px !important;
-        transform: translate(-50%, -50%) scale(1.8) !important;
-    }
-
-    .text-label.found-highlight::before {
-        top: -22px;
-        font-size: 18px;
-    }
-
-    .text-label.found-highlight::after {
-        bottom: -28px;
-        font-size: 11px;
+    .floating-name.found-highlight::after {
+        font-size: 10px;
+        bottom: -20px;
     }
 }
 
 @media (max-width: 480px) {
-    .text-label {
-        font-size: 10px !important;
+    .floating-name.found-highlight {
+        transform: scale(1.3) !important;
     }
 
-    .text-label.hovered {
-        font-size: 18px !important;
+    .floating-name.found-highlight::after {
+        font-size: 9px;
+        bottom: -18px;
     }
-
-    .text-label.spotlight {
-        font-size: 20px !important;
-        transform: translate(-50%, -50%) scale(1.3) !important;
-    }
-
-    .text-label.found-highlight {
-        font-size: 26px !important;
-        transform: translate(-50%, -50%) scale(1.5) !important;
-    }
-
-    .text-label.found-highlight::before {
-        top: -18px;
-        font-size: 14px;
-    }
-
-    .text-label.found-highlight::after {
-        bottom: -24px;
-        font-size: 10px;
-    }
-}
-
-/* Canvas Cursor */
-#canvas-container {
-    cursor: grab;
-}
-
-#canvas-container:active {
-    cursor: grabbing;
 }
 
 /* =============================================
-   시네마틱 효과 스타일
+   Popup Animation
    ============================================= */
 
-/* 스포트라이트 효과 - 간결하게 */
-.text-label.spotlight {
-    font-size: 36px !important;
-    color: #fff !important;
-    text-shadow:
-        0 0 20px #fbbf24,
-        0 0 40px rgba(251, 191, 36, 0.5) !important;
-    z-index: 2000 !important;
-    animation: spotlight-glow 0.4s ease-out forwards;
-    transform: translate(-50%, -50%) scale(1.8) !important;
-}
-
-@keyframes spotlight-glow {
-    0% {
-        opacity: 0.5;
-        transform: translate(-50%, -50%) scale(1);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.8);
-    }
-}
-
-/* 부드러운 글로우 효과 (간결한 버전) */
-.text-label.gentle-glow {
-    color: #fff !important;
-    text-shadow:
-        0 0 15px currentColor,
-        0 0 30px rgba(255, 255, 255, 0.4) !important;
-    transition: all 0.5s ease-out !important;
-}
-
-/* =============================================
-   검색 결과 스타일
-   ============================================= */
-
-/* 검색으로 찾은 이름 하이라이트 */
-.text-label.found-highlight {
-    font-size: 52px !important;
-    color: #fff !important;
-    text-shadow:
-        0 0 30px #4ade80,
-        0 0 60px #4ade80,
-        0 0 90px #4ade80,
-        0 0 120px rgba(74, 222, 128, 0.5) !important;
-    z-index: 3000 !important;
-    animation: found-celebration 0.5s ease-out forwards, found-pulse 1s ease-in-out infinite;
-    transform: translate(-50%, -50%) scale(2.5) !important;
-}
-
-@keyframes found-celebration {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.3) rotate(-10deg);
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(2.8) rotate(5deg);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(2.5) rotate(0deg);
-    }
-}
-
-@keyframes found-pulse {
-    0%, 100% {
-        text-shadow:
-            0 0 30px #4ade80,
-            0 0 60px #4ade80,
-            0 0 90px #4ade80;
-    }
-    50% {
-        text-shadow:
-            0 0 40px #4ade80,
-            0 0 80px #4ade80,
-            0 0 120px #4ade80,
-            0 0 160px rgba(74, 222, 128, 0.3);
-    }
-}
-
-/* 찾은 이름 옆 이모지 */
-.text-label.found-highlight::before {
-    content: '🎉';
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 24px;
-    animation: confetti-bounce 0.5s ease-out infinite alternate;
-}
-
-.text-label.found-highlight::after {
-    content: '감사합니다!';
-    position: absolute;
-    bottom: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 14px;
-    color: #4ade80;
-    white-space: nowrap;
-    text-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
-    animation: thank-you-fade 1s ease-out forwards;
-}
-
-@keyframes confetti-bounce {
-    0% { transform: translateX(-50%) translateY(0) rotate(-10deg); }
-    100% { transform: translateX(-50%) translateY(-10px) rotate(10deg); }
-}
-
-@keyframes thank-you-fade {
-    0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
-    100% { opacity: 1; transform: translateX(-50%) translateY(0); }
-}
-
-/* 검색 팝업 애니메이션 */
 .search-found-popup {
     animation: popup-celebrate 0.6s ease-out;
 }
