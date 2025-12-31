@@ -9,6 +9,9 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
 
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+
     <style>
         /* ================ Variables ================ */
         :root {
@@ -876,6 +879,12 @@
                             <option value="partial">일부입금</option>
                         </select>
                     </div>
+                    <button class="btn btn-secondary" onclick="exportToExcel()">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 1v10M4 7l4 4 4-4M2 13h12"/>
+                        </svg>
+                        Excel 다운로드
+                    </button>
                 </div>
             </div>
             <div class="section-body">
@@ -1499,6 +1508,112 @@
             a.download = `lectures_${new Date().toISOString().slice(0,10)}.json`;
             a.click();
             URL.revokeObjectURL(url);
+        }
+
+        function exportToExcel() {
+            const lectures = window.getLectures();
+            const yearFilter = document.getElementById('yearFilter').value;
+            const monthFilter = document.getElementById('monthFilter').value;
+            const paymentFilter = document.getElementById('paymentFilter').value;
+
+            // Apply current filters
+            let filtered = [...lectures];
+            if (yearFilter !== 'all') {
+                filtered = filtered.filter(l => l.date && l.date.startsWith(yearFilter));
+            }
+            if (monthFilter !== 'all' && yearFilter !== 'all') {
+                filtered = filtered.filter(l => l.date && l.date.substring(5, 7) === monthFilter);
+            }
+            if (paymentFilter !== 'all') {
+                filtered = filtered.filter(l => l.paymentStatus === paymentFilter);
+            }
+
+            // Sort by date descending
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (filtered.length === 0) {
+                showToast('다운로드할 데이터가 없습니다.', 'error');
+                return;
+            }
+
+            // Prepare data for Excel
+            const excelData = filtered.map((lecture, index) => {
+                const netPayment = lecture.netPayment || calculateNetPayment(lecture.fee || 0, lecture.taxDeduction);
+                const paymentLabels = { pending: '대기', paid: '완료', partial: '일부입금' };
+                const taxLabels = { none: '없음', '3.3': '3.3%', '8.8': '8.8%', vat: 'VAT별도' };
+
+                return {
+                    'No.': index + 1,
+                    '강의일자': lecture.date || '',
+                    '교육시간': lecture.duration ? lecture.duration + '시간' : '',
+                    '강의명': lecture.name || '',
+                    '고객사': lecture.client || '',
+                    '대상': lecture.audience || '',
+                    '계약주체': lecture.contractor || '',
+                    '교육장소': lecture.location || '',
+                    '강의료': lecture.fee || 0,
+                    '세금공제': taxLabels[lecture.taxDeduction] || '',
+                    '실지급액': netPayment,
+                    '입금여부': paymentLabels[lecture.paymentStatus] || '',
+                    '기타사항': lecture.notes || ''
+                };
+            });
+
+            // Add totals row
+            const totalFee = filtered.reduce((sum, l) => sum + (l.fee || 0), 0);
+            const totalNet = filtered.reduce((sum, l) => sum + (l.netPayment || calculateNetPayment(l.fee || 0, l.taxDeduction)), 0);
+            excelData.push({
+                'No.': '',
+                '강의일자': '',
+                '교육시간': '',
+                '강의명': '',
+                '고객사': '',
+                '대상': '',
+                '계약주체': '',
+                '교육장소': '합계',
+                '강의료': totalFee,
+                '세금공제': '',
+                '실지급액': totalNet,
+                '입금여부': '',
+                '기타사항': ''
+            });
+
+            // Create workbook and worksheet
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(excelData);
+
+            // Set column widths
+            ws['!cols'] = [
+                { wch: 5 },   // No.
+                { wch: 12 },  // 강의일자
+                { wch: 10 },  // 교육시간
+                { wch: 25 },  // 강의명
+                { wch: 15 },  // 고객사
+                { wch: 15 },  // 대상
+                { wch: 15 },  // 계약주체
+                { wch: 20 },  // 교육장소
+                { wch: 12 },  // 강의료
+                { wch: 10 },  // 세금공제
+                { wch: 12 },  // 실지급액
+                { wch: 10 },  // 입금여부
+                { wch: 25 }   // 기타사항
+            ];
+
+            XLSX.utils.book_append_sheet(wb, ws, '강의이력');
+
+            // Generate filename with filter info
+            let filename = '강의이력';
+            if (yearFilter !== 'all') {
+                filename += `_${yearFilter}년`;
+                if (monthFilter !== 'all') {
+                    filename += `${parseInt(monthFilter)}월`;
+                }
+            }
+            filename += `_${new Date().toISOString().slice(0,10)}.xlsx`;
+
+            // Download
+            XLSX.writeFile(wb, filename);
+            showToast('Excel 파일이 다운로드되었습니다.', 'success');
         }
 
         async function importData(event) {
