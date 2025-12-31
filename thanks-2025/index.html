@@ -9,9 +9,6 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -39,9 +36,9 @@
         }
     </script>
 </head>
-<body class="font-pretendard bg-black text-white overflow-hidden">
+<body class="font-pretendard bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 text-white overflow-hidden">
     <!-- Loading Screen -->
-    <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-black">
+    <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950">
         <div class="text-center">
             <div class="loading-spinner mb-4"></div>
             <p class="text-xl text-gray-400 animate-pulse">감사의 마음을 담는 중...</p>
@@ -50,8 +47,15 @@
 
     <!-- Main Container -->
     <div id="app" class="relative w-full h-screen">
-        <!-- 3D Canvas Container -->
-        <div id="canvas-container" class="absolute inset-0"></div>
+        <!-- Floating Word Cloud Container -->
+        <div id="cloud-container" class="absolute inset-0 overflow-hidden"></div>
+
+        <!-- Ambient Background Effects -->
+        <div class="fixed inset-0 pointer-events-none overflow-hidden">
+            <div class="absolute top-1/4 left-1/4 w-64 md:w-96 h-64 md:h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-64 md:w-96 h-64 md:h-96 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/2 w-48 md:w-64 h-48 md:h-64 bg-cyan-500/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
 
         <!-- Header Overlay -->
         <header class="absolute top-0 left-0 right-0 z-10 p-3 md:p-6">
@@ -106,22 +110,6 @@
             </div>
         </div>
 
-        <!-- Instructions -->
-        <div class="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-10 text-center w-full px-3">
-            <p id="instructions-text" class="text-gray-500 text-xs md:text-sm mb-2">
-                <span class="hidden md:inline">마우스로 드래그하여 회전 | 스크롤로 확대/축소</span>
-                <span class="md:hidden">터치로 드래그하여 회전</span>
-            </p>
-            <div class="flex gap-2 md:gap-4 justify-center">
-                <button id="auto-rotate-btn" class="px-3 md:px-4 py-1.5 md:py-2 bg-purple-600/80 hover:bg-purple-600 rounded-lg text-xs md:text-sm transition-all backdrop-blur-sm">
-                    🔄 자동 회전
-                </button>
-                <button id="reset-btn" class="px-3 md:px-4 py-1.5 md:py-2 bg-white/10 hover:bg-white/20 rounded-lg text-xs md:text-sm transition-all backdrop-blur-sm border border-white/10">
-                    ↺ 초기화
-                </button>
-            </div>
-        </div>
-
         <!-- Name Detail Popup -->
         <div id="name-popup" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4">
             <div class="bg-gradient-to-br from-indigo-900/90 to-purple-900/90 p-6 md:p-8 rounded-2xl border border-white/20 shadow-2xl max-w-sm w-full text-center transform transition-all">
@@ -135,7 +123,7 @@
         </div>
     </div>
 
-    <!-- Viewer Script -->
+    <!-- Scripts -->
     <script src="js/firebase-config.js"></script>
     <script src="js/viewer.js"></script>
 </body>
