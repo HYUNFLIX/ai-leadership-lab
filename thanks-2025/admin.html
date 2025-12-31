@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이름 등록 | 2025 감사합니다</title>
+    <meta name="description" content="2025년 감사한 분들의 이름을 등록합니다.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        pretendard: ['Pretendard', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#a855f7',
+                        accent: '#06b6d4',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-pretendard bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 min-h-screen text-white">
+    <!-- Background Animation -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 max-w-4xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <a href="index.html" class="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-6">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                3D 워드클라우드 보기
+            </a>
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent mb-4">
+                감사한 분들 등록
+            </h1>
+            <p class="text-gray-400 text-lg">2025년 한 해 동안 도움을 주신 분들의 이름을 등록해주세요</p>
+        </header>
+
+        <!-- Add Name Form -->
+        <section class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 md:p-8 border border-white/10 mb-8">
+            <h2 class="text-xl font-semibold mb-6 flex items-center gap-2">
+                <span class="text-2xl">✨</span> 새로운 이름 추가
+            </h2>
+
+            <form id="add-name-form" class="space-y-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <label for="name-input" class="block text-sm text-gray-400 mb-2">이름</label>
+                        <input
+                            type="text"
+                            id="name-input"
+                            placeholder="홍길동"
+                            class="w-full px-4 py-3 bg-white/10 rounded-xl border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all"
+                            required
+                        >
+                    </div>
+                    <div class="md:w-48">
+                        <label for="category-select" class="block text-sm text-gray-400 mb-2">카테고리</label>
+                        <select
+                            id="category-select"
+                            class="w-full px-4 py-3 bg-white/10 rounded-xl border border-white/20 text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all"
+                        >
+                            <option value="colleague">동료</option>
+                            <option value="mentor">멘토</option>
+                            <option value="client">고객</option>
+                            <option value="partner">파트너</option>
+                            <option value="friend">친구</option>
+                            <option value="family">가족</option>
+                            <option value="other">기타</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="message-input" class="block text-sm text-gray-400 mb-2">감사 메시지 (선택)</label>
+                    <textarea
+                        id="message-input"
+                        placeholder="이 분께 감사한 이유를 적어주세요..."
+                        rows="2"
+                        class="w-full px-4 py-3 bg-white/10 rounded-xl border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all resize-none"
+                    ></textarea>
+                </div>
+
+                <div class="flex gap-4">
+                    <button
+                        type="submit"
+                        class="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 rounded-xl font-semibold transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                        이름 추가하기
+                    </button>
+                    <button
+                        type="button"
+                        id="bulk-add-btn"
+                        class="px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl font-medium transition-all border border-white/10"
+                    >
+                        여러 명 추가
+                    </button>
+                </div>
+            </form>
+
+            <!-- Bulk Add Modal -->
+            <div id="bulk-modal" class="hidden mt-6 p-4 bg-white/5 rounded-xl border border-white/10">
+                <label class="block text-sm text-gray-400 mb-2">여러 이름 추가 (줄바꿈으로 구분)</label>
+                <textarea
+                    id="bulk-input"
+                    placeholder="홍길동&#10;김철수&#10;이영희"
+                    rows="5"
+                    class="w-full px-4 py-3 bg-white/10 rounded-xl border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all resize-none mb-4"
+                ></textarea>
+                <button
+                    id="bulk-submit-btn"
+                    class="w-full py-3 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 rounded-xl font-semibold transition-all"
+                >
+                    모두 추가하기
+                </button>
+            </div>
+        </section>
+
+        <!-- Statistics -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white/5 backdrop-blur-lg rounded-xl p-4 border border-white/10 text-center">
+                <div class="text-3xl font-bold text-indigo-400" id="stat-total">0</div>
+                <div class="text-sm text-gray-400">전체</div>
+            </div>
+            <div class="bg-white/5 backdrop-blur-lg rounded-xl p-4 border border-white/10 text-center">
+                <div class="text-3xl font-bold text-purple-400" id="stat-colleague">0</div>
+                <div class="text-sm text-gray-400">동료</div>
+            </div>
+            <div class="bg-white/5 backdrop-blur-lg rounded-xl p-4 border border-white/10 text-center">
+                <div class="text-3xl font-bold text-cyan-400" id="stat-mentor">0</div>
+                <div class="text-sm text-gray-400">멘토</div>
+            </div>
+            <div class="bg-white/5 backdrop-blur-lg rounded-xl p-4 border border-white/10 text-center">
+                <div class="text-3xl font-bold text-pink-400" id="stat-other">0</div>
+                <div class="text-sm text-gray-400">기타</div>
+            </div>
+        </section>
+
+        <!-- Name List -->
+        <section class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 md:p-8 border border-white/10">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold flex items-center gap-2">
+                    <span class="text-2xl">📋</span> 등록된 이름 목록
+                </h2>
+                <div class="flex gap-2">
+                    <button
+                        id="export-btn"
+                        class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm transition-all border border-white/10"
+                    >
+                        📥 내보내기
+                    </button>
+                    <button
+                        id="clear-all-btn"
+                        class="px-4 py-2 bg-red-600/20 hover:bg-red-600/40 rounded-lg text-sm text-red-400 hover:text-red-300 transition-all border border-red-600/20"
+                    >
+                        🗑️ 전체 삭제
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search & Filter -->
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <div class="flex-1 relative">
+                    <input
+                        type="text"
+                        id="search-list"
+                        placeholder="이름 검색..."
+                        class="w-full px-4 py-2 pl-10 bg-white/10 rounded-lg border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-all"
+                    >
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <select
+                    id="filter-category"
+                    class="px-4 py-2 bg-white/10 rounded-lg border border-white/20 text-white focus:outline-none focus:border-purple-500 transition-all"
+                >
+                    <option value="all">모든 카테고리</option>
+                    <option value="colleague">동료</option>
+                    <option value="mentor">멘토</option>
+                    <option value="client">고객</option>
+                    <option value="partner">파트너</option>
+                    <option value="friend">친구</option>
+                    <option value="family">가족</option>
+                    <option value="other">기타</option>
+                </select>
+            </div>
+
+            <!-- Name Grid -->
+            <div id="name-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-96 overflow-y-auto custom-scrollbar">
+                <!-- Names will be added dynamically -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="text-center py-12 text-gray-500">
+                <div class="text-4xl mb-4">📝</div>
+                <p>아직 등록된 이름이 없습니다.</p>
+                <p class="text-sm">위에서 감사한 분들의 이름을 추가해주세요!</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 text-gray-500 text-sm">
+            <p>Made with ❤️ by AI Leadership Lab</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <span id="toast-message">이름이 추가되었습니다!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
