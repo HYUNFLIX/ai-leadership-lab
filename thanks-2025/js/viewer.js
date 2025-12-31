@@ -661,45 +661,104 @@ function onWheel(event) {
 
 // 이름 검색
 function searchName() {
-    const query = searchInput.value.trim().toLowerCase();
+    const query = searchInput.value.trim();
     if (!query) return;
 
+    const queryLower = query.toLowerCase();
     clearHighlight();
 
-    let found = false;
-    textLabels.forEach(label => {
-        if (label.nameData.name.toLowerCase().includes(query)) {
-            label.element.classList.add('highlighted');
-            found = true;
+    // 검색 결과 없을 때 섹션
+    const notFoundSection = document.getElementById('not-found-section');
+    const requestEmail = document.getElementById('request-email');
+    notFoundSection.classList.add('hidden');
 
-            // 해당 위치로 카메라 이동
-            const pos = label.position;
-            targetRotation.y = Math.atan2(pos.x, pos.z);
-            targetRotation.x = -Math.asin(pos.y / sphereRadius);
-        }
-    });
+    // 매칭되는 라벨 찾기
+    const matchedLabels = textLabels.filter(label =>
+        label.nameData.name.toLowerCase().includes(queryLower)
+    );
 
     searchResult.classList.remove('hidden');
-    if (found) {
-        const count = textLabels.filter(l => l.nameData.name.toLowerCase().includes(query)).length;
-        searchResult.textContent = `${count}명의 이름을 찾았습니다!`;
+
+    if (matchedLabels.length > 0) {
+        // 찾음 - 스포트라이트 효과와 감사 팝업
+        const firstMatch = matchedLabels[0];
+
+        // 모든 매칭 라벨에 found-highlight 클래스 추가
+        matchedLabels.forEach(label => {
+            label.element.classList.add('found-highlight');
+        });
+
+        // 첫 번째 매칭 라벨로 카메라 이동
+        const pos = firstMatch.originalPosition;
+        targetRotation.y = Math.atan2(pos.x, pos.z);
+        targetRotation.x = -Math.asin(pos.y / sphereRadius) * 0.5;
+
+        // 결과 메시지
+        if (matchedLabels.length === 1) {
+            searchResult.innerHTML = `🎉 <strong>${firstMatch.nameData.name}</strong>님을 찾았습니다!`;
+        } else {
+            searchResult.innerHTML = `🎉 ${matchedLabels.length}명의 이름을 찾았습니다!`;
+        }
         searchResult.style.color = '#4ade80';
+
+        // 1.5초 후 감사 팝업 표시 (첫 번째 매칭만)
+        setTimeout(() => {
+            showThankYouPopup(firstMatch.nameData);
+        }, 1500);
+
+        // 5초 후 하이라이트 제거
+        setTimeout(() => {
+            matchedLabels.forEach(label => {
+                label.element.classList.remove('found-highlight');
+            });
+        }, 5000);
+
     } else {
+        // 못 찾음 - 이메일 요청 섹션 표시
         searchResult.textContent = '해당 이름을 찾을 수 없습니다.';
         searchResult.style.color = '#f87171';
+
+        // 이메일 링크 생성
+        const emailSubject = encodeURIComponent('[2025 감사합니다] 이름 등록 요청');
+        const emailBody = encodeURIComponent(`안녕하세요!\n\n2025 감사합니다 페이지에서 제 이름을 찾을 수 없어 요청드립니다.\n\n이름: ${query}\n\n감사합니다.`);
+        requestEmail.href = `mailto:hyunnet@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+
+        notFoundSection.classList.remove('hidden');
     }
 
+    // 검색 결과 메시지는 5초 후 숨김
     setTimeout(() => {
         searchResult.classList.add('hidden');
-    }, 3000);
+    }, 5000);
+}
+
+// 감사 팝업 표시 (검색용)
+function showThankYouPopup(nameData) {
+    popupName.textContent = nameData.name;
+    namePopup.classList.remove('hidden');
+
+    // 팝업에 특별 애니메이션 추가
+    const popupContent = namePopup.querySelector('div');
+    popupContent.classList.add('search-found-popup');
+
+    setTimeout(() => {
+        popupContent.classList.remove('search-found-popup');
+    }, 1000);
 }
 
 // 하이라이트 제거
 function clearHighlight() {
     textLabels.forEach(label => {
         label.element.classList.remove('highlighted');
+        label.element.classList.remove('found-highlight');
     });
     searchResult.classList.add('hidden');
+
+    // 못찾음 섹션도 숨기기
+    const notFoundSection = document.getElementById('not-found-section');
+    if (notFoundSection) {
+        notFoundSection.classList.add('hidden');
+    }
 }
 
 // 자동 회전 토글

@@ -383,3 +383,104 @@ input:focus, select:focus, textarea:focus {
         transform: scale(1) rotate(180deg);
     }
 }
+
+/* =============================================
+   검색 결과 스타일
+   ============================================= */
+
+/* 검색으로 찾은 이름 하이라이트 */
+.text-label.found-highlight {
+    font-size: 52px !important;
+    color: #fff !important;
+    text-shadow:
+        0 0 30px #4ade80,
+        0 0 60px #4ade80,
+        0 0 90px #4ade80,
+        0 0 120px rgba(74, 222, 128, 0.5) !important;
+    z-index: 3000 !important;
+    animation: found-celebration 0.5s ease-out forwards, found-pulse 1s ease-in-out infinite;
+    transform: translate(-50%, -50%) scale(2.5) !important;
+}
+
+@keyframes found-celebration {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.3) rotate(-10deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(2.8) rotate(5deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(2.5) rotate(0deg);
+    }
+}
+
+@keyframes found-pulse {
+    0%, 100% {
+        text-shadow:
+            0 0 30px #4ade80,
+            0 0 60px #4ade80,
+            0 0 90px #4ade80;
+    }
+    50% {
+        text-shadow:
+            0 0 40px #4ade80,
+            0 0 80px #4ade80,
+            0 0 120px #4ade80,
+            0 0 160px rgba(74, 222, 128, 0.3);
+    }
+}
+
+/* 찾은 이름 옆 이모지 */
+.text-label.found-highlight::before {
+    content: '🎉';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    animation: confetti-bounce 0.5s ease-out infinite alternate;
+}
+
+.text-label.found-highlight::after {
+    content: '감사합니다!';
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #4ade80;
+    white-space: nowrap;
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
+    animation: thank-you-fade 1s ease-out forwards;
+}
+
+@keyframes confetti-bounce {
+    0% { transform: translateX(-50%) translateY(0) rotate(-10deg); }
+    100% { transform: translateX(-50%) translateY(-10px) rotate(10deg); }
+}
+
+@keyframes thank-you-fade {
+    0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* 검색 팝업 애니메이션 */
+.search-found-popup {
+    animation: popup-celebrate 0.6s ease-out;
+}
+
+@keyframes popup-celebrate {
+    0% {
+        transform: scale(0.5) rotate(-5deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1) rotate(3deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
