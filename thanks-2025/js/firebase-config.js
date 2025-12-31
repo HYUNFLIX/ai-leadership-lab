@@ -164,15 +164,29 @@ const DataManager = {
             createdAt: new Date().toISOString()
         };
 
+        // 항상 LocalStorage에 먼저 저장 (확실한 백업)
+        this._saveRequestToLocal(request);
+
+        // Firebase에도 저장 시도 (선택적)
         if (USE_FIREBASE && requestsRef) {
-            await requestsRef.push(request);
-        } else {
-            const requests = JSON.parse(localStorage.getItem('thanks2025_requests') || '[]');
-            requests.push(request);
-            localStorage.setItem('thanks2025_requests', JSON.stringify(requests));
+            try {
+                await requestsRef.push(request);
+                console.log('Firebase에도 요청 저장 완료');
+            } catch (error) {
+                console.warn('Firebase 저장 실패 (LocalStorage에는 저장됨):', error);
+                // 에러를 throw하지 않음 - LocalStorage에 이미 저장됨
+            }
         }
 
         return request;
+    },
+
+    // LocalStorage에 요청 저장 (내부 헬퍼)
+    _saveRequestToLocal(request) {
+        const requests = JSON.parse(localStorage.getItem('thanks2025_requests') || '[]');
+        requests.push(request);
+        localStorage.setItem('thanks2025_requests', JSON.stringify(requests));
+        console.log('LocalStorage에 요청 저장 완료');
     },
 
     // 요청 목록 가져오기

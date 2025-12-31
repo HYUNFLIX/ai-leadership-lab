@@ -160,6 +160,28 @@
             </div>
         </section>
 
+        <!-- Pending Requests -->
+        <section id="requests-section" class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 md:p-8 border border-white/10 mb-8 hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold flex items-center gap-2">
+                    <span class="text-2xl">📨</span> 등록 요청 목록
+                    <span id="request-count" class="bg-orange-500 text-white text-xs px-2 py-1 rounded-full">0</span>
+                </h2>
+                <button
+                    id="refresh-requests-btn"
+                    class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm transition-all border border-white/10"
+                >
+                    🔄 새로고침
+                </button>
+            </div>
+            <div id="requests-list" class="space-y-3">
+                <!-- Requests will be added dynamically -->
+            </div>
+            <div id="requests-empty" class="text-center py-6 text-gray-500 hidden">
+                <p>등록 요청이 없습니다.</p>
+            </div>
+        </section>
+
         <!-- Name List -->
         <section class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 md:p-8 border border-white/10">
             <div class="flex justify-between items-center mb-6">

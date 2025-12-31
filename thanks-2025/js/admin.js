@@ -54,6 +54,9 @@ async function init() {
 
     // 실시간 업데이트 구독
     subscribeToUpdates();
+
+    // 등록 요청 로드
+    await loadRequests();
 }
 
 // 이벤트 리스너 설정
@@ -268,6 +271,112 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// =============================================
+// 등록 요청 관리
+// =============================================
+
+const requestsSection = document.getElementById('requests-section');
+const requestsList = document.getElementById('requests-list');
+const requestsEmpty = document.getElementById('requests-empty');
+const requestCount = document.getElementById('request-count');
+const refreshRequestsBtn = document.getElementById('refresh-requests-btn');
+
+// 요청 목록 로드
+async function loadRequests() {
+    try {
+        const requests = await DataManager.getRequests();
+        renderRequests(requests);
+    } catch (error) {
+        console.error('요청 로드 실패:', error);
+        // LocalStorage에서 직접 로드 시도
+        const localRequests = JSON.parse(localStorage.getItem('thanks2025_requests') || '[]');
+        renderRequests(localRequests);
+    }
+}
+
+// 요청 목록 렌더링
+function renderRequests(requests) {
+    // 섹션 표시/숨김
+    if (requests.length === 0) {
+        requestsSection.classList.add('hidden');
+        return;
+    }
+
+    requestsSection.classList.remove('hidden');
+    requestCount.textContent = requests.length;
+
+    // 최신순 정렬
+    requests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    requestsList.innerHTML = requests.map((req, index) => `
+        <div class="flex items-center justify-between bg-white/5 rounded-xl p-4 border border-white/10">
+            <div class="flex items-center gap-4">
+                <span class="text-orange-400 text-lg">👤</span>
+                <div>
+                    <div class="font-medium">${escapeHtml(req.name)}</div>
+                    <div class="text-xs text-gray-500">${new Date(req.createdAt).toLocaleString('ko-KR')}</div>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button
+                    onclick="approveRequest('${escapeHtml(req.name)}', ${index}, '${req.key || ''}')"
+                    class="px-3 py-1 bg-green-600/20 hover:bg-green-600/40 text-green-400 rounded-lg text-sm transition-all"
+                >
+                    ✅ 승인
+                </button>
+                <button
+                    onclick="rejectRequest(${index}, '${req.key || ''}')"
+                    class="px-3 py-1 bg-red-600/20 hover:bg-red-600/40 text-red-400 rounded-lg text-sm transition-all"
+                >
+                    ❌ 거절
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 요청 승인 (이름 추가)
+async function approveRequest(name, index, key) {
+    await DataManager.addName({ name, category: 'other' });
+
+    // Firebase 요청 삭제
+    if (key) {
+        await DataManager.deleteRequest(key);
+    }
+
+    // LocalStorage 요청 삭제
+    removeLocalRequest(index);
+
+    showToast(`"${name}"님이 추가되었습니다!`);
+    await loadRequests();
+}
+
+// 요청 거절
+async function rejectRequest(index, key) {
+    // Firebase 요청 삭제
+    if (key) {
+        await DataManager.deleteRequest(key);
+    }
+
+    // LocalStorage 요청 삭제
+    removeLocalRequest(index);
+
+    showToast('요청이 거절되었습니다.', 'warning');
+    await loadRequests();
+}
+
+// LocalStorage 요청 삭제
+function removeLocalRequest(index) {
+    const requests = JSON.parse(localStorage.getItem('thanks2025_requests') || '[]');
+    requests.splice(index, 1);
+    localStorage.setItem('thanks2025_requests', JSON.stringify(requests));
+}
+
+// 요청 새로고침 버튼
+if (refreshRequestsBtn) {
+    refreshRequestsBtn.addEventListener('click', loadRequests);
 }
 
 // 시작
