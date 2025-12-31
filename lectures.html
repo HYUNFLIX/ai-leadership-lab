@@ -760,8 +760,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">실지급액 (자동계산)</label>
-                        <input type="text" class="form-control" id="netPayment" readonly style="background: var(--bg-tertiary); font-weight: 600; color: var(--success);">
+                        <label class="form-label">실지급액</label>
+                        <input type="number" class="form-control" id="netPayment" min="0" step="1000" placeholder="자동계산 또는 직접입력" style="font-weight: 600; color: var(--success);">
                     </div>
                     <div class="form-group">
                         <label class="form-label">입금 여부</label>
@@ -928,8 +928,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">실지급액 (자동계산)</label>
-                        <input type="text" class="form-control" id="editNetPayment" readonly style="background: var(--bg-tertiary); font-weight: 600; color: var(--success);">
+                        <label class="form-label">실지급액</label>
+                        <input type="number" class="form-control" id="editNetPayment" min="0" step="1000" placeholder="자동계산 또는 직접입력" style="font-weight: 600; color: var(--success);">
                     </div>
                     <div class="form-group">
                         <label class="form-label">입금 여부</label>
@@ -1017,7 +1017,14 @@
                 (error) => {
                     console.error('Firestore error:', error);
                     updateSyncStatus('error', '연결 오류');
-                    showToast('데이터 동기화 오류가 발생했습니다.', 'error');
+                    hideLoading();
+
+                    // 권한 오류인 경우 안내 메시지
+                    if (error.code === 'permission-denied') {
+                        showToast('Firebase 권한 오류: Firestore 규칙을 확인해주세요.', 'error');
+                    } else {
+                        showToast('데이터 동기화 오류: ' + error.message, 'error');
+                    }
                 }
             );
         }
@@ -1034,7 +1041,11 @@
                 return true;
             } catch (error) {
                 console.error('Add error:', error);
-                showToast('강의 등록에 실패했습니다.', 'error');
+                if (error.code === 'permission-denied') {
+                    showToast('권한 오류: Firebase Console에서 Firestore 규칙을 확인해주세요.', 'error');
+                } else {
+                    showToast('강의 등록 실패: ' + error.message, 'error');
+                }
                 return false;
             } finally {
                 document.getElementById('submitBtn').disabled = false;
@@ -1134,7 +1145,7 @@
             const fee = parseInt(document.getElementById(feeId).value) || 0;
             const tax = document.getElementById(taxId).value;
             const netPayment = calculateNetPayment(fee, tax);
-            document.getElementById(displayId).value = netPayment ? formatCurrency(netPayment) : '';
+            document.getElementById(displayId).value = netPayment || '';
         }
 
         // Add event listeners for auto-calculation
@@ -1177,6 +1188,11 @@
         document.getElementById('lectureForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
+            const fee = parseInt(document.getElementById('fee').value) || 0;
+            const taxDeduction = document.getElementById('taxDeduction').value;
+            const manualNetPayment = parseInt(document.getElementById('netPayment').value);
+            const netPayment = manualNetPayment || calculateNetPayment(fee, taxDeduction);
+
             const lectureData = {
                 date: document.getElementById('lectureDate').value,
                 duration: parseFloat(document.getElementById('duration').value) || 0,
@@ -1185,8 +1201,9 @@
                 audience: document.getElementById('audience').value,
                 contractor: document.getElementById('contractor').value,
                 location: document.getElementById('location').value,
-                fee: parseInt(document.getElementById('fee').value) || 0,
-                taxDeduction: document.getElementById('taxDeduction').value,
+                fee: fee,
+                taxDeduction: taxDeduction,
+                netPayment: netPayment,
                 paymentStatus: document.getElementById('paymentStatus').value,
                 notes: document.getElementById('notes').value
             };
@@ -1263,7 +1280,8 @@
             let totalNet = 0;
 
             tbody.innerHTML = filtered.map((lecture, index) => {
-                const netPayment = calculateNetPayment(lecture.fee || 0, lecture.taxDeduction);
+                // 저장된 실지급액이 있으면 사용, 없으면 계산
+                const netPayment = lecture.netPayment || calculateNetPayment(lecture.fee || 0, lecture.taxDeduction);
                 totalFee += lecture.fee || 0;
                 totalNet += netPayment;
 
@@ -1358,14 +1376,23 @@
             document.getElementById('editPaymentStatus').value = lecture.paymentStatus || 'pending';
             document.getElementById('editNotes').value = lecture.notes || '';
 
-            // Calculate and display net payment
-            updateNetPaymentDisplay('editFee', 'editTaxDeduction', 'editNetPayment');
+            // Load saved netPayment or calculate if not exists
+            if (lecture.netPayment) {
+                document.getElementById('editNetPayment').value = lecture.netPayment;
+            } else {
+                updateNetPaymentDisplay('editFee', 'editTaxDeduction', 'editNetPayment');
+            }
 
             document.getElementById('editModal').classList.add('active');
         }
 
         async function saveEdit() {
             const id = document.getElementById('editId').value;
+
+            const fee = parseInt(document.getElementById('editFee').value) || 0;
+            const taxDeduction = document.getElementById('editTaxDeduction').value;
+            const manualNetPayment = parseInt(document.getElementById('editNetPayment').value);
+            const netPayment = manualNetPayment || calculateNetPayment(fee, taxDeduction);
 
             const lectureData = {
                 date: document.getElementById('editLectureDate').value,
@@ -1375,8 +1402,9 @@
                 audience: document.getElementById('editAudience').value,
                 contractor: document.getElementById('editContractor').value,
                 location: document.getElementById('editLocation').value,
-                fee: parseInt(document.getElementById('editFee').value) || 0,
-                taxDeduction: document.getElementById('editTaxDeduction').value,
+                fee: fee,
+                taxDeduction: taxDeduction,
+                netPayment: netPayment,
                 paymentStatus: document.getElementById('editPaymentStatus').value,
                 notes: document.getElementById('editNotes').value
             };
