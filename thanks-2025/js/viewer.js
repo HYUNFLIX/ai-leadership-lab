@@ -14,6 +14,10 @@ let sphereRadius = 300;
 let targetRotation = { x: 0, y: 0 };
 let currentRotation = { x: 0, y: 0 };
 
+// 파티클 버스트 시스템
+let particleBursts = [];
+const burstColors = [0x6366f1, 0xa855f7, 0x06b6d4, 0xfbbf24, 0xfb7185];
+
 // 카테고리별 색상
 const categoryColors = {
     colleague: '#818cf8',  // Indigo
@@ -86,6 +90,9 @@ function setupScene() {
 
     // 중앙 글로우 구체
     createGlowSphere();
+
+    // 파티클 버스트 시작
+    startParticleBursts();
 }
 
 // 파티클 배경
@@ -133,6 +140,99 @@ function createGlowSphere() {
     });
     const glowSphere = new THREE.Mesh(glowGeometry, glowMaterial);
     scene.add(glowSphere);
+}
+
+// 파티클 버스트 시작 (랜덤 간격으로 터짐)
+function startParticleBursts() {
+    function scheduleBurst() {
+        const delay = 500 + Math.random() * 2000; // 0.5초 ~ 2.5초 간격
+        setTimeout(() => {
+            createParticleBurst();
+            scheduleBurst();
+        }, delay);
+    }
+    scheduleBurst();
+}
+
+// 파티클 버스트 생성
+function createParticleBurst() {
+    const particleCount = 20 + Math.floor(Math.random() * 30);
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const velocities = [];
+
+    // 랜덤 위치에서 시작
+    const startX = (Math.random() - 0.5) * 1200;
+    const startY = (Math.random() - 0.5) * 800;
+    const startZ = (Math.random() - 0.5) * 400 - 200;
+
+    for (let i = 0; i < particleCount; i++) {
+        positions[i * 3] = startX;
+        positions[i * 3 + 1] = startY;
+        positions[i * 3 + 2] = startZ;
+
+        // 방사형 속도
+        const angle = Math.random() * Math.PI * 2;
+        const angleY = (Math.random() - 0.5) * Math.PI;
+        const speed = 2 + Math.random() * 4;
+        velocities.push({
+            x: Math.cos(angle) * Math.cos(angleY) * speed,
+            y: Math.sin(angleY) * speed,
+            z: Math.sin(angle) * Math.cos(angleY) * speed
+        });
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const color = burstColors[Math.floor(Math.random() * burstColors.length)];
+    const material = new THREE.PointsMaterial({
+        size: 3 + Math.random() * 3,
+        color: color,
+        transparent: true,
+        opacity: 1,
+        blending: THREE.AdditiveBlending
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    particleBursts.push({
+        mesh: particles,
+        velocities: velocities,
+        life: 1.0,
+        decay: 0.015 + Math.random() * 0.01
+    });
+}
+
+// 파티클 버스트 업데이트
+function updateParticleBursts() {
+    for (let i = particleBursts.length - 1; i >= 0; i--) {
+        const burst = particleBursts[i];
+        const positions = burst.mesh.geometry.attributes.position.array;
+
+        for (let j = 0; j < burst.velocities.length; j++) {
+            positions[j * 3] += burst.velocities[j].x;
+            positions[j * 3 + 1] += burst.velocities[j].y;
+            positions[j * 3 + 2] += burst.velocities[j].z;
+
+            // 속도 감쇠
+            burst.velocities[j].x *= 0.98;
+            burst.velocities[j].y *= 0.98;
+            burst.velocities[j].z *= 0.98;
+        }
+
+        burst.mesh.geometry.attributes.position.needsUpdate = true;
+        burst.life -= burst.decay;
+        burst.mesh.material.opacity = burst.life;
+
+        // 수명이 다하면 제거
+        if (burst.life <= 0) {
+            scene.remove(burst.mesh);
+            burst.mesh.geometry.dispose();
+            burst.mesh.material.dispose();
+            particleBursts.splice(i, 1);
+        }
+    }
 }
 
 // 이름 로드
@@ -189,6 +289,14 @@ function createTextLabels() {
 
         // 클릭 이벤트
         label.addEventListener('click', () => showNamePopup(nameData));
+
+        // 마우스 오버 효과
+        label.addEventListener('mouseenter', (e) => {
+            e.target.classList.add('hovered');
+        });
+        label.addEventListener('mouseleave', (e) => {
+            e.target.classList.remove('hovered');
+        });
 
         container.appendChild(label);
 
@@ -431,6 +539,9 @@ function animate() {
 
     // 텍스트 라벨 업데이트
     updateTextLabels();
+
+    // 파티클 버스트 업데이트
+    updateParticleBursts();
 
     // 렌더링
     renderer.render(scene, camera);
