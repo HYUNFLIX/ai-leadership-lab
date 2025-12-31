@@ -18,6 +18,14 @@ let currentRotation = { x: 0, y: 0 };
 let particleBursts = [];
 const burstColors = [0x6366f1, 0xa855f7, 0x06b6d4, 0xfbbf24, 0xfb7185];
 
+// 시네마틱 효과 시스템
+let spotlightLabel = null;
+let spotlightTimer = 0;
+let wavePhase = 0;
+let cinematicMode = 'idle'; // idle, spotlight, wave, pulse
+let cinematicTimer = 0;
+const cinematicColors = ['#818cf8', '#c084fc', '#22d3ee', '#4ade80', '#fbbf24', '#fb7185'];
+
 // 카테고리별 색상
 const categoryColors = {
     colleague: '#818cf8',  // Indigo
@@ -93,6 +101,9 @@ function setupScene() {
 
     // 파티클 버스트 시작
     startParticleBursts();
+
+    // 시네마틱 효과 시작
+    startCinematicEffects();
 }
 
 // 파티클 배경
@@ -233,6 +244,187 @@ function updateParticleBursts() {
             particleBursts.splice(i, 1);
         }
     }
+}
+
+// 시네마틱 효과 시작
+function startCinematicEffects() {
+    // 랜덤 효과 스케줄링
+    function scheduleNextEffect() {
+        const delay = 3000 + Math.random() * 4000; // 3~7초 간격
+        setTimeout(() => {
+            if (textLabels.length > 0) {
+                triggerRandomCinematicEffect();
+            }
+            scheduleNextEffect();
+        }, delay);
+    }
+    scheduleNextEffect();
+}
+
+// 랜덤 시네마틱 효과 트리거
+function triggerRandomCinematicEffect() {
+    const effects = ['spotlight', 'wave', 'pulse', 'colorShift', 'zoomBurst'];
+    const effect = effects[Math.floor(Math.random() * effects.length)];
+
+    switch (effect) {
+        case 'spotlight':
+            triggerSpotlight();
+            break;
+        case 'wave':
+            triggerWave();
+            break;
+        case 'pulse':
+            triggerPulse();
+            break;
+        case 'colorShift':
+            triggerColorShift();
+            break;
+        case 'zoomBurst':
+            triggerZoomBurst();
+            break;
+    }
+}
+
+// 스포트라이트 효과 - 랜덤 이름이 크게 확대
+function triggerSpotlight() {
+    if (textLabels.length === 0) return;
+
+    // 이전 스포트라이트 제거
+    if (spotlightLabel) {
+        spotlightLabel.element.classList.remove('spotlight');
+    }
+
+    // 랜덤 라벨 선택
+    const randomIndex = Math.floor(Math.random() * textLabels.length);
+    spotlightLabel = textLabels[randomIndex];
+
+    // 스포트라이트 클래스 추가
+    spotlightLabel.element.classList.add('spotlight');
+
+    // 해당 방향으로 카메라 회전
+    const pos = spotlightLabel.originalPosition;
+    targetRotation.y = Math.atan2(pos.x, pos.z);
+    targetRotation.x = -Math.asin(pos.y / sphereRadius) * 0.5;
+
+    // 3초 후 제거
+    setTimeout(() => {
+        if (spotlightLabel) {
+            spotlightLabel.element.classList.remove('spotlight');
+            spotlightLabel = null;
+        }
+    }, 3000);
+}
+
+// 웨이브 효과 - 물결치듯 순차적으로 커짐
+function triggerWave() {
+    const duration = 2000;
+    const startTime = Date.now();
+
+    function animateWave() {
+        const elapsed = Date.now() - startTime;
+        const progress = elapsed / duration;
+
+        if (progress < 1) {
+            textLabels.forEach((label, index) => {
+                const wavePosition = (index / textLabels.length + progress * 2) % 1;
+                const waveIntensity = Math.sin(wavePosition * Math.PI) * 0.5;
+
+                if (waveIntensity > 0.3) {
+                    label.element.classList.add('wave-active');
+                } else {
+                    label.element.classList.remove('wave-active');
+                }
+            });
+            requestAnimationFrame(animateWave);
+        } else {
+            textLabels.forEach(label => {
+                label.element.classList.remove('wave-active');
+            });
+        }
+    }
+
+    animateWave();
+}
+
+// 펄스 효과 - 모든 이름이 동시에 펄스
+function triggerPulse() {
+    textLabels.forEach(label => {
+        label.element.classList.add('pulse-effect');
+    });
+
+    setTimeout(() => {
+        textLabels.forEach(label => {
+            label.element.classList.remove('pulse-effect');
+        });
+    }, 1500);
+}
+
+// 색상 시프트 효과 - 색상이 무지개처럼 변화
+function triggerColorShift() {
+    const duration = 2500;
+    const startTime = Date.now();
+
+    function animateColorShift() {
+        const elapsed = Date.now() - startTime;
+        const progress = elapsed / duration;
+
+        if (progress < 1) {
+            textLabels.forEach((label, index) => {
+                const colorIndex = Math.floor((index / textLabels.length + progress) * cinematicColors.length) % cinematicColors.length;
+                label.element.style.color = cinematicColors[colorIndex];
+                label.element.classList.add('color-shifting');
+            });
+            requestAnimationFrame(animateColorShift);
+        } else {
+            // 원래 색상으로 복원
+            textLabels.forEach(label => {
+                const originalColor = categoryColors[label.nameData.category] || categoryColors.other;
+                label.element.style.color = originalColor;
+                label.element.classList.remove('color-shifting');
+            });
+        }
+    }
+
+    animateColorShift();
+}
+
+// 줌 버스트 효과 - 카메라가 빠르게 줌인/아웃
+function triggerZoomBurst() {
+    const originalZ = camera.position.z;
+    const targetZ = originalZ - 200;
+    const duration = 800;
+    const startTime = Date.now();
+
+    // 랜덤 라벨에 글로우 효과
+    const randomLabels = textLabels
+        .sort(() => Math.random() - 0.5)
+        .slice(0, Math.min(5, textLabels.length));
+
+    randomLabels.forEach(label => {
+        label.element.classList.add('zoom-glow');
+    });
+
+    function animateZoom() {
+        const elapsed = Date.now() - startTime;
+        const progress = elapsed / duration;
+
+        if (progress < 1) {
+            // 이징 함수 (ease-out-back)
+            const easeProgress = progress < 0.5
+                ? 2 * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+            camera.position.z = originalZ + (targetZ - originalZ) * Math.sin(easeProgress * Math.PI);
+            requestAnimationFrame(animateZoom);
+        } else {
+            camera.position.z = originalZ;
+            randomLabels.forEach(label => {
+                label.element.classList.remove('zoom-glow');
+            });
+        }
+    }
+
+    animateZoom();
 }
 
 // 이름 로드
