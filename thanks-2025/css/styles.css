@@ -113,9 +113,21 @@ select option {
     white-space: nowrap;
 }
 
-.text-label:hover {
-    transform: scale(1.2);
+.text-label:hover,
+.text-label.hovered {
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+/* 마우스 오버 시 확대 효과 */
+.text-label.hovered {
+    font-size: 32px !important;
+    color: #fff !important;
+    text-shadow:
+        0 0 20px currentColor,
+        0 0 40px currentColor,
+        0 0 60px rgba(255, 255, 255, 0.5) !important;
+    z-index: 1000 !important;
+    transition: all 0.2s ease-out !important;
 }
 
 .text-label.highlighted {
