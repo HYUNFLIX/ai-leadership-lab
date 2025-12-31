@@ -295,24 +295,13 @@ input:focus, select:focus, textarea:focus {
 
 @media (max-width: 768px) {
     .floating-name {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .floating-name:hover {
-        transform: scale(1.2) !important;
+        transform: scale(1.4) !important;
     }
 
-    .floating-name.found-highlight {
-        transform: scale(1.5) !important;
-    }
-
-    .floating-name.found-highlight::after {
-        font-size: 10px;
-        bottom: -20px;
-    }
-}
-
-@media (max-width: 480px) {
     .floating-name.found-highlight {
         transform: scale(1.3) !important;
     }
@@ -320,6 +309,25 @@ input:focus, select:focus, textarea:focus {
     .floating-name.found-highlight::after {
         font-size: 9px;
         bottom: -18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-name {
+        font-size: 10px;
+    }
+
+    .floating-name:hover {
+        transform: scale(1.3) !important;
+    }
+
+    .floating-name.found-highlight {
+        transform: scale(1.2) !important;
+    }
+
+    .floating-name.found-highlight::after {
+        font-size: 8px;
+        bottom: -16px;
     }
 }
 
