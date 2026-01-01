@@ -9,6 +9,8 @@ let tagElements = [];
 let mouseX = 0;
 let mouseY = 0;
 let isMouseInCloud = false;
+let animationFrameId = null;
+let shuffleInterval = null;
 
 const tagCloud = document.getElementById('tag-cloud');
 const loader = document.getElementById('loader');
@@ -79,6 +81,11 @@ function createTagCloud() {
     tagCloud.innerHTML = '';
     tagElements = [];
 
+    // 기존 애니메이션 정리
+    if (shuffleInterval) {
+        clearInterval(shuffleInterval);
+    }
+
     if (names.length === 0) {
         tagCloud.innerHTML = '<p class="text-center text-gray-500 py-12">아직 등록된 이름이 없습니다.</p>';
         return;
@@ -97,6 +104,13 @@ function createTagCloud() {
         tag.textContent = nameData.name;
         tag.dataset.index = names.findIndex(n => n.name === nameData.name);
 
+        // 랜덤 플로팅 애니메이션 할당
+        const floatClass = `float-anim-${Math.floor(Math.random() * 6) + 1}`;
+        tag.classList.add(floatClass);
+
+        // 랜덤 딜레이로 자연스러운 움직임
+        tag.style.animationDelay = `${Math.random() * -10}s`;
+
         // 클릭 이벤트
         tag.addEventListener('click', () => showNamePopup(nameData));
 
@@ -105,6 +119,9 @@ function createTagCloud() {
     });
 
     tagCloud.appendChild(container);
+
+    // 주기적으로 태그 순서 섞기 시작
+    startAutoShuffle();
 }
 
 // 이름 팝업 표시
@@ -329,13 +346,75 @@ function applyWaveEffect() {
     });
 }
 
-// 모든 태그 초기화
+// 모든 태그 초기화 (마우스 효과만)
 function resetAllTags() {
     tagElements.forEach(tag => {
-        tag.style.transform = '';
         tag.style.filter = '';
         tag.style.zIndex = '';
+        // transform은 CSS 애니메이션이 처리하도록 유지
     });
+}
+
+// 자동 셔플 시작
+function startAutoShuffle() {
+    // 5~10초마다 일부 태그들의 위치를 섞음
+    shuffleInterval = setInterval(() => {
+        shuffleSomeTags();
+    }, 6000);
+}
+
+// 일부 태그들의 순서 섞기 (애니메이션과 함께)
+function shuffleSomeTags() {
+    const container = tagCloud.querySelector('.tag-container');
+    if (!container || tagElements.length < 3) return;
+
+    // 랜덤하게 2~5개 태그 선택
+    const numToShuffle = Math.min(2 + Math.floor(Math.random() * 4), tagElements.length);
+    const indices = [];
+
+    while (indices.length < numToShuffle) {
+        const randIndex = Math.floor(Math.random() * tagElements.length);
+        if (!indices.includes(randIndex)) {
+            indices.push(randIndex);
+        }
+    }
+
+    // 선택된 태그들에 셔플 애니메이션 적용
+    indices.forEach((index, i) => {
+        const tag = tagElements[index];
+        if (!tag) return;
+
+        // 잠시 특별한 애니메이션 클래스 추가
+        tag.classList.add('tag-shuffling');
+
+        setTimeout(() => {
+            tag.classList.remove('tag-shuffling');
+
+            // 실제로 DOM에서 위치 변경
+            if (i === indices.length - 1) {
+                // 마지막 태그일 때 모든 선택된 태그들의 순서를 섞음
+                const shuffledIndices = [...indices].sort(() => Math.random() - 0.5);
+                shuffledIndices.forEach((idx, newPos) => {
+                    const tagToMove = tagElements[indices[newPos]];
+                    if (tagToMove && container.contains(tagToMove)) {
+                        container.appendChild(tagToMove);
+                    }
+                });
+            }
+        }, 500);
+    });
+}
+
+// 랜덤 태그 하이라이트 (주기적으로 관심 끌기)
+function randomHighlight() {
+    if (tagElements.length === 0) return;
+
+    const randomTag = tagElements[Math.floor(Math.random() * tagElements.length)];
+    randomTag.classList.add('tag-spotlight');
+
+    setTimeout(() => {
+        randomTag.classList.remove('tag-spotlight');
+    }, 2000);
 }
 
 // 시작
