@@ -31,7 +31,7 @@
         }
     </script>
 </head>
-<body class="font-pretendard bg-[#0a0a1a] text-white overflow-hidden">
+<body class="font-pretendard bg-[#0a0a1a] text-white">
     <!-- Loading Screen -->
     <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0a0a1a]">
         <div class="text-center">
@@ -76,16 +76,8 @@
             </div>
         </header>
 
-        <!-- Word Cloud Canvas Container -->
-        <main class="flex-1 relative overflow-hidden">
-            <!-- Gradient Overlays for depth -->
-            <div class="absolute inset-0 pointer-events-none">
-                <div class="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-[#0a0a1a] to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#0a0a1a] to-transparent"></div>
-            </div>
-
-            <!-- Word Cloud Container -->
-            <div id="wordcloud-container" class="absolute inset-0 flex items-center justify-center overflow-hidden"></div>
+        <!-- Word Cloud Container -->
+        <main id="wordcloud-container" class="flex-1 overflow-y-auto px-4 py-6">
         </main>
 
         <!-- 검색 결과 없을 때 -->
