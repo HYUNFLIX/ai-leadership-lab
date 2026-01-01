@@ -6,6 +6,9 @@
 // 글로벌 변수
 let names = [];
 let tagElements = [];
+let mouseX = 0;
+let mouseY = 0;
+let isMouseInCloud = false;
 
 const tagCloud = document.getElementById('tag-cloud');
 const loader = document.getElementById('loader');
@@ -112,6 +115,18 @@ function showNamePopup(nameData) {
 
 // 이벤트 리스너 설정
 function setupEventListeners() {
+    // 마우스 움직임 추적 (웨이브 효과용)
+    tagCloud.addEventListener('mousemove', handleMouseMove);
+    tagCloud.addEventListener('mouseenter', () => { isMouseInCloud = true; });
+    tagCloud.addEventListener('mouseleave', () => {
+        isMouseInCloud = false;
+        resetAllTags();
+    });
+
+    // 터치 이벤트 (모바일)
+    tagCloud.addEventListener('touchmove', handleTouchMove, { passive: true });
+    tagCloud.addEventListener('touchend', resetAllTags);
+
     // 검색
     searchBtn.addEventListener('click', searchName);
     searchInput.addEventListener('keypress', (e) => {
@@ -257,6 +272,70 @@ function clearHighlight() {
     if (notFoundSection) {
         notFoundSection.classList.add('hidden');
     }
+}
+
+// 마우스 움직임 처리 - 웨이브 효과
+function handleMouseMove(e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    applyWaveEffect();
+}
+
+// 터치 움직임 처리
+function handleTouchMove(e) {
+    if (e.touches.length > 0) {
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+        applyWaveEffect();
+    }
+}
+
+// 웨이브 효과 적용 - 마우스 근처 태그들이 반응
+function applyWaveEffect() {
+    const maxDistance = 150; // 효과 반경
+
+    tagElements.forEach(tag => {
+        const rect = tag.getBoundingClientRect();
+        const tagCenterX = rect.left + rect.width / 2;
+        const tagCenterY = rect.top + rect.height / 2;
+
+        // 마우스와 태그 사이의 거리 계산
+        const dx = mouseX - tagCenterX;
+        const dy = mouseY - tagCenterY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < maxDistance) {
+            // 거리에 따른 효과 강도 (가까울수록 강함)
+            const intensity = 1 - (distance / maxDistance);
+
+            // 스케일 효과
+            const scale = 1 + (intensity * 0.3);
+
+            // 밀어내는 효과 (마우스에서 멀어지는 방향)
+            const pushX = (dx / distance) * intensity * -15;
+            const pushY = (dy / distance) * intensity * -15;
+
+            // 밝기 효과
+            const brightness = 1 + (intensity * 0.5);
+
+            tag.style.transform = `translate(${pushX}px, ${pushY}px) scale(${scale})`;
+            tag.style.filter = `brightness(${brightness})`;
+            tag.style.zIndex = Math.round(intensity * 100);
+        } else {
+            tag.style.transform = '';
+            tag.style.filter = '';
+            tag.style.zIndex = '';
+        }
+    });
+}
+
+// 모든 태그 초기화
+function resetAllTags() {
+    tagElements.forEach(tag => {
+        tag.style.transform = '';
+        tag.style.filter = '';
+        tag.style.zIndex = '';
+    });
 }
 
 // 시작
