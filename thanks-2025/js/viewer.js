@@ -1,12 +1,10 @@
 /* =============================================
-   Word Cloud Viewer - DOM-based Smooth Animation
+   Word Cloud Viewer - Smooth Size Animation
    2025 감사합니다 워드클라우드
    ============================================= */
 
-// 글로벌 변수
 let names = [];
 let wordElements = [];
-let animationFrameId = null;
 
 const container = document.getElementById('wordcloud-container');
 const loader = document.getElementById('loader');
@@ -20,14 +18,14 @@ const closePopup = document.getElementById('close-popup');
 
 // 색상 팔레트
 const colors = [
-    '#06b6d4', '#0891b2', // Cyan
-    '#8b5cf6', '#7c3aed', // Purple
-    '#ec4899', '#db2777', // Pink
-    '#f59e0b', '#d97706', // Amber
-    '#10b981', '#059669', // Emerald
-    '#6366f1', '#4f46e5', // Indigo
-    '#f43f5e', '#e11d48', // Rose
-    '#14b8a6', '#0d9488', // Teal
+    '#06b6d4', '#0891b2',
+    '#8b5cf6', '#7c3aed',
+    '#ec4899', '#db2777',
+    '#f59e0b', '#d97706',
+    '#10b981', '#059669',
+    '#6366f1', '#4f46e5',
+    '#f43f5e', '#e11d48',
+    '#14b8a6', '#0d9488',
 ];
 
 // 초기화
@@ -70,134 +68,95 @@ function updateNameCount() {
 function renderWordCloud() {
     if (names.length === 0) return;
 
-    // 기존 요소 제거
     container.innerHTML = '';
     wordElements = [];
-
-    if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-    }
 
     const containerRect = container.getBoundingClientRect();
     const isMobile = window.innerWidth < 768;
 
-    // 폰트 크기 범위
-    const minSize = isMobile ? 12 : 16;
-    const maxSize = isMobile ? 28 : 42;
+    const minSize = isMobile ? 14 : 18;
+    const maxSize = isMobile ? 32 : 48;
 
-    // 각 이름에 대해 요소 생성
     names.forEach((nameData, index) => {
         const word = document.createElement('div');
         word.className = 'word-item';
         word.textContent = nameData.name;
         word.dataset.name = nameData.name;
 
-        // 랜덤 초기 크기
+        // 랜덤 크기
         const baseSize = minSize + Math.random() * (maxSize - minSize);
         const color = colors[Math.floor(Math.random() * colors.length)];
 
-        // 위치 계산 (원형 분포)
+        // 위치 (원형 분포)
         const angle = (index / names.length) * Math.PI * 2;
-        const radiusX = containerRect.width * 0.35;
+        const radiusX = containerRect.width * 0.38;
         const radiusY = containerRect.height * 0.35;
         const offsetX = Math.cos(angle) * radiusX * (0.3 + Math.random() * 0.7);
         const offsetY = Math.sin(angle) * radiusY * (0.3 + Math.random() * 0.7);
 
-        // 초기 스타일
+        // 랜덤 애니메이션 시간 (3초~6초)
+        const duration = 3 + Math.random() * 3;
+        // 랜덤 딜레이
+        const delay = Math.random() * -duration;
+
         word.style.cssText = `
             position: absolute;
-            left: 50%;
-            top: 50%;
+            left: calc(50% + ${offsetX}px);
+            top: calc(50% + ${offsetY}px);
+            transform: translate(-50%, -50%);
             font-size: ${baseSize}px;
             font-weight: 600;
             color: ${color};
             cursor: pointer;
             user-select: none;
             white-space: nowrap;
-            transition: transform 0.3s ease, text-shadow 0.3s ease;
-            transform: translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px));
-            text-shadow: 0 0 20px ${color}40;
+            text-shadow: 0 0 20px ${color}50;
+            animation: breathe ${duration}s ease-in-out ${delay}s infinite;
+            transition: transform 0.3s ease, text-shadow 0.3s ease, filter 0.3s ease;
         `;
 
-        // 애니메이션 데이터 저장
-        const wordData = {
-            element: word,
-            baseSize: baseSize,
-            currentSize: baseSize,
-            targetSize: baseSize,
-            color: color,
-            offsetX: offsetX,
-            offsetY: offsetY,
-            phase: Math.random() * Math.PI * 2,
-            speed: 0.5 + Math.random() * 0.5,
-            sizePhase: Math.random() * Math.PI * 2,
-            sizeSpeed: 0.3 + Math.random() * 0.4,
-        };
+        word.dataset.color = color;
+        word.dataset.offsetX = offsetX;
+        word.dataset.offsetY = offsetY;
 
-        // 호버 이벤트
+        // 호버 이벤트 - 크게 확대
         word.addEventListener('mouseenter', () => {
-            word.style.transform = `translate(calc(-50% + ${wordData.offsetX}px), calc(-50% + ${wordData.offsetY}px)) scale(1.5)`;
-            word.style.textShadow = `0 0 30px ${wordData.color}, 0 0 60px ${wordData.color}`;
-            word.style.zIndex = '10';
+            word.style.animation = 'none';
+            word.style.transform = 'translate(-50%, -50%) scale(1.8)';
+            word.style.textShadow = `0 0 40px ${color}, 0 0 80px ${color}`;
+            word.style.filter = 'brightness(1.3)';
+            word.style.zIndex = '100';
         });
 
         word.addEventListener('mouseleave', () => {
-            word.style.transform = `translate(calc(-50% + ${wordData.offsetX}px), calc(-50% + ${wordData.offsetY}px)) scale(1)`;
-            word.style.textShadow = `0 0 20px ${wordData.color}40`;
+            word.style.transform = 'translate(-50%, -50%) scale(1)';
+            word.style.textShadow = `0 0 20px ${color}50`;
+            word.style.filter = 'brightness(1)';
             word.style.zIndex = '1';
+            // 애니메이션 다시 시작
+            setTimeout(() => {
+                word.style.animation = `breathe ${duration}s ease-in-out ${delay}s infinite`;
+            }, 300);
         });
 
-        // 클릭 이벤트
+        // 클릭
         word.addEventListener('click', () => {
             showNamePopup(nameData);
         });
 
         container.appendChild(word);
-        wordElements.push(wordData);
+        wordElements.push({ element: word, nameData, color });
     });
-
-    // 애니메이션 시작
-    startAnimation();
 }
 
-// 애니메이션 루프
-function startAnimation() {
-    let lastTime = performance.now();
-
-    function animate(currentTime) {
-        const deltaTime = (currentTime - lastTime) / 1000;
-        lastTime = currentTime;
-
-        const isMobile = window.innerWidth < 768;
-        const minSize = isMobile ? 12 : 16;
-        const maxSize = isMobile ? 28 : 42;
-
-        wordElements.forEach((wordData) => {
-            // 크기 애니메이션 (사인파로 부드럽게)
-            wordData.sizePhase += deltaTime * wordData.sizeSpeed;
-            const sizeFactor = 0.7 + Math.sin(wordData.sizePhase) * 0.3;
-            const newSize = wordData.baseSize * sizeFactor;
-
-            // 크기 적용 (부드러운 변화)
-            wordData.currentSize += (newSize - wordData.currentSize) * 0.05;
-            wordData.element.style.fontSize = `${wordData.currentSize}px`;
-        });
-
-        animationFrameId = requestAnimationFrame(animate);
-    }
-
-    animationFrameId = requestAnimationFrame(animate);
-}
-
-// 이름 팝업 표시
+// 이름 팝업
 function showNamePopup(nameData) {
     popupName.textContent = nameData.name;
     namePopup.classList.remove('hidden');
 }
 
-// 이벤트 리스너 설정
+// 이벤트 리스너
 function setupEventListeners() {
-    // 윈도우 리사이즈
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
@@ -206,7 +165,6 @@ function setupEventListeners() {
         }, 300);
     });
 
-    // 검색
     searchBtn.addEventListener('click', searchName);
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') searchName();
@@ -217,7 +175,6 @@ function setupEventListeners() {
         }
     });
 
-    // 팝업 닫기
     closePopup.addEventListener('click', () => {
         namePopup.classList.add('hidden');
     });
@@ -227,7 +184,6 @@ function setupEventListeners() {
         }
     });
 
-    // 이름 등록 요청 제출
     const submitRequest = document.getElementById('submit-request');
     const requestNameInput = document.getElementById('request-name');
     const requestForm = document.getElementById('request-form');
@@ -270,7 +226,7 @@ function setupEventListeners() {
     }
 }
 
-// 이름 검색
+// 검색
 function searchName() {
     const query = searchInput.value.trim();
     if (!query) return;
@@ -281,7 +237,6 @@ function searchName() {
     const notFoundSection = document.getElementById('not-found-section');
     notFoundSection.classList.add('hidden');
 
-    // 매칭되는 이름 찾기
     const matchedNames = names.filter(n =>
         n.name.toLowerCase().includes(queryLower)
     );
@@ -297,10 +252,8 @@ function searchName() {
         }
         searchResult.style.color = '#4ade80';
 
-        // 하이라이트 효과
         highlightWords(matchedNames.map(n => n.name));
 
-        // 1.5초 후 팝업
         setTimeout(() => {
             showNamePopup(matchedNames[0]);
         }, 1500);
@@ -322,31 +275,31 @@ function searchName() {
     }, 5000);
 }
 
-// 이름 하이라이트
+// 하이라이트
 function highlightWords(wordList) {
-    wordElements.forEach((wordData) => {
-        const name = wordData.element.dataset.name;
+    wordElements.forEach(({ element, color }) => {
+        const name = element.dataset.name;
         if (wordList.includes(name)) {
-            wordData.element.style.transform = `translate(calc(-50% + ${wordData.offsetX}px), calc(-50% + ${wordData.offsetY}px)) scale(2)`;
-            wordData.element.style.textShadow = `0 0 40px ${wordData.color}, 0 0 80px ${wordData.color}`;
-            wordData.element.style.zIndex = '20';
-
-            // 깜빡임 효과
-            wordData.element.style.animation = 'pulse-glow 0.5s ease-in-out infinite';
+            element.style.animation = 'none';
+            element.style.transform = 'translate(-50%, -50%) scale(2.5)';
+            element.style.textShadow = `0 0 50px ${color}, 0 0 100px ${color}`;
+            element.style.filter = 'brightness(1.5)';
+            element.style.zIndex = '100';
         }
     });
 
     setTimeout(() => {
-        wordElements.forEach((wordData) => {
-            wordData.element.style.animation = '';
-            wordData.element.style.transform = `translate(calc(-50% + ${wordData.offsetX}px), calc(-50% + ${wordData.offsetY}px)) scale(1)`;
-            wordData.element.style.textShadow = `0 0 20px ${wordData.color}40`;
-            wordData.element.style.zIndex = '1';
+        wordElements.forEach(({ element, color }) => {
+            element.style.transform = 'translate(-50%, -50%) scale(1)';
+            element.style.textShadow = `0 0 20px ${color}50`;
+            element.style.filter = 'brightness(1)';
+            element.style.zIndex = '1';
+            const duration = 3 + Math.random() * 3;
+            element.style.animation = `breathe ${duration}s ease-in-out infinite`;
         });
     }, 3000);
 }
 
-// 하이라이트 제거
 function clearHighlight() {
     searchResult.classList.add('hidden');
     const notFoundSection = document.getElementById('not-found-section');
@@ -355,5 +308,4 @@ function clearHighlight() {
     }
 }
 
-// 시작
 document.addEventListener('DOMContentLoaded', init);
