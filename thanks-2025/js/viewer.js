@@ -1,18 +1,14 @@
 /* =============================================
-   Tag Cloud Viewer
+   Word Cloud Viewer - Using WordCloud2.js
    2025 감사합니다 워드클라우드
    ============================================= */
 
 // 글로벌 변수
 let names = [];
-let tagElements = [];
-let mouseX = 0;
-let mouseY = 0;
-let isMouseInCloud = false;
-let animationFrameId = null;
-let shuffleInterval = null;
+let wordCloudInstance = null;
+let namePositions = new Map(); // 이름별 위치 저장
 
-const tagCloud = document.getElementById('tag-cloud');
+const canvas = document.getElementById('wordcloud-canvas');
 const loader = document.getElementById('loader');
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
@@ -21,31 +17,26 @@ const countNumber = document.getElementById('count-number');
 const namePopup = document.getElementById('name-popup');
 const popupName = document.getElementById('popup-name');
 const closePopup = document.getElementById('close-popup');
+const tooltip = document.getElementById('tooltip');
+const tooltipName = document.getElementById('tooltip-name');
 
-// 카테고리별 색상 클래스
-const categoryClasses = {
-    colleague: 'tag-colleague',
-    mentor: 'tag-mentor',
-    client: 'tag-client',
-    partner: 'tag-partner',
-    friend: 'tag-friend',
-    family: 'tag-family',
-    other: 'tag-other'
-};
+// 그라데이션 색상 팔레트
+const colorPalettes = [
+    ['#06b6d4', '#0891b2', '#0e7490'], // Cyan
+    ['#8b5cf6', '#7c3aed', '#6d28d9'], // Purple
+    ['#ec4899', '#db2777', '#be185d'], // Pink
+    ['#f59e0b', '#d97706', '#b45309'], // Amber
+    ['#10b981', '#059669', '#047857'], // Emerald
+    ['#6366f1', '#4f46e5', '#4338ca'], // Indigo
+];
 
 // 초기화
 async function init() {
-    // 샘플 데이터 초기화
     await initSampleData();
-
-    // 이벤트 리스너
     setupEventListeners();
-
-    // 이름 로드 및 구독
     await loadNames();
     subscribeToUpdates();
 
-    // 로더 숨기기
     setTimeout(() => {
         loader.style.opacity = '0';
         setTimeout(() => {
@@ -58,7 +49,7 @@ async function init() {
 async function loadNames() {
     names = await DataManager.getNames();
     updateNameCount();
-    createTagCloud();
+    renderWordCloud();
 }
 
 // 실시간 업데이트 구독
@@ -66,7 +57,7 @@ function subscribeToUpdates() {
     DataManager.subscribe(async (updatedNames) => {
         names = updatedNames;
         updateNameCount();
-        createTagCloud();
+        renderWordCloud();
     });
 }
 
@@ -75,53 +66,93 @@ function updateNameCount() {
     countNumber.textContent = names.length;
 }
 
-// 태그 클라우드 생성
-function createTagCloud() {
-    // 기존 요소 제거
-    tagCloud.innerHTML = '';
-    tagElements = [];
+// 캔버스 크기 설정
+function setupCanvas() {
+    const container = canvas.parentElement;
+    const dpr = window.devicePixelRatio || 1;
 
-    // 기존 애니메이션 정리
-    if (shuffleInterval) {
-        clearInterval(shuffleInterval);
-    }
+    canvas.width = container.clientWidth * dpr;
+    canvas.height = container.clientHeight * dpr;
+    canvas.style.width = container.clientWidth + 'px';
+    canvas.style.height = container.clientHeight + 'px';
+}
 
-    if (names.length === 0) {
-        tagCloud.innerHTML = '<p class="text-center text-gray-500 py-12">아직 등록된 이름이 없습니다.</p>';
-        return;
-    }
+// 워드클라우드 렌더링
+function renderWordCloud() {
+    if (names.length === 0) return;
 
-    // 이름을 섞어서 다양하게 표시
-    const shuffledNames = [...names].sort(() => Math.random() - 0.5);
+    setupCanvas();
+    namePositions.clear();
 
-    // 태그 컨테이너 (flex wrap)
-    const container = document.createElement('div');
-    container.className = 'tag-container';
-
-    shuffledNames.forEach((nameData, index) => {
-        const tag = document.createElement('button');
-        tag.className = `name-tag ${categoryClasses[nameData.category] || 'tag-other'}`;
-        tag.textContent = nameData.name;
-        tag.dataset.index = names.findIndex(n => n.name === nameData.name);
-
-        // 랜덤 플로팅 애니메이션 할당
-        const floatClass = `float-anim-${Math.floor(Math.random() * 6) + 1}`;
-        tag.classList.add(floatClass);
-
-        // 랜덤 딜레이로 자연스러운 움직임
-        tag.style.animationDelay = `${Math.random() * -10}s`;
-
-        // 클릭 이벤트
-        tag.addEventListener('click', () => showNamePopup(nameData));
-
-        container.appendChild(tag);
-        tagElements.push(tag);
+    // 워드 리스트 생성 (이름, 가중치)
+    const wordList = names.map((nameData, index) => {
+        // 가중치를 다양하게 (1~3 사이 랜덤 + 약간의 편차)
+        const weight = 1 + Math.random() * 2;
+        return [nameData.name, weight, nameData];
     });
 
-    tagCloud.appendChild(container);
+    // 색상 함수
+    const getColor = (word, weight, fontSize, distance, theta) => {
+        const palette = colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
+        return palette[Math.floor(Math.random() * palette.length)];
+    };
 
-    // 주기적으로 태그 순서 섞기 시작
-    startAutoShuffle();
+    // 폰트 크기 계산
+    const isMobile = window.innerWidth < 768;
+    const baseSize = isMobile ? 14 : 20;
+    const maxSize = isMobile ? 32 : 48;
+
+    // WordCloud2 옵션
+    const options = {
+        list: wordList,
+        gridSize: isMobile ? 8 : 12,
+        weightFactor: (size) => {
+            return baseSize + (size * (maxSize - baseSize) / 3);
+        },
+        fontFamily: 'Pretendard, -apple-system, sans-serif',
+        fontWeight: '600',
+        color: getColor,
+        backgroundColor: 'transparent',
+        rotateRatio: 0.3,
+        rotationSteps: 2,
+        shuffle: true,
+        drawOutOfBound: false,
+        shrinkToFit: true,
+        shape: 'circle',
+        ellipticity: 0.8,
+        hover: handleWordHover,
+        click: handleWordClick,
+    };
+
+    // 기존 클라우드 제거
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 새 워드클라우드 생성
+    WordCloud(canvas, options);
+}
+
+// 호버 핸들러
+function handleWordHover(item, dimension, event) {
+    if (item) {
+        const [name, weight, nameData] = item;
+        tooltipName.textContent = name;
+        tooltip.style.opacity = '1';
+        tooltip.style.left = (event.clientX + 15) + 'px';
+        tooltip.style.top = (event.clientY - 10) + 'px';
+        canvas.style.cursor = 'pointer';
+    } else {
+        tooltip.style.opacity = '0';
+        canvas.style.cursor = 'default';
+    }
+}
+
+// 클릭 핸들러
+function handleWordClick(item, dimension, event) {
+    if (item) {
+        const [name, weight, nameData] = item;
+        showNamePopup(nameData);
+    }
 }
 
 // 이름 팝업 표시
@@ -132,17 +163,14 @@ function showNamePopup(nameData) {
 
 // 이벤트 리스너 설정
 function setupEventListeners() {
-    // 마우스 움직임 추적 (웨이브 효과용)
-    tagCloud.addEventListener('mousemove', handleMouseMove);
-    tagCloud.addEventListener('mouseenter', () => { isMouseInCloud = true; });
-    tagCloud.addEventListener('mouseleave', () => {
-        isMouseInCloud = false;
-        resetAllTags();
+    // 윈도우 리사이즈
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            renderWordCloud();
+        }, 300);
     });
-
-    // 터치 이벤트 (모바일)
-    tagCloud.addEventListener('touchmove', handleTouchMove, { passive: true });
-    tagCloud.addEventListener('touchend', resetAllTags);
 
     // 검색
     searchBtn.addEventListener('click', searchName);
@@ -206,6 +234,14 @@ function setupEventListeners() {
             }
         });
     }
+
+    // 마우스 움직임 추적 (툴팁 위치)
+    canvas.addEventListener('mousemove', (e) => {
+        if (tooltip.style.opacity === '1') {
+            tooltip.style.left = (e.clientX + 15) + 'px';
+            tooltip.style.top = (e.clientY - 10) + 'px';
+        }
+    });
 }
 
 // 이름 검색
@@ -219,48 +255,32 @@ function searchName() {
     const notFoundSection = document.getElementById('not-found-section');
     notFoundSection.classList.add('hidden');
 
-    // 매칭되는 태그 찾기
-    const matchedTags = tagElements.filter((tag) => {
-        const index = parseInt(tag.dataset.index);
-        return names[index].name.toLowerCase().includes(queryLower);
-    });
+    // 매칭되는 이름 찾기
+    const matchedNames = names.filter(n =>
+        n.name.toLowerCase().includes(queryLower)
+    );
 
     searchResult.classList.remove('hidden');
 
-    if (matchedTags.length > 0) {
-        // 찾음 - 하이라이트 효과
-        matchedTags.forEach(tag => {
-            tag.classList.add('tag-found');
-            // 화면에 보이도록 스크롤
-            if (matchedTags.indexOf(tag) === 0) {
-                tag.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        });
-
-        // 결과 메시지
-        const firstName = names[parseInt(matchedTags[0].dataset.index)].name;
-        if (matchedTags.length === 1) {
+    if (matchedNames.length > 0) {
+        // 찾음
+        const firstName = matchedNames[0].name;
+        if (matchedNames.length === 1) {
             searchResult.innerHTML = `🎉 <strong>${firstName}</strong>님을 찾았습니다!`;
         } else {
-            searchResult.innerHTML = `🎉 ${matchedTags.length}명의 이름을 찾았습니다!`;
+            searchResult.innerHTML = `🎉 ${matchedNames.length}명의 이름을 찾았습니다!`;
         }
         searchResult.style.color = '#4ade80';
 
-        // 1.5초 후 감사 팝업 표시
+        // 하이라이트 효과 (깜빡임)
+        highlightWords(matchedNames.map(n => n.name));
+
+        // 1.5초 후 팝업
         setTimeout(() => {
-            const nameData = names[parseInt(matchedTags[0].dataset.index)];
-            showNamePopup(nameData);
+            showNamePopup(matchedNames[0]);
         }, 1500);
 
-        // 5초 후 하이라이트 제거
-        setTimeout(() => {
-            matchedTags.forEach(tag => {
-                tag.classList.remove('tag-found');
-            });
-        }, 5000);
-
     } else {
-        // 못 찾음
         searchResult.textContent = '해당 이름을 찾을 수 없습니다.';
         searchResult.style.color = '#f87171';
 
@@ -272,149 +292,44 @@ function searchName() {
         notFoundSection.classList.remove('hidden');
     }
 
-    // 5초 후 검색 결과 숨김
     setTimeout(() => {
         searchResult.classList.add('hidden');
     }, 5000);
 }
 
+// 이름 하이라이트 (워드클라우드 다시 그리기)
+function highlightWords(wordList) {
+    // 워드클라우드를 다시 그려서 특정 단어 강조
+    // 간단한 깜빡임 효과를 위해 캔버스에 오버레이 추가
+
+    const overlay = document.createElement('div');
+    overlay.className = 'search-highlight-overlay';
+    overlay.style.cssText = `
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, rgba(74, 222, 128, 0.2) 0%, transparent 70%);
+        pointer-events: none;
+        animation: pulse-highlight 1s ease-in-out 3;
+    `;
+
+    canvas.parentElement.appendChild(overlay);
+
+    setTimeout(() => {
+        overlay.remove();
+    }, 3000);
+}
+
 // 하이라이트 제거
 function clearHighlight() {
-    tagElements.forEach(tag => {
-        tag.classList.remove('tag-found');
-    });
     searchResult.classList.add('hidden');
-
     const notFoundSection = document.getElementById('not-found-section');
     if (notFoundSection) {
         notFoundSection.classList.add('hidden');
     }
-}
 
-// 마우스 움직임 처리 - 웨이브 효과
-function handleMouseMove(e) {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    applyWaveEffect();
-}
-
-// 터치 움직임 처리
-function handleTouchMove(e) {
-    if (e.touches.length > 0) {
-        mouseX = e.touches[0].clientX;
-        mouseY = e.touches[0].clientY;
-        applyWaveEffect();
-    }
-}
-
-// 웨이브 효과 적용 - 마우스 근처 태그들이 반응
-function applyWaveEffect() {
-    const maxDistance = 150; // 효과 반경
-
-    tagElements.forEach(tag => {
-        const rect = tag.getBoundingClientRect();
-        const tagCenterX = rect.left + rect.width / 2;
-        const tagCenterY = rect.top + rect.height / 2;
-
-        // 마우스와 태그 사이의 거리 계산
-        const dx = mouseX - tagCenterX;
-        const dy = mouseY - tagCenterY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < maxDistance) {
-            // 거리에 따른 효과 강도 (가까울수록 강함)
-            const intensity = 1 - (distance / maxDistance);
-
-            // 스케일 효과
-            const scale = 1 + (intensity * 0.3);
-
-            // 밀어내는 효과 (마우스에서 멀어지는 방향)
-            const pushX = (dx / distance) * intensity * -15;
-            const pushY = (dy / distance) * intensity * -15;
-
-            // 밝기 효과
-            const brightness = 1 + (intensity * 0.5);
-
-            tag.style.transform = `translate(${pushX}px, ${pushY}px) scale(${scale})`;
-            tag.style.filter = `brightness(${brightness})`;
-            tag.style.zIndex = Math.round(intensity * 100);
-        } else {
-            tag.style.transform = '';
-            tag.style.filter = '';
-            tag.style.zIndex = '';
-        }
-    });
-}
-
-// 모든 태그 초기화 (마우스 효과만)
-function resetAllTags() {
-    tagElements.forEach(tag => {
-        tag.style.filter = '';
-        tag.style.zIndex = '';
-        // transform은 CSS 애니메이션이 처리하도록 유지
-    });
-}
-
-// 자동 셔플 시작
-function startAutoShuffle() {
-    // 5~10초마다 일부 태그들의 위치를 섞음
-    shuffleInterval = setInterval(() => {
-        shuffleSomeTags();
-    }, 6000);
-}
-
-// 일부 태그들의 순서 섞기 (애니메이션과 함께)
-function shuffleSomeTags() {
-    const container = tagCloud.querySelector('.tag-container');
-    if (!container || tagElements.length < 3) return;
-
-    // 랜덤하게 2~5개 태그 선택
-    const numToShuffle = Math.min(2 + Math.floor(Math.random() * 4), tagElements.length);
-    const indices = [];
-
-    while (indices.length < numToShuffle) {
-        const randIndex = Math.floor(Math.random() * tagElements.length);
-        if (!indices.includes(randIndex)) {
-            indices.push(randIndex);
-        }
-    }
-
-    // 선택된 태그들에 셔플 애니메이션 적용
-    indices.forEach((index, i) => {
-        const tag = tagElements[index];
-        if (!tag) return;
-
-        // 잠시 특별한 애니메이션 클래스 추가
-        tag.classList.add('tag-shuffling');
-
-        setTimeout(() => {
-            tag.classList.remove('tag-shuffling');
-
-            // 실제로 DOM에서 위치 변경
-            if (i === indices.length - 1) {
-                // 마지막 태그일 때 모든 선택된 태그들의 순서를 섞음
-                const shuffledIndices = [...indices].sort(() => Math.random() - 0.5);
-                shuffledIndices.forEach((idx, newPos) => {
-                    const tagToMove = tagElements[indices[newPos]];
-                    if (tagToMove && container.contains(tagToMove)) {
-                        container.appendChild(tagToMove);
-                    }
-                });
-            }
-        }, 500);
-    });
-}
-
-// 랜덤 태그 하이라이트 (주기적으로 관심 끌기)
-function randomHighlight() {
-    if (tagElements.length === 0) return;
-
-    const randomTag = tagElements[Math.floor(Math.random() * tagElements.length)];
-    randomTag.classList.add('tag-spotlight');
-
-    setTimeout(() => {
-        randomTag.classList.remove('tag-spotlight');
-    }, 2000);
+    // 오버레이 제거
+    const overlay = canvas.parentElement.querySelector('.search-highlight-overlay');
+    if (overlay) overlay.remove();
 }
 
 // 시작
