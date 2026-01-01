@@ -1,16 +1,13 @@
 /* =============================================
-   2D Floating Word Cloud - CSS Animation
+   Tag Cloud Viewer
    2025 감사합니다 워드클라우드
    ============================================= */
 
 // 글로벌 변수
 let names = [];
-let nameElements = [];
-let zoomLevel = 1; // 스크롤 줌 레벨
-const MIN_ZOOM = 0.5;
-const MAX_ZOOM = 2;
+let tagElements = [];
 
-const container = document.getElementById('cloud-container');
+const tagCloud = document.getElementById('tag-cloud');
 const loader = document.getElementById('loader');
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
@@ -20,15 +17,15 @@ const namePopup = document.getElementById('name-popup');
 const popupName = document.getElementById('popup-name');
 const closePopup = document.getElementById('close-popup');
 
-// 카테고리별 색상
-const categoryColors = {
-    colleague: '#818cf8',  // Indigo
-    mentor: '#c084fc',     // Purple
-    client: '#22d3ee',     // Cyan
-    partner: '#4ade80',    // Green
-    friend: '#fbbf24',     // Yellow
-    family: '#fb7185',     // Pink
-    other: '#9ca3af'       // Gray
+// 카테고리별 색상 클래스
+const categoryClasses = {
+    colleague: 'tag-colleague',
+    mentor: 'tag-mentor',
+    client: 'tag-client',
+    partner: 'tag-partner',
+    friend: 'tag-friend',
+    family: 'tag-family',
+    other: 'tag-other'
 };
 
 // 초기화
@@ -49,14 +46,14 @@ async function init() {
         setTimeout(() => {
             loader.style.display = 'none';
         }, 500);
-    }, 1000);
+    }, 800);
 }
 
 // 이름 로드
 async function loadNames() {
     names = await DataManager.getNames();
     updateNameCount();
-    createFloatingNames();
+    createTagCloud();
 }
 
 // 실시간 업데이트 구독
@@ -64,7 +61,7 @@ function subscribeToUpdates() {
     DataManager.subscribe(async (updatedNames) => {
         names = updatedNames;
         updateNameCount();
-        createFloatingNames();
+        createTagCloud();
     });
 }
 
@@ -73,60 +70,38 @@ function updateNameCount() {
     countNumber.textContent = names.length;
 }
 
-// 플로팅 이름 생성
-function createFloatingNames() {
+// 태그 클라우드 생성
+function createTagCloud() {
     // 기존 요소 제거
-    nameElements.forEach(el => el.remove());
-    nameElements = [];
+    tagCloud.innerHTML = '';
+    tagElements = [];
 
-    if (names.length === 0) return;
+    if (names.length === 0) {
+        tagCloud.innerHTML = '<p class="text-center text-gray-500 py-12">아직 등록된 이름이 없습니다.</p>';
+        return;
+    }
 
-    const isMobile = window.innerWidth < 768;
+    // 이름을 섞어서 다양하게 표시
+    const shuffledNames = [...names].sort(() => Math.random() - 0.5);
 
-    // 안전 영역 계산 (헤더, 검색바 피하기)
-    const safeTop = isMobile ? 140 : 160;
-    const safeBottom = 40;
-    const safeSide = 20;
+    // 태그 컨테이너 (flex wrap)
+    const container = document.createElement('div');
+    container.className = 'tag-container';
 
-    names.forEach((nameData, index) => {
-        const el = document.createElement('div');
-        el.className = 'floating-name';
-        el.textContent = nameData.name;
-        el.dataset.index = index;
-
-        // 카테고리별 색상
-        const color = categoryColors[nameData.category] || categoryColors.other;
-        el.style.color = color;
-
-        // 랜덤 크기 (모바일에서 더 작게)
-        const baseSize = isMobile ? 10 : 18;
-        const sizeVariation = isMobile ? 8 : 20;
-        const size = baseSize + Math.random() * sizeVariation;
-        el.style.fontSize = `${size}px`;
-
-        // 랜덤 위치
-        const x = safeSide + Math.random() * (window.innerWidth - safeSide * 2 - 100);
-        const y = safeTop + Math.random() * (window.innerHeight - safeTop - safeBottom - 50);
-        el.style.left = `${x}px`;
-        el.style.top = `${y}px`;
-
-        // 랜덤 애니메이션 설정
-        const duration = 15 + Math.random() * 20; // 15~35초
-        const delay = Math.random() * -30; // 시작 위치 다양화
-        el.style.animationDuration = `${duration}s`;
-        el.style.animationDelay = `${delay}s`;
-
-        // 랜덤 플로팅 방향 (8가지 방향 중 하나)
-        const directions = ['float-1', 'float-2', 'float-3', 'float-4', 'float-5', 'float-6', 'float-7', 'float-8'];
-        const direction = directions[Math.floor(Math.random() * directions.length)];
-        el.classList.add(direction);
+    shuffledNames.forEach((nameData, index) => {
+        const tag = document.createElement('button');
+        tag.className = `name-tag ${categoryClasses[nameData.category] || 'tag-other'}`;
+        tag.textContent = nameData.name;
+        tag.dataset.index = names.findIndex(n => n.name === nameData.name);
 
         // 클릭 이벤트
-        el.addEventListener('click', () => showNamePopup(nameData));
+        tag.addEventListener('click', () => showNamePopup(nameData));
 
-        container.appendChild(el);
-        nameElements.push(el);
+        container.appendChild(tag);
+        tagElements.push(tag);
     });
+
+    tagCloud.appendChild(container);
 }
 
 // 이름 팝업 표시
@@ -137,49 +112,6 @@ function showNamePopup(nameData) {
 
 // 이벤트 리스너 설정
 function setupEventListeners() {
-    // 윈도우 리사이즈
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            createFloatingNames();
-        }, 300);
-    });
-
-    // 스크롤로 줌 인/아웃
-    container.addEventListener('wheel', (e) => {
-        // 검색바에 포커스가 있으면 무시
-        if (document.activeElement === searchInput) return;
-
-        e.preventDefault();
-
-        const delta = e.deltaY > 0 ? -0.1 : 0.1;
-        zoomLevel = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoomLevel + delta));
-
-        applyZoom();
-    }, { passive: false });
-
-    // 모바일 핀치 줌
-    let initialPinchDistance = 0;
-    let initialZoom = 1;
-
-    container.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 2) {
-            initialPinchDistance = getPinchDistance(e.touches);
-            initialZoom = zoomLevel;
-        }
-    }, { passive: true });
-
-    container.addEventListener('touchmove', (e) => {
-        if (e.touches.length === 2) {
-            e.preventDefault();
-            const currentDistance = getPinchDistance(e.touches);
-            const scale = currentDistance / initialPinchDistance;
-            zoomLevel = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, initialZoom * scale));
-            applyZoom();
-        }
-    }, { passive: false });
-
     // 검색
     searchBtn.addEventListener('click', searchName);
     searchInput.addEventListener('keypress', (e) => {
@@ -255,38 +187,43 @@ function searchName() {
     const notFoundSection = document.getElementById('not-found-section');
     notFoundSection.classList.add('hidden');
 
-    // 매칭되는 요소 찾기
-    const matchedElements = nameElements.filter((el, index) => {
+    // 매칭되는 태그 찾기
+    const matchedTags = tagElements.filter((tag) => {
+        const index = parseInt(tag.dataset.index);
         return names[index].name.toLowerCase().includes(queryLower);
     });
 
     searchResult.classList.remove('hidden');
 
-    if (matchedElements.length > 0) {
+    if (matchedTags.length > 0) {
         // 찾음 - 하이라이트 효과
-        matchedElements.forEach(el => {
-            el.classList.add('found-highlight');
+        matchedTags.forEach(tag => {
+            tag.classList.add('tag-found');
+            // 화면에 보이도록 스크롤
+            if (matchedTags.indexOf(tag) === 0) {
+                tag.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         });
 
         // 결과 메시지
-        const firstName = names[parseInt(matchedElements[0].dataset.index)].name;
-        if (matchedElements.length === 1) {
+        const firstName = names[parseInt(matchedTags[0].dataset.index)].name;
+        if (matchedTags.length === 1) {
             searchResult.innerHTML = `🎉 <strong>${firstName}</strong>님을 찾았습니다!`;
         } else {
-            searchResult.innerHTML = `🎉 ${matchedElements.length}명의 이름을 찾았습니다!`;
+            searchResult.innerHTML = `🎉 ${matchedTags.length}명의 이름을 찾았습니다!`;
         }
         searchResult.style.color = '#4ade80';
 
         // 1.5초 후 감사 팝업 표시
         setTimeout(() => {
-            const nameData = names[parseInt(matchedElements[0].dataset.index)];
+            const nameData = names[parseInt(matchedTags[0].dataset.index)];
             showNamePopup(nameData);
         }, 1500);
 
         // 5초 후 하이라이트 제거
         setTimeout(() => {
-            matchedElements.forEach(el => {
-                el.classList.remove('found-highlight');
+            matchedTags.forEach(tag => {
+                tag.classList.remove('tag-found');
             });
         }, 5000);
 
@@ -311,8 +248,8 @@ function searchName() {
 
 // 하이라이트 제거
 function clearHighlight() {
-    nameElements.forEach(el => {
-        el.classList.remove('found-highlight');
+    tagElements.forEach(tag => {
+        tag.classList.remove('tag-found');
     });
     searchResult.classList.add('hidden');
 
@@ -320,19 +257,6 @@ function clearHighlight() {
     if (notFoundSection) {
         notFoundSection.classList.add('hidden');
     }
-}
-
-// 줌 적용
-function applyZoom() {
-    container.style.transform = `scale(${zoomLevel})`;
-    container.style.transformOrigin = 'center center';
-}
-
-// 핀치 거리 계산
-function getPinchDistance(touches) {
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
-    return Math.sqrt(dx * dx + dy * dy);
 }
 
 // 시작

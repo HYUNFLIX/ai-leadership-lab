@@ -36,7 +36,7 @@
         }
     </script>
 </head>
-<body class="font-pretendard bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 text-white overflow-hidden">
+<body class="font-pretendard bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 text-white min-h-screen">
     <!-- Loading Screen -->
     <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950">
         <div class="text-center">
@@ -46,69 +46,71 @@
     </div>
 
     <!-- Main Container -->
-    <div id="app" class="relative w-full h-screen">
-        <!-- Floating Word Cloud Container -->
-        <div id="cloud-container" class="absolute inset-0 overflow-hidden"></div>
-
-        <!-- Ambient Background Effects -->
-        <div class="fixed inset-0 pointer-events-none overflow-hidden">
-            <div class="absolute top-1/4 left-1/4 w-64 md:w-96 h-64 md:h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-64 md:w-96 h-64 md:h-96 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
-            <div class="absolute top-1/2 left-1/2 w-48 md:w-64 h-48 md:h-64 bg-cyan-500/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
-        </div>
-
-        <!-- Header Overlay -->
-        <header class="absolute top-0 left-0 right-0 z-10 p-3 md:p-6">
-            <div class="max-w-7xl mx-auto flex justify-between items-center">
-                <div>
-                    <h1 class="text-lg sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                        2025 감사합니다
-                    </h1>
-                    <p class="text-gray-400 text-xs md:text-sm mt-0.5 md:mt-1 hidden sm:block">Thank You 2025</p>
+    <div id="app" class="relative min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="sticky top-0 z-20 bg-gray-900/80 backdrop-blur-md border-b border-white/10">
+            <div class="max-w-4xl mx-auto px-4 py-4">
+                <div class="flex justify-between items-center mb-3">
+                    <div>
+                        <h1 class="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                            2025 감사합니다
+                        </h1>
+                        <p class="text-gray-400 text-xs md:text-sm mt-0.5 hidden sm:block">Thank You 2025</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl md:text-3xl font-bold text-white" id="count-number">0</div>
+                        <div class="text-xs text-gray-400">감사한 분들</div>
+                    </div>
                 </div>
-                <div id="name-count" class="text-xs md:text-sm text-gray-400 text-right">
-                    <span class="text-lg md:text-2xl font-bold text-white" id="count-number">0</span>
-                    <span class="hidden sm:inline">명의 감사한 분들</span>
-                    <span class="sm:hidden">명</span>
+
+                <!-- Search Bar -->
+                <div class="relative">
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="이름을 검색해보세요..."
+                        class="w-full px-4 py-2.5 text-sm bg-white/10 rounded-xl border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all"
+                    >
+                    <button id="search-btn" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 hover:bg-white/10 rounded-lg transition-all">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
                 </div>
+                <p id="search-result" class="text-center text-xs mt-2 text-gray-400 hidden"></p>
             </div>
         </header>
 
-        <!-- Search Bar -->
-        <div class="absolute top-16 sm:top-20 md:top-24 left-1/2 -translate-x-1/2 z-10 w-full max-w-md px-3 md:px-4">
-            <div class="relative">
-                <input
-                    type="text"
-                    id="search-input"
-                    placeholder="이름을 검색해보세요..."
-                    class="w-full px-4 md:px-5 py-2.5 md:py-3 text-sm md:text-base bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all"
-                >
-                <button id="search-btn" class="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 p-1.5 md:p-2 hover:bg-white/10 rounded-full transition-all">
-                    <svg class="w-4 h-4 md:w-5 md:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </button>
+        <!-- Tag Cloud Container -->
+        <main class="flex-1 overflow-y-auto px-4 py-6">
+            <div id="tag-cloud" class="max-w-4xl mx-auto">
+                <!-- Tags will be dynamically inserted here -->
             </div>
-            <p id="search-result" class="text-center text-xs md:text-sm mt-2 text-gray-400 hidden"></p>
+
             <!-- 검색 결과 없을 때 - 메시지 요청 폼 -->
-            <div id="not-found-section" class="hidden mt-3 md:mt-4 p-3 md:p-4 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
-                <p class="text-gray-300 mb-2 md:mb-3 text-center text-sm">😢 내 이름이 없나요?</p>
-                <div id="request-form" class="space-y-2 md:space-y-3">
+            <div id="not-found-section" class="hidden max-w-md mx-auto mt-6 p-4 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+                <p class="text-gray-300 mb-3 text-center text-sm">😢 내 이름이 없나요?</p>
+                <div id="request-form" class="space-y-3">
                     <input
                         type="text"
                         id="request-name"
                         placeholder="이름을 입력해주세요"
-                        class="w-full px-3 md:px-4 py-2 bg-white/10 rounded-lg border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-xs md:text-sm"
+                        class="w-full px-4 py-2 bg-white/10 rounded-lg border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm"
                     >
-                    <button type="button" id="submit-request" class="w-full py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 rounded-lg text-xs md:text-sm font-medium transition-all">
+                    <button type="button" id="submit-request" class="w-full py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 rounded-lg text-sm font-medium transition-all">
                         등록 요청하기
                     </button>
                 </div>
                 <div id="request-success" class="hidden text-center py-2">
-                    <p class="text-green-400 text-xs md:text-sm">✅ 요청이 전송되었습니다!</p>
+                    <p class="text-green-400 text-sm">✅ 요청이 전송되었습니다!</p>
                 </div>
             </div>
-        </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center py-4 text-gray-500 text-xs border-t border-white/5">
+            Made with ❤️ by AI Leadership Lab
+        </footer>
 
         <!-- Name Detail Popup -->
         <div id="name-popup" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4">
