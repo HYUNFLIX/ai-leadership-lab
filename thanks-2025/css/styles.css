@@ -4,17 +4,18 @@
 
 /* Word Cloud Items */
 .word-item {
-    will-change: transform, filter;
+    will-change: transform;
+    display: inline-block;
 }
 
-/* Breathe Animation - 크기가 커졌다 작아졌다 */
-@keyframes breathe {
+/* Pulse Animation - 부드러운 크기 변화 */
+@keyframes pulse {
     0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.85;
+        transform: scale(1);
+        opacity: 0.9;
     }
     50% {
-        transform: translate(-50%, -50%) scale(1.4);
+        transform: scale(1.15);
         opacity: 1;
     }
 }
