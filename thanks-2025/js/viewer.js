@@ -71,16 +71,16 @@ function renderWordCloud() {
     container.innerHTML = '';
     wordElements = [];
 
+    const isMobile = window.innerWidth < 768;
+
     // Flex 컨테이너 스타일 적용
     container.style.cssText = `
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         align-content: flex-start;
-        gap: 10px;
+        gap: ${isMobile ? '4px' : '10px'};
     `;
-
-    const isMobile = window.innerWidth < 768;
 
     // 이름 섞기
     const shuffledNames = [...names].sort(() => Math.random() - 0.5);
@@ -95,7 +95,8 @@ function renderWordCloud() {
         const sizeClass = Math.floor(Math.random() * 3);
         let fontSize;
         if (isMobile) {
-            fontSize = sizeClass === 0 ? 13 : sizeClass === 1 ? 15 : 18;
+            // 모바일: 작은 글씨로 한 줄에 많이 보이게
+            fontSize = sizeClass === 0 ? 9 : sizeClass === 1 ? 10 : 11;
         } else {
             fontSize = sizeClass === 0 ? 15 : sizeClass === 1 ? 20 : 26;
         }
@@ -107,11 +108,11 @@ function renderWordCloud() {
             font-size: ${fontSize}px;
             font-weight: 500;
             color: ${color};
-            padding: ${isMobile ? '6px 12px' : '8px 16px'};
+            padding: ${isMobile ? '3px 6px' : '8px 16px'};
             cursor: pointer;
             user-select: none;
             white-space: nowrap;
-            border-radius: 25px;
+            border-radius: ${isMobile ? '12px' : '25px'};
             background: ${color}20;
             border: 1px solid ${color}30;
             transition: all 0.3s ease;

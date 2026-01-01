@@ -8,14 +8,14 @@
     display: inline-block;
 }
 
-/* Pulse Animation - 부드러운 크기 변화 */
+/* Pulse Animation - 크게 커졌다 작아지는 효과 */
 @keyframes pulse {
     0%, 100% {
         transform: scale(1);
-        opacity: 0.9;
+        opacity: 0.85;
     }
     50% {
-        transform: scale(1.15);
+        transform: scale(1.4);
         opacity: 1;
     }
 }
