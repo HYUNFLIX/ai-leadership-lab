@@ -1,5 +1,5 @@
 /* =============================================
-   Word Cloud Viewer - Readable Grid Layout
+   Word Cloud Viewer - Readable Scrollable Layout
    2025 감사합니다 워드클라우드
    ============================================= */
 
@@ -18,14 +18,14 @@ const closePopup = document.getElementById('close-popup');
 
 // 색상 팔레트
 const colors = [
-    '#06b6d4', '#22d3ee', // Cyan
-    '#8b5cf6', '#a78bfa', // Purple
-    '#ec4899', '#f472b6', // Pink
-    '#f59e0b', '#fbbf24', // Amber
-    '#10b981', '#34d399', // Emerald
-    '#6366f1', '#818cf8', // Indigo
-    '#f43f5e', '#fb7185', // Rose
-    '#14b8a6', '#2dd4bf', // Teal
+    '#06b6d4', '#22d3ee',
+    '#8b5cf6', '#a78bfa',
+    '#ec4899', '#f472b6',
+    '#f59e0b', '#fbbf24',
+    '#10b981', '#34d399',
+    '#6366f1', '#818cf8',
+    '#f43f5e', '#fb7185',
+    '#14b8a6', '#2dd4bf',
 ];
 
 // 초기화
@@ -71,20 +71,13 @@ function renderWordCloud() {
     container.innerHTML = '';
     wordElements = [];
 
-    // 스크롤 가능한 내부 컨테이너 생성
-    const innerContainer = document.createElement('div');
-    innerContainer.className = 'word-cloud-inner';
-    innerContainer.style.cssText = `
+    // Flex 컨테이너 스타일 적용
+    container.style.cssText = `
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        align-items: center;
-        align-content: center;
-        gap: 8px;
-        padding: 20px;
-        width: 100%;
-        min-height: 100%;
-        overflow-y: auto;
+        align-content: flex-start;
+        gap: 10px;
     `;
 
     const isMobile = window.innerWidth < 768;
@@ -102,26 +95,25 @@ function renderWordCloud() {
         const sizeClass = Math.floor(Math.random() * 3);
         let fontSize;
         if (isMobile) {
-            fontSize = sizeClass === 0 ? 12 : sizeClass === 1 ? 14 : 16;
+            fontSize = sizeClass === 0 ? 13 : sizeClass === 1 ? 15 : 18;
         } else {
-            fontSize = sizeClass === 0 ? 14 : sizeClass === 1 ? 18 : 24;
+            fontSize = sizeClass === 0 ? 15 : sizeClass === 1 ? 20 : 26;
         }
 
         const color = colors[Math.floor(Math.random() * colors.length)];
-
-        // 랜덤 애니메이션 딜레이
         const delay = (Math.random() * 3).toFixed(2);
 
         word.style.cssText = `
             font-size: ${fontSize}px;
             font-weight: 500;
             color: ${color};
-            padding: ${isMobile ? '4px 8px' : '6px 12px'};
+            padding: ${isMobile ? '6px 12px' : '8px 16px'};
             cursor: pointer;
             user-select: none;
             white-space: nowrap;
-            border-radius: 20px;
-            background: ${color}15;
+            border-radius: 25px;
+            background: ${color}20;
+            border: 1px solid ${color}30;
             transition: all 0.3s ease;
             animation: pulse ${2 + Math.random() * 2}s ease-in-out ${delay}s infinite;
         `;
@@ -130,15 +122,15 @@ function renderWordCloud() {
 
         // 호버 이벤트
         word.addEventListener('mouseenter', () => {
-            word.style.transform = 'scale(1.5)';
-            word.style.background = `${color}40`;
-            word.style.boxShadow = `0 0 20px ${color}60`;
+            word.style.transform = 'scale(1.4)';
+            word.style.background = `${color}50`;
+            word.style.boxShadow = `0 0 25px ${color}70`;
             word.style.zIndex = '100';
         });
 
         word.addEventListener('mouseleave', () => {
             word.style.transform = 'scale(1)';
-            word.style.background = `${color}15`;
+            word.style.background = `${color}20`;
             word.style.boxShadow = 'none';
             word.style.zIndex = '1';
         });
@@ -146,14 +138,14 @@ function renderWordCloud() {
         // 터치 이벤트 (모바일)
         word.addEventListener('touchstart', (e) => {
             word.style.transform = 'scale(1.3)';
-            word.style.background = `${color}40`;
-            word.style.boxShadow = `0 0 20px ${color}60`;
+            word.style.background = `${color}50`;
+            word.style.boxShadow = `0 0 25px ${color}70`;
         });
 
         word.addEventListener('touchend', () => {
             setTimeout(() => {
                 word.style.transform = 'scale(1)';
-                word.style.background = `${color}15`;
+                word.style.background = `${color}20`;
                 word.style.boxShadow = 'none';
             }, 300);
         });
@@ -163,11 +155,9 @@ function renderWordCloud() {
             showNamePopup(nameData);
         });
 
-        innerContainer.appendChild(word);
+        container.appendChild(word);
         wordElements.push({ element: word, nameData, color });
     });
-
-    container.appendChild(innerContainer);
 }
 
 // 이름 팝업
@@ -302,9 +292,9 @@ function highlightWords(wordList) {
         const name = element.dataset.name;
         if (wordList.includes(name)) {
             element.style.animation = 'none';
-            element.style.transform = 'scale(2)';
-            element.style.background = `${color}60`;
-            element.style.boxShadow = `0 0 30px ${color}`;
+            element.style.transform = 'scale(1.8)';
+            element.style.background = `${color}70`;
+            element.style.boxShadow = `0 0 35px ${color}`;
             element.style.zIndex = '100';
 
             // 스크롤하여 보이게
@@ -315,7 +305,7 @@ function highlightWords(wordList) {
     setTimeout(() => {
         wordElements.forEach(({ element, color }) => {
             element.style.transform = 'scale(1)';
-            element.style.background = `${color}15`;
+            element.style.background = `${color}20`;
             element.style.boxShadow = 'none';
             element.style.zIndex = '1';
             element.style.animation = `pulse ${2 + Math.random() * 2}s ease-in-out infinite`;
