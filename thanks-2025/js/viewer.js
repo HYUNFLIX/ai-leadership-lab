@@ -1,5 +1,5 @@
 /* =============================================
-   Word Cloud Viewer - Smooth Size Animation
+   Word Cloud Viewer - Readable Grid Layout
    2025 감사합니다 워드클라우드
    ============================================= */
 
@@ -18,14 +18,14 @@ const closePopup = document.getElementById('close-popup');
 
 // 색상 팔레트
 const colors = [
-    '#06b6d4', '#0891b2',
-    '#8b5cf6', '#7c3aed',
-    '#ec4899', '#db2777',
-    '#f59e0b', '#d97706',
-    '#10b981', '#059669',
-    '#6366f1', '#4f46e5',
-    '#f43f5e', '#e11d48',
-    '#14b8a6', '#0d9488',
+    '#06b6d4', '#22d3ee', // Cyan
+    '#8b5cf6', '#a78bfa', // Purple
+    '#ec4899', '#f472b6', // Pink
+    '#f59e0b', '#fbbf24', // Amber
+    '#10b981', '#34d399', // Emerald
+    '#6366f1', '#818cf8', // Indigo
+    '#f43f5e', '#fb7185', // Rose
+    '#14b8a6', '#2dd4bf', // Teal
 ];
 
 // 초기화
@@ -71,71 +71,90 @@ function renderWordCloud() {
     container.innerHTML = '';
     wordElements = [];
 
-    const containerRect = container.getBoundingClientRect();
+    // 스크롤 가능한 내부 컨테이너 생성
+    const innerContainer = document.createElement('div');
+    innerContainer.className = 'word-cloud-inner';
+    innerContainer.style.cssText = `
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        gap: 8px;
+        padding: 20px;
+        width: 100%;
+        min-height: 100%;
+        overflow-y: auto;
+    `;
+
     const isMobile = window.innerWidth < 768;
 
-    const minSize = isMobile ? 14 : 18;
-    const maxSize = isMobile ? 32 : 48;
+    // 이름 섞기
+    const shuffledNames = [...names].sort(() => Math.random() - 0.5);
 
-    names.forEach((nameData, index) => {
-        const word = document.createElement('div');
+    shuffledNames.forEach((nameData, index) => {
+        const word = document.createElement('span');
         word.className = 'word-item';
         word.textContent = nameData.name;
         word.dataset.name = nameData.name;
 
-        // 랜덤 크기
-        const baseSize = minSize + Math.random() * (maxSize - minSize);
+        // 랜덤 크기 (3단계)
+        const sizeClass = Math.floor(Math.random() * 3);
+        let fontSize;
+        if (isMobile) {
+            fontSize = sizeClass === 0 ? 12 : sizeClass === 1 ? 14 : 16;
+        } else {
+            fontSize = sizeClass === 0 ? 14 : sizeClass === 1 ? 18 : 24;
+        }
+
         const color = colors[Math.floor(Math.random() * colors.length)];
 
-        // 위치 (원형 분포)
-        const angle = (index / names.length) * Math.PI * 2;
-        const radiusX = containerRect.width * 0.38;
-        const radiusY = containerRect.height * 0.35;
-        const offsetX = Math.cos(angle) * radiusX * (0.3 + Math.random() * 0.7);
-        const offsetY = Math.sin(angle) * radiusY * (0.3 + Math.random() * 0.7);
-
-        // 랜덤 애니메이션 시간 (3초~6초)
-        const duration = 3 + Math.random() * 3;
-        // 랜덤 딜레이
-        const delay = Math.random() * -duration;
+        // 랜덤 애니메이션 딜레이
+        const delay = (Math.random() * 3).toFixed(2);
 
         word.style.cssText = `
-            position: absolute;
-            left: calc(50% + ${offsetX}px);
-            top: calc(50% + ${offsetY}px);
-            transform: translate(-50%, -50%);
-            font-size: ${baseSize}px;
-            font-weight: 600;
+            font-size: ${fontSize}px;
+            font-weight: 500;
             color: ${color};
+            padding: ${isMobile ? '4px 8px' : '6px 12px'};
             cursor: pointer;
             user-select: none;
             white-space: nowrap;
-            text-shadow: 0 0 20px ${color}50;
-            animation: breathe ${duration}s ease-in-out ${delay}s infinite;
-            transition: transform 0.3s ease, text-shadow 0.3s ease, filter 0.3s ease;
+            border-radius: 20px;
+            background: ${color}15;
+            transition: all 0.3s ease;
+            animation: pulse ${2 + Math.random() * 2}s ease-in-out ${delay}s infinite;
         `;
 
         word.dataset.color = color;
-        word.dataset.offsetX = offsetX;
-        word.dataset.offsetY = offsetY;
 
-        // 호버 이벤트 - 크게 확대
+        // 호버 이벤트
         word.addEventListener('mouseenter', () => {
-            word.style.animation = 'none';
-            word.style.transform = 'translate(-50%, -50%) scale(1.8)';
-            word.style.textShadow = `0 0 40px ${color}, 0 0 80px ${color}`;
-            word.style.filter = 'brightness(1.3)';
+            word.style.transform = 'scale(1.5)';
+            word.style.background = `${color}40`;
+            word.style.boxShadow = `0 0 20px ${color}60`;
             word.style.zIndex = '100';
         });
 
         word.addEventListener('mouseleave', () => {
-            word.style.transform = 'translate(-50%, -50%) scale(1)';
-            word.style.textShadow = `0 0 20px ${color}50`;
-            word.style.filter = 'brightness(1)';
+            word.style.transform = 'scale(1)';
+            word.style.background = `${color}15`;
+            word.style.boxShadow = 'none';
             word.style.zIndex = '1';
-            // 애니메이션 다시 시작
+        });
+
+        // 터치 이벤트 (모바일)
+        word.addEventListener('touchstart', (e) => {
+            word.style.transform = 'scale(1.3)';
+            word.style.background = `${color}40`;
+            word.style.boxShadow = `0 0 20px ${color}60`;
+        });
+
+        word.addEventListener('touchend', () => {
             setTimeout(() => {
-                word.style.animation = `breathe ${duration}s ease-in-out ${delay}s infinite`;
+                word.style.transform = 'scale(1)';
+                word.style.background = `${color}15`;
+                word.style.boxShadow = 'none';
             }, 300);
         });
 
@@ -144,9 +163,11 @@ function renderWordCloud() {
             showNamePopup(nameData);
         });
 
-        container.appendChild(word);
+        innerContainer.appendChild(word);
         wordElements.push({ element: word, nameData, color });
     });
+
+    container.appendChild(innerContainer);
 }
 
 // 이름 팝업
@@ -281,21 +302,23 @@ function highlightWords(wordList) {
         const name = element.dataset.name;
         if (wordList.includes(name)) {
             element.style.animation = 'none';
-            element.style.transform = 'translate(-50%, -50%) scale(2.5)';
-            element.style.textShadow = `0 0 50px ${color}, 0 0 100px ${color}`;
-            element.style.filter = 'brightness(1.5)';
+            element.style.transform = 'scale(2)';
+            element.style.background = `${color}60`;
+            element.style.boxShadow = `0 0 30px ${color}`;
             element.style.zIndex = '100';
+
+            // 스크롤하여 보이게
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     });
 
     setTimeout(() => {
         wordElements.forEach(({ element, color }) => {
-            element.style.transform = 'translate(-50%, -50%) scale(1)';
-            element.style.textShadow = `0 0 20px ${color}50`;
-            element.style.filter = 'brightness(1)';
+            element.style.transform = 'scale(1)';
+            element.style.background = `${color}15`;
+            element.style.boxShadow = 'none';
             element.style.zIndex = '1';
-            const duration = 3 + Math.random() * 3;
-            element.style.animation = `breathe ${duration}s ease-in-out infinite`;
+            element.style.animation = `pulse ${2 + Math.random() * 2}s ease-in-out infinite`;
         });
     }, 3000);
 }
