@@ -1,14 +1,14 @@
 /* =============================================
-   Word Cloud Viewer - Using WordCloud2.js
+   Word Cloud Viewer - DOM-based Smooth Animation
    2025 감사합니다 워드클라우드
    ============================================= */
 
 // 글로벌 변수
 let names = [];
-let wordCloudInstance = null;
-let namePositions = new Map(); // 이름별 위치 저장
+let wordElements = [];
+let animationFrameId = null;
 
-const canvas = document.getElementById('wordcloud-canvas');
+const container = document.getElementById('wordcloud-container');
 const loader = document.getElementById('loader');
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
@@ -17,17 +17,17 @@ const countNumber = document.getElementById('count-number');
 const namePopup = document.getElementById('name-popup');
 const popupName = document.getElementById('popup-name');
 const closePopup = document.getElementById('close-popup');
-const tooltip = document.getElementById('tooltip');
-const tooltipName = document.getElementById('tooltip-name');
 
-// 그라데이션 색상 팔레트
-const colorPalettes = [
-    ['#06b6d4', '#0891b2', '#0e7490'], // Cyan
-    ['#8b5cf6', '#7c3aed', '#6d28d9'], // Purple
-    ['#ec4899', '#db2777', '#be185d'], // Pink
-    ['#f59e0b', '#d97706', '#b45309'], // Amber
-    ['#10b981', '#059669', '#047857'], // Emerald
-    ['#6366f1', '#4f46e5', '#4338ca'], // Indigo
+// 색상 팔레트
+const colors = [
+    '#06b6d4', '#0891b2', // Cyan
+    '#8b5cf6', '#7c3aed', // Purple
+    '#ec4899', '#db2777', // Pink
+    '#f59e0b', '#d97706', // Amber
+    '#10b981', '#059669', // Emerald
+    '#6366f1', '#4f46e5', // Indigo
+    '#f43f5e', '#e11d48', // Rose
+    '#14b8a6', '#0d9488', // Teal
 ];
 
 // 초기화
@@ -66,93 +66,127 @@ function updateNameCount() {
     countNumber.textContent = names.length;
 }
 
-// 캔버스 크기 설정
-function setupCanvas() {
-    const container = canvas.parentElement;
-    const dpr = window.devicePixelRatio || 1;
-
-    canvas.width = container.clientWidth * dpr;
-    canvas.height = container.clientHeight * dpr;
-    canvas.style.width = container.clientWidth + 'px';
-    canvas.style.height = container.clientHeight + 'px';
-}
-
 // 워드클라우드 렌더링
 function renderWordCloud() {
     if (names.length === 0) return;
 
-    setupCanvas();
-    namePositions.clear();
+    // 기존 요소 제거
+    container.innerHTML = '';
+    wordElements = [];
 
-    // 워드 리스트 생성 (이름, 가중치)
-    const wordList = names.map((nameData, index) => {
-        // 가중치를 다양하게 (1~3 사이 랜덤 + 약간의 편차)
-        const weight = 1 + Math.random() * 2;
-        return [nameData.name, weight, nameData];
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+    }
+
+    const containerRect = container.getBoundingClientRect();
+    const isMobile = window.innerWidth < 768;
+
+    // 폰트 크기 범위
+    const minSize = isMobile ? 12 : 16;
+    const maxSize = isMobile ? 28 : 42;
+
+    // 각 이름에 대해 요소 생성
+    names.forEach((nameData, index) => {
+        const word = document.createElement('div');
+        word.className = 'word-item';
+        word.textContent = nameData.name;
+        word.dataset.name = nameData.name;
+
+        // 랜덤 초기 크기
+        const baseSize = minSize + Math.random() * (maxSize - minSize);
+        const color = colors[Math.floor(Math.random() * colors.length)];
+
+        // 위치 계산 (원형 분포)
+        const angle = (index / names.length) * Math.PI * 2;
+        const radiusX = containerRect.width * 0.35;
+        const radiusY = containerRect.height * 0.35;
+        const offsetX = Math.cos(angle) * radiusX * (0.3 + Math.random() * 0.7);
+        const offsetY = Math.sin(angle) * radiusY * (0.3 + Math.random() * 0.7);
+
+        // 초기 스타일
+        word.style.cssText = `
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            font-size: ${baseSize}px;
+            font-weight: 600;
+            color: ${color};
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            transform: translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px));
+            text-shadow: 0 0 20px ${color}40;
+        `;
+
+        // 애니메이션 데이터 저장
+        const wordData = {
+            element: word,
+            baseSize: baseSize,
+            currentSize: baseSize,
+            targetSize: baseSize,
+            color: color,
+            offsetX: offsetX,
+            offsetY: offsetY,
+            phase: Math.random() * Math.PI * 2,
+            speed: 0.5 + Math.random() * 0.5,
+            sizePhase: Math.random() * Math.PI * 2,
+            sizeSpeed: 0.3 + Math.random() * 0.4,
+        };
+
+        // 호버 이벤트
+        word.addEventListener('mouseenter', () => {
+            word.style.transform = `translate(calc(-50% + ${wordData.offsetX}px), calc(-50% + ${wordData.offsetY}px)) scale(1.5)`;
+            word.style.textShadow = `0 0 30px ${wordData.color}, 0 0 60px ${wordData.color}`;
+            word.style.zIndex = '10';
+        });
+
+        word.addEventListener('mouseleave', () => {
+            word.style.transform = `translate(calc(-50% + ${wordData.offsetX}px), calc(-50% + ${wordData.offsetY}px)) scale(1)`;
+            word.style.textShadow = `0 0 20px ${wordData.color}40`;
+            word.style.zIndex = '1';
+        });
+
+        // 클릭 이벤트
+        word.addEventListener('click', () => {
+            showNamePopup(nameData);
+        });
+
+        container.appendChild(word);
+        wordElements.push(wordData);
     });
 
-    // 색상 함수
-    const getColor = (word, weight, fontSize, distance, theta) => {
-        const palette = colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
-        return palette[Math.floor(Math.random() * palette.length)];
-    };
-
-    // 폰트 크기 계산
-    const isMobile = window.innerWidth < 768;
-    const baseSize = isMobile ? 14 : 20;
-    const maxSize = isMobile ? 32 : 48;
-
-    // WordCloud2 옵션
-    const options = {
-        list: wordList,
-        gridSize: isMobile ? 8 : 12,
-        weightFactor: (size) => {
-            return baseSize + (size * (maxSize - baseSize) / 3);
-        },
-        fontFamily: 'Pretendard, -apple-system, sans-serif',
-        fontWeight: '600',
-        color: getColor,
-        backgroundColor: 'transparent',
-        rotateRatio: 0.3,
-        rotationSteps: 2,
-        shuffle: true,
-        drawOutOfBound: false,
-        shrinkToFit: true,
-        shape: 'circle',
-        ellipticity: 0.8,
-        hover: handleWordHover,
-        click: handleWordClick,
-    };
-
-    // 기존 클라우드 제거
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // 새 워드클라우드 생성
-    WordCloud(canvas, options);
+    // 애니메이션 시작
+    startAnimation();
 }
 
-// 호버 핸들러
-function handleWordHover(item, dimension, event) {
-    if (item) {
-        const [name, weight, nameData] = item;
-        tooltipName.textContent = name;
-        tooltip.style.opacity = '1';
-        tooltip.style.left = (event.clientX + 15) + 'px';
-        tooltip.style.top = (event.clientY - 10) + 'px';
-        canvas.style.cursor = 'pointer';
-    } else {
-        tooltip.style.opacity = '0';
-        canvas.style.cursor = 'default';
-    }
-}
+// 애니메이션 루프
+function startAnimation() {
+    let lastTime = performance.now();
 
-// 클릭 핸들러
-function handleWordClick(item, dimension, event) {
-    if (item) {
-        const [name, weight, nameData] = item;
-        showNamePopup(nameData);
+    function animate(currentTime) {
+        const deltaTime = (currentTime - lastTime) / 1000;
+        lastTime = currentTime;
+
+        const isMobile = window.innerWidth < 768;
+        const minSize = isMobile ? 12 : 16;
+        const maxSize = isMobile ? 28 : 42;
+
+        wordElements.forEach((wordData) => {
+            // 크기 애니메이션 (사인파로 부드럽게)
+            wordData.sizePhase += deltaTime * wordData.sizeSpeed;
+            const sizeFactor = 0.7 + Math.sin(wordData.sizePhase) * 0.3;
+            const newSize = wordData.baseSize * sizeFactor;
+
+            // 크기 적용 (부드러운 변화)
+            wordData.currentSize += (newSize - wordData.currentSize) * 0.05;
+            wordData.element.style.fontSize = `${wordData.currentSize}px`;
+        });
+
+        animationFrameId = requestAnimationFrame(animate);
     }
+
+    animationFrameId = requestAnimationFrame(animate);
 }
 
 // 이름 팝업 표시
@@ -234,14 +268,6 @@ function setupEventListeners() {
             }
         });
     }
-
-    // 마우스 움직임 추적 (툴팁 위치)
-    canvas.addEventListener('mousemove', (e) => {
-        if (tooltip.style.opacity === '1') {
-            tooltip.style.left = (e.clientX + 15) + 'px';
-            tooltip.style.top = (e.clientY - 10) + 'px';
-        }
-    });
 }
 
 // 이름 검색
@@ -263,7 +289,6 @@ function searchName() {
     searchResult.classList.remove('hidden');
 
     if (matchedNames.length > 0) {
-        // 찾음
         const firstName = matchedNames[0].name;
         if (matchedNames.length === 1) {
             searchResult.innerHTML = `🎉 <strong>${firstName}</strong>님을 찾았습니다!`;
@@ -272,7 +297,7 @@ function searchName() {
         }
         searchResult.style.color = '#4ade80';
 
-        // 하이라이트 효과 (깜빡임)
+        // 하이라이트 효과
         highlightWords(matchedNames.map(n => n.name));
 
         // 1.5초 후 팝업
@@ -297,25 +322,27 @@ function searchName() {
     }, 5000);
 }
 
-// 이름 하이라이트 (워드클라우드 다시 그리기)
+// 이름 하이라이트
 function highlightWords(wordList) {
-    // 워드클라우드를 다시 그려서 특정 단어 강조
-    // 간단한 깜빡임 효과를 위해 캔버스에 오버레이 추가
+    wordElements.forEach((wordData) => {
+        const name = wordData.element.dataset.name;
+        if (wordList.includes(name)) {
+            wordData.element.style.transform = `translate(calc(-50% + ${wordData.offsetX}px), calc(-50% + ${wordData.offsetY}px)) scale(2)`;
+            wordData.element.style.textShadow = `0 0 40px ${wordData.color}, 0 0 80px ${wordData.color}`;
+            wordData.element.style.zIndex = '20';
 
-    const overlay = document.createElement('div');
-    overlay.className = 'search-highlight-overlay';
-    overlay.style.cssText = `
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at center, rgba(74, 222, 128, 0.2) 0%, transparent 70%);
-        pointer-events: none;
-        animation: pulse-highlight 1s ease-in-out 3;
-    `;
-
-    canvas.parentElement.appendChild(overlay);
+            // 깜빡임 효과
+            wordData.element.style.animation = 'pulse-glow 0.5s ease-in-out infinite';
+        }
+    });
 
     setTimeout(() => {
-        overlay.remove();
+        wordElements.forEach((wordData) => {
+            wordData.element.style.animation = '';
+            wordData.element.style.transform = `translate(calc(-50% + ${wordData.offsetX}px), calc(-50% + ${wordData.offsetY}px)) scale(1)`;
+            wordData.element.style.textShadow = `0 0 20px ${wordData.color}40`;
+            wordData.element.style.zIndex = '1';
+        });
     }, 3000);
 }
 
@@ -326,10 +353,6 @@ function clearHighlight() {
     if (notFoundSection) {
         notFoundSection.classList.add('hidden');
     }
-
-    // 오버레이 제거
-    const overlay = canvas.parentElement.querySelector('.search-highlight-overlay');
-    if (overlay) overlay.remove();
 }
 
 // 시작

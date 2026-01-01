@@ -1,7 +1,11 @@
 /* =============================================
-   2025 Thanks Word Cloud - Modern Design
-   Using WordCloud2.js
+   2025 Thanks Word Cloud - DOM-based Animation
    ============================================= */
+
+/* Word Cloud Items */
+.word-item {
+    will-change: transform, font-size;
+}
 
 /* Loading Spinner */
 .loading-spinner {
@@ -46,6 +50,12 @@ select option {
 @keyframes pulse-highlight {
     0%, 100% { opacity: 0; }
     50% { opacity: 1; }
+}
+
+/* Pulse Glow Animation for found words */
+@keyframes pulse-glow {
+    0%, 100% { opacity: 1; filter: brightness(1); }
+    50% { opacity: 0.7; filter: brightness(1.5); }
 }
 
 /* =============================================
