@@ -9,9 +9,6 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- WordCloud2.js - 워드클라우드 라이브러리 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.2.2/wordcloud2.min.js"></script>
-
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -87,15 +84,8 @@
                 <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#0a0a1a] to-transparent"></div>
             </div>
 
-            <!-- Canvas for WordCloud -->
-            <canvas id="wordcloud-canvas" class="w-full h-full"></canvas>
-
-            <!-- Hover tooltip -->
-            <div id="tooltip" class="fixed pointer-events-none opacity-0 transition-opacity duration-200 z-30">
-                <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-lg shadow-xl text-sm font-medium">
-                    <span id="tooltip-name"></span>
-                </div>
-            </div>
+            <!-- Word Cloud Container -->
+            <div id="wordcloud-container" class="absolute inset-0 flex items-center justify-center overflow-hidden"></div>
         </main>
 
         <!-- 검색 결과 없을 때 -->
