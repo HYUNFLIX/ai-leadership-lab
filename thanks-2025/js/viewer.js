@@ -6,6 +6,11 @@
 let names = [];
 let wordElements = [];
 let currentZoom = 1;
+let panX = 0;
+let panY = 0;
+let isDragging = false;
+let startX = 0;
+let startY = 0;
 const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 3;
 
@@ -107,6 +112,7 @@ function renderWordCloud() {
         const color = colors[Math.floor(Math.random() * colors.length)];
         const delay = (Math.random() * 3).toFixed(2);
 
+        const duration = 2 + Math.random() * 2;
         word.style.cssText = `
             font-size: ${fontSize}px;
             font-weight: 500;
@@ -118,18 +124,26 @@ function renderWordCloud() {
             border-radius: ${isMobile ? '12px' : '25px'};
             background: ${color}20;
             border: 1px solid ${color}30;
-            transition: all 0.3s ease;
-            animation: pulse ${2 + Math.random() * 2}s ease-in-out ${delay}s infinite;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         `;
+
+        // 애니메이션 별도 적용
+        word.style.animation = `pulse ${duration}s ease-in-out ${delay}s infinite`;
+        word.dataset.duration = duration;
 
         word.dataset.color = color;
 
         // 호버 이벤트
         word.addEventListener('mouseenter', () => {
-            word.style.transform = 'scale(1.4)';
+            word.style.animation = 'none';
+            word.style.transform = 'scale(1.5)';
             word.style.background = `${color}50`;
             word.style.boxShadow = `0 0 25px ${color}70`;
             word.style.zIndex = '100';
+            word.style.transition = 'all 0.2s ease';
         });
 
         word.addEventListener('mouseleave', () => {
@@ -137,13 +151,20 @@ function renderWordCloud() {
             word.style.background = `${color}20`;
             word.style.boxShadow = 'none';
             word.style.zIndex = '1';
+            // 애니메이션 다시 시작
+            setTimeout(() => {
+                word.style.transition = '';
+                word.style.animation = `pulse ${duration}s ease-in-out infinite`;
+            }, 200);
         });
 
         // 터치 이벤트 (모바일)
         word.addEventListener('touchstart', (e) => {
-            word.style.transform = 'scale(1.3)';
+            word.style.animation = 'none';
+            word.style.transform = 'scale(1.4)';
             word.style.background = `${color}50`;
             word.style.boxShadow = `0 0 25px ${color}70`;
+            word.style.transition = 'all 0.2s ease';
         });
 
         word.addEventListener('touchend', () => {
@@ -151,6 +172,10 @@ function renderWordCloud() {
                 word.style.transform = 'scale(1)';
                 word.style.background = `${color}20`;
                 word.style.boxShadow = 'none';
+                setTimeout(() => {
+                    word.style.transition = '';
+                    word.style.animation = `pulse ${duration}s ease-in-out infinite`;
+                }, 200);
             }, 300);
         });
 
@@ -170,24 +195,58 @@ function showNamePopup(nameData) {
     namePopup.classList.remove('hidden');
 }
 
-// 줌 기능
+// 줌 및 팬 기능
 function setupZoom() {
+    const wrapper = container.parentElement;
+
     // 마우스 휠 줌 (데스크톱)
     container.addEventListener('wheel', (e) => {
         e.preventDefault();
         const delta = e.deltaY > 0 ? -0.1 : 0.1;
         currentZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, currentZoom + delta));
-        applyZoom();
+        applyTransform();
     }, { passive: false });
 
-    // 핀치 줌 (모바일)
+    // 마우스 드래그 팬 (데스크톱)
+    container.addEventListener('mousedown', (e) => {
+        if (currentZoom > 1) {
+            isDragging = true;
+            startX = e.clientX - panX;
+            startY = e.clientY - panY;
+            container.style.cursor = 'grabbing';
+        }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            panX = e.clientX - startX;
+            panY = e.clientY - startY;
+            applyTransform();
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+        container.style.cursor = currentZoom > 1 ? 'grab' : 'default';
+    });
+
+    // 핀치 줌 및 팬 (모바일)
     let initialDistance = 0;
     let initialZoom = 1;
+    let initialPanX = 0;
+    let initialPanY = 0;
+    let lastTouchX = 0;
+    let lastTouchY = 0;
 
     container.addEventListener('touchstart', (e) => {
         if (e.touches.length === 2) {
             initialDistance = getDistance(e.touches[0], e.touches[1]);
             initialZoom = currentZoom;
+        } else if (e.touches.length === 1 && currentZoom > 1) {
+            initialPanX = panX;
+            initialPanY = panY;
+            lastTouchX = e.touches[0].clientX;
+            lastTouchY = e.touches[0].clientY;
         }
     });
 
@@ -197,7 +256,12 @@ function setupZoom() {
             const currentDistance = getDistance(e.touches[0], e.touches[1]);
             const scale = currentDistance / initialDistance;
             currentZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, initialZoom * scale));
-            applyZoom();
+            applyTransform();
+        } else if (e.touches.length === 1 && currentZoom > 1) {
+            e.preventDefault();
+            panX = initialPanX + (e.touches[0].clientX - lastTouchX);
+            panY = initialPanY + (e.touches[0].clientY - lastTouchY);
+            applyTransform();
         }
     }, { passive: false });
 }
@@ -208,9 +272,10 @@ function getDistance(touch1, touch2) {
     return Math.sqrt(dx * dx + dy * dy);
 }
 
-function applyZoom() {
-    container.style.transform = `scale(${currentZoom})`;
+function applyTransform() {
+    container.style.transform = `translate(${panX}px, ${panY}px) scale(${currentZoom})`;
     container.style.transformOrigin = 'center top';
+    container.style.cursor = currentZoom > 1 ? 'grab' : 'default';
 }
 
 // 이벤트 리스너
@@ -223,7 +288,9 @@ function setupEventListeners() {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
             currentZoom = 1;
-            applyZoom();
+            panX = 0;
+            panY = 0;
+            applyTransform();
             renderWordCloud();
         }, 300);
     });
