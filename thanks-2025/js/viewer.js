@@ -5,6 +5,9 @@
 
 let names = [];
 let wordElements = [];
+let currentZoom = 1;
+const MIN_ZOOM = 0.5;
+const MAX_ZOOM = 3;
 
 const container = document.getElementById('wordcloud-container');
 const loader = document.getElementById('loader');
@@ -167,12 +170,60 @@ function showNamePopup(nameData) {
     namePopup.classList.remove('hidden');
 }
 
+// 줌 기능
+function setupZoom() {
+    // 마우스 휠 줌 (데스크톱)
+    container.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        currentZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, currentZoom + delta));
+        applyZoom();
+    }, { passive: false });
+
+    // 핀치 줌 (모바일)
+    let initialDistance = 0;
+    let initialZoom = 1;
+
+    container.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            initialDistance = getDistance(e.touches[0], e.touches[1]);
+            initialZoom = currentZoom;
+        }
+    });
+
+    container.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2) {
+            e.preventDefault();
+            const currentDistance = getDistance(e.touches[0], e.touches[1]);
+            const scale = currentDistance / initialDistance;
+            currentZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, initialZoom * scale));
+            applyZoom();
+        }
+    }, { passive: false });
+}
+
+function getDistance(touch1, touch2) {
+    const dx = touch1.clientX - touch2.clientX;
+    const dy = touch1.clientY - touch2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+function applyZoom() {
+    container.style.transform = `scale(${currentZoom})`;
+    container.style.transformOrigin = 'center top';
+}
+
 // 이벤트 리스너
 function setupEventListeners() {
+    // 줌 설정
+    setupZoom();
+
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
+            currentZoom = 1;
+            applyZoom();
             renderWordCloud();
         }, 300);
     });
