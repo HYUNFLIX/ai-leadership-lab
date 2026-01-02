@@ -86,8 +86,10 @@ function renderWordCloud() {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        align-content: flex-start;
-        gap: ${isMobile ? '4px' : '10px'};
+        align-content: center;
+        align-items: center;
+        gap: ${isMobile ? '3px' : '8px'};
+        height: 100%;
     `;
 
     // 이름 섞기
@@ -103,10 +105,10 @@ function renderWordCloud() {
         const sizeClass = Math.floor(Math.random() * 3);
         let fontSize;
         if (isMobile) {
-            // 모바일: 작은 글씨로 한 줄에 많이 보이게
-            fontSize = sizeClass === 0 ? 9 : sizeClass === 1 ? 10 : 11;
+            // 모바일: 작은 글씨로 화면에 맞게
+            fontSize = sizeClass === 0 ? 8 : sizeClass === 1 ? 9 : 10;
         } else {
-            fontSize = sizeClass === 0 ? 15 : sizeClass === 1 ? 20 : 26;
+            fontSize = sizeClass === 0 ? 12 : sizeClass === 1 ? 15 : 18;
         }
 
         const color = colors[Math.floor(Math.random() * colors.length)];
@@ -117,11 +119,11 @@ function renderWordCloud() {
             font-size: ${fontSize}px;
             font-weight: 500;
             color: ${color};
-            padding: ${isMobile ? '3px 6px' : '8px 16px'};
+            padding: ${isMobile ? '2px 5px' : '5px 10px'};
             cursor: pointer;
             user-select: none;
             white-space: nowrap;
-            border-radius: ${isMobile ? '12px' : '25px'};
+            border-radius: ${isMobile ? '10px' : '20px'};
             background: ${color}20;
             border: 1px solid ${color}30;
             display: inline-flex;
