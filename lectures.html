@@ -458,6 +458,34 @@
             font-variant-numeric: tabular-nums;
         }
 
+        /* Sortable headers */
+        .table th.sortable {
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .table th.sortable:hover {
+            background: var(--border-color);
+        }
+
+        .table th.sortable .sort-icon::after {
+            content: '⇅';
+            margin-left: 4px;
+            opacity: 0.3;
+            font-size: 0.75rem;
+        }
+
+        .table th.sortable.asc .sort-icon::after {
+            content: '↑';
+            opacity: 1;
+        }
+
+        .table th.sortable.desc .sort-icon::after {
+            content: '↓';
+            opacity: 1;
+        }
+
         .badge {
             display: inline-flex;
             align-items: center;
@@ -846,6 +874,9 @@
             <div class="section-header">
                 <h2 class="section-title">강의 이력</h2>
                 <div class="filters">
+                    <div class="filter-group search-group">
+                        <input type="text" class="form-control" id="searchInput" placeholder="검색어 입력..." oninput="applyFilters()" style="min-width: 180px;">
+                    </div>
                     <div class="filter-group">
                         <label for="yearFilter">연도:</label>
                         <select class="form-control" id="yearFilter" onchange="updateMonthFilter(); applyFilters();">
@@ -893,16 +924,16 @@
                         <thead>
                             <tr>
                                 <th class="col-no">No.</th>
-                                <th class="col-date">강의일자</th>
-                                <th class="col-hours">교육시간</th>
-                                <th class="col-name">강의명</th>
-                                <th class="col-client">고객사</th>
-                                <th class="col-audience">대상</th>
-                                <th class="col-contractor">계약주체</th>
-                                <th class="col-location">교육장소</th>
-                                <th class="col-fee amount">강의료</th>
-                                <th class="col-net amount">실지급액</th>
-                                <th class="col-status">입금여부</th>
+                                <th class="col-date sortable" data-sort="date" onclick="sortBy('date')">강의일자 <span class="sort-icon"></span></th>
+                                <th class="col-hours sortable" data-sort="duration" onclick="sortBy('duration')">교육시간 <span class="sort-icon"></span></th>
+                                <th class="col-name sortable" data-sort="name" onclick="sortBy('name')">강의명 <span class="sort-icon"></span></th>
+                                <th class="col-client sortable" data-sort="client" onclick="sortBy('client')">고객사 <span class="sort-icon"></span></th>
+                                <th class="col-audience sortable" data-sort="audience" onclick="sortBy('audience')">대상 <span class="sort-icon"></span></th>
+                                <th class="col-contractor sortable" data-sort="contractor" onclick="sortBy('contractor')">계약주체 <span class="sort-icon"></span></th>
+                                <th class="col-location sortable" data-sort="location" onclick="sortBy('location')">교육장소 <span class="sort-icon"></span></th>
+                                <th class="col-fee amount sortable" data-sort="fee" onclick="sortBy('fee')">강의료 <span class="sort-icon"></span></th>
+                                <th class="col-net amount sortable" data-sort="netPayment" onclick="sortBy('netPayment')">실지급액 <span class="sort-icon"></span></th>
+                                <th class="col-status sortable" data-sort="paymentStatus" onclick="sortBy('paymentStatus')">입금여부 <span class="sort-icon"></span></th>
                                 <th class="col-actions">관리</th>
                             </tr>
                         </thead>
@@ -1281,14 +1312,33 @@
             }
         });
 
-        // ================ Rendering ================
+        // ================ Sorting & Filtering ================
+        let currentSort = { field: 'date', direction: 'desc' };
+
         function applyFilters() {
             const lectures = window.getLectures();
             const yearFilter = document.getElementById('yearFilter').value;
             const monthFilter = document.getElementById('monthFilter').value;
             const paymentFilter = document.getElementById('paymentFilter').value;
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
 
             let filtered = [...lectures];
+
+            // Search filter
+            if (searchQuery) {
+                filtered = filtered.filter(l => {
+                    const searchFields = [
+                        l.name || '',
+                        l.client || '',
+                        l.audience || '',
+                        l.contractor || '',
+                        l.location || '',
+                        l.notes || '',
+                        l.date || ''
+                    ].join(' ').toLowerCase();
+                    return searchFields.includes(searchQuery);
+                });
+            }
 
             if (yearFilter !== 'all') {
                 filtered = filtered.filter(l => l.date && l.date.startsWith(yearFilter));
@@ -1303,11 +1353,53 @@
                 filtered = filtered.filter(l => l.paymentStatus === paymentFilter);
             }
 
-            // Sort by date descending
-            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+            // Apply sorting
+            filtered.sort((a, b) => {
+                let aVal = a[currentSort.field] || '';
+                let bVal = b[currentSort.field] || '';
+
+                // Handle numeric fields
+                if (['fee', 'netPayment', 'duration'].includes(currentSort.field)) {
+                    aVal = parseFloat(aVal) || 0;
+                    bVal = parseFloat(bVal) || 0;
+                }
+
+                // Handle date field
+                if (currentSort.field === 'date') {
+                    aVal = new Date(aVal || 0);
+                    bVal = new Date(bVal || 0);
+                }
+
+                // Compare
+                let result = 0;
+                if (aVal < bVal) result = -1;
+                if (aVal > bVal) result = 1;
+
+                return currentSort.direction === 'asc' ? result : -result;
+            });
 
             renderLectures(filtered);
             updateDashboard(filtered);
+        }
+
+        function sortBy(field) {
+            // Toggle direction if same field, otherwise set to asc
+            if (currentSort.field === field) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.field = field;
+                currentSort.direction = 'asc';
+            }
+
+            // Update header icons
+            document.querySelectorAll('.table th.sortable').forEach(th => {
+                th.classList.remove('asc', 'desc');
+                if (th.dataset.sort === field) {
+                    th.classList.add(currentSort.direction);
+                }
+            });
+
+            applyFilters();
         }
 
         function updateMonthFilter() {
