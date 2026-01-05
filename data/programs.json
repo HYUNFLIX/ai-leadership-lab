@@ -1,0 +1,33 @@
+{
+  "programs": [
+    {
+      "id": "ai-readiness",
+      "title": "AI 도입 준비도 진단",
+      "url": "https://g.co/gemini/share/426fd3f286ef",
+      "description": "조직의 AI 도입 준비 상태를 진단합니다",
+      "icon": "diagnosis",
+      "featured": true
+    },
+    {
+      "id": "ai-business-idea",
+      "title": "AI 비즈니스 아이디어",
+      "url": "https://g.co/gemini/share/7c9ebf930982",
+      "description": "AI 기반 비즈니스 아이디어를 생성합니다",
+      "icon": "lightbulb",
+      "featured": true
+    },
+    {
+      "id": "blog-generator",
+      "title": "블로그 포스트 생성기",
+      "url": "https://g.co/gemini/share/51aaaa0b91b7",
+      "description": "AI로 블로그 콘텐츠를 생성합니다",
+      "icon": "document",
+      "featured": true
+    }
+  ],
+  "settings": {
+    "maxFeaturedOnHero": 3,
+    "showAllButton": true,
+    "allButtonText": "모든 AI 도구 보기"
+  }
+}
