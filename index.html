@@ -789,6 +789,41 @@
             </div>
         </section>
 
+        <!-- Recent Lectures Section -->
+        <section id="lectures" class="section section-lectures" aria-labelledby="lectures-title">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-label">Lecture History</span>
+                    <h2 id="lectures-title" class="section-title">최근 강의 실적</h2>
+                    <p class="section-description">
+                        다양한 기업과 기관에서 진행한 AI 리더십 교육 현황입니다.
+                    </p>
+                </div>
+
+                <div class="lectures-list" id="lecturesList">
+                    <div class="lectures-loading">
+                        <div class="loading-spinner-small"></div>
+                        <span>강의 정보를 불러오는 중...</span>
+                    </div>
+                </div>
+
+                <div class="lectures-summary" id="lecturesSummary" style="display: none;">
+                    <div class="summary-item">
+                        <span class="summary-value" id="summaryCount">0</span>
+                        <span class="summary-label">총 강의</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value" id="summaryClients">0</span>
+                        <span class="summary-label">협력 기업</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value" id="summaryHours">0</span>
+                        <span class="summary-label">총 교육시간</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Testimonials Section -->
         <section id="testimonials" class="section section-testimonials" aria-labelledby="testimonials-title">
             <div class="container">
@@ -1018,5 +1053,105 @@
 
     <!-- Scripts -->
     <script src="js/main.js" defer></script>
+
+    <!-- Firebase SDK for Lectures -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase Configuration (same as lectures.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDwcyLezAW4nTlfmv6FYzjEe8RgDUgJXuY",
+            authDomain: "ai-leadership-lectures-d509b.firebaseapp.com",
+            projectId: "ai-leadership-lectures-d509b",
+            storageBucket: "ai-leadership-lectures-d509b.firebasestorage.app",
+            messagingSenderId: "132724154110",
+            appId: "1:132724154110:web:ab5f507a6aee2f583d8faf"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Fetch and display recent lectures
+        async function loadRecentLectures() {
+            const listEl = document.getElementById('lecturesList');
+            const summaryEl = document.getElementById('lecturesSummary');
+
+            try {
+                const lecturesRef = collection(db, 'lectures');
+                const q = query(lecturesRef, orderBy('date', 'desc'), limit(12));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    listEl.innerHTML = '<p class="lectures-empty">등록된 강의가 없습니다.</p>';
+                    return;
+                }
+
+                const lectures = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                // Render lecture cards
+                listEl.innerHTML = lectures.map(lecture => {
+                    const date = lecture.date ? new Date(lecture.date) : null;
+                    const month = date ? date.toLocaleDateString('ko-KR', { month: 'short' }).replace('.', '') : '';
+                    const day = date ? date.getDate() : '';
+                    const duration = lecture.duration ? `${lecture.duration}h` : '';
+
+                    return `
+                        <article class="lecture-card">
+                            <div class="lecture-date">
+                                <span class="month">${month}</span>
+                                <span class="day">${day}</span>
+                            </div>
+                            <div class="lecture-info">
+                                <p class="lecture-client">${escapeHtml(lecture.client || '')}</p>
+                                <h4 class="lecture-title">${escapeHtml(lecture.name || '')}</h4>
+                                ${duration ? `<p class="lecture-meta">${duration}</p>` : ''}
+                            </div>
+                        </article>
+                    `;
+                }).join('');
+
+                // Calculate and show summary
+                const uniqueClients = new Set(lectures.map(l => l.client)).size;
+                const totalHours = lectures.reduce((sum, l) => sum + (l.duration || 0), 0);
+
+                // Get total count (all lectures, not just displayed)
+                const allLecturesSnapshot = await getDocs(collection(db, 'lectures'));
+                const totalCount = allLecturesSnapshot.size;
+                const allClients = new Set(allLecturesSnapshot.docs.map(d => d.data().client)).size;
+                const allHours = allLecturesSnapshot.docs.reduce((sum, d) => sum + (d.data().duration || 0), 0);
+
+                document.getElementById('summaryCount').textContent = totalCount + '회';
+                document.getElementById('summaryClients').textContent = allClients + '개';
+                document.getElementById('summaryHours').textContent = allHours + 'h';
+                summaryEl.style.display = 'flex';
+
+            } catch (error) {
+                console.error('Failed to load lectures:', error);
+                // Show fallback message (Firestore rules may need to be updated for public access)
+                listEl.innerHTML = `
+                    <p class="lectures-empty">
+                        강의 정보를 불러올 수 없습니다.<br>
+                        <small style="color: var(--text-muted);">관리자 페이지에서 데이터를 확인해주세요.</small>
+                    </p>
+                `;
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Load lectures when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadRecentLectures);
+        } else {
+            loadRecentLectures();
+        }
+    </script>
 </body>
 </html>
