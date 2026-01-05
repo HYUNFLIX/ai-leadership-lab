@@ -87,6 +87,7 @@
     
     <!-- Preload critical resources -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style">
+    <link rel="preload" href="images/director.webp" as="image" type="image/webp">
 </head>
 <body>
     <!-- Skip to main content for accessibility -->
@@ -131,7 +132,18 @@
                     <li role="none"><a href="#projects" class="nav-link" role="menuitem">프로젝트</a></li>
                     <li role="none"><a href="#contact" class="nav-link nav-cta" role="menuitem">Contact</a></li>
                 </ul>
-                
+
+                <!-- Dark Mode Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="다크모드 전환" title="다크모드 전환">
+                    <svg class="sun-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+
                 <button class="nav-toggle" id="navToggle" aria-label="메뉴 토글" aria-expanded="false" aria-controls="navMenu">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -327,10 +339,13 @@
                 <div class="director-wrapper">
                     <div class="director-image">
                         <div class="image-frame">
-                            <img src="images/director.jpg" 
-                                 alt="김현 소장" 
-                                 loading="lazy"
-                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'500\' fill=\'%23e5e7eb\'%3E%3Crect width=\'500\' height=\'500\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'sans-serif\' font-size=\'24\'%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E'">
+                            <picture>
+                                <source srcset="images/director.webp" type="image/webp">
+                                <img src="images/director.jpg"
+                                     alt="김현 소장"
+                                     loading="lazy"
+                                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'500\' fill=\'%23e5e7eb\'%3E%3Crect width=\'500\' height=\'500\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'sans-serif\' font-size=\'24\'%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E'">
+                            </picture>
                             <div class="image-decoration"></div>
                         </div>
                         <div class="badge-floating" aria-hidden="true">
@@ -774,6 +789,134 @@
             </div>
         </section>
 
+        <!-- Recent Lectures Section -->
+        <section id="lectures" class="section section-lectures" aria-labelledby="lectures-title">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-label">Lecture History</span>
+                    <h2 id="lectures-title" class="section-title">최근 강의 실적</h2>
+                    <p class="section-description">
+                        다양한 기업과 기관에서 진행한 AI 리더십 교육 현황입니다.
+                    </p>
+                </div>
+
+                <div class="lectures-list" id="lecturesList">
+                    <div class="lectures-loading">
+                        <div class="loading-spinner-small"></div>
+                        <span>강의 정보를 불러오는 중...</span>
+                    </div>
+                </div>
+
+                <div class="lectures-summary" id="lecturesSummary" style="display: none;">
+                    <div class="summary-item">
+                        <span class="summary-value" id="summaryCount">0</span>
+                        <span class="summary-label">총 강의</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value" id="summaryClients">0</span>
+                        <span class="summary-label">협력 기업</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value" id="summaryHours">0</span>
+                        <span class="summary-label">총 교육시간</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="section section-testimonials" aria-labelledby="testimonials-title">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-label">Testimonials</span>
+                    <h2 id="testimonials-title" class="section-title">교육 후기</h2>
+                    <p class="section-description">
+                        AI Leadership Lab과 함께한 분들의 생생한 이야기를 들어보세요.
+                    </p>
+                </div>
+
+                <div class="testimonials-grid">
+                    <!-- Testimonial 1 -->
+                    <article class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating" aria-label="5점 만점">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            </div>
+                            <blockquote>
+                                "AI 도입에 막연한 두려움이 있었는데, 교육 후 실무에 바로 적용할 수 있는
+                                자신감이 생겼습니다. 특히 프롬프트 엔지니어링 실습이 큰 도움이 되었어요."
+                            </blockquote>
+                        </div>
+                        <footer class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>김</span>
+                            </div>
+                            <div class="author-info">
+                                <cite>김OO 부장</cite>
+                                <span>코오롱그룹 · 신규입사자 AI 온보딩</span>
+                            </div>
+                        </footer>
+                    </article>
+
+                    <!-- Testimonial 2 -->
+                    <article class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating" aria-label="5점 만점">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            </div>
+                            <blockquote>
+                                "CEO 대상 특강이었는데, AI 시대 리더의 역할에 대해 새로운 시각을 얻었습니다.
+                                이론이 아닌 실제 사례 중심의 강의가 인상적이었습니다."
+                            </blockquote>
+                        </div>
+                        <footer class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>박</span>
+                            </div>
+                            <div class="author-info">
+                                <cite>박OO 대표</cite>
+                                <span>한경협 FKI 아카데미 · CEO 특강</span>
+                            </div>
+                        </footer>
+                    </article>
+
+                    <!-- Testimonial 3 -->
+                    <article class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating" aria-label="5점 만점">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            </div>
+                            <blockquote>
+                                "생성형 AI를 업무에 어떻게 활용해야 할지 막막했는데, 구체적인 활용법과
+                                실습을 통해 바로 다음날부터 업무에 적용할 수 있었습니다."
+                            </blockquote>
+                        </div>
+                        <footer class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>이</span>
+                            </div>
+                            <div class="author-info">
+                                <cite>이OO 과장</cite>
+                                <span>한국토지신탁 · 신입사원 AI 교육</span>
+                            </div>
+                        </footer>
+                    </article>
+                </div>
+            </div>
+        </section>
+
         <!-- Contact Section -->
         <section id="contact" class="section section-contact" aria-labelledby="contact-title">
             <div class="container">
@@ -910,5 +1053,105 @@
 
     <!-- Scripts -->
     <script src="js/main.js" defer></script>
+
+    <!-- Firebase SDK for Lectures -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase Configuration (same as lectures.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDwcyLezAW4nTlfmv6FYzjEe8RgDUgJXuY",
+            authDomain: "ai-leadership-lectures-d509b.firebaseapp.com",
+            projectId: "ai-leadership-lectures-d509b",
+            storageBucket: "ai-leadership-lectures-d509b.firebasestorage.app",
+            messagingSenderId: "132724154110",
+            appId: "1:132724154110:web:ab5f507a6aee2f583d8faf"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Fetch and display recent lectures
+        async function loadRecentLectures() {
+            const listEl = document.getElementById('lecturesList');
+            const summaryEl = document.getElementById('lecturesSummary');
+
+            try {
+                const lecturesRef = collection(db, 'lectures');
+                const q = query(lecturesRef, orderBy('date', 'desc'), limit(12));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    listEl.innerHTML = '<p class="lectures-empty">등록된 강의가 없습니다.</p>';
+                    return;
+                }
+
+                const lectures = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                // Render lecture cards
+                listEl.innerHTML = lectures.map(lecture => {
+                    const date = lecture.date ? new Date(lecture.date) : null;
+                    const month = date ? date.toLocaleDateString('ko-KR', { month: 'short' }).replace('.', '') : '';
+                    const day = date ? date.getDate() : '';
+                    const duration = lecture.duration ? `${lecture.duration}h` : '';
+
+                    return `
+                        <article class="lecture-card">
+                            <div class="lecture-date">
+                                <span class="month">${month}</span>
+                                <span class="day">${day}</span>
+                            </div>
+                            <div class="lecture-info">
+                                <p class="lecture-client">${escapeHtml(lecture.client || '')}</p>
+                                <h4 class="lecture-title">${escapeHtml(lecture.name || '')}</h4>
+                                ${duration ? `<p class="lecture-meta">${duration}</p>` : ''}
+                            </div>
+                        </article>
+                    `;
+                }).join('');
+
+                // Calculate and show summary
+                const uniqueClients = new Set(lectures.map(l => l.client)).size;
+                const totalHours = lectures.reduce((sum, l) => sum + (l.duration || 0), 0);
+
+                // Get total count (all lectures, not just displayed)
+                const allLecturesSnapshot = await getDocs(collection(db, 'lectures'));
+                const totalCount = allLecturesSnapshot.size;
+                const allClients = new Set(allLecturesSnapshot.docs.map(d => d.data().client)).size;
+                const allHours = allLecturesSnapshot.docs.reduce((sum, d) => sum + (d.data().duration || 0), 0);
+
+                document.getElementById('summaryCount').textContent = totalCount + '회';
+                document.getElementById('summaryClients').textContent = allClients + '개';
+                document.getElementById('summaryHours').textContent = allHours + 'h';
+                summaryEl.style.display = 'flex';
+
+            } catch (error) {
+                console.error('Failed to load lectures:', error);
+                // Show fallback message (Firestore rules may need to be updated for public access)
+                listEl.innerHTML = `
+                    <p class="lectures-empty">
+                        강의 정보를 불러올 수 없습니다.<br>
+                        <small style="color: var(--text-muted);">관리자 페이지에서 데이터를 확인해주세요.</small>
+                    </p>
+                `;
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Load lectures when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadRecentLectures);
+        } else {
+            loadRecentLectures();
+        }
+    </script>
 </body>
 </html>
