@@ -58,36 +58,68 @@
 }
 
 /* ================ Dark Mode Support ================ */
+/* System preference based dark mode */
 @media (prefers-color-scheme: dark) {
-  :root {
+  html:not(.light-mode) {
     --primary: #818cf8;
     --primary-dark: #6366f1;
     --secondary: #c084fc;
     --secondary-dark: #a855f7;
-    
+
     --text-primary: #f1f5f9;
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
-    
+
     --bg-primary: #0f172a;
     --bg-secondary: #1e293b;
     --bg-tertiary: #334155;
-    
+
     --border-color: #475569;
     --shadow-color: rgba(0, 0, 0, 0.3);
   }
-  
-  .hero-gradient {
+
+  html:not(.light-mode) .hero-gradient {
     opacity: 0.95;
   }
-  
-  .navbar {
+
+  html:not(.light-mode) .navbar {
     background: rgba(15, 23, 42, 0.95);
   }
-  
-  .navbar.scrolled {
+
+  html:not(.light-mode) .navbar.scrolled {
     background: rgba(15, 23, 42, 0.98);
   }
+}
+
+/* Manual dark mode toggle */
+html.dark-mode {
+  --primary: #818cf8;
+  --primary-dark: #6366f1;
+  --secondary: #c084fc;
+  --secondary-dark: #a855f7;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+
+  --border-color: #475569;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .hero-gradient {
+  opacity: 0.95;
+}
+
+html.dark-mode .navbar {
+  background: rgba(15, 23, 42, 0.95);
+}
+
+html.dark-mode .navbar.scrolled {
+  background: rgba(15, 23, 42, 0.98);
 }
 
 /* ================ Reset & Base ================ */
@@ -390,6 +422,45 @@ ul {
 .nav-cta:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-base);
+  margin-left: var(--spacing-sm);
+}
+
+.theme-toggle:hover {
+  background: var(--bg-secondary);
+  color: var(--primary);
+  transform: rotate(15deg);
+}
+
+.theme-toggle .sun-icon {
+  display: block;
+}
+
+.theme-toggle .moon-icon {
+  display: none;
+}
+
+/* Dark mode active state */
+html.dark-mode .theme-toggle .sun-icon {
+  display: none;
+}
+
+html.dark-mode .theme-toggle .moon-icon {
+  display: block;
 }
 
 .nav-toggle {

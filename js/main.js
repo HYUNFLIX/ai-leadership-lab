@@ -507,23 +507,78 @@
     });
   }
 
-  // ================ Dark Mode Detection ================
-  function initDarkModeDetection() {
-    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    function handleDarkModeChange(e) {
-      if (e.matches) {
-        document.body.classList.add('dark-mode');
+  // ================ Dark Mode Toggle ================
+  function initDarkModeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const STORAGE_KEY = 'ai-leadership-theme';
+
+    // Get stored preference or null
+    function getStoredTheme() {
+      return localStorage.getItem(STORAGE_KEY);
+    }
+
+    // Check if system prefers dark mode
+    function systemPrefersDark() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    // Apply theme based on preference
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        html.classList.add('dark-mode');
+        html.classList.remove('light-mode');
+      } else if (theme === 'light') {
+        html.classList.add('light-mode');
+        html.classList.remove('dark-mode');
       } else {
-        document.body.classList.remove('dark-mode');
+        // Auto - remove manual classes, let system preference work
+        html.classList.remove('dark-mode', 'light-mode');
       }
     }
-    
-    // Initial check
-    handleDarkModeChange(darkModeMediaQuery);
-    
-    // Listen for changes
-    darkModeMediaQuery.addEventListener('change', handleDarkModeChange);
+
+    // Initialize theme on page load
+    function initTheme() {
+      const storedTheme = getStoredTheme();
+      if (storedTheme) {
+        applyTheme(storedTheme);
+      }
+      // If no stored preference, CSS media query handles it automatically
+    }
+
+    // Toggle between light and dark
+    function toggleTheme() {
+      const storedTheme = getStoredTheme();
+      const currentlyDark = html.classList.contains('dark-mode') ||
+                            (!html.classList.contains('light-mode') && systemPrefersDark());
+
+      if (currentlyDark) {
+        // Switch to light
+        localStorage.setItem(STORAGE_KEY, 'light');
+        applyTheme('light');
+      } else {
+        // Switch to dark
+        localStorage.setItem(STORAGE_KEY, 'dark');
+        applyTheme('dark');
+      }
+    }
+
+    // Event listener for toggle button
+    if (themeToggle) {
+      themeToggle.addEventListener('click', toggleTheme);
+    }
+
+    // Listen for system preference changes (only if no manual preference set)
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!getStoredTheme()) {
+        // No manual preference, CSS handles it automatically
+        // Just ensure no conflicting classes
+        html.classList.remove('dark-mode', 'light-mode');
+      }
+    });
+
+    // Initialize on load
+    initTheme();
   }
 
   // ================ Performance Monitoring ================
@@ -580,7 +635,7 @@
     initNumberCounters();
     initLazyLoading();
     initKeyboardNav();
-    initDarkModeDetection();
+    initDarkModeToggle();
     
     // Performance monitoring (development only)
     if (window.location.hostname === 'localhost') {
