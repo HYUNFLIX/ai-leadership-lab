@@ -614,6 +614,88 @@
   // ================ Event Listeners ================
   window.addEventListener('resize', optimizedResize);
 
+  // ================ Interactive 3D Cube ================
+  function initInteractiveCube() {
+    const cubeScene = document.getElementById('cubeScene');
+    const cube = document.getElementById('interactiveCube');
+
+    if (!cubeScene || !cube) return;
+
+    let isHovering = false;
+    let mouseX = 0;
+    let mouseY = 0;
+    let currentRotateX = -20;
+    let currentRotateY = 0;
+    let autoRotateY = 0;
+    let animationId = null;
+
+    // Mouse move handler
+    cubeScene.addEventListener('mousemove', (e) => {
+      const rect = cubeScene.getBoundingClientRect();
+      mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+      mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    });
+
+    // Mouse enter - pause auto rotation
+    cubeScene.addEventListener('mouseenter', () => {
+      isHovering = true;
+      cube.classList.add('paused');
+    });
+
+    // Mouse leave - resume auto rotation
+    cubeScene.addEventListener('mouseleave', () => {
+      isHovering = false;
+      cube.classList.remove('paused');
+    });
+
+    // Touch support for mobile
+    cubeScene.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const rect = cubeScene.getBoundingClientRect();
+      const touch = e.touches[0];
+      mouseX = ((touch.clientX - rect.left) / rect.width - 0.5) * 2;
+      mouseY = ((touch.clientY - rect.top) / rect.height - 0.5) * 2;
+    }, { passive: false });
+
+    cubeScene.addEventListener('touchstart', () => {
+      isHovering = true;
+      cube.classList.add('paused');
+    });
+
+    cubeScene.addEventListener('touchend', () => {
+      isHovering = false;
+      cube.classList.remove('paused');
+      mouseX = 0;
+      mouseY = 0;
+    });
+
+    // Animation loop for smooth interaction
+    function animate() {
+      if (isHovering) {
+        // Interactive rotation based on mouse position
+        const targetRotateX = -20 + mouseY * 30;
+        const targetRotateY = mouseX * 45;
+
+        // Smooth interpolation
+        currentRotateX += (targetRotateX - currentRotateX) * 0.1;
+        currentRotateY += (targetRotateY - currentRotateY) * 0.1;
+
+        cube.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
+      }
+
+      animationId = requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Cleanup function
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }
+
   // ================ Initialize Everything ================
   function init() {
     // Check for critical features
@@ -636,6 +718,7 @@
     initLazyLoading();
     initKeyboardNav();
     initDarkModeToggle();
+    initInteractiveCube();
     
     // Performance monitoring (development only)
     if (window.location.hostname === 'localhost') {

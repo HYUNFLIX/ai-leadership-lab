@@ -167,18 +167,78 @@
                         </p>
                     </div>
 
-                    <!-- Spline 3D Interactive -->
+                    <!-- Interactive 3D Cube -->
                     <div class="hero-visual animate-fade-in-up">
-                        <div class="spline-container">
-                            <iframe
-                                src="https://my.spline.design/n5rBmufpSdGy2aJE/"
-                                frameborder="0"
-                                width="100%"
-                                height="100%"
-                                loading="lazy"
-                                allow="autoplay"
-                                title="AI Interactive 3D">
-                            </iframe>
+                        <div class="cube-scene" id="cubeScene">
+                            <!-- 3D Cube -->
+                            <div class="cube-container">
+                                <div class="cube" id="interactiveCube">
+                                    <div class="cube-face cube-front">
+                                        <div class="face-content">
+                                            <span class="face-icon">🤖</span>
+                                            <span class="face-text">AI</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-back">
+                                        <div class="face-content">
+                                            <span class="face-icon">📊</span>
+                                            <span class="face-text">Data</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-right">
+                                        <div class="face-content">
+                                            <span class="face-icon">💡</span>
+                                            <span class="face-text">혁신</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-left">
+                                        <div class="face-content">
+                                            <span class="face-icon">🎯</span>
+                                            <span class="face-text">전략</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-top">
+                                        <div class="face-content">
+                                            <span class="face-icon">👥</span>
+                                            <span class="face-text">리더십</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-bottom">
+                                        <div class="face-content">
+                                            <span class="face-icon">🚀</span>
+                                            <span class="face-text">성장</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Floating Particles -->
+                            <div class="floating-particles">
+                                <div class="particle" style="--delay: 0s; --x: 20%; --y: 30%;"></div>
+                                <div class="particle" style="--delay: 1s; --x: 80%; --y: 20%;"></div>
+                                <div class="particle" style="--delay: 2s; --x: 70%; --y: 70%;"></div>
+                                <div class="particle" style="--delay: 0.5s; --x: 30%; --y: 80%;"></div>
+                                <div class="particle" style="--delay: 1.5s; --x: 50%; --y: 10%;"></div>
+                                <div class="particle" style="--delay: 2.5s; --x: 10%; --y: 50%;"></div>
+                                <div class="particle" style="--delay: 3s; --x: 90%; --y: 60%;"></div>
+                                <div class="particle" style="--delay: 0.8s; --x: 40%; --y: 90%;"></div>
+                            </div>
+
+                            <!-- Floating Labels -->
+                            <div class="floating-labels">
+                                <span class="float-label" style="--pos-x: 5%; --pos-y: 20%;">DX</span>
+                                <span class="float-label" style="--pos-x: 85%; --pos-y: 15%;">HRD</span>
+                                <span class="float-label" style="--pos-x: 10%; --pos-y: 75%;">코칭</span>
+                                <span class="float-label" style="--pos-x: 80%; --pos-y: 80%;">컨설팅</span>
+                                <span class="float-label" style="--pos-x: 50%; --pos-y: 5%;">교육</span>
+                            </div>
+
+                            <!-- Orbit Rings -->
+                            <div class="orbit-rings">
+                                <div class="orbit-ring orbit-1"></div>
+                                <div class="orbit-ring orbit-2"></div>
+                                <div class="orbit-ring orbit-3"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
