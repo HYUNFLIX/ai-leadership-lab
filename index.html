@@ -130,7 +130,6 @@
                     <li role="none"><a href="#director" class="nav-link" role="menuitem">연구소장</a></li>
                     <li role="none"><a href="#publications" class="nav-link" role="menuitem">저서</a></li>
                     <li role="none"><a href="#projects" class="nav-link" role="menuitem">강의실적</a></li>
-                    <li role="none"><a href="javascript:void(0)" onclick="openProgramsModal()" class="nav-link" role="menuitem">AI 도구</a></li>
                     <li role="none"><a href="thanks-2025/" class="nav-link" role="menuitem">감사페이지</a></li>
                     <li role="none"><a href="#contact" class="nav-link nav-cta" role="menuitem">Contact</a></li>
                 </ul>
@@ -158,66 +157,76 @@
     <!-- Main Content -->
     <main id="main">
         <!-- Hero Section -->
-        <section id="hero" class="hero" aria-labelledby="hero-title">
+        <section id="hero" class="hero hero-split" aria-labelledby="hero-title">
             <div class="hero-bg">
                 <div class="hero-gradient"></div>
                 <div class="hero-pattern"></div>
             </div>
             <div class="container">
-                <div class="hero-content">
-                    <span class="hero-badge animate-fade-in">AI Leadership Innovation</span>
-                    <h1 id="hero-title" class="hero-title animate-slide-up">
-                        AI가 아니라<br>
-                        <span class="text-highlight">AI를 쓰는 리더</span>가<br>
-                        당신을 대체합니다
-                    </h1>
-                    <p class="hero-description animate-slide-up-delay">
-                        AI Leadership Lab은 새로운 시대에 맞는 리더십 철학과 
-                        실질적인 협업 전략을 제시합니다.
-                    </p>
-                    <div class="hero-actions animate-fade-in-delay" id="heroPrograms">
-                        <!-- Programs loaded dynamically from data/programs.json -->
-                    </div>
-                </div>
-                
-                <!-- Stats Cards -->
-                <div class="stats-grid animate-fade-in-up">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="stat-content">
-                            <span class="stat-value" data-target="2000">2조 달러</span>
-                            <span class="stat-label">2030년 AI 시장 규모</span>
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <span class="hero-badge animate-fade-in">AI Leadership Innovation</span>
+                        <h1 id="hero-title" class="hero-title animate-slide-up">
+                            AI가 아니라<br>
+                            <span class="text-highlight">AI를 쓰는 리더</span>가<br>
+                            당신을 대체합니다
+                        </h1>
+                        <p class="hero-description animate-slide-up-delay">
+                            AI Leadership Lab은 새로운 시대에 맞는 리더십 철학과
+                            실질적인 협업 전략을 제시합니다.
+                        </p>
+                        <div class="hero-actions animate-fade-in-delay" id="heroPrograms">
+                            <!-- Programs loaded dynamically from data/programs.json -->
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="stat-content">
-                            <span class="stat-value" data-target="42">42%</span>
-                            <span class="stat-label">기업 AI 도입률</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="stat-content">
-                            <span class="stat-value" data-target="40">40%↑</span>
-                            <span class="stat-label">생산성 향상</span>
+
+                    <!-- 3D Hero Visual -->
+                    <div class="hero-visual animate-fade-in-up">
+                        <div class="hero-3d-container">
+                            <div class="floating-card card-1">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                    </svg>
+                                </div>
+                                <span>AI Strategy</span>
+                            </div>
+                            <div class="floating-card card-2">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 6v6l4 2"/>
+                                    </svg>
+                                </div>
+                                <span>Leadership</span>
+                            </div>
+                            <div class="floating-card card-3">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="9" cy="7" r="4"/>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                                    </svg>
+                                </div>
+                                <span>Education</span>
+                            </div>
+                            <div class="hero-sphere">
+                                <div class="sphere-ring ring-1"></div>
+                                <div class="sphere-ring ring-2"></div>
+                                <div class="sphere-ring ring-3"></div>
+                                <div class="sphere-core"></div>
+                            </div>
+                            <div class="orbit-particles">
+                                <div class="particle p1"></div>
+                                <div class="particle p2"></div>
+                                <div class="particle p3"></div>
+                                <div class="particle p4"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Scroll Indicator -->
             <div class="scroll-indicator" aria-hidden="true">
                 <span class="scroll-text">Scroll</span>
@@ -283,7 +292,7 @@
                                 </div>
                                 <div>
                                     <h4>검증된 전문성</h4>
-                                    <p>15년 이상의 현장 경험과 노하우</p>
+                                    <p>20년 이상의 현장 경험과 노하우</p>
                                 </div>
                             </div>
                         </div>
@@ -310,7 +319,7 @@
                                     </defs>
                                 </svg>
                             </div>
-                            <h4>500+</h4>
+                            <h4>2,000+</h4>
                             <p>교육 수료생</p>
                         </div>
                     </div>
