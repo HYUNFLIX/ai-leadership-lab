@@ -178,78 +178,83 @@
                         </p>
                     </div>
 
-                    <!-- Professional Hero Visual -->
+                    <!-- Interactive 3D Neural Network -->
                     <div class="hero-visual animate-fade-in-up">
-                        <div class="hero-3d-container">
-                            <!-- Central AI Brain Network -->
-                            <div class="ai-brain">
-                                <div class="brain-core">
-                                    <svg viewBox="0 0 100 100" fill="none">
-                                        <defs>
-                                            <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                <stop offset="0%" style="stop-color:#6366f1"/>
-                                                <stop offset="50%" style="stop-color:#8b5cf6"/>
-                                                <stop offset="100%" style="stop-color:#a855f7"/>
-                                            </linearGradient>
-                                        </defs>
-                                        <circle cx="50" cy="50" r="45" stroke="url(#brainGrad)" stroke-width="2" fill="none" opacity="0.3"/>
-                                        <circle cx="50" cy="50" r="35" stroke="url(#brainGrad)" stroke-width="1.5" fill="none" opacity="0.5"/>
-                                        <circle cx="50" cy="50" r="25" stroke="url(#brainGrad)" stroke-width="1" fill="none" opacity="0.7"/>
-                                        <circle cx="50" cy="50" r="12" fill="url(#brainGrad)" opacity="0.9"/>
-                                    </svg>
-                                </div>
-                                <div class="brain-pulse"></div>
-                            </div>
-
-                            <!-- Floating Feature Cards -->
-                            <div class="feature-card card-strategy">
-                                <div class="card-glow"></div>
-                                <div class="card-content">
-                                    <div class="card-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                                        </svg>
-                                    </div>
-                                    <span>AI Strategy</span>
-                                </div>
-                            </div>
-                            <div class="feature-card card-leadership">
-                                <div class="card-glow"></div>
-                                <div class="card-content">
-                                    <div class="card-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                                        </svg>
-                                    </div>
-                                    <span>Leadership</span>
-                                </div>
-                            </div>
-                            <div class="feature-card card-education">
-                                <div class="card-glow"></div>
-                                <div class="card-content">
-                                    <div class="card-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                                            <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
-                                        </svg>
-                                    </div>
-                                    <span>Education</span>
+                        <div class="neural-network" id="neuralNetwork">
+                            <!-- 3D Rotating Cube Frame -->
+                            <div class="cube-container">
+                                <div class="cube">
+                                    <div class="cube-face front"></div>
+                                    <div class="cube-face back"></div>
+                                    <div class="cube-face right"></div>
+                                    <div class="cube-face left"></div>
+                                    <div class="cube-face top"></div>
+                                    <div class="cube-face bottom"></div>
                                 </div>
                             </div>
 
-                            <!-- Connection Lines -->
-                            <svg class="connection-lines" viewBox="0 0 400 400" fill="none">
+                            <!-- Neural Nodes -->
+                            <div class="neural-nodes">
+                                <div class="node node-center">
+                                    <div class="node-core"></div>
+                                    <div class="node-ring"></div>
+                                    <div class="node-ring ring-2"></div>
+                                </div>
+                                <div class="node node-1"><div class="node-dot"></div></div>
+                                <div class="node node-2"><div class="node-dot"></div></div>
+                                <div class="node node-3"><div class="node-dot"></div></div>
+                                <div class="node node-4"><div class="node-dot"></div></div>
+                                <div class="node node-5"><div class="node-dot"></div></div>
+                                <div class="node node-6"><div class="node-dot"></div></div>
+                            </div>
+
+                            <!-- SVG Connections -->
+                            <svg class="neural-connections" viewBox="0 0 400 400">
                                 <defs>
-                                    <linearGradient id="lineGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0"/>
-                                        <stop offset="50%" style="stop-color:#6366f1;stop-opacity:0.6"/>
-                                        <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0"/>
+                                    <linearGradient id="connGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#6366f1" stop-opacity="0.8"/>
+                                        <stop offset="100%" stop-color="#a855f7" stop-opacity="0.8"/>
                                     </linearGradient>
+                                    <filter id="glow">
+                                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur"/>
+                                            <feMergeNode in="SourceGraphic"/>
+                                        </feMerge>
+                                    </filter>
                                 </defs>
-                                <path class="conn-line line-1" d="M200 200 L80 100" stroke="url(#lineGrad1)" stroke-width="2"/>
-                                <path class="conn-line line-2" d="M200 200 L320 80" stroke="url(#lineGrad1)" stroke-width="2"/>
-                                <path class="conn-line line-3" d="M200 200 L340 280" stroke="url(#lineGrad1)" stroke-width="2"/>
+                                <!-- Connection lines from center to outer nodes -->
+                                <line class="conn" x1="200" y1="200" x2="80" y2="80" stroke="url(#connGrad)" stroke-width="2" filter="url(#glow)"/>
+                                <line class="conn" x1="200" y1="200" x2="320" y2="80" stroke="url(#connGrad)" stroke-width="2" filter="url(#glow)"/>
+                                <line class="conn" x1="200" y1="200" x2="350" y2="200" stroke="url(#connGrad)" stroke-width="2" filter="url(#glow)"/>
+                                <line class="conn" x1="200" y1="200" x2="320" y2="320" stroke="url(#connGrad)" stroke-width="2" filter="url(#glow)"/>
+                                <line class="conn" x1="200" y1="200" x2="80" y2="320" stroke="url(#connGrad)" stroke-width="2" filter="url(#glow)"/>
+                                <line class="conn" x1="200" y1="200" x2="50" y2="200" stroke="url(#connGrad)" stroke-width="2" filter="url(#glow)"/>
+                                <!-- Data flow particles -->
+                                <circle class="data-particle p1" r="4" fill="#fff">
+                                    <animateMotion dur="2s" repeatCount="indefinite" path="M200,200 L80,80"/>
+                                </circle>
+                                <circle class="data-particle p2" r="4" fill="#fff">
+                                    <animateMotion dur="2.5s" repeatCount="indefinite" path="M200,200 L320,80"/>
+                                </circle>
+                                <circle class="data-particle p3" r="4" fill="#fff">
+                                    <animateMotion dur="1.8s" repeatCount="indefinite" path="M200,200 L350,200"/>
+                                </circle>
+                                <circle class="data-particle p4" r="4" fill="#fff">
+                                    <animateMotion dur="2.2s" repeatCount="indefinite" path="M200,200 L320,320"/>
+                                </circle>
+                                <circle class="data-particle p5" r="4" fill="#fff">
+                                    <animateMotion dur="2.8s" repeatCount="indefinite" path="M200,200 L80,320"/>
+                                </circle>
+                                <circle class="data-particle p6" r="4" fill="#fff">
+                                    <animateMotion dur="2s" repeatCount="indefinite" path="M200,200 L50,200"/>
+                                </circle>
                             </svg>
+
+                            <!-- Floating Labels -->
+                            <div class="float-label label-ai">AI</div>
+                            <div class="float-label label-ml">ML</div>
+                            <div class="float-label label-dl">DL</div>
                         </div>
                     </div>
                 </div>
