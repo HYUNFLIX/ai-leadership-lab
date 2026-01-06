@@ -964,7 +964,7 @@
 
                 // Get sorted years (descending)
                 const years = Object.keys(lecturesByYear).sort((a, b) => b - a);
-                const currentYear = new Date().getFullYear().toString();
+                const recentYears = ['2025', '2026']; // 최근 년도는 태그 형식으로 표시
 
                 // Get unique clients for summary view
                 function getUniqueClients(lectures) {
@@ -974,11 +974,11 @@
 
                 // Render lectures grouped by year with toggle (show cumulative count)
                 containerEl.innerHTML = years.map((year, index) => {
-                    const isCurrentYear = year === currentYear;
+                    const isRecentYear = recentYears.includes(year);
                     const uniqueClients = getUniqueClients(lecturesByYear[year]);
 
-                    if (isCurrentYear) {
-                        // 2025년: 업체명 태그로 먼저 표시, 더보기로 상세 내용
+                    if (isRecentYear) {
+                        // 최근 년도: 업체명 태그로 먼저 표시, 더보기로 상세 내용
                         return `
                             <div class="year-group expanded">
                                 <div class="year-header-static">
