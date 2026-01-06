@@ -768,49 +768,91 @@ html.dark-mode .theme-toggle .moon-icon {
 /* Floating Labels */
 .float-label {
   position: absolute;
-  padding: 0.5rem 1rem;
+  padding: 0.35rem 0.75rem;
   background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  font-weight: 700;
-  font-size: 0.875rem;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 0.75rem;
   color: var(--primary);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
   z-index: 10;
+  white-space: nowrap;
   animation: labelFloat 4s ease-in-out infinite;
 }
 
-.label-ai {
-  top: 5%;
+/* Center label - AI Leadership */
+.label-center {
+  top: 3%;
   left: 50%;
   transform: translateX(-50%);
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
-  font-size: 1.5rem;
-  padding: 0.75rem 2rem;
-  letter-spacing: 0.1em;
+  font-size: 1rem;
+  padding: 0.6rem 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   animation: labelFloatCenter 4s ease-in-out infinite;
 }
 
-.label-ml {
-  bottom: 12%;
-  left: 8%;
-  animation-delay: -1.3s;
+/* Labels positioned near each node */
+.label-1 {
+  top: 12%;
+  left: 5%;
+  animation-delay: 0s;
 }
 
-.label-dl {
+.label-2 {
+  top: 12%;
+  right: 5%;
+  animation-delay: -0.7s;
+}
+
+.label-3 {
+  top: 50%;
+  right: -5%;
+  transform: translateY(-50%);
+  animation: labelFloatRight 4s ease-in-out infinite;
+  animation-delay: -1.4s;
+}
+
+.label-4 {
   bottom: 12%;
-  right: 8%;
-  animation-delay: -2.6s;
+  right: 5%;
+  animation-delay: -2.1s;
+}
+
+.label-5 {
+  bottom: 12%;
+  left: 5%;
+  animation-delay: -2.8s;
+}
+
+.label-6 {
+  top: 50%;
+  left: -3%;
+  transform: translateY(-50%);
+  animation: labelFloatLeft 4s ease-in-out infinite;
+  animation-delay: -3.5s;
 }
 
 @keyframes labelFloat {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-6px); }
 }
 
 @keyframes labelFloatCenter {
   0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-10px); }
+  50% { transform: translateX(-50%) translateY(-6px); }
+}
+
+@keyframes labelFloatRight {
+  0%, 100% { transform: translateY(-50%) translateX(0); }
+  50% { transform: translateY(-50%) translateX(4px); }
+}
+
+@keyframes labelFloatLeft {
+  0%, 100% { transform: translateY(-50%) translateX(0); }
+  50% { transform: translateY(-50%) translateX(-4px); }
 }
 
 /* Responsive */
