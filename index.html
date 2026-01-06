@@ -130,6 +130,7 @@
                     <li role="none"><a href="#director" class="nav-link" role="menuitem">연구소장</a></li>
                     <li role="none"><a href="#publications" class="nav-link" role="menuitem">저서</a></li>
                     <li role="none"><a href="#projects" class="nav-link" role="menuitem">강의실적</a></li>
+                    <li role="none"><a href="javascript:void(0)" onclick="openProgramsModal()" class="nav-link" role="menuitem">AI 도구</a></li>
                     <li role="none"><a href="thanks-2025/" class="nav-link" role="menuitem">감사페이지</a></li>
                     <li role="none"><a href="#contact" class="nav-link nav-cta" role="menuitem">Contact</a></li>
                 </ul>
@@ -180,48 +181,78 @@
                         </div>
                     </div>
 
-                    <!-- 3D Hero Visual -->
+                    <!-- Professional Hero Visual -->
                     <div class="hero-visual animate-fade-in-up">
                         <div class="hero-3d-container">
-                            <div class="floating-card card-1">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            <!-- Central AI Brain Network -->
+                            <div class="ai-brain">
+                                <div class="brain-core">
+                                    <svg viewBox="0 0 100 100" fill="none">
+                                        <defs>
+                                            <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" style="stop-color:#6366f1"/>
+                                                <stop offset="50%" style="stop-color:#8b5cf6"/>
+                                                <stop offset="100%" style="stop-color:#a855f7"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <circle cx="50" cy="50" r="45" stroke="url(#brainGrad)" stroke-width="2" fill="none" opacity="0.3"/>
+                                        <circle cx="50" cy="50" r="35" stroke="url(#brainGrad)" stroke-width="1.5" fill="none" opacity="0.5"/>
+                                        <circle cx="50" cy="50" r="25" stroke="url(#brainGrad)" stroke-width="1" fill="none" opacity="0.7"/>
+                                        <circle cx="50" cy="50" r="12" fill="url(#brainGrad)" opacity="0.9"/>
                                     </svg>
                                 </div>
-                                <span>AI Strategy</span>
+                                <div class="brain-pulse"></div>
                             </div>
-                            <div class="floating-card card-2">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <path d="M12 6v6l4 2"/>
-                                    </svg>
+
+                            <!-- Floating Feature Cards -->
+                            <div class="feature-card card-strategy">
+                                <div class="card-glow"></div>
+                                <div class="card-content">
+                                    <div class="card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                        </svg>
+                                    </div>
+                                    <span>AI Strategy</span>
                                 </div>
-                                <span>Leadership</span>
                             </div>
-                            <div class="floating-card card-3">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                                        <circle cx="9" cy="7" r="4"/>
-                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-                                    </svg>
+                            <div class="feature-card card-leadership">
+                                <div class="card-glow"></div>
+                                <div class="card-content">
+                                    <div class="card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                        </svg>
+                                    </div>
+                                    <span>Leadership</span>
                                 </div>
-                                <span>Education</span>
                             </div>
-                            <div class="hero-sphere">
-                                <div class="sphere-ring ring-1"></div>
-                                <div class="sphere-ring ring-2"></div>
-                                <div class="sphere-ring ring-3"></div>
-                                <div class="sphere-core"></div>
+                            <div class="feature-card card-education">
+                                <div class="card-glow"></div>
+                                <div class="card-content">
+                                    <div class="card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                                            <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                                        </svg>
+                                    </div>
+                                    <span>Education</span>
+                                </div>
                             </div>
-                            <div class="orbit-particles">
-                                <div class="particle p1"></div>
-                                <div class="particle p2"></div>
-                                <div class="particle p3"></div>
-                                <div class="particle p4"></div>
-                            </div>
+
+                            <!-- Connection Lines -->
+                            <svg class="connection-lines" viewBox="0 0 400 400" fill="none">
+                                <defs>
+                                    <linearGradient id="lineGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0"/>
+                                        <stop offset="50%" style="stop-color:#6366f1;stop-opacity:0.6"/>
+                                        <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0"/>
+                                    </linearGradient>
+                                </defs>
+                                <path class="conn-line line-1" d="M200 200 L80 100" stroke="url(#lineGrad1)" stroke-width="2"/>
+                                <path class="conn-line line-2" d="M200 200 L320 80" stroke="url(#lineGrad1)" stroke-width="2"/>
+                                <path class="conn-line line-3" d="M200 200 L340 280" stroke="url(#lineGrad1)" stroke-width="2"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -397,63 +428,6 @@
                             <span class="badge">한국코치협회 KAC</span>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Quotes Section -->
-        <section class="section section-quotes" aria-labelledby="quotes-title">
-            <div class="container">
-                <div class="section-header text-center">
-                    <span class="section-label">Insights</span>
-                    <h2 id="quotes-title" class="section-title">시대의 통찰</h2>
-                </div>
-                
-                <div class="quotes-grid">
-                    <article class="quote-card">
-                        <div class="quote-icon" aria-hidden="true">
-                            <svg width="40" height="40" fill="currentColor" opacity="0.2">
-                                <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
-                            </svg>
-                        </div>
-                        <blockquote>
-                            "AI가 우리를 닭처럼 판단할 수도 있다."
-                        </blockquote>
-                        <footer>
-                            <cite>제프리 힌튼</cite>
-                            <span>AI의 대부</span>
-                        </footer>
-                    </article>
-                    
-                    <article class="quote-card">
-                        <div class="quote-icon" aria-hidden="true">
-                            <svg width="40" height="40" fill="currentColor" opacity="0.2">
-                                <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
-                            </svg>
-                        </div>
-                        <blockquote>
-                            "AI는 도구가 아닌 행위자다. 우리와 독립적으로 결정을 내린다."
-                        </blockquote>
-                        <footer>
-                            <cite>유발 하라리</cite>
-                            <span>'사피엔스' 저자</span>
-                        </footer>
-                    </article>
-                    
-                    <article class="quote-card">
-                        <div class="quote-icon" aria-hidden="true">
-                            <svg width="40" height="40" fill="currentColor" opacity="0.2">
-                                <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
-                            </svg>
-                        </div>
-                        <blockquote>
-                            "AI는 이제 '저렴한 지능'이다. 24시간 지치지 않고 일한다."
-                        </blockquote>
-                        <footer>
-                            <cite>송길영</cite>
-                            <span>빅데이터 전문가</span>
-                        </footer>
-                    </article>
                 </div>
             </div>
         </section>
