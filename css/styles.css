@@ -1559,6 +1559,119 @@ html.dark-mode .theme-toggle .moon-icon {
   color: var(--text-muted);
 }
 
+/* 2025년 업체명 태그 스타일 */
+.year-header-static {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.year-header-static .year-badge {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.year-badge-current {
+  font-size: 1.1rem;
+}
+
+.year-header-static .year-count {
+  color: rgba(255, 255, 255, 0.9);
+  margin-left: auto;
+  font-weight: 600;
+}
+
+.year-clients-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: var(--spacing-md);
+  background: var(--bg-primary);
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+}
+
+.client-tag {
+  display: inline-block;
+  padding: 0.4rem 0.85rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--primary);
+  transition: all 0.2s ease;
+}
+
+.client-tag:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+  transform: translateY(-1px);
+}
+
+.show-details-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: var(--spacing-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.show-details-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--primary);
+}
+
+.show-details-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.show-details-btn .btn-text-less {
+  display: none;
+}
+
+.year-group.show-details .show-details-btn .btn-text-more {
+  display: none;
+}
+
+.year-group.show-details .show-details-btn .btn-text-less {
+  display: inline;
+}
+
+.year-group.show-details .show-details-btn svg {
+  transform: rotate(180deg);
+}
+
+.year-lectures-detail {
+  display: none;
+  padding: var(--spacing-md);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  margin-top: -1px;
+}
+
+.year-group.show-details .year-lectures-detail {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+
+.year-group.show-details .show-details-btn {
+  border-radius: 0;
+}
+
 @media (max-width: 768px) {
   .year-lectures {
     grid-template-columns: 1fr;

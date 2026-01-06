@@ -964,27 +964,72 @@
 
                 // Get sorted years (descending)
                 const years = Object.keys(lecturesByYear).sort((a, b) => b - a);
+                const currentYear = new Date().getFullYear().toString();
+
+                // Get unique clients for summary view
+                function getUniqueClients(lectures) {
+                    const clients = [...new Set(lectures.map(l => l.client).filter(Boolean))];
+                    return clients;
+                }
 
                 // Render lectures grouped by year with toggle (show cumulative count)
-                containerEl.innerHTML = years.map((year, index) => `
-                    <div class="year-group ${index === 0 ? 'expanded' : ''}">
-                        <button class="year-header" onclick="this.parentElement.classList.toggle('expanded')" aria-expanded="${index === 0}">
-                            <span class="year-badge">${year}</span>
-                            <span class="year-count">${yearTotalCounts[year]}건</span>
-                            <svg class="year-toggle-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                        <div class="year-lectures">
-                            ${lecturesByYear[year].map(lecture => `
-                                <div class="lecture-item">
-                                    <span class="lecture-client">${escapeHtml(lecture.client || '')}</span>
-                                    <span class="lecture-title">${escapeHtml(lecture.name || '')}${lecture.count > 1 ? `, ${lecture.count}차수` : ''}</span>
+                containerEl.innerHTML = years.map((year, index) => {
+                    const isCurrentYear = year === currentYear;
+                    const uniqueClients = getUniqueClients(lecturesByYear[year]);
+
+                    if (isCurrentYear) {
+                        // 2025년: 업체명 태그로 먼저 표시, 더보기로 상세 내용
+                        return `
+                            <div class="year-group expanded">
+                                <div class="year-header-static">
+                                    <span class="year-badge year-badge-current">${year}</span>
+                                    <span class="year-count">${yearTotalCounts[year]}건</span>
                                 </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `).join('');
+                                <div class="year-clients-summary">
+                                    ${uniqueClients.map(client => `
+                                        <span class="client-tag">${escapeHtml(client)}</span>
+                                    `).join('')}
+                                </div>
+                                <button class="show-details-btn" onclick="this.parentElement.classList.toggle('show-details')">
+                                    <span class="btn-text-more">세부 내용 보기</span>
+                                    <span class="btn-text-less">접기</span>
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div class="year-lectures-detail">
+                                    ${lecturesByYear[year].map(lecture => `
+                                        <div class="lecture-item">
+                                            <span class="lecture-client">${escapeHtml(lecture.client || '')}</span>
+                                            <span class="lecture-title">${escapeHtml(lecture.name || '')}${lecture.count > 1 ? `, ${lecture.count}차수` : ''}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        // 이전 년도: 기존 방식
+                        return `
+                            <div class="year-group">
+                                <button class="year-header" onclick="this.parentElement.classList.toggle('expanded')" aria-expanded="false">
+                                    <span class="year-badge">${year}</span>
+                                    <span class="year-count">${yearTotalCounts[year]}건</span>
+                                    <svg class="year-toggle-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div class="year-lectures">
+                                    ${lecturesByYear[year].map(lecture => `
+                                        <div class="lecture-item">
+                                            <span class="lecture-client">${escapeHtml(lecture.client || '')}</span>
+                                            <span class="lecture-title">${escapeHtml(lecture.name || '')}${lecture.count > 1 ? `, ${lecture.count}차수` : ''}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                }).join('');
 
             } catch (error) {
                 console.error('Failed to load lectures:', error);
