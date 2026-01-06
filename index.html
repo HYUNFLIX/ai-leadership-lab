@@ -129,7 +129,9 @@
                     <li role="none"><a href="#about" class="nav-link" role="menuitem">연구소 소개</a></li>
                     <li role="none"><a href="#director" class="nav-link" role="menuitem">연구소장</a></li>
                     <li role="none"><a href="#publications" class="nav-link" role="menuitem">저서</a></li>
-                    <li role="none"><a href="#projects" class="nav-link" role="menuitem">프로젝트</a></li>
+                    <li role="none"><a href="#projects" class="nav-link" role="menuitem">강의실적</a></li>
+                    <li role="none"><a href="javascript:void(0)" onclick="openProgramsModal()" class="nav-link" role="menuitem">AI 도구</a></li>
+                    <li role="none"><a href="thanks-2025/" class="nav-link" role="menuitem">감사페이지</a></li>
                     <li role="none"><a href="#contact" class="nav-link nav-cta" role="menuitem">Contact</a></li>
                 </ul>
 
@@ -363,7 +365,7 @@
                             </div>
                             <div class="credential-item">
                                 <span class="credential-label">경력</span>
-                                <span class="credential-value">세종텔레콤, 현대정보기술 교육팀, RFID/USN 협회</span>
+                                <span class="credential-value">세종텔레콤, 현대정보기술, 한국RFID/USN 협회</span>
                             </div>
                             <div class="credential-item">
                                 <span class="credential-label">학력</span>
@@ -741,7 +743,7 @@
                             <li><a href="#about">연구소 소개</a></li>
                             <li><a href="#director">연구소장</a></li>
                             <li><a href="#publications">저서</a></li>
-                            <li><a href="#projects">프로젝트</a></li>
+                            <li><a href="#projects">강의실적</a></li>
                         </ul>
                     </div>
                     
@@ -949,13 +951,16 @@
 
                 // Group lectures by year
                 const lecturesByYear = {};
+                const yearTotalCounts = {}; // Store cumulative counts before merging
                 lectures.forEach(lecture => {
                     const date = lecture.date ? new Date(lecture.date) : null;
                     const year = date ? date.getFullYear() : 'Unknown';
                     if (!lecturesByYear[year]) {
                         lecturesByYear[year] = [];
+                        yearTotalCounts[year] = 0;
                     }
                     lecturesByYear[year].push(lecture);
+                    yearTotalCounts[year]++;
                 });
 
                 // Merge same lectures within each year (by client + name)
@@ -975,12 +980,12 @@
                 // Get sorted years (descending)
                 const years = Object.keys(lecturesByYear).sort((a, b) => b - a);
 
-                // Render lectures grouped by year with toggle
+                // Render lectures grouped by year with toggle (show cumulative count)
                 containerEl.innerHTML = years.map((year, index) => `
                     <div class="year-group ${index === 0 ? 'expanded' : ''}">
                         <button class="year-header" onclick="this.parentElement.classList.toggle('expanded')" aria-expanded="${index === 0}">
                             <span class="year-badge">${year}</span>
-                            <span class="year-count">${lecturesByYear[year].length}건</span>
+                            <span class="year-count">${yearTotalCounts[year]}건</span>
                             <svg class="year-toggle-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path d="M19 9l-7 7-7-7"/>
                             </svg>
