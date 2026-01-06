@@ -361,6 +361,11 @@ ul {
   color: var(--text-primary);
 }
 
+.logo-img {
+  height: 36px;
+  width: auto;
+}
+
 .logo-icon {
   display: flex;
   align-items: center;
@@ -2253,10 +2258,17 @@ html.dark-mode .theme-toggle .moon-icon {
 }
 
 .footer-logo {
-  font-size: var(--font-size-2xl);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-xl);
   font-weight: 700;
   margin-bottom: var(--spacing-sm);
-  display: inline-block;
+}
+
+.footer-logo-img {
+  height: 32px;
+  width: auto;
 }
 
 .footer-tagline {
