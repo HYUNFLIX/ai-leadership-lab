@@ -165,6 +165,17 @@
                             AI Leadership Lab은 새로운 시대에 맞는 리더십 철학과
                             실질적인 협업 전략을 제시합니다.
                         </p>
+                        <div class="hero-actions animate-fade-in-delay">
+                            <button class="btn btn-primary" onclick="openProgramsModal()">
+                                <span>AI 도구 체험하기</span>
+                                <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                    <path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <a href="#contact" class="btn btn-secondary">
+                                <span>문의하기</span>
+                            </a>
+                        </div>
                     </div>
 
                     <!-- Interactive 3D Cube -->
@@ -666,28 +677,42 @@
                         </div>
                     </div>
                     
-                    <div class="contact-visual" aria-hidden="true">
-                        <div class="contact-card">
-                            <div class="contact-card-header">
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
+                    <div class="contact-form-wrapper">
+                        <form id="contactForm" class="contact-form" novalidate>
+                            <div class="form-group">
+                                <label for="contactName">이름 <span class="required">*</span></label>
+                                <input type="text" id="contactName" name="name" required placeholder="홍길동">
                             </div>
-                            <div class="contact-card-body">
-                                <div class="message-bubble message-received">
-                                    안녕하세요! AI 교육 프로그램에 대해 문의드립니다.
-                                </div>
-                                <div class="message-bubble message-sent">
-                                    안녕하세요! 문의 감사합니다. 
-                                    어떤 교육 프로그램에 관심이 있으신가요?
-                                </div>
-                                <div class="typing-indicator">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
+                            <div class="form-group">
+                                <label for="contactEmail">이메일 <span class="required">*</span></label>
+                                <input type="email" id="contactEmail" name="email" required placeholder="example@email.com">
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <label for="contactCompany">회사/기관</label>
+                                <input type="text" id="contactCompany" name="company" placeholder="회사명 (선택)">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactSubject">문의 유형 <span class="required">*</span></label>
+                                <select id="contactSubject" name="subject" required>
+                                    <option value="">선택해주세요</option>
+                                    <option value="education">AI 교육 문의</option>
+                                    <option value="consulting">컨설팅 문의</option>
+                                    <option value="lecture">강연 요청</option>
+                                    <option value="partnership">제휴 문의</option>
+                                    <option value="other">기타</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactMessage">문의 내용 <span class="required">*</span></label>
+                                <textarea id="contactMessage" name="message" rows="4" required placeholder="문의하실 내용을 입력해주세요"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-submit">
+                                <span>문의하기</span>
+                                <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M2 10l7-7m0 0l7 7m-7-7v14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="rotate(90 10 10)"/>
+                                </svg>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
