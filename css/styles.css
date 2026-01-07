@@ -2119,6 +2119,114 @@ html.dark-mode .theme-toggle .moon-icon {
   justify-content: center;
 }
 
+/* Contact Form */
+.contact-form-wrapper {
+  width: 100%;
+  max-width: 450px;
+}
+
+.contact-form {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+}
+
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.form-group .required {
+  color: #ff6b6b;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  color: var(--text-primary);
+  transition: var(--transition-base);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.form-group input:invalid:not(:placeholder-shown),
+.form-group select:invalid:not(:placeholder-shown),
+.form-group textarea:invalid:not(:placeholder-shown) {
+  border-color: #ff6b6b;
+}
+
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: var(--spacing-md);
+  background: white;
+  color: var(--primary);
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .contact-form-wrapper {
+    max-width: 100%;
+  }
+
+  .contact-form {
+    padding: var(--spacing-lg);
+  }
+}
+
 .contact-card {
   width: 100%;
   max-width: 400px;
@@ -2360,6 +2468,38 @@ html.dark-mode .theme-toggle .moon-icon {
   transform: scale(0.9) translateY(20px);
   transition: transform 0.3s ease;
   overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95%;
+    max-height: 85vh;
+    border-radius: var(--radius-lg);
+  }
+
+  .modal-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .modal-header h3 {
+    font-size: var(--font-size-lg);
+  }
+
+  .modal-body {
+    padding: var(--spacing-md);
+  }
+
+  .program-card {
+    padding: var(--spacing-sm);
+  }
+
+  .program-info h4 {
+    font-size: var(--font-size-sm);
+  }
+
+  .program-info p {
+    font-size: var(--font-size-xs);
+  }
 }
 
 .modal.active .modal-content {
@@ -2666,7 +2806,7 @@ html.dark-mode .theme-toggle .moon-icon {
     --text-primary: #000000;
     --text-secondary: #333333;
   }
-  
+
   @media (prefers-color-scheme: dark) {
     :root {
       --text-primary: #ffffff;
@@ -2674,5 +2814,46 @@ html.dark-mode .theme-toggle .moon-icon {
       --bg-primary: #000000;
       --bg-secondary: #1a1a1a;
     }
+  }
+}
+
+/* ================ Reduced Motion ================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .cube {
+    animation: none !important;
+  }
+
+  .particle,
+  .float-label,
+  .orbit-ring,
+  .cube-container::before {
+    animation: none !important;
+  }
+
+  .scroll-indicator,
+  .scroll-dot {
+    animation: none !important;
+  }
+
+  .loader-logo,
+  .loader-progress-bar {
+    animation: none !important;
+  }
+
+  .text-highlight {
+    animation: none !important;
+  }
+
+  .typing-indicator span {
+    animation: none !important;
   }
 }
