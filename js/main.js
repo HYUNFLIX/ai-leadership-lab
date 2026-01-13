@@ -507,23 +507,78 @@
     });
   }
 
-  // ================ Dark Mode Detection ================
-  function initDarkModeDetection() {
-    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    function handleDarkModeChange(e) {
-      if (e.matches) {
-        document.body.classList.add('dark-mode');
+  // ================ Dark Mode Toggle ================
+  function initDarkModeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const STORAGE_KEY = 'ai-leadership-theme';
+
+    // Get stored preference or null
+    function getStoredTheme() {
+      return localStorage.getItem(STORAGE_KEY);
+    }
+
+    // Check if system prefers dark mode
+    function systemPrefersDark() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    // Apply theme based on preference
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        html.classList.add('dark-mode');
+        html.classList.remove('light-mode');
+      } else if (theme === 'light') {
+        html.classList.add('light-mode');
+        html.classList.remove('dark-mode');
       } else {
-        document.body.classList.remove('dark-mode');
+        // Auto - remove manual classes, let system preference work
+        html.classList.remove('dark-mode', 'light-mode');
       }
     }
-    
-    // Initial check
-    handleDarkModeChange(darkModeMediaQuery);
-    
-    // Listen for changes
-    darkModeMediaQuery.addEventListener('change', handleDarkModeChange);
+
+    // Initialize theme on page load
+    function initTheme() {
+      const storedTheme = getStoredTheme();
+      if (storedTheme) {
+        applyTheme(storedTheme);
+      }
+      // If no stored preference, CSS media query handles it automatically
+    }
+
+    // Toggle between light and dark
+    function toggleTheme() {
+      const storedTheme = getStoredTheme();
+      const currentlyDark = html.classList.contains('dark-mode') ||
+                            (!html.classList.contains('light-mode') && systemPrefersDark());
+
+      if (currentlyDark) {
+        // Switch to light
+        localStorage.setItem(STORAGE_KEY, 'light');
+        applyTheme('light');
+      } else {
+        // Switch to dark
+        localStorage.setItem(STORAGE_KEY, 'dark');
+        applyTheme('dark');
+      }
+    }
+
+    // Event listener for toggle button
+    if (themeToggle) {
+      themeToggle.addEventListener('click', toggleTheme);
+    }
+
+    // Listen for system preference changes (only if no manual preference set)
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!getStoredTheme()) {
+        // No manual preference, CSS handles it automatically
+        // Just ensure no conflicting classes
+        html.classList.remove('dark-mode', 'light-mode');
+      }
+    });
+
+    // Initialize on load
+    initTheme();
   }
 
   // ================ Performance Monitoring ================
@@ -559,6 +614,88 @@
   // ================ Event Listeners ================
   window.addEventListener('resize', optimizedResize);
 
+  // ================ Interactive 3D Cube ================
+  function initInteractiveCube() {
+    const cubeScene = document.getElementById('cubeScene');
+    const cube = document.getElementById('interactiveCube');
+
+    if (!cubeScene || !cube) return;
+
+    let isHovering = false;
+    let mouseX = 0;
+    let mouseY = 0;
+    let currentRotateX = -20;
+    let currentRotateY = 0;
+    let autoRotateY = 0;
+    let animationId = null;
+
+    // Mouse move handler
+    cubeScene.addEventListener('mousemove', (e) => {
+      const rect = cubeScene.getBoundingClientRect();
+      mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+      mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    });
+
+    // Mouse enter - pause auto rotation
+    cubeScene.addEventListener('mouseenter', () => {
+      isHovering = true;
+      cube.classList.add('paused');
+    });
+
+    // Mouse leave - resume auto rotation
+    cubeScene.addEventListener('mouseleave', () => {
+      isHovering = false;
+      cube.classList.remove('paused');
+    });
+
+    // Touch support for mobile
+    cubeScene.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const rect = cubeScene.getBoundingClientRect();
+      const touch = e.touches[0];
+      mouseX = ((touch.clientX - rect.left) / rect.width - 0.5) * 2;
+      mouseY = ((touch.clientY - rect.top) / rect.height - 0.5) * 2;
+    }, { passive: false });
+
+    cubeScene.addEventListener('touchstart', () => {
+      isHovering = true;
+      cube.classList.add('paused');
+    });
+
+    cubeScene.addEventListener('touchend', () => {
+      isHovering = false;
+      cube.classList.remove('paused');
+      mouseX = 0;
+      mouseY = 0;
+    });
+
+    // Animation loop for smooth interaction
+    function animate() {
+      if (isHovering) {
+        // Interactive rotation based on mouse position
+        const targetRotateX = -20 + mouseY * 30;
+        const targetRotateY = mouseX * 45;
+
+        // Smooth interpolation
+        currentRotateX += (targetRotateX - currentRotateX) * 0.1;
+        currentRotateY += (targetRotateY - currentRotateY) * 0.1;
+
+        cube.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
+      }
+
+      animationId = requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Cleanup function
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }
+
   // ================ Initialize Everything ================
   function init() {
     // Check for critical features
@@ -580,7 +717,8 @@
     initNumberCounters();
     initLazyLoading();
     initKeyboardNav();
-    initDarkModeDetection();
+    initDarkModeToggle();
+    initInteractiveCube();
     
     // Performance monitoring (development only)
     if (window.location.hostname === 'localhost') {

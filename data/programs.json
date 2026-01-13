@@ -1,0 +1,65 @@
+{
+  "programs": [
+    {
+      "id": "ai-readiness",
+      "title": "AI 도입 준비도 진단",
+      "url": "https://g.co/gemini/share/426fd3f286ef",
+      "description": "조직의 AI 도입 준비 상태를 진단합니다",
+      "icon": "diagnosis",
+      "featured": true
+    },
+    {
+      "id": "ai-business-idea",
+      "title": "AI 비즈니스 아이디어",
+      "url": "https://g.co/gemini/share/7c9ebf930982",
+      "description": "AI 기반 비즈니스 아이디어를 생성합니다",
+      "icon": "lightbulb",
+      "featured": true
+    },
+    {
+      "id": "blog-generator",
+      "title": "블로그 포스트 생성기",
+      "url": "https://g.co/gemini/share/51aaaa0b91b7",
+      "description": "AI로 블로그 콘텐츠를 생성합니다",
+      "icon": "document",
+      "featured": true
+    },
+    {
+      "id": "marble-rush",
+      "title": "Marble RUSH",
+      "url": "https://marblerush.co.kr",
+      "description": "재미있는 추첨 게임으로 이벤트를 진행합니다",
+      "icon": "game",
+      "featured": false
+    },
+    {
+      "id": "new-year-card-2026",
+      "title": "2026년 연하장 만들기",
+      "url": "https://ai.studio/apps/drive/1lEySktwm7-oiEaKU14-3F5f_dyt0bnuZ?fullscreenApplet=true",
+      "description": "AI로 개성 있는 새해 연하장을 만듭니다",
+      "icon": "card",
+      "featured": false
+    },
+    {
+      "id": "pdf-converter",
+      "title": "PDF 변환 도구",
+      "url": "https://gemini.google.com/share/a5ae6cc1f3e9",
+      "description": "PDF를 PPT로 변환하거나 파일 크기를 줄입니다",
+      "icon": "convert",
+      "featured": false
+    },
+    {
+      "id": "jobflow",
+      "title": "잡플로(JobFlow)",
+      "url": "https://ai.studio/apps/drive/1XodKJGjP_8eCfNCLclCUIADcDQgegsLO?fullscreenApplet=true",
+      "description": "AI가 구직활동을 도와드립니다",
+      "icon": "job",
+      "featured": false
+    }
+  ],
+  "settings": {
+    "maxFeaturedOnHero": 3,
+    "showAllButton": true,
+    "allButtonText": "모든 AI 도구 보기"
+  }
+}

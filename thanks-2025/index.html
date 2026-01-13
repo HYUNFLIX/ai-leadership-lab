@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025년 정말 감사했습니다 | AI Leadership Lab</title>
+    <meta name="description" content="2025년 한 해 동안 도움을 주신 모든 분들께 감사드립니다.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        pretendard: ['Pretendard', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-pretendard bg-[#0a0a1a] text-white">
+    <!-- Loading Screen -->
+    <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0a0a1a]">
+        <div class="text-center">
+            <div class="loading-spinner mb-4"></div>
+            <p class="text-xl text-gray-400 animate-pulse">감사의 마음을 담는 중...</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="app" class="relative w-full h-screen flex flex-col">
+        <!-- Header -->
+        <header class="relative z-20 px-4 py-3 md:py-4">
+            <div class="max-w-6xl mx-auto flex justify-between items-center">
+                <div>
+                    <h1 class="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                        2025년 정말 감사했습니다
+                    </h1>
+                    <p class="text-gray-500 text-xs md:text-sm mt-0.5 hidden sm:block">Thank You 2025</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent"><span id="count-number">0</span> <span class="text-lg md:text-xl">명</span></div>
+                    <div class="text-xs text-gray-500">감사한 분들</div>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="max-w-md mx-auto mt-3">
+                <div class="relative">
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="이름을 검색해보세요..."
+                        class="w-full px-4 py-2.5 text-sm bg-white/5 rounded-full border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all"
+                    >
+                    <button id="search-btn" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <p id="search-result" class="text-center text-xs mt-2 hidden"></p>
+            </div>
+        </header>
+
+        <!-- Word Cloud Container -->
+        <main id="wordcloud-container" class="flex-1 overflow-hidden px-4 py-4">
+        </main>
+
+        <!-- 검색 결과 없을 때 -->
+        <div id="not-found-section" class="hidden fixed bottom-20 left-1/2 -translate-x-1/2 z-30 w-full max-w-sm px-4">
+            <div class="p-4 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10">
+                <p class="text-gray-300 mb-3 text-center text-sm">😢 내 이름이 없나요?</p>
+                <div id="request-form" class="space-y-3">
+                    <input
+                        type="text"
+                        id="request-name"
+                        placeholder="이름을 입력해주세요"
+                        class="w-full px-4 py-2 bg-white/10 rounded-lg border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 text-sm"
+                    >
+                    <button type="button" id="submit-request" class="w-full py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-lg text-sm font-medium transition-all text-center flex items-center justify-center">
+                        등록 요청하기
+                    </button>
+                </div>
+                <div id="request-success" class="hidden text-center py-2">
+                    <p class="text-green-400 text-sm">✅ 요청이 전송되었습니다!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Name Detail Popup -->
+        <div id="name-popup" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm hidden">
+            <div class="bg-gradient-to-br from-purple-900/90 to-pink-900/90 p-8 rounded-3xl border border-white/20 shadow-2xl max-w-sm w-full mx-4 text-center transform transition-all">
+                <div class="text-5xl mb-4">✨</div>
+                <h2 id="popup-name" class="text-3xl font-bold bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 bg-clip-text text-transparent mb-4"></h2>
+                <p class="text-gray-300 mb-6">2025년 한 해 동안<br>정말 감사했습니다!</p>
+                <button id="close-popup" class="px-6 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-all border border-white/20">
+                    닫기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/viewer.js"></script>
+</body>
+</html>

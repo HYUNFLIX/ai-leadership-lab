@@ -87,6 +87,7 @@
     
     <!-- Preload critical resources -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style">
+    <link rel="preload" href="images/director.webp" as="image" type="image/webp">
 </head>
 <body>
     <!-- Skip to main content for accessibility -->
@@ -109,18 +110,7 @@
         <div class="container">
             <div class="nav-wrapper">
                 <a href="#" class="nav-logo" aria-label="AI Leadership Lab 홈">
-                    <span class="logo-icon" aria-hidden="true">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                            <circle cx="16" cy="16" r="14" stroke="url(#gradient)" stroke-width="2"/>
-                            <path d="M16 8v16M8 16h16" stroke="url(#gradient)" stroke-width="2" stroke-linecap="round"/>
-                            <defs>
-                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#6366f1"/>
-                                    <stop offset="100%" style="stop-color:#a855f7"/>
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </span>
+                    <img src="images/logo.png" alt="AI Leadership Lab" class="logo-img">
                     <span class="logo-text">AI Leadership Lab</span>
                 </a>
                 
@@ -128,10 +118,23 @@
                     <li role="none"><a href="#about" class="nav-link" role="menuitem">연구소 소개</a></li>
                     <li role="none"><a href="#director" class="nav-link" role="menuitem">연구소장</a></li>
                     <li role="none"><a href="#publications" class="nav-link" role="menuitem">저서</a></li>
-                    <li role="none"><a href="#projects" class="nav-link" role="menuitem">프로젝트</a></li>
+                    <li role="none"><a href="#projects" class="nav-link" role="menuitem">강의실적</a></li>
+                    <li role="none"><a href="javascript:void(0)" onclick="openProgramsModal()" class="nav-link" role="menuitem">AI 도구</a></li>
+                    <li role="none"><a href="thanks-2025/" class="nav-link" role="menuitem">감사페이지</a></li>
                     <li role="none"><a href="#contact" class="nav-link nav-cta" role="menuitem">Contact</a></li>
                 </ul>
-                
+
+                <!-- Dark Mode Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="다크모드 전환" title="다크모드 전환">
+                    <svg class="sun-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+
                 <button class="nav-toggle" id="navToggle" aria-label="메뉴 토글" aria-expanded="false" aria-controls="navMenu">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -144,83 +147,114 @@
     <!-- Main Content -->
     <main id="main">
         <!-- Hero Section -->
-        <section id="hero" class="hero" aria-labelledby="hero-title">
+        <section id="hero" class="hero hero-split" aria-labelledby="hero-title">
             <div class="hero-bg">
                 <div class="hero-gradient"></div>
                 <div class="hero-pattern"></div>
             </div>
             <div class="container">
-                <div class="hero-content">
-                    <span class="hero-badge animate-fade-in">AI Leadership Innovation</span>
-                    <h1 id="hero-title" class="hero-title animate-slide-up">
-                        AI가 아니라<br>
-                        <span class="text-highlight">AI를 쓰는 리더</span>가<br>
-                        당신을 대체합니다
-                    </h1>
-                    <p class="hero-description animate-slide-up-delay">
-                        AI Leadership Lab은 새로운 시대에 맞는 리더십 철학과 
-                        실질적인 협업 전략을 제시합니다.
-                    </p>
-                    <div class="hero-actions animate-fade-in-delay">
-                        <a href="https://g.co/gemini/share/426fd3f286ef" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                            <span>AI 도입 준비도 진단</span>
-                            <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                                <path d="M11 7l6 6m0 0l-6 6m6-6H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                        <a href="https://g.co/gemini/share/7c9ebf930982" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                            <span>AI 비즈니스 아이디어</span>
-                            <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                                <path d="M11 7l6 6m0 0l-6 6m6-6H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                        <a href="https://g.co/gemini/share/51aaaa0b91b7" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                            <span>블로그 포스트 생성기</span>
-                            <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                                <path d="M11 7l6 6m0 0l-6 6m6-6H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Stats Cards -->
-                <div class="stats-grid animate-fade-in-up">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="stat-content">
-                            <span class="stat-value" data-target="2000">2조 달러</span>
-                            <span class="stat-label">2030년 AI 시장 규모</span>
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <span class="hero-badge animate-fade-in">AI Leadership Innovation</span>
+                        <h1 id="hero-title" class="hero-title animate-slide-up">
+                            AI가 아니라<br>
+                            <span class="text-highlight">AI를 쓰는 리더</span>가<br>
+                            당신을 대체합니다
+                        </h1>
+                        <p class="hero-description animate-slide-up-delay">
+                            AI Leadership Lab은 새로운 시대에 맞는 리더십 철학과
+                            실질적인 협업 전략을 제시합니다.
+                        </p>
+                        <div class="hero-actions animate-fade-in-delay">
+                            <button class="btn btn-primary" onclick="openProgramsModal()">
+                                <span>AI 도구 체험하기</span>
+                                <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                    <path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <a href="#contact" class="btn btn-secondary">
+                                <span>문의하기</span>
+                            </a>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="stat-content">
-                            <span class="stat-value" data-target="42">42%</span>
-                            <span class="stat-label">기업 AI 도입률</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="stat-content">
-                            <span class="stat-value" data-target="40">40%↑</span>
-                            <span class="stat-label">생산성 향상</span>
+
+                    <!-- Interactive 3D Cube -->
+                    <div class="hero-visual animate-fade-in-up">
+                        <div class="cube-scene" id="cubeScene">
+                            <!-- 3D Cube -->
+                            <div class="cube-container">
+                                <div class="cube" id="interactiveCube">
+                                    <div class="cube-face cube-front">
+                                        <div class="face-content">
+                                            <span class="face-icon">🤖</span>
+                                            <span class="face-text">AI</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-back">
+                                        <div class="face-content">
+                                            <span class="face-icon">📊</span>
+                                            <span class="face-text">Data</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-right">
+                                        <div class="face-content">
+                                            <span class="face-icon">💡</span>
+                                            <span class="face-text">혁신</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-left">
+                                        <div class="face-content">
+                                            <span class="face-icon">🎯</span>
+                                            <span class="face-text">전략</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-top">
+                                        <div class="face-content">
+                                            <span class="face-icon">👥</span>
+                                            <span class="face-text">리더십</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-bottom">
+                                        <div class="face-content">
+                                            <span class="face-icon">🚀</span>
+                                            <span class="face-text">성장</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Floating Particles -->
+                            <div class="floating-particles">
+                                <div class="particle" style="--delay: 0s; --x: 20%; --y: 30%;"></div>
+                                <div class="particle" style="--delay: 1s; --x: 80%; --y: 20%;"></div>
+                                <div class="particle" style="--delay: 2s; --x: 70%; --y: 70%;"></div>
+                                <div class="particle" style="--delay: 0.5s; --x: 30%; --y: 80%;"></div>
+                                <div class="particle" style="--delay: 1.5s; --x: 50%; --y: 10%;"></div>
+                                <div class="particle" style="--delay: 2.5s; --x: 10%; --y: 50%;"></div>
+                                <div class="particle" style="--delay: 3s; --x: 90%; --y: 60%;"></div>
+                                <div class="particle" style="--delay: 0.8s; --x: 40%; --y: 90%;"></div>
+                            </div>
+
+                            <!-- Floating Labels -->
+                            <div class="floating-labels">
+                                <span class="float-label" style="--pos-x: 5%; --pos-y: 20%;">DX</span>
+                                <span class="float-label" style="--pos-x: 85%; --pos-y: 15%;">HRD</span>
+                                <span class="float-label" style="--pos-x: 10%; --pos-y: 75%;">코칭</span>
+                                <span class="float-label" style="--pos-x: 80%; --pos-y: 80%;">컨설팅</span>
+                                <span class="float-label" style="--pos-x: 50%; --pos-y: 5%;">교육</span>
+                            </div>
+
+                            <!-- Orbit Rings -->
+                            <div class="orbit-rings">
+                                <div class="orbit-ring orbit-1"></div>
+                                <div class="orbit-ring orbit-2"></div>
+                                <div class="orbit-ring orbit-3"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Scroll Indicator -->
             <div class="scroll-indicator" aria-hidden="true">
                 <span class="scroll-text">Scroll</span>
@@ -286,7 +320,7 @@
                                 </div>
                                 <div>
                                     <h4>검증된 전문성</h4>
-                                    <p>15년 이상의 현장 경험과 노하우</p>
+                                    <p>20년 이상의 현장 경험과 노하우</p>
                                 </div>
                             </div>
                         </div>
@@ -313,7 +347,7 @@
                                     </defs>
                                 </svg>
                             </div>
-                            <h4>500+</h4>
+                            <h4>2,000+</h4>
                             <p>교육 수료생</p>
                         </div>
                     </div>
@@ -327,10 +361,13 @@
                 <div class="director-wrapper">
                     <div class="director-image">
                         <div class="image-frame">
-                            <img src="images/director.jpg" 
-                                 alt="김현 소장" 
-                                 loading="lazy"
-                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'500\' fill=\'%23e5e7eb\'%3E%3Crect width=\'500\' height=\'500\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'sans-serif\' font-size=\'24\'%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E'">
+                            <picture>
+                                <source srcset="images/director.webp" type="image/webp">
+                                <img src="images/director.jpg"
+                                     alt="김현 소장"
+                                     loading="lazy"
+                                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'500\' fill=\'%23e5e7eb\'%3E%3Crect width=\'500\' height=\'500\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'sans-serif\' font-size=\'24\'%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E'">
+                            </picture>
                             <div class="image-decoration"></div>
                         </div>
                         <div class="badge-floating" aria-hidden="true">
@@ -361,7 +398,11 @@
                         <div class="director-credentials">
                             <div class="credential-item">
                                 <span class="credential-label">현재</span>
-                                <span class="credential-value">AI 리더십연구소 소장, 세종텔레콤 HRD 매니저</span>
+                                <span class="credential-value">AI 리더십연구소 소장</span>
+                            </div>
+                            <div class="credential-item">
+                                <span class="credential-label">경력</span>
+                                <span class="credential-value">세종텔레콤, 현대정보기술, 한국RFID/USN 협회</span>
                             </div>
                             <div class="credential-item">
                                 <span class="credential-label">학력</span>
@@ -384,63 +425,6 @@
                             <span class="badge">한국코치협회 KAC</span>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Quotes Section -->
-        <section class="section section-quotes" aria-labelledby="quotes-title">
-            <div class="container">
-                <div class="section-header text-center">
-                    <span class="section-label">Insights</span>
-                    <h2 id="quotes-title" class="section-title">시대의 통찰</h2>
-                </div>
-                
-                <div class="quotes-grid">
-                    <article class="quote-card">
-                        <div class="quote-icon" aria-hidden="true">
-                            <svg width="40" height="40" fill="currentColor" opacity="0.2">
-                                <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
-                            </svg>
-                        </div>
-                        <blockquote>
-                            "AI가 우리를 닭처럼 판단할 수도 있다."
-                        </blockquote>
-                        <footer>
-                            <cite>제프리 힌튼</cite>
-                            <span>AI의 대부</span>
-                        </footer>
-                    </article>
-                    
-                    <article class="quote-card">
-                        <div class="quote-icon" aria-hidden="true">
-                            <svg width="40" height="40" fill="currentColor" opacity="0.2">
-                                <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
-                            </svg>
-                        </div>
-                        <blockquote>
-                            "AI는 도구가 아닌 행위자다. 우리와 독립적으로 결정을 내린다."
-                        </blockquote>
-                        <footer>
-                            <cite>유발 하라리</cite>
-                            <span>'사피엔스' 저자</span>
-                        </footer>
-                    </article>
-                    
-                    <article class="quote-card">
-                        <div class="quote-icon" aria-hidden="true">
-                            <svg width="40" height="40" fill="currentColor" opacity="0.2">
-                                <path d="M10 15v10h8V15h-8zm12 0v10h8V15h-8zM10 13h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5zm12 0h8V8c0-2.21-1.79-4-4-4s-4 1.79-4 4v5z"/>
-                            </svg>
-                        </div>
-                        <blockquote>
-                            "AI는 이제 '저렴한 지능'이다. 24시간 지치지 않고 일한다."
-                        </blockquote>
-                        <footer>
-                            <cite>송길영</cite>
-                            <span>빅데이터 전문가</span>
-                        </footer>
-                    </article>
                 </div>
             </div>
         </section>
@@ -536,240 +520,111 @@
         <section id="projects" class="section section-projects" aria-labelledby="projects-title">
             <div class="container">
                 <div class="section-header text-center">
-                    <span class="section-label">Projects</span>
-                    <h2 id="projects-title" class="section-title">주요 프로젝트</h2>
+                    <span class="section-label">Lecture History</span>
+                    <h2 id="projects-title" class="section-title">강의 실적</h2>
                     <p class="section-description">
-                        다양한 산업 분야의 리딩 기업들이 AI Leadership Lab과 함께 
-                        성공적인 변화를 만들고 있습니다.
+                        다양한 산업 분야의 기업 및 기관에서 AI 리더십 교육을 진행하고 있습니다.
                     </p>
                 </div>
-                
-                <div class="projects-grid">
-                    <!-- Project Card 1 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <line x1="3" y1="9" x2="21" y2="9"/>
-                                <line x1="9" y1="21" x2="9" y2="9"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">한국토지신탁</h3>
-                        <p class="project-desc">신입사원 생성형 AI 교육 프로그램</p>
-                    </div>
-                    
-                    <!-- Project Card 2 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                                <polyline points="2 17 12 22 22 17"/>
-                                <polyline points="2 12 12 17 22 12"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">코오롱그룹</h3>
-                        <p class="project-desc">신규 입사자 AI 온보딩 과정</p>
-                    </div>
-                    
-                    <!-- Project Card 3 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 21h18"/>
-                                <path d="M5 21V7l8-4v18"/>
-                                <path d="M19 21V11l-6-3"/>
-                                <rect x="9" y="9" width="4" height="4"/>
-                                <rect x="9" y="14" width="4" height="4"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">서울시</h3>
-                        <p class="project-desc">매력일자리 AI 트렌드 교육</p>
-                    </div>
-                    
-                    <!-- Project Card 4 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">한경협</h3>
-                        <p class="project-desc">FKI 아카데미 CEO 특강 시리즈</p>
-                    </div>
-                    
-                    <!-- Project Card 5 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">한국남부발전</h3>
-                        <p class="project-desc">AI 리터러시 강화 프로그램</p>
-                    </div>
-                    
-                    <!-- Project Card 6 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-                                <line x1="12" y1="18" x2="12" y2="18"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">세종텔레콤</h3>
-                        <p class="project-desc">사내 ChatGPT 활용 교육</p>
-                    </div>
-                    
-                    <!-- Project Card 7 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">능률협회컨설팅</h3>
-                        <p class="project-desc">HR 담당자 DT 교육 과정</p>
-                    </div>
-                    
-                    <!-- Project Card 8 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                                <circle cx="9" cy="7" r="4"/>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">산업인력공단</h3>
-                        <p class="project-desc">HRD 컨설팅 전략 수립</p>
-                    </div>
-                    
-                    <!-- Project Card 9 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">NovaDX</h3>
-                        <p class="project-desc">전사 AI 혁신 워크샵</p>
-                    </div>
-                    
-                    <!-- Project Card 10 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">한국동서발전</h3>
-                        <p class="project-desc">승진자 AI 문제해결 과정</p>
-                    </div>
-                    
-                    <!-- Project Card 11 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="18" height="14" rx="2" ry="2"/>
-                                <line x1="8" y1="21" x2="16" y2="21"/>
-                                <line x1="12" y1="17" x2="12" y2="21"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">전남진흥원</h3>
-                        <p class="project-desc">AI 트렌드 실무 교육</p>
-                    </div>
-                    
-                    <!-- Project Card 12 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <polyline points="8 12 12 16 16 8"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">경남인자위</h3>
-                        <p class="project-desc">AI 기술 동향 세미나</p>
-                    </div>
-                    
-                    <!-- Project Card 13 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">하남시</h3>
-                        <p class="project-desc">AI 블로그 콘텐츠 제작</p>
-                    </div>
-                    
-                    <!-- Project Card 14 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                                <line x1="8" y1="21" x2="16" y2="21"/>
-                                <line x1="12" y1="17" x2="12" y2="21"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">캄텍(Kamtec)</h3>
-                        <p class="project-desc">2025년 캄텍 플레이숍</p>
-                    </div>
-                    
-                    <!-- Project Card 15 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                                <circle cx="9" cy="7" r="4"/>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">산업인력공단 서울서부</h3>
-                        <p class="project-desc">AI와 함께 더 스마트하게 일하기</p>
-                    </div>
-                    
-                    <!-- Project Card 16 -->
-                    <div class="project-card">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 21h18"/>
-                                <path d="M5 21V7l8-4v18"/>
-                                <path d="M19 21V11l-6-3"/>
-                                <rect x="9" y="9" width="4" height="4"/>
-                                <rect x="9" y="14" width="4" height="4"/>
-                            </svg>
-                        </div>
-                        <h3 class="project-name">서울시 서대문구</h3>
-                        <p class="project-desc">외롭지 않은 경영자 행복학교 - 소상공인 인공지능</p>
-                    </div>
 
-                    
-                    <!-- More Coming Cards -->
-                    <div class="project-card project-card-placeholder">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <line x1="12" y1="8" x2="12" y2="16"/>
-                                <line x1="8" y1="12" x2="16" y2="12"/>
-                            </svg>
-                        </div>
-                        <p class="project-more">More Coming</p>
+                <div class="lectures-by-year" id="lecturesByYear">
+                    <div class="lectures-loading">
+                        <div class="loading-spinner-small"></div>
+                        <span>강의 정보를 불러오는 중...</span>
                     </div>
-                    
-                    <div class="project-card project-card-placeholder">
-                        <div class="project-icon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <line x1="12" y1="8" x2="12" y2="16"/>
-                                <line x1="8" y1="12" x2="16" y2="12"/>
-                            </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="section section-testimonials" aria-labelledby="testimonials-title">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-label">Testimonials</span>
+                    <h2 id="testimonials-title" class="section-title">교육 후기</h2>
+                    <p class="section-description">
+                        AI Leadership Lab과 함께한 분들의 생생한 이야기를 들어보세요.
+                    </p>
+                </div>
+
+                <div class="testimonials-grid">
+                    <!-- Testimonial 1 -->
+                    <article class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating" aria-label="5점 만점">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            </div>
+                            <blockquote>
+                                "AI 도입에 막연한 두려움이 있었는데, 교육 후 실무에 바로 적용할 수 있는
+                                자신감이 생겼습니다. 특히 프롬프트 엔지니어링 실습이 큰 도움이 되었어요."
+                            </blockquote>
                         </div>
-                        <p class="project-more">More Coming</p>
-                    </div>
+                        <footer class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>김</span>
+                            </div>
+                            <div class="author-info">
+                                <cite>김OO 부장</cite>
+                                <span>OO그룹 · 신규입사자 AI 온보딩</span>
+                            </div>
+                        </footer>
+                    </article>
+
+                    <!-- Testimonial 2 -->
+                    <article class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating" aria-label="5점 만점">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            </div>
+                            <blockquote>
+                                "CEO 대상 특강이었는데, AI 시대 리더의 역할에 대해 새로운 시각을 얻었습니다.
+                                이론이 아닌 실제 사례 중심의 강의가 인상적이었습니다."
+                            </blockquote>
+                        </div>
+                        <footer class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>박</span>
+                            </div>
+                            <div class="author-info">
+                                <cite>박OO 대표</cite>
+                                <span>OO협회 · CEO 특강</span>
+                            </div>
+                        </footer>
+                    </article>
+
+                    <!-- Testimonial 3 -->
+                    <article class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating" aria-label="5점 만점">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            </div>
+                            <blockquote>
+                                "생성형 AI를 업무에 어떻게 활용해야 할지 막막했는데, 구체적인 활용법과
+                                실습을 통해 바로 다음날부터 업무에 적용할 수 있었습니다."
+                            </blockquote>
+                        </div>
+                        <footer class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>이</span>
+                            </div>
+                            <div class="author-info">
+                                <cite>이OO 과장</cite>
+                                <span>OO신탁 · 신입사원 AI 교육</span>
+                            </div>
+                        </footer>
+                    </article>
                 </div>
             </div>
         </section>
@@ -822,28 +677,42 @@
                         </div>
                     </div>
                     
-                    <div class="contact-visual" aria-hidden="true">
-                        <div class="contact-card">
-                            <div class="contact-card-header">
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
+                    <div class="contact-form-wrapper">
+                        <form id="contactForm" class="contact-form" novalidate>
+                            <div class="form-group">
+                                <label for="contactName">이름 <span class="required">*</span></label>
+                                <input type="text" id="contactName" name="name" required placeholder="홍길동">
                             </div>
-                            <div class="contact-card-body">
-                                <div class="message-bubble message-received">
-                                    안녕하세요! AI 교육 프로그램에 대해 문의드립니다.
-                                </div>
-                                <div class="message-bubble message-sent">
-                                    안녕하세요! 문의 감사합니다. 
-                                    어떤 교육 프로그램에 관심이 있으신가요?
-                                </div>
-                                <div class="typing-indicator">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
+                            <div class="form-group">
+                                <label for="contactEmail">이메일 <span class="required">*</span></label>
+                                <input type="email" id="contactEmail" name="email" required placeholder="example@email.com">
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <label for="contactCompany">회사/기관</label>
+                                <input type="text" id="contactCompany" name="company" placeholder="회사명 (선택)">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactSubject">문의 유형 <span class="required">*</span></label>
+                                <select id="contactSubject" name="subject" required>
+                                    <option value="">선택해주세요</option>
+                                    <option value="education">AI 교육 문의</option>
+                                    <option value="consulting">컨설팅 문의</option>
+                                    <option value="lecture">강연 요청</option>
+                                    <option value="partnership">제휴 문의</option>
+                                    <option value="other">기타</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactMessage">문의 내용 <span class="required">*</span></label>
+                                <textarea id="contactMessage" name="message" rows="4" required placeholder="문의하실 내용을 입력해주세요"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-submit">
+                                <span>문의하기</span>
+                                <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M2 10l7-7m0 0l7 7m-7-7v14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="rotate(90 10 10)"/>
+                                </svg>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -856,7 +725,8 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <a href="#" class="footer-logo" aria-label="AI Leadership Lab 홈">
-                        <span class="gradient-text">AI</span> Leadership Lab
+                        <img src="images/logo.png" alt="AI Leadership Lab" class="footer-logo-img">
+                        <span>AI Leadership Lab</span>
                     </a>
                     <p class="footer-tagline">AI 시대의 리더십을 정의합니다</p>
                 </div>
@@ -868,7 +738,7 @@
                             <li><a href="#about">연구소 소개</a></li>
                             <li><a href="#director">연구소장</a></li>
                             <li><a href="#publications">저서</a></li>
-                            <li><a href="#projects">프로젝트</a></li>
+                            <li><a href="#projects">강의실적</a></li>
                         </ul>
                     </div>
                     
@@ -901,6 +771,24 @@
         </div>
     </footer>
 
+    <!-- Programs Modal -->
+    <div id="programsModal" class="modal" aria-hidden="true">
+        <div class="modal-backdrop" onclick="closeProgramsModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>AI 도구 모음</h3>
+                <button class="modal-close" onclick="closeProgramsModal()" aria-label="닫기">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" id="allProgramsList">
+                <!-- All programs loaded here -->
+            </div>
+        </div>
+    </div>
+
     <!-- Back to Top Button -->
     <button id="backToTop" class="back-to-top" aria-label="맨 위로 이동">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -910,5 +798,288 @@
 
     <!-- Scripts -->
     <script src="js/main.js" defer></script>
+
+    <!-- Programs Loader -->
+    <script>
+        // Load programs from JSON
+        async function loadPrograms() {
+            try {
+                const response = await fetch('data/programs.json');
+                const data = await response.json();
+                renderHeroPrograms(data.programs, data.settings);
+                renderAllPrograms(data.programs);
+            } catch (error) {
+                console.error('Failed to load programs:', error);
+                // Fallback: show static links if JSON fails
+                renderFallbackPrograms();
+            }
+        }
+
+        function renderHeroPrograms(programs, settings) {
+            // Hero programs container was removed, skip this
+            const container = document.getElementById('heroPrograms');
+            if (!container) return;
+
+            const featured = programs.filter(p => p.featured).slice(0, settings.maxFeaturedOnHero);
+
+            let html = featured.map(program => `
+                <a href="${program.url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    <span>${program.title}</span>
+                    <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                        <path d="M11 7l6 6m0 0l-6 6m6-6H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            `).join('');
+
+            // Add "Show All" button if there are more programs
+            if (settings.showAllButton && programs.length > settings.maxFeaturedOnHero) {
+                html += `
+                    <button class="btn btn-outline-light" onclick="openProgramsModal()">
+                        <span>${settings.allButtonText}</span>
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function renderAllPrograms(programs) {
+            const container = document.getElementById('allProgramsList');
+            container.innerHTML = programs.map(program => `
+                <a href="${program.url}" target="_blank" rel="noopener noreferrer" class="program-card">
+                    <div class="program-info">
+                        <h4>${program.title}</h4>
+                        <p>${program.description || ''}</p>
+                    </div>
+                    <svg class="program-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 10h10M11 6l4 4-4 4"/>
+                    </svg>
+                </a>
+            `).join('');
+        }
+
+        function renderFallbackPrograms() {
+            // Fallback for modal content if JSON fails
+            const modalContainer = document.getElementById('allProgramsList');
+            if (modalContainer) {
+                modalContainer.innerHTML = `
+                    <a href="https://g.co/gemini/share/426fd3f286ef" target="_blank" rel="noopener noreferrer" class="program-card">
+                        <div class="program-info">
+                            <h4>AI 도입 준비도 진단</h4>
+                            <p>조직의 AI 도입 준비 상태를 진단합니다</p>
+                        </div>
+                        <svg class="program-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 10h10M11 6l4 4-4 4"/>
+                        </svg>
+                    </a>
+                    <a href="https://g.co/gemini/share/7c9ebf930982" target="_blank" rel="noopener noreferrer" class="program-card">
+                        <div class="program-info">
+                            <h4>AI 비즈니스 아이디어</h4>
+                            <p>AI 기반 비즈니스 아이디어를 생성합니다</p>
+                        </div>
+                        <svg class="program-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 10h10M11 6l4 4-4 4"/>
+                        </svg>
+                    </a>
+                    <a href="https://g.co/gemini/share/51aaaa0b91b7" target="_blank" rel="noopener noreferrer" class="program-card">
+                        <div class="program-info">
+                            <h4>블로그 포스트 생성기</h4>
+                            <p>AI로 블로그 콘텐츠를 생성합니다</p>
+                        </div>
+                        <svg class="program-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 10h10M11 6l4 4-4 4"/>
+                        </svg>
+                    </a>
+                `;
+            }
+        }
+
+        function openProgramsModal() {
+            const modal = document.getElementById('programsModal');
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProgramsModal() {
+            const modal = document.getElementById('programsModal');
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeProgramsModal();
+        });
+
+        // Load programs on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadPrograms);
+        } else {
+            loadPrograms();
+        }
+    </script>
+
+    <!-- Firebase SDK for Lectures -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, query, orderBy, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase Configuration (same as lectures.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDwcyLezAW4nTlfmv6FYzjEe8RgDUgJXuY",
+            authDomain: "ai-leadership-lectures-d509b.firebaseapp.com",
+            projectId: "ai-leadership-lectures-d509b",
+            storageBucket: "ai-leadership-lectures-d509b.firebasestorage.app",
+            messagingSenderId: "132724154110",
+            appId: "1:132724154110:web:ab5f507a6aee2f583d8faf"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Fetch and display lectures grouped by year
+        async function loadLecturesByYear() {
+            const containerEl = document.getElementById('lecturesByYear');
+
+            try {
+                const lecturesRef = collection(db, 'lectures');
+                const q = query(lecturesRef, orderBy('date', 'desc'));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    containerEl.innerHTML = '<p class="lectures-empty">등록된 강의가 없습니다.</p>';
+                    return;
+                }
+
+                const lectures = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                // Group lectures by year
+                const lecturesByYear = {};
+                const yearTotalCounts = {}; // Store cumulative counts before merging
+                lectures.forEach(lecture => {
+                    const date = lecture.date ? new Date(lecture.date) : null;
+                    const year = date ? date.getFullYear() : 'Unknown';
+                    if (!lecturesByYear[year]) {
+                        lecturesByYear[year] = [];
+                        yearTotalCounts[year] = 0;
+                    }
+                    lecturesByYear[year].push(lecture);
+                    yearTotalCounts[year]++;
+                });
+
+                // Merge same lectures within each year (by client + name)
+                Object.keys(lecturesByYear).forEach(year => {
+                    const merged = {};
+                    lecturesByYear[year].forEach(lecture => {
+                        const key = `${lecture.client || ''}_${lecture.name || ''}`;
+                        if (merged[key]) {
+                            merged[key].count++;
+                        } else {
+                            merged[key] = { ...lecture, count: 1 };
+                        }
+                    });
+                    lecturesByYear[year] = Object.values(merged);
+                });
+
+                // Get sorted years (descending)
+                const years = Object.keys(lecturesByYear).sort((a, b) => b - a);
+                const recentYears = ['2025', '2026']; // 최근 년도는 태그 형식으로 표시
+
+                // Get unique clients for summary view
+                function getUniqueClients(lectures) {
+                    const clients = [...new Set(lectures.map(l => l.client).filter(Boolean))];
+                    return clients;
+                }
+
+                // Render lectures grouped by year with toggle (show cumulative count)
+                containerEl.innerHTML = years.map((year, index) => {
+                    const isRecentYear = recentYears.includes(year);
+                    const uniqueClients = getUniqueClients(lecturesByYear[year]);
+
+                    if (isRecentYear) {
+                        // 최근 년도: 업체명 태그로 먼저 표시, 더보기로 상세 내용
+                        return `
+                            <div class="year-group expanded">
+                                <div class="year-header-static">
+                                    <span class="year-badge year-badge-current">${year}</span>
+                                    <span class="year-count">${yearTotalCounts[year]}건</span>
+                                </div>
+                                <div class="year-clients-summary">
+                                    ${uniqueClients.map(client => `
+                                        <span class="client-tag">${escapeHtml(client)}</span>
+                                    `).join('')}
+                                </div>
+                                <button class="show-details-btn" onclick="this.parentElement.classList.toggle('show-details')">
+                                    <span class="btn-text-more">세부 내용 보기</span>
+                                    <span class="btn-text-less">접기</span>
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div class="year-lectures-detail">
+                                    ${lecturesByYear[year].map(lecture => `
+                                        <div class="lecture-item">
+                                            <span class="lecture-client">${escapeHtml(lecture.client || '')}</span>
+                                            <span class="lecture-title">${escapeHtml(lecture.name || '')}${lecture.count > 1 ? `, ${lecture.count}차수` : ''}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        // 이전 년도: 기존 방식
+                        return `
+                            <div class="year-group">
+                                <button class="year-header" onclick="this.parentElement.classList.toggle('expanded')" aria-expanded="false">
+                                    <span class="year-badge">${year}</span>
+                                    <span class="year-count">${yearTotalCounts[year]}건</span>
+                                    <svg class="year-toggle-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div class="year-lectures">
+                                    ${lecturesByYear[year].map(lecture => `
+                                        <div class="lecture-item">
+                                            <span class="lecture-client">${escapeHtml(lecture.client || '')}</span>
+                                            <span class="lecture-title">${escapeHtml(lecture.name || '')}${lecture.count > 1 ? `, ${lecture.count}차수` : ''}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                }).join('');
+
+            } catch (error) {
+                console.error('Failed to load lectures:', error);
+                containerEl.innerHTML = `
+                    <p class="lectures-empty">
+                        강의 정보를 불러올 수 없습니다.<br>
+                        <small style="color: var(--text-muted);">관리자 페이지에서 데이터를 확인해주세요.</small>
+                    </p>
+                `;
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Load lectures when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadLecturesByYear);
+        } else {
+            loadLecturesByYear();
+        }
+    </script>
 </body>
 </html>
