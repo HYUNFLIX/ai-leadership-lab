@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 시대의 팀장 프롬프트 모음집</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>AI 시대의 팀장 - 실전 프롬프트 모음</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #1a1a2e;
@@ -16,11 +14,7 @@
             --text: #eaeaea;
             --text-muted: #a0a0a0;
             --card-bg: #0f0f23;
-            --card-border: #2a2a4a;
-            --success: #4ecdc4;
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --border: #2a2a4a;
         }
 
         * {
@@ -39,7 +33,7 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, #0a0a1a 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, #1a1a3e 100%);
             padding: 80px 20px;
             text-align: center;
             position: relative;
@@ -53,47 +47,38 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(233, 69, 96, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%);
-            pointer-events: none;
+            background: radial-gradient(circle at 20% 50%, rgba(233, 69, 96, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
         }
 
         .hero-content {
             position: relative;
             z-index: 1;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
+            font-size: 3rem;
+            font-weight: 900;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #fff 0%, #e94560 50%, #4facfe 100%);
+            background: linear-gradient(135deg, #fff 0%, #e94560 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.2); }
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 30px;
+            margin-bottom: 30px;
         }
 
         .stats {
             display: flex;
             justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
+            gap: 60px;
+            margin-top: 40px;
         }
 
         .stat {
@@ -101,8 +86,8 @@
         }
 
         .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
+            font-size: 3rem;
+            font-weight: 900;
             color: var(--accent);
         }
 
@@ -113,64 +98,97 @@
 
         /* Navigation */
         .nav {
-            background: rgba(15, 15, 35, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 20px;
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid var(--card-border);
         }
 
-        .nav-container {
+        .nav-content {
             max-width: 1400px;
             margin: 0 auto;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
         }
 
-        .nav-btn {
-            background: transparent;
-            border: 1px solid var(--card-border);
+        .nav-title {
+            font-size: 0.85rem;
             color: var(--text-muted);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-btn {
             padding: 10px 20px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
             border-radius: 25px;
             cursor: pointer;
-            font-family: inherit;
             font-size: 0.9rem;
             transition: all 0.3s ease;
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
-        .nav-btn:hover, .nav-btn.active {
+        .filter-btn:hover, .filter-btn.active {
             background: var(--accent);
             border-color: var(--accent);
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.3);
+        }
+
+        .filter-btn .count {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+
+        /* Search */
+        .search-container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 18px 25px;
+            border: 2px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text);
+            border-radius: 15px;
+            font-size: 1rem;
+            font-family: 'Noto Sans KR', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-box::placeholder {
+            color: var(--text-muted);
         }
 
         /* Main Content */
-        .container {
+        .main-content {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px;
         }
 
+        /* Category Section */
         .category-section {
             margin-bottom: 60px;
-            display: none;
-        }
-
-        .category-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .category-header {
@@ -179,13 +197,13 @@
             gap: 15px;
             margin-bottom: 30px;
             padding-bottom: 15px;
-            border-bottom: 2px solid var(--card-border);
+            border-bottom: 2px solid var(--border);
         }
 
         .category-icon {
             width: 50px;
             height: 50px;
-            border-radius: 15px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -194,7 +212,7 @@
 
         .category-title {
             font-size: 1.8rem;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .category-count {
@@ -209,79 +227,58 @@
         /* Prompt Cards */
         .prompts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
             gap: 25px;
-        }
-
-        @media (max-width: 500px) {
-            .prompts-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         .prompt-card {
             background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s ease;
-            position: relative;
         }
 
         .prompt-card:hover {
             transform: translateY(-5px);
             border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(233, 69, 96, 0.15);
         }
 
-        .prompt-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-1);
+        .card-header {
+            padding: 25px 25px 15px;
         }
 
-        .prompt-card:nth-child(2n)::before {
-            background: var(--gradient-2);
-        }
-
-        .prompt-card:nth-child(3n)::before {
-            background: var(--gradient-3);
-        }
-
-        .prompt-header {
-            padding: 20px 20px 15px;
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        .prompt-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text);
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
             margin-bottom: 8px;
+            color: white;
         }
 
-        .prompt-desc {
-            font-size: 0.85rem;
+        .card-desc {
+            font-size: 0.9rem;
             color: var(--text-muted);
+            line-height: 1.6;
         }
 
-        .prompt-content {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.2);
+        .card-body {
+            padding: 0 25px 25px;
         }
 
         .prompt-text {
+            background: #0a0a1a;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.85rem;
-            color: #b8c0e0;
-            white-space: pre-wrap;
             line-height: 1.8;
-            max-height: 300px;
+            color: #c0c0c0;
+            max-height: 350px;
             overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: keep-all;
         }
 
         .prompt-text::-webkit-scrollbar {
@@ -293,130 +290,136 @@
         }
 
         .prompt-text::-webkit-scrollbar-thumb {
-            background: var(--card-border);
+            background: var(--border);
             border-radius: 3px;
         }
 
-        .prompt-footer {
-            padding: 15px 20px;
-            display: flex;
-            gap: 10px;
+        .card-footer {
+            padding: 15px 25px;
+            background: rgba(255,255,255,0.02);
+            border-top: 1px solid var(--border);
         }
 
         .copy-btn {
-            flex: 1;
-            background: var(--accent);
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
             border: none;
-            color: white;
-            padding: 12px 20px;
             border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            font-family: inherit;
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
             transition: all 0.3s ease;
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
         .copy-btn:hover {
-            background: var(--accent-light);
             transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.4);
         }
 
         .copy-btn.copied {
-            background: var(--success);
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
         }
 
-        .copy-btn svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        /* Search */
-        .search-container {
-            max-width: 600px;
-            margin: 0 auto 40px;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            background: var(--card-bg);
-            border: 2px solid var(--card-border);
-            color: var(--text);
-            padding: 18px 25px 18px 55px;
-            border-radius: 15px;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 30px rgba(233, 69, 96, 0.2);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
+        /* Category Colors */
+        .cat-hr .category-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .cat-sales .category-icon { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .cat-marketing .category-icon { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .cat-finance .category-icon { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .cat-meeting .category-icon { background: linear-gradient(135deg, #fa709a, #fee140); }
+        .cat-comm .category-icon { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+        .cat-decision .category-icon { background: linear-gradient(135deg, #d299c2, #fef9d7); }
+        .cat-feedback .category-icon { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
+        .cat-report .category-icon { background: linear-gradient(135deg, #fddb92, #d1fdff); }
+        .cat-crisis .category-icon { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
+        .cat-eval .category-icon { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); }
+        .cat-strategy .category-icon { background: linear-gradient(135deg, #f6d365, #fda085); }
 
         /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--success);
+            right: 30px;
+            background: linear-gradient(135deg, #10b981, #34d399);
             color: white;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-weight: 500;
+            padding: 18px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
+            transform: translateY(100px);
             opacity: 0;
             transition: all 0.3s ease;
             z-index: 1000;
         }
 
         .toast.show {
-            transform: translateX(-50%) translateY(0);
+            transform: translateY(0);
             opacity: 1;
         }
 
         /* Footer */
-        footer {
+        .footer {
             text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--card-border);
+            padding: 60px 20px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            margin-top: 80px;
         }
 
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
+        .footer p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .prompts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-filters {
+                justify-content: center;
+            }
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text);
         }
     </style>
 </head>
 <body>
     <section class="hero">
         <div class="hero-content">
-            <h1>🤖 AI 시대의 팀장 프롬프트 모음집</h1>
-            <p>리더를 위한 실전 AI 프롬프트 템플릿. 복사 버튼 하나로 바로 사용하세요.</p>
+            <h1>AI 시대의 팀장<br>실전 프롬프트 모음</h1>
+            <p>책에 수록된 모든 프롬프트를 한 곳에서 확인하고 바로 복사해서 사용하세요</p>
             <div class="stats">
                 <div class="stat">
-                    <div class="stat-number">25+</div>
-                    <div class="stat-label">프롬프트</div>
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">실전 프롬프트</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-number">7</div>
-                    <div class="stat-label">카테고리</div>
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">업무 카테고리</div>
                 </div>
                 <div class="stat">
                     <div class="stat-number">∞</div>
@@ -427,44 +430,49 @@
     </section>
 
     <nav class="nav">
-        <div class="nav-container">
-            <button class="nav-btn active" data-category="all">전체</button>
-            <button class="nav-btn" data-category="hr">👥 HR/인사</button>
-            <button class="nav-btn" data-category="sales">💼 영업/제안</button>
-            <button class="nav-btn" data-category="marketing">📢 마케팅/콘텐츠</button>
-            <button class="nav-btn" data-category="finance">📊 재무/회계</button>
-            <button class="nav-btn" data-category="feedback">💬 피드백/육성</button>
-            <button class="nav-btn" data-category="data">🔍 데이터 분석</button>
-            <button class="nav-btn" data-category="report">📝 보고서/회의</button>
+        <div class="nav-content">
+            <div class="nav-title">카테고리 필터</div>
+            <div class="category-filters">
+                <button class="filter-btn active" data-category="all">전체 <span class="count">50+</span></button>
+                <button class="filter-btn" data-category="hr">HR/인사 <span class="count">6</span></button>
+                <button class="filter-btn" data-category="sales">영업/제안 <span class="count">7</span></button>
+                <button class="filter-btn" data-category="marketing">마케팅 <span class="count">6</span></button>
+                <button class="filter-btn" data-category="finance">재무/회계 <span class="count">6</span></button>
+                <button class="filter-btn" data-category="meeting">회의/보고 <span class="count">5</span></button>
+                <button class="filter-btn" data-category="comm">팀 커뮤니케이션 <span class="count">4</span></button>
+                <button class="filter-btn" data-category="decision">의사결정 <span class="count">3</span></button>
+                <button class="filter-btn" data-category="feedback">피드백/육성 <span class="count">4</span></button>
+                <button class="filter-btn" data-category="report">상사 보고 <span class="count">4</span></button>
+                <button class="filter-btn" data-category="crisis">위기 대응 <span class="count">4</span></button>
+                <button class="filter-btn" data-category="eval">평가/팀빌딩 <span class="count">4</span></button>
+                <button class="filter-btn" data-category="strategy">전략/분석 <span class="count">4</span></button>
+            </div>
         </div>
     </nav>
 
-    <main class="container">
-        <div class="search-container">
-            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" class="search-input" placeholder="프롬프트 검색..." id="searchInput">
-        </div>
+    <div class="search-container">
+        <input type="text" class="search-box" placeholder="🔍 프롬프트 검색... (예: 면담, 보고서, 분석)" id="searchInput">
+    </div>
 
+    <main class="main-content" id="mainContent">
+        
         <!-- HR/인사 -->
-        <section class="category-section active" data-category="hr">
+        <section class="category-section cat-hr" data-category="hr">
             <div class="category-header">
-                <div class="category-icon" style="background: var(--gradient-1);">👥</div>
+                <div class="category-icon">👥</div>
                 <h2 class="category-title">HR/인사</h2>
-                <span class="category-count">5개 프롬프트</span>
+                <span class="category-count">6개 프롬프트</span>
             </div>
             <div class="prompts-grid">
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">조직문화 진단 분석</h3>
-                        <p class="prompt-desc">직원 설문 응답을 분석하여 조직문화 인사이트 도출</p>
+                    <div class="card-header">
+                        <h3 class="card-title">조직문화 진단 분석</h3>
+                        <p class="card-desc">자유서술 응답을 토픽별로 분석하고 임원 보고용 슬라이드 텍스트까지 생성</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
                         <div class="prompt-text">너는 HR 애널리스트야. 아래 '조직문화 진단 자유서술' 응답을 원문 기반으로만 요약해줘(추정, 과장 금지). 팀/이름 등 식별 정보는 [특정팀], [직원A]처럼 익명 처리하고, 각 항목마다 대표 인용(원문 그대로)을 반드시 포함해줘.
 
-[조직문화 진단 자유서술 응답 붙여넣기]
+[조직문화 진단 자유서술 응답 300개 붙여넣기]
 
 - 토픽 TOP 10(빈도순): 동의어 묶기(예: 성장/커리어/역량). 토픽별 요약 1문장 + 인용 2개
 - 긍정 영역 3가지: 영역별 이유 2줄 + 인용 2개 + 유지/강화 1줄
@@ -472,137 +480,131 @@
 - 주목 의견 5개: 중복 없이 의미 1줄 + 인용 1개
 - 임원 보고 슬라이드 텍스트 5장: 장당 제목 1 + 불릿 3 + 인용 1</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">승진 후보 비교 분석</h3>
-                        <p class="prompt-desc">승진 대상자 데이터를 체계적으로 분석</p>
+                    <div class="card-header">
+                        <h3 class="card-title">조직문화 개선안 제안</h3>
+                        <p class="card-desc">패턴 분석 결과를 바탕으로 실행 가능한 개선안 도출</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
+                        <div class="prompt-text">[패턴 분석 결과 첨부]
+
+위 결과를 바탕으로 조직문화 개선안 3가지를 제안해줘
+
+개선안마다 아래 내용을 포함해줘:
+- 해결하려는 문제
+- 구체적 실행 방법
+- 기대 효과
+- 예상 리스크와 대응 방안</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">면접 결과 비교 분석</h3>
+                        <p class="card-desc">최종 후보자 면접 기록을 비교하고 팀 상황에 맞는 적합도 분석</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">OO팀장 최종 후보 3명의 면접 결과를 비교 분석해줘.
+
+[첨부: 각 후보별 면접 기록, 면접관 평가 코멘트]
+
+다음 항목으로 정리할 것
+1. 각 후보의 핵심 강점(2~3개)
+2. 우려되는 점(1~2개)
+3. 면접관 간 의견이 갈리는 지점과 그 이유 추정
+4. 우리 팀 상황(공석 3개월, 빠른 팀 안정화 필요)에 비춰본 적합도</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">승진 후보 비교 분석</h3>
+                        <p class="card-desc">다수의 승진 후보자를 다양한 기준으로 비교 정리</p>
+                    </div>
+                    <div class="card-body">
                         <div class="prompt-text">승진 후보 15명을 비교 분석해줘.
+
 [첨부: 각 후보의 최근 3년 평가 이력, 담당 프로젝트, 팀장 추천서]
 
-다음을 정리할 것:
+다음을 정리할 것
 1. 3년 연속 A등급 이상 유지한 인원
 2. 리더십/팀 빌딩 경험이 언급된 인원
 3. 현재 직급 체류 기간
 4. 팀장 추천서에서 "승진 적합" 근거가 구체적인 인원 vs 모호한 인원</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">성과급 차등 기준 정리</h3>
-                        <p class="prompt-desc">A등급 대상자 성과급 배분 기준 수립</p>
+                    <div class="card-header">
+                        <h3 class="card-title">성과급 차등 기준 분석</h3>
+                        <p class="card-desc">A등급 내에서도 성과급 차등을 위한 우선순위 정리</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
                         <div class="prompt-text">A등급 30명의 성과급 차등 기준을 정리해야 해.
+
 [첨부: A등급 대상자 30명의 평가서, 정량 성과, 팀장 추천 코멘트]
 
-다음을 분석해줘:
+다음을 분석해줘
 1. 정량 성과 상위 10명과 그 근거
 2. 팀장 추천 코멘트에서 '핵심 기여', '대체 불가' 등 강한 표현이 있는 인원
 3. 전년 대비 성장 폭이 큰 인원 5명
 4. 위 기준들이 겹치는 인원(최우선 보상 대상 후보)</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">조직문화 개선안 제안</h3>
-                        <p class="prompt-desc">진단 결과 기반 실행 가능한 개선안 도출</p>
+                    <div class="card-header">
+                        <h3 class="card-title">면접 질문 생성 (BEI)</h3>
+                        <p class="card-desc">이력서 기반 행동 기반 면접 질문 생성</p>
                     </div>
-                    <div class="prompt-content">
-                        <div class="prompt-text">[패턴 분석 결과 첨부]
+                    <div class="card-body">
+                        <div class="prompt-text">이 후보자를 '마케팅 팀장'으로 채용하려 해.
 
-위 결과를 바탕으로 조직문화 개선안 3가지를 제안해줘.
+[이력서 내용 붙여넣기]
 
-개선안마다 아래 내용을 포함해줘:
-- 해결하려는 문제
-- 구체적 실행 방법
-- 예상 효과
-- 필요한 자원</div>
-                    </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
-                    </div>
-                </div>
+이력서에 적힌 프로젝트 경험을 검증할 수 있는 날카로운 면접 질문 10개를 만들어줘.
 
-                <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">AI 팀원 설정 - 인사팀장</h3>
-                        <p class="prompt-desc">조직문화 진단 및 교육 니즈 분석 전문가</p>
+단, "장단점이 무엇인가요?" 같은 뻔한 질문은 제외하고, 구체적인 문제 해결 과정을 묻는 행동 기반 질문(BEI) 위주로 작성해줘.</div>
                     </div>
-                    <div class="prompt-content">
-                        <div class="prompt-text">AI 팀원 설정 레시피: 인사팀장 박수현
-• 역할: 조직문화 진단 및 교육 니즈 분석
-• 금기 사항: 개인의 평가나 징계에 활용될 수 있는 정보 입력 금지
-• 해결 방식: 누가 잘못했는지 따지는 대신, 구조적/환경적 개선안 제안
-
-문제가 생기면 사람을 탓하지 말고 시스템을 고쳐라.</div>
-                    </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- 영업/제안 -->
-        <section class="category-section active" data-category="sales">
+        <section class="category-section cat-sales" data-category="sales">
             <div class="category-header">
-                <div class="category-icon" style="background: var(--gradient-2);">💼</div>
+                <div class="category-icon">💼</div>
                 <h2 class="category-title">영업/제안</h2>
-                <span class="category-count">5개 프롬프트</span>
+                <span class="category-count">7개 프롬프트</span>
             </div>
             <div class="prompts-grid">
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">고객 미팅 준비</h3>
-                        <p class="prompt-desc">B2B 미팅 전 고객사 분석 및 질문 준비</p>
+                    <div class="card-header">
+                        <h3 class="card-title">고객 미팅 준비</h3>
+                        <p class="card-desc">B2B 미팅 전 고객사 분석과 질문 리스트 준비</p>
                     </div>
-                    <div class="prompt-content">
-                        <div class="prompt-text">너는 B2B 영업/컨설팅 담당이야. 아래를 미팅 준비용으로 간결하게 정리해줘. 가능하면 근거(출처/자료 유형)와 날짜를 함께 적고, 없으면 '확인 필요'로 표시해줘.
+                    <div class="card-body">
+                        <div class="prompt-text">너는 B2B 영업/컨설팅 담당이야. 아래를 미팅 준비용으로 간결하게 정리해줘. 가능하면 근거(출처/자료 유형)와 날짜를 함께 적고, 없으면 확인 필요로 표시해줘.
 
 고객사: OO제조(직원 500명, 연매출 800억) / 산업: 자동차 부품 제조 / 목적: 품질 관리 솔루션 도입 검토
 
@@ -617,23 +619,36 @@
 
 출력 형식: 번호 목록, 각 항목 1~2문장</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">B2B 제안서 목차 작성</h3>
-                        <p class="prompt-desc">고객 맞춤형 제안서 구조 설계</p>
+                    <div class="card-header">
+                        <h3 class="card-title">예상 반론 대응 준비</h3>
+                        <p class="card-desc">가격 등 고객 반론에 대한 설득 논리 준비</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
+                        <div class="prompt-text">우리 솔루션 특징:
+- 도입 비용: 경쟁사 대비 20% 높음
+- 구축 기간: 3개월
+- ROI: 1년 이내 회수 가능
+
+예상되는 고객 반론과 대응 논리를 정리해줘.
+특히 가격 관련 반론에 대한 설득 논리를 구체적으로.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">제안서 목차 구성</h3>
+                        <p class="card-desc">50페이지 제안서의 전체 구조와 챕터별 메시지 설계</p>
+                    </div>
+                    <div class="card-body">
                         <div class="prompt-text">너는 자동차 부품 업계 경험이 풍부한 B2B 제안서 전문가야. 아래 정보를 바탕으로 50페이지 제안서 목차를 만들어줘. 챕터별 핵심 메시지와 포함할 내용도 간단히 적어줘.
 
 - 제안서 대상: ○○제조(자동차 부품 기업)
@@ -641,50 +656,56 @@
 - 고객 주요 관심사: 북미 수출 품질 기준 충족, 불량률 감소
 - 우리 강점: 자동차 부품 업계 레퍼런스 15개, 평균 불량률 35% 감소</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">제안서 챕터 초안</h3>
-                        <p class="prompt-desc">슬라이드 형태의 챕터별 초안 작성</p>
+                    <div class="card-header">
+                        <h3 class="card-title">제안서 챕터 초안</h3>
+                        <p class="card-desc">특정 챕터의 슬라이드 초안 작성</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
                         <div class="prompt-text">[1장: ○○제조 이해]
+
 다음 내용으로 슬라이드 3장 분량 초안을 만들어줘:
 - 자동차 부품 산업의 품질 기준 변화 트렌드
 - 북미 시장 진출 시 품질 요구 사항
 - ○○제조 기업이 직면한 과제(공개 정보 기반)
 
 각 슬라이드는 전문적이면서도 쉽게 읽히도록 작성해줘.
-- 제목 1줄, 핵심 메시지 3~5개 bullet point
-- 필요한 경우 그래프/표 제안해줘</div>
+- 제목 1줄, 핵심 메시지 3~5개 bullet point, 필요한 경우 그래프/표 제안해줘.</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">팀원 영업 기록 분석</h3>
-                        <p class="prompt-desc">영업팀 성과 패턴 분석 및 코칭 포인트 도출</p>
+                    <div class="card-header">
+                        <h3 class="card-title">레퍼런스 슬라이드</h3>
+                        <p class="card-desc">고객 사례를 설득력 있는 슬라이드로 변환</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
+                        <div class="prompt-text">고객사: △△제조
+도입 시기: 2025년 3월
+주요 성과: 불량률 1.2%→ 0.4%, 재작업 비용 연 1.8억 원 절감
+담당자 코멘트: "품질 데이터를 실시간으로 볼 수 있어서 문제 대응이 빨라졌다."
+
+위 내용을 레퍼런스 슬라이드 1장으로 만들어줘. 숫자는 그래프로, 코멘트는 인용 형식으로.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">팀원 영업 기록 분석</h3>
+                        <p class="card-desc">팀원별 영업 패턴 분석과 코칭 포인트 도출</p>
+                    </div>
+                    <div class="card-body">
                         <div class="prompt-text">너는 B2B 영업 코칭 경험이 풍부한 세일즈 매니저야. 첨부한 팀원 5명의 최근 한 달 영업 기록을 분석해줘.
 
 - 팀원별 미팅 성사율, 제안서 전환율, 계약 성사율
@@ -692,23 +713,17 @@
 - 영업 단계별로 누가 어디서 막히는지
 - 팀원별로 다음 달 집중해야 할 포인트 한 가지</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">에이스 팀원 노하우 분석</h3>
-                        <p class="prompt-desc">고성과자의 암묵적 노하우 발굴</p>
+                    <div class="card-header">
+                        <h3 class="card-title">에이스 노하우 분석</h3>
+                        <p class="card-desc">고성과 팀원의 암묵적 노하우를 구체적 행동으로 정리</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
                         <div class="prompt-text">너는 영업 성과 분석 전문가야. 첨부한 2가지 데이터를 비교 분석해줘.
 
 [첨부 1] 우리 팀 전체의 최근 3개월 영업 기록(미팅 메모, 제안서, 성사율)
@@ -717,65 +732,73 @@
 박 대리가 팀 평균보다 성과가 높은 이유를 찾아줘.
 - 미팅 진행 방식에서 다른 점
 - 제안서 구성에서 다른 점
-- 후속 연락 패턴에서 다른 점
-- 고객 관리 방식에서 다른 점</div>
+- 고객 응대 타이밍에서 다른 점
+- 계약 후 고객 관리에서 다른 점
+
+다른 팀원이 바로 따라 할 수 있도록 구체적인 행동 단위로 정리해줘.</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 마케팅/콘텐츠 -->
-        <section class="category-section active" data-category="marketing">
+        <!-- 마케팅 -->
+        <section class="category-section cat-marketing" data-category="marketing">
             <div class="category-header">
-                <div class="category-icon" style="background: var(--gradient-3);">📢</div>
+                <div class="category-icon">📣</div>
                 <h2 class="category-title">마케팅/콘텐츠</h2>
-                <span class="category-count">4개 프롬프트</span>
+                <span class="category-count">6개 프롬프트</span>
             </div>
             <div class="prompts-grid">
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">신제품 캠페인 아이디어</h3>
-                        <p class="prompt-desc">차별화된 론칭 캠페인 기획</p>
+                    <div class="card-header">
+                        <h3 class="card-title">캠페인 아이디어 발상</h3>
+                        <p class="card-desc">신제품 론칭 캠페인 아이디어 10가지 도출</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
                         <div class="prompt-text">너는 뷰티 브랜드 캠페인 기획자야. 아래 조건으로 신제품 론칭 캠페인 아이디어 10가지를 제안해줘.
 
 - 제품: 비타민C 세럼
-- 상황: 레드오션(대기업 다수)
-- 강점: 순도 높은 원료, 자극 최소화
+- 타깃: 20~30대 여성
+- 차별점: 민감성 피부도 사용 가능
+- 경쟁 상황: 레드오션, 차별화 필요
+- 예산: 중간 규모
 
-조건: 뻔한 '미백/브라이트닝' 중심 메시지는 피하고, 고객이 "어, 다르네"라고 느낄 새로운 관점으로.
-
-형식(아이디어마다):
-- 한 줄 콘셉트
-- 실행 방안 2가지(채널/콘텐츠 예시 포함)</div>
+각 아이디어마다 콘셉트 한 줄, 실행 방향 2~3줄로 작성해줘.</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">콘텐츠 톤앤매너 점검</h3>
-                        <p class="prompt-desc">브랜드 가이드라인 기반 콘텐츠 검토</p>
+                    <div class="card-header">
+                        <h3 class="card-title">캠페인 콘셉트 구체화</h3>
+                        <p class="card-desc">선택한 콘셉트를 실행 가능한 수준으로 발전</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
+                        <div class="prompt-text">'비타민C를 포기했던 사람들' 콘셉트로 캠페인을 발전시켜줘.
+
+포함할 것:
+1. 캠페인 슬로건 5가지
+2. 타깃 페르소나(구체적 상황 묘사)
+3. 메인 메시지와 서브 메시지
+4. 채널별 실행 아이디어(인스타/유튜브/블로그)
+5. 인플루언서 협업 방향</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">톤앤매너 점검</h3>
+                        <p class="card-desc">브랜드 기준에 맞게 콘텐츠 품질 검토</p>
+                    </div>
+                    <div class="card-body">
                         <div class="prompt-text">너는 브랜드 콘텐츠 품질을 관리하는 에디터야. 이번 주 발행 콘텐츠 5개를 브랜드 톤앤매너 기준에 따라 점검해줘.
 
 [이번 주 발행 콘텐츠 5개 첨부]
@@ -791,26 +814,21 @@
 3. 5개 콘텐츠 간 톤 일관성 점수(10점 만점)
 4. 팀원별 반복 패턴(작성자 정보가 없으면 생략)</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">콘텐츠 성과 분석</h3>
-                        <p class="prompt-desc">데이터 기반 콘텐츠 전략 수립</p>
+                    <div class="card-header">
+                        <h3 class="card-title">콘텐츠 성과 분석</h3>
+                        <p class="card-desc">지난달 콘텐츠 데이터에서 패턴과 인사이트 도출</p>
                     </div>
-                    <div class="prompt-content">
-                        <div class="prompt-text">너는 콘텐츠 성과 분석 전문가야. 아래 콘텐츠 성과 데이터를 보고 인사이트를 정리해줘. 데이터에 없는 내용은 단정하지 말고 '확인 필요'로 표시해줘.
+                    <div class="card-body">
+                        <div class="prompt-text">너는 콘텐츠 성과 분석 전문가야. 아래 콘텐츠 성과 데이터를 보고 인사이트를 정리해줘. 데이터에 없는 내용은 단정하지 말고 확인 필요로 표시해줘.
 
 [지난달 콘텐츠 20개 성과 데이터 붙여넣기]
+
 지표: 조회수, 체류 시간, 클릭률, 댓글 수(+가능하면 채널/유형/발행 요일·시간)
 
 1. 성과 상위 5개 콘텐츠의 공통점
@@ -818,23 +836,17 @@
 3. 요일/시간대 패턴: 지표별 경향 요약(표본 적으면 참고 수준 표시)
 4. 이번 달 콘텐츠 방향 제안 3가지(제안별 실행 방안 포함)</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">고객 리뷰 분석</h3>
-                        <p class="prompt-desc">대량 리뷰에서 인사이트 추출</p>
+                    <div class="card-header">
+                        <h3 class="card-title">고객 리뷰 분석</h3>
+                        <p class="card-desc">대량의 고객 리뷰에서 인사이트 추출</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
                         <div class="prompt-text">너는 고객 리뷰 분석 전문가야. 지난 분기 고객 리뷰에서 인사이트를 도출해줘.
 
 [고객 리뷰 500개 첨부]
@@ -848,33 +860,47 @@
 
 항목마다 대표 리뷰 원문을 예시로 들어줘.</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">경쟁사 리뷰 비교</h3>
+                        <p class="card-desc">경쟁사가 언급된 리뷰만 별도 분석</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">경쟁사 제품이 언급된 리뷰만 모아서 분석해줘.
+
+분석 항목:
+1. 경쟁사 대비 우리 제품의 장점으로 언급된 것
+2. 경쟁사 대비 우리 제품의 단점으로 언급된 것
+3. 경쟁사에서 우리로 갈아탄 이유
+4. 우리에서 경쟁사로 갈아탄 이유(있다면)
+5. 마케팅 메시지에 활용할 수 있는 포인트</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- 재무/회계 -->
-        <section class="category-section active" data-category="finance">
+        <section class="category-section cat-finance" data-category="finance">
             <div class="category-header">
-                <div class="category-icon" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">📊</div>
+                <div class="category-icon">💰</div>
                 <h2 class="category-title">재무/회계</h2>
-                <span class="category-count">4개 프롬프트</span>
+                <span class="category-count">6개 프롬프트</span>
             </div>
             <div class="prompts-grid">
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">전표 오류 검토</h3>
-                        <p class="prompt-desc">내부 감사 관점의 전표 이상 징후 탐지</p>
+                    <div class="card-header">
+                        <h3 class="card-title">전표 오류 검토</h3>
+                        <p class="card-desc">내부 감사 관점에서 이상 거래 탐지</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
                         <div class="prompt-text">너는 내부 감사 관점에서 전표를 검토하는 전문가야. 아래 이번 달 전표 데이터에서 검토가 필요한 항목을 찾아줘.
 
 [전표 데이터 첨부]
@@ -888,23 +914,43 @@
 
 항목별로 해당 건수와 구체적인 거래 내역을 알려줘.</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">경영진 재무 보고서</h3>
-                        <p class="prompt-desc">이사회/경영진용 재무현황 요약</p>
+                    <div class="card-header">
+                        <h3 class="card-title">세금계산서 데이터 추출</h3>
+                        <p class="card-desc">세금계산서 이미지에서 정보 추출 및 계정 분류</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
+                        <div class="prompt-text">너는 재무회계 전표 처리 전문가야. 첨부한 세금계산서 이미지들에서 다음 정보를 추출하고, 계정과목까지 추천해줘.
+
+추출 항목:
+- 공급자 사업자등록번호, 상호
+- 공급가액, 부가세, 합계금액
+- 작성일자, 품목명
+
+계정과목 분류 기준:
+- 복리후생비: 직원 식대, 경조사비, 건강검진
+- 접대비: 거래처 식사, 선물
+- 소모품비: 사무용품, 비품
+- 광고선전비: 온라인 광고, 판촉물
+
+표 형식으로 정리하고, 계정 분류가 불확실한 건 '검토 필요'로 표시해줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">경영진 보고서 초안</h3>
+                        <p class="card-desc">재무 데이터를 경영진이 이해하기 쉬운 형태로 정리</p>
+                    </div>
+                    <div class="card-body">
                         <div class="prompt-text">너는 이사회 보고 경험이 풍부한 CFO야. 첨부한 재무 데이터로 경영진 보고서 초안을 작성해줘.
 
 [손익 데이터, 부문별 실적, 현금흐름표 첨부]
@@ -920,23 +966,40 @@
 분량: A4 2~3장
 숫자보다 의미 중심으로 작성해줘.</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">현금흐름 예측</h3>
-                        <p class="prompt-desc">3개월 현금 잔액 시뮬레이션</p>
+                    <div class="card-header">
+                        <h3 class="card-title">경영진 예상 질문 대비</h3>
+                        <p class="card-desc">이사회 질의에 대비한 Q&A 준비</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
+                        <div class="prompt-text">CFO로서 이사회 질의에 대비하는 중이야. 위 보고서를 보고 경영진이 물을 수 있는 질문 5가지와 답변 방향을 정리해줘.
+
+경영진 관심사:
+- 연간 목표 달성 가능성
+- 수익성 개선 방안
+- 현금 유동성
+
+질문별로:
+- 예상 질문
+- 핵심 답변 포인트
+- 필요한 백업 데이터</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">현금흐름 예측</h3>
+                        <p class="card-desc">과거 데이터 기반 3개월 현금 잔액 예측</p>
+                    </div>
+                    <div class="card-body">
                         <div class="prompt-text">너는 기업 자금 관리 전문가야. 첨부한 과거 12개월 현금흐름 데이터와 향후 예정된 거래를 바탕으로 다음 3개월 현금 잔액을 예측해줘.
 
 [월별 현금흐름 데이터, 예정된 매출/지출 내역 첨부]
@@ -950,23 +1013,17 @@
 
 낙관적 시나리오와 보수적 시나리오를 함께 보여줘.</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">비용 이상징후 + 감사 대비</h3>
-                        <p class="prompt-desc">비용 분석 및 외부 감사 준비</p>
+                    <div class="card-header">
+                        <h3 class="card-title">비용 이상징후 & 감사 대비</h3>
+                        <p class="card-desc">이상 비용 탐지와 감사 대응 준비</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
                         <div class="prompt-text">너는 내부 통제와 외부 감사 대응 경험이 풍부한 재무 컨설턴트야. 첨부한 이번 분기 비용 데이터에서 이상 징후를 찾고, 감사 대비 방안까지 정리해줘.
 
 [부서별/계정별 비용 데이터 첨부]
@@ -984,33 +1041,280 @@
 
 금액이 크거나 설명이 어려운 항목 위주로 상세하게 작성해줘.</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 회의/보고 -->
+        <section class="category-section cat-meeting" data-category="meeting">
+            <div class="category-header">
+                <div class="category-icon">📝</div>
+                <h2 class="category-title">회의/보고</h2>
+                <span class="category-count">5개 프롬프트</span>
+            </div>
+            <div class="prompts-grid">
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">회의록 정리</h3>
+                        <p class="card-desc">녹취록을 구조화된 회의록으로 변환</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">아래는 오늘 주간 회의 녹취록이야. 다음 양식으로 정리해줘
+
+1. 핵심 결정 사항 (3줄 이내)
+2. 주요 논의 내용 요약
+3. 다음 회의에서 논의할 사항
+
+[회의 녹취록 전문]</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">액션 아이템 추출</h3>
+                        <p class="card-desc">회의록에서 실천 과제만 추출하여 정리</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">아래 회의록에서 액션 아이템만 추출해줘
+
+- 형식: [담당자]: [할 일] (기한: [날짜])
+- 기한이 없으면 '기한 미정'으로 표시해줘
+
+[회의 녹취록 전문]</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">임원 보고용 요약</h3>
+                        <p class="card-desc">회의 내용을 30초 안에 파악 가능한 형태로 압축</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">위 회의록을 임원 보고용으로 요약해줘
+
+- 한 줄 요약
+- 주요 결정 사항 (3개 이내)
+- 필요한 지원/승인 사항
+
+임원이 30초 안에 파악할 수 있게 간결하게 작성해줘</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">회의 분석 및 개선</h3>
+                        <p class="card-desc">회의 효율화를 위한 퍼실리테이션 코칭</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">우리 팀 회의가 자꾸 길어져. 스크립트를 분석해서 불필요하게 시간을 끈 주제가 무엇인지, 다음 회의부터는 어떻게 진행하면 30분 안에 끝낼 수 있을지 '퍼실리테이터' 관점에서 조언해줘.
+
+[회의 녹취록 전문]</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">성과 보고서 요약</h3>
+                        <p class="card-desc">분기 성과를 숫자 중심으로 정리</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">3분기 주요 성과를 숫자 중심으로 요약해줘.
+
+특히 다음 항목을 표로 정리해줘.
+- 캠페인별 ROI(전 분기 대비 증감률 포함)
+- 예산 대비 집행률
+- 목표 대비 달성률
+
+[성과 데이터 첨부]</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 팀 커뮤니케이션 -->
+        <section class="category-section cat-comm" data-category="comm">
+            <div class="category-header">
+                <div class="category-icon">💬</div>
+                <h2 class="category-title">팀 커뮤니케이션</h2>
+                <span class="category-count">4개 프롬프트</span>
+            </div>
+            <div class="prompts-grid">
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">공지 메시지 작성</h3>
+                        <p class="card-desc">프로젝트 변경 등 중요 소식을 적절한 톤으로 전달</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">프로젝트 일정이 2주 연기됐어. 팀 채널에 공지할 메시지 작성해줘
+
+- 사유: 협력사 일정 변경
+- 팀원들이 준비한 건 예정대로 진행
+- 솔직하고 긍정적인 톤으로
+- 3~4문장으로 간결하게</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">1:1 면담 질문 준비</h3>
+                        <p class="card-desc">팀원과의 깊은 대화를 위한 열린 질문 생성</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">나는 OO팀 팀장이야. 다음 주에 김 대리와 1:1 면담이 있어.
+
+- 입사 3년 차, 마케팅 담당
+- 최근 SNS 캠페인 리드를 했는데 혼자 부담이 컸던 것 같음
+- 평소 말수가 적고, 의견 표현 잘 하지 않는 스타일
+
+이번 면담 목표: 프로젝트 회고, 어려웠던 점 듣기, 앞으로 방향 파악
+
+"예/아니요"로 답할 수 없는 형식으로, 열린 질문 7개 만들어줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">팀 설문 분석</h3>
+                        <p class="card-desc">익명 설문 응답에서 팀 분위기 파악</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">나는 OO팀 팀장이야. 우리 팀 분기 설문 응답 결과를 분석해줘.
+
+[응답 전문]
+
+1. 가장 많이 언급된 이슈 3가지 (빈도순)
+2. 긍정적 피드백 요약
+3. 개선 필요 영역 (우선순위순)
+4. 전체 감정 톤 (만족/보통/불만 비율)</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">변화 관리 설득 멘트</h3>
+                        <p class="card-desc">새 시스템 도입 시 팀원 설득 메시지</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">팀원들을 설득할 때 쓸 메시지를 만들려고 해.
+
+"회사를 위해 써야 한다"는 말 말고, 실무자 입장에서 "이 툴을 쓰면 내 야근이 줄어들고 내 업무가 편해진다(What's In It For Me)"는 점을 강조한 설득 멘트 3가지를 제안해줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 의사결정 -->
+        <section class="category-section cat-decision" data-category="decision">
+            <div class="category-header">
+                <div class="category-icon">🎯</div>
+                <h2 class="category-title">의사결정 지원</h2>
+                <span class="category-count">3개 프롬프트</span>
+            </div>
+            <div class="prompts-grid">
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">시나리오 분석</h3>
+                        <p class="card-desc">선택지별 영향을 다각도로 예측</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">개발팀이 데일리 스탠드업(매일 15분 회의)을 제안했어. 현재는 주 1회 60분 회의 중인데 속도가 느리다는 지적이 있어.
+
+- 우리 팀: 5명, 회의 피로도 높음
+- 개발팀: 애자일 익숙, 빠른 피드백 선호
+
+3가지 시나리오로 분석해줘
+A: 현행 유지 / B: 데일리 전환 / C: 2주 시범 운영
+
+각각 즉시 결과, 중기 영향, 실패 시 리스크를 포함해서 정리해줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">이해관계자 시뮬레이션</h3>
+                        <p class="card-desc">주요 이해관계자들의 예상 반응 미리 파악</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">새 업무 관리 시스템(연 1,200만 원) 도입을 제안하려고 해.
+
+이해관계자 3명의 예상 반응을 시뮬레이션해줘.
+- 김 부장 (상사): 보수적, ROI 중시
+- 이 팀장 (IT): 기술 타당성 중시, 실무 부담 민감
+- 박 대리 (실무자): 사용 편의성 중시
+
+각자가 던질 질문 3개, 우려 사항 2개, 설득에 필요한 정보를 작성해줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">변화 관리 계획 (ADKAR)</h3>
+                        <p class="card-desc">4주간 단계별 변화 관리 실행 계획</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">우리 팀(10명)에 새로운 업무 관리 툴을 도입해야 하는데 저항이 심해.
+
+'변화 관리의 ADKAR 모델'을 적용해서, 도입 1주 차부터 4주 차까지의 단계별 실행 계획을 짜줘.
+
+목표는 4주 뒤 전원이 툴을 능숙하게 쓰는 거야.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- 피드백/육성 -->
-        <section class="category-section active" data-category="feedback">
+        <section class="category-section cat-feedback" data-category="feedback">
             <div class="category-header">
-                <div class="category-icon" style="background: linear-gradient(135deg, #f5af19 0%, #f12711 100%);">💬</div>
+                <div class="category-icon">🌱</div>
                 <h2 class="category-title">피드백/육성</h2>
-                <span class="category-count">3개 프롬프트</span>
+                <span class="category-count">4개 프롬프트</span>
             </div>
             <div class="prompts-grid">
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">저성과 팀원 면담 준비</h3>
-                        <p class="prompt-desc">성장을 돕는 1:1 면담 준비</p>
+                    <div class="card-header">
+                        <h3 class="card-title">저성과 팀원 면담 준비</h3>
+                        <p class="card-desc">데이터 기반의 건설적인 면담 준비</p>
                     </div>
-                    <div class="prompt-content">
+                    <div class="card-body">
                         <div class="prompt-text">너는 영업 팀원 코칭 전문가야. 첨부한 이 팀원의 최근 3개월 영업 기록을 보고 면담을 준비해줘.
 
 - 잘한 점 2가지(구체적 사례와 함께)
@@ -1020,298 +1324,501 @@
 
 비난이 아니라 성장을 돕는 톤으로 작성해줘.</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">실수 후 피드백 메시지</h3>
-                        <p class="prompt-desc">팀원 실수에 대한 건설적 피드백</p>
+                    <div class="card-header">
+                        <h3 class="card-title">실수 피드백 메시지</h3>
+                        <p class="card-desc">실수한 팀원에게 상처 주지 않고 피드백</p>
                     </div>
-                    <div class="prompt-content">
-                        <div class="prompt-text">팀원이 회의에서 잘못된 수치를 보고해서 임원들 앞에서 지적당했어. 팀원도 나도 당황스러운 상황이야.
+                    <div class="card-body">
+                        <div class="prompt-text">김 대리가 오늘 전사 회의에서 매출 수치를 잘못 보고했어. 임원이 현장에서 지적했고 김 대리가 많이 당황한 것 같은데, 카톡으로 피드백 메시지 보내려고 해.
 
-이 팀원에게 보낼 피드백 메시지를 작성해줘.
+- 실수는 누구나 할 수 있다는 것
+- 나도 업무량 조절 못한 책임이 있다는 것
+- 앞으로 어떻게 하면 좋을지 함께 고민하자는 것
 
-조건:
-- 비난하지 않으면서도 다음에는 조심하게 만드는 톤
-- 팀원의 자존감을 지켜주면서 개선점을 전달
-- 200자 내외의 짧은 메시지
-- 카카오톡으로 보낼 수 있는 형식</div>
+2~3줄로 부담스럽지 않게 작성해줘.</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">팀원 강점 기반 성장 기회</h3>
-                        <p class="prompt-desc">팀원의 숨겨진 강점 발굴 및 기회 제안</p>
+                    <div class="card-header">
+                        <h3 class="card-title">성장 기회 제안 멘트</h3>
+                        <p class="card-desc">신입에게 첫 프로젝트를 맡길 때의 제안 멘트</p>
                     </div>
-                    <div class="prompt-content">
-                        <div class="prompt-text">팀원의 최근 업무 기록을 분석해서 강점과 성장 기회를 찾아줘.
+                    <div class="card-body">
+                        <div class="prompt-text">박 사원(신입 6개월차)에게 첫 프로젝트를 맡기려고 해.
 
-[첨부: 팀원의 최근 6개월 업무 기록, 프로젝트 참여 이력, 동료 피드백]
+- 프로젝트: 고객 만족도 설문 설계 (3주)
+- 박 사원: 지금까지 보조 역할만, 꼼꼼하고 성실, 자신감은 부족
 
-분석해줘:
-1. 눈에 띄는 강점 3가지 (구체적 사례 포함)
-2. 본인이 인식하지 못할 수 있는 숨겨진 강점 1가지
-3. 이 강점을 살릴 수 있는 새로운 역할/프로젝트 제안
-4. 6개월 성장 로드맵
-
-팀원에게 기회를 제안할 때 쓸 수 있는 대화 스크립트도 만들어줘.</div>
+1:1 면담에서 제안할 멘트 작성해줘.
+- 충분히 할 수 있다는 믿음
+- 실패해도 괜찮다는 안심
+- 3~4문장으로</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">강점 기반 면담 준비</h3>
+                        <p class="card-desc">팀원의 고유한 강점을 구체적으로 정리</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">이 주임(콘텐츠 담당, 3년 차)과 면담 준비 중이야.
+
+최근 6개월 관찰 내용
+- 블로그 12개 작성, 조회수 30% 증가
+- 다른 팀원이 놓친 오타/오류 자주 발견
+- 회의에서 말은 적지만 한번 말하면 핵심을 찌름
+- AI 도구 스터디 자발적으로 시작
+- 아침 일찍 출근해서 집중 시간 확보
+
+이 관찰을 바탕으로 정리해줘.
+- 고유한 강점 3가지
+- 각 강점 뒷받침하는 사례
+- 강점을 더 키울 기회</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 데이터 분석 -->
-        <section class="category-section active" data-category="data">
+        <!-- 상사 보고 -->
+        <section class="category-section cat-report" data-category="report">
             <div class="category-header">
-                <div class="category-icon" style="background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);">🔍</div>
-                <h2 class="category-title">데이터 분석</h2>
-                <span class="category-count">2개 프롬프트</span>
+                <div class="category-icon">📊</div>
+                <h2 class="category-title">상사 보고</h2>
+                <span class="category-count">4개 프롬프트</span>
             </div>
             <div class="prompts-grid">
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">경쟁사 마케팅 트렌드 분석</h3>
-                        <p class="prompt-desc">경쟁사 데이터에서 시사점 도출</p>
+                    <div class="card-header">
+                        <h3 class="card-title">상사 스타일별 보고서</h3>
+                        <p class="card-desc">상사 성향에 맞춰 2가지 버전으로 보고서 작성</p>
                     </div>
-                    <div class="prompt-content">
-                        <div class="prompt-text">너는 10년 경력의 마케팅 전략 컨설턴트야. 우리는 식품업계 3위, 주요 타깃은 2030 세대야. 경쟁사 A, B, C의 2025년 분기별 마케팅 투자 비율이야.
+                    <div class="card-body">
+                        <div class="prompt-text">이번 주 프로젝트 진행 상황 보고서야.
+
+[보고서 내용]
+
+상사 특성
+- 자주 하는 말: "핵심이 뭐야?", "숫자로 보여줘"
+- 가끔 "배경이 뭐였지?"라고도 물음
+
+2가지 버전으로 만들어줘:
+- 버전 A: 숫자 중심, 간결형
+- 버전 B: 맥락 포함, 설명형</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">예산 증액 제안서</h3>
+                        <p class="card-desc">ROI 중심의 설득력 있는 예산 제안</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">우리 팀에 마케팅 데이터 분석 도구 도입을 상사에게 요청하려고 해. 설득력 있는 제안서를 구성해줘.
+
+- 연간 비용: 2,000만 원
+- 현재: 팀원 1인당 주 8시간 데이터 정리 (5명 × 8시간 × 4주 = 월 160시간)
+- 기대 효과: 50% 시간 절감
+- 경쟁사 3곳 이미 사용 중
+
+상사 성향은 보수적이며, ROI 중시하고, "다른 회사는?"이라는 질문을 자주 해.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">나쁜 소식 보고 스크립트</h3>
+                        <p class="card-desc">프로젝트 지연을 효과적으로 보고</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">프로젝트가 2주 지연될 것 같은데, 상사에게 어떻게 보고해야 할지 보고용 스크립트를 작성해줘.
+
+- 원래 4주 → 6주 필요
+- 원인: 협력사 일정 변동 + 기술 이슈
+- 이미 재협상으로 4주 → 2주로 줄임
+- 현재 진행률: 70%
+
+상사 성향: 문제보다 해결책에 관심, "왜 미리 몰랐나?" 자주 질문하는 스타일
+
+보고 스크립트는 아래와 같이 작성해줘.
+- 결론 먼저
+- 원인 (변명 아니게)
+- 이미 취한 조치
+- 앞으로 계획</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">예산 보고서 논리 구성</h3>
+                        <p class="card-desc">CFO 출신 상사를 위한 예산 증액 논리</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">나는 마케팅 팀장이고, 내년 예산 20% 증액을 설득해야 해.
+
+상사는 '비용 절감'을 최우선으로 생각하는 CFO 출신이야.
+
+"지금 예산을 늘리는 것이 결과적으로 비용을 아끼는 길(고효율)"이라는 논리의 기획안 목차와 핵심 메시지를 잡아줘.
+
+[참고: 경쟁사 마케팅 투자 트렌드 데이터]</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 위기 대응 -->
+        <section class="category-section cat-crisis" data-category="crisis">
+            <div class="category-header">
+                <div class="category-icon">🚨</div>
+                <h2 class="category-title">위기 대응</h2>
+                <span class="category-count">4개 프롬프트</span>
+            </div>
+            <div class="prompts-grid">
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">갑작스러운 퇴사 대응</h3>
+                        <p class="card-desc">핵심 인력 퇴사 시 시간대별 체크리스트</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">핵심 팀원이 갑자기 퇴사를 통보했어. 진행 중인 프로젝트가 3개인데 인수인계 계획이 없어.
+
+리더로서 남은 3일 동안 어떤 순서로 대응해야 할지, 시간대별 체크리스트를 만들어줘.
+
+우선순위는 '업무 공백 최소화'와 '남은 팀원의 동요 방지'야.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">인수인계 리스트 작성</h3>
+                        <p class="card-desc">업무 자료 기반 필수 인수인계 항목 정리</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">이 자료들을 바탕으로 퇴사자가 후임자에게 반드시 넘겨줘야 할 '필수 인수인계 리스트'를 작성해줘.
+
+[최근 주간 보고서와 업무 폴더 목록 첨부]
+
+항목별로 현재 진행률과 리스크(중요도)를 표시해줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">긴급 면접 질문 생성</h3>
+                        <p class="card-desc">급하게 잡힌 면접을 위한 날카로운 질문</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">이 후보자를 '마케팅 팀장'으로 채용하려 해.
+
+[이력서 내용 붙여넣기]
+
+이력서에 적힌 프로젝트 경험을 검증할 수 있는 날카로운 면접 질문 10개를 만들어줘.
+
+단, "장단점이 무엇인가요?" 같은 뻔한 질문은 제외하고, 구체적인 문제 해결 과정을 묻는 행동 기반 질문(BEI) 위주로 작성해줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">이력서 팩트체크</h3>
+                        <p class="card-desc">후보자 주장 성과의 사실 여부 검증</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">이력서에 언급된 '2023년 OO 프로젝트 대상 수상'과 'XX 캠페인 매출 200% 성장'이 사실인지 관련 기사나 보도 자료를 찾아줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 평가/팀빌딩 -->
+        <section class="category-section cat-eval" data-category="eval">
+            <div class="category-header">
+                <div class="category-icon">⭐</div>
+                <h2 class="category-title">평가/팀빌딩</h2>
+                <span class="category-count">4개 프롬프트</span>
+            </div>
+            <div class="prompts-grid">
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">평가 코멘트 초안</h3>
+                        <p class="card-desc">관찰 기록을 구조화된 평가 코멘트로</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">이 팀원(3년 차 마케터)의 지난 1년 관찰 기록이야.
+
+- 블로그 콘텐츠 12개 작성(조회수 30% 상승)
+- 회의 때 말은 없지만 핵심을 찌르는 질문을 함
+- 오타나 오류를 잘 잡아냄
+
+이 내용을 바탕으로 이 사람만의 '고유한 강점' 3가지를 키워드로 뽑고, 각 강점을 뒷받침하는 평가 코멘트 초안을 작성해줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">종합 평가 코멘트</h3>
+                        <p class="card-desc">따뜻한 톤의 500자 종합 평가</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">위 내용을 바탕으로 500자 내외의 종합 평가 코멘트를 작성해줘.
+
+단, 딱딱한 보고서 말투가 아니라, 팀장의 애정이 느껴지는 정중하고 따뜻한 톤으로 수정해줘.
+
+"당신 덕분에 우리 팀이 성장했다"라는 메시지가 잘 드러나야 해.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">팀 워크숍 프로그램</h3>
+                        <p class="card-desc">내향적 팀원을 위한 조용하지만 깊이 있는 워크숍</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">우리 팀은 내향적인 성향의 개발자와 디자이너 6명으로 구성되어 있어.
+
+억지로 몸을 쓰거나 술을 마시는 회식 말고, 서로의 강점을 발견할 수 있는 '조용하지만 깊이 있는' 2시간짜리 실내 워크숍 프로그램 3가지를 제안해줘.
+
+준비물과 진행 방법도 포함해줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">워크숍 타임테이블</h3>
+                        <p class="card-desc">2시간 워크숍 상세 진행 순서</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">'나의 사용설명서' 공유회를 메인으로 해서 2시간짜리 워크숍 큐시트(타임테이블)를 짜줘.
+
+오프닝(아이스브레이킹)부터 작성 시간, 발표 및 피드백, 마무리까지 시간 배분을 해줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 전략/분석 -->
+        <section class="category-section cat-strategy" data-category="strategy">
+            <div class="category-header">
+                <div class="category-icon">📈</div>
+                <h2 class="category-title">전략/분석</h2>
+                <span class="category-count">4개 프롬프트</span>
+            </div>
+            <div class="prompts-grid">
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">경쟁사 트렌드 분석</h3>
+                        <p class="card-desc">경쟁사 마케팅 투자 데이터 종합 분석</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">너는 10년 경력의 마케팅 전략 컨설턴트야. 우리는 식품업계 3위, 주요 타깃은 2030 세대야. 경쟁사 A, B, C의 2025년 분기별 마케팅 투자 비율이야
 
 - A사: TV 60%→40%, 디지털 40%→60%
 - B사: TV 50%→30%, 디지털 50%→70%
 - C사: TV 70%→50%, 디지털 30%→50%
 
-이 데이터를 분석해서 표로 정리해줘:
+이 데이터를 분석해서 표로 정리해줘
 1. 3개 회사 공통 트렌드
 2. 우리 회사(TV 70%, 디지털 30%)와의 차이점
 3. 2026년 예상 변화
 4. 우리가 취해야 할 액션</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
 
                 <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">프로젝트 대안 분석</h3>
-                        <p class="prompt-desc">제약 조건 하에서 대안 비교</p>
+                    <div class="card-header">
+                        <h3 class="card-title">경쟁사 동향 모니터링</h3>
+                        <p class="card-desc">실시간 경쟁사 뉴스와 시그널 탐지</p>
                     </div>
-                    <div class="prompt-content">
-                        <div class="prompt-text">프로젝트 상황:
-- 기간: 3주, 인력: 5명 (다른 업무 중)
-- 필요 작업량: 240시간 (1인당 48시간 추가)
-- 제약: 일정 연장 불가, 추가 채용 불가, 예산 500만 원
+                    <div class="card-body">
+                        <div class="prompt-text">이번 주 [경쟁사 A, B]와 관련된 주요 뉴스, 신제품 출시, 고객 리뷰 이슈를 정리해줘.
 
-지금 생각 중인 건 야근이나 일정 재협상인데, 다른 대안 5가지 제시해줘.
-
-각각 장단점, 비용, 실행 가능성 포함해줘.</div>
+특히 우리가 놓치면 안 될 '특이한 움직임(시그널)'이 있다면 별도로 강조해줘.</div>
                     </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">진입 장벽 강화 방안</h3>
+                        <p class="card-desc">경쟁사 진입에 대한 방어 전략 수립</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">경쟁사 A가 B2B 시장으로 진출하려는 움직임이 포착됐어.
+
+우리는 이미 B2B 시장 점유율 1위야.
+
+우리의 1위 자리를 지키기 위해 선제적으로 취해야 할 '방어 전략'과 경쟁사의 진입을 어렵게 만들 '진입 장벽 강화 방안'을 제안해줘.</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="card-header">
+                        <h3 class="card-title">주간 업무 자동 정리</h3>
+                        <p class="card-desc">매주 업무 내용을 일관된 양식으로 정리</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="prompt-text">앞으로 내가 매주 업무 내용을 줄 텐데, 아래 양식에 맞춰서 정리해줘.
+
+1. 이번 주 완료한 일 (성과 중심)
+2. 진행 중인 일 (진행률 %)
+3. 다음 주 계획
+4. 이슈/요청 사항
+
+[이번 주 업무 내용]</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="copy-btn">📋 프롬프트 복사하기</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 보고서/회의 -->
-        <section class="category-section active" data-category="report">
-            <div class="category-header">
-                <div class="category-icon" style="background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);">📝</div>
-                <h2 class="category-title">보고서/회의</h2>
-                <span class="category-count">2개 프롬프트</span>
-            </div>
-            <div class="prompts-grid">
-                <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">분기 성과 보고서 초안</h3>
-                        <p class="prompt-desc">핵심 성과와 전략적 의미 정리</p>
-                    </div>
-                    <div class="prompt-content">
-                        <div class="prompt-text">3분기 주요 성과를 숫자 중심으로 요약해줘.
-
-[자료 업로드 후 첨부]
-
-특히 다음 항목을 표로 정리해줘:
-- 캠페인별 ROI(전 분기 대비 증감률 포함)
-- 예산 대비 집행률
-- 목표 대비 달성률
-
-그리고 경영진에게 보고할 때 강조할 포인트 3가지와 예상 질문 3가지도 정리해줘.</div>
-                    </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
-                    </div>
-                </div>
-
-                <div class="prompt-card">
-                    <div class="prompt-header">
-                        <h3 class="prompt-title">상사 보고 전략</h3>
-                        <p class="prompt-desc">상사 성향에 맞춘 보고 방식 설계</p>
-                    </div>
-                    <div class="prompt-content">
-                        <div class="prompt-text">우리 팀의 신규 프로젝트를 상사에게 보고해야 해.
-
-상사 성향은 보수적이며, ROI 중시하고, "다른 회사는?" 이라는 질문을 자주 해.
-
-보고 내용:
-- 프로젝트명: [프로젝트명]
-- 예상 투자: [금액]
-- 예상 효과: [효과]
-
-이 상사 성향에 맞춰서:
-1. 보고서 구성 순서
-2. 강조해야 할 포인트 3가지
-3. 예상 질문 5가지와 답변 방향
-4. 피해야 할 표현
-5. 보고 오프닝 2문장</div>
-                    </div>
-                    <div class="prompt-footer">
-                        <button class="copy-btn" onclick="copyPrompt(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            복사하기
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <div class="toast" id="toast">✓ 클립보드에 복사되었습니다!</div>
-
-    <footer>
-        <p>『AI 시대의 팀장은 다르게 일합니다』 에서 발췌한 프롬프트 모음</p>
-        <p style="margin-top: 10px;">AI가 당신을 대체하지 않을 것입니다. 오히려 당신의 리더십을 더 강력하게 확장시킬 것입니다.</p>
+    <footer class="footer">
+        <p>📖 「AI 시대의 팀장」에서 발췌한 실전 프롬프트 모음</p>
+        <p style="margin-top: 10px; font-size: 0.85rem;">프롬프트를 복사하여 ChatGPT, Claude 등 AI 도구에서 바로 활용하세요</p>
     </footer>
 
-    <script>
-        // Category Navigation
-        const navBtns = document.querySelectorAll('.nav-btn');
-        const sections = document.querySelectorAll('.category-section');
+    <div class="toast" id="toast">✅ 프롬프트가 클립보드에 복사되었습니다!</div>
 
-        navBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const category = btn.dataset.category;
+    <script>
+        // Copy functionality
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const promptText = this.closest('.prompt-card').querySelector('.prompt-text').textContent;
                 
-                navBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                if (category === 'all') {
-                    sections.forEach(s => s.classList.add('active'));
-                } else {
-                    sections.forEach(s => {
-                        s.classList.toggle('active', s.dataset.category === category);
-                    });
+                try {
+                    await navigator.clipboard.writeText(promptText);
+                    
+                    // Button feedback
+                    this.textContent = '✅ 복사 완료!';
+                    this.classList.add('copied');
+                    
+                    // Toast
+                    const toast = document.getElementById('toast');
+                    toast.classList.add('show');
+                    
+                    setTimeout(() => {
+                        this.textContent = '📋 프롬프트 복사하기';
+                        this.classList.remove('copied');
+                        toast.classList.remove('show');
+                    }, 2000);
+                } catch (err) {
+                    console.error('복사 실패:', err);
                 }
             });
         });
 
-        // Copy Function
-        function copyPrompt(button) {
-            const card = button.closest('.prompt-card');
-            const text = card.querySelector('.prompt-text').textContent;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                button.classList.add('copied');
-                button.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    복사완료!
-                `;
+        // Category filter
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const category = this.dataset.category;
                 
-                showToast();
+                // Update active button
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
                 
-                setTimeout(() => {
-                    button.classList.remove('copied');
-                    button.innerHTML = `
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        복사하기
-                    `;
-                }, 2000);
+                // Filter sections
+                document.querySelectorAll('.category-section').forEach(section => {
+                    if (category === 'all' || section.dataset.category === category) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
             });
-        }
+        });
 
-        // Toast Notification
-        function showToast() {
-            const toast = document.getElementById('toast');
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
-        }
-
-        // Search Function
-        const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('.prompt-card');
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
             
-            cards.forEach(card => {
-                const title = card.querySelector('.prompt-title').textContent.toLowerCase();
-                const desc = card.querySelector('.prompt-desc').textContent.toLowerCase();
-                const text = card.querySelector('.prompt-text').textContent.toLowerCase();
+            document.querySelectorAll('.prompt-card').forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const desc = card.querySelector('.card-desc').textContent.toLowerCase();
+                const prompt = card.querySelector('.prompt-text').textContent.toLowerCase();
                 
-                const match = title.includes(query) || desc.includes(query) || text.includes(query);
-                card.style.display = match ? 'block' : 'none';
+                if (title.includes(searchTerm) || desc.includes(searchTerm) || prompt.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
             });
 
-            // Show all sections when searching
-            if (query) {
-                sections.forEach(s => s.classList.add('active'));
-                navBtns.forEach(b => b.classList.remove('active'));
-                navBtns[0].classList.add('active');
-            }
+            // Show/hide category sections based on visible cards
+            document.querySelectorAll('.category-section').forEach(section => {
+                const visibleCards = section.querySelectorAll('.prompt-card[style="display: block"], .prompt-card:not([style*="display"])');
+                let hasVisible = false;
+                visibleCards.forEach(card => {
+                    if (card.style.display !== 'none') hasVisible = true;
+                });
+                
+                if (searchTerm === '') {
+                    section.style.display = 'block';
+                    section.querySelectorAll('.prompt-card').forEach(card => card.style.display = 'block');
+                }
+            });
         });
     </script>
 </body>
