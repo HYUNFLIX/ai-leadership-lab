@@ -1,3 +1,4 @@
+/* Dark Mode (default) */
 :root {
     --primary: #1a1a2e;
     --secondary: #16213e;
@@ -8,6 +9,30 @@
     --card-bg: #0f0f23;
     --border: #2a2a4a;
     --like-color: #ff6b6b;
+    --prompt-bg: #0a0a1a;
+    --prompt-text: #c0c0c0;
+}
+
+/* Light Mode */
+[data-theme="light"] {
+    --primary: #f5f5f7;
+    --secondary: #e8e8ed;
+    --accent: #e94560;
+    --accent-light: #ff6b6b;
+    --text: #1a1a2e;
+    --text-muted: #666677;
+    --card-bg: #ffffff;
+    --border: #d0d0d8;
+    --like-color: #e94560;
+    --prompt-bg: #f0f0f5;
+    --prompt-text: #444455;
+}
+
+[data-theme="light"] .hero h1 {
+    background: linear-gradient(135deg, #1a1a2e 0%, #e94560 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 * {
@@ -333,14 +358,14 @@ body {
 }
 
 .prompt-preview {
-    background: #0a0a1a;
+    background: var(--prompt-bg);
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 12px 15px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.8rem;
     line-height: 1.6;
-    color: #a0a0a0;
+    color: var(--text-muted);
     height: 100%;
     overflow: hidden;
     display: -webkit-box;
@@ -469,14 +494,14 @@ body {
 }
 
 .modal-prompt-text {
-    background: #0a0a1a;
+    background: var(--prompt-bg);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 25px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.9rem;
     line-height: 1.9;
-    color: #c0c0c0;
+    color: var(--prompt-text);
     white-space: pre-wrap;
     word-break: keep-all;
 }
@@ -693,4 +718,44 @@ body {
     text-align: center;
     padding: 8px 0;
     animation: pulse 2s infinite;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    border-color: var(--accent);
+}
+
+[data-theme="light"] .theme-toggle {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .theme-toggle {
+        bottom: 20px;
+        left: 20px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+    }
 }

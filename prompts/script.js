@@ -5,6 +5,7 @@ let showOnlyLiked = false;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    initializeTheme();
     initializeCards();
     initializeLikes();
     initializeModal();
@@ -14,6 +15,58 @@ document.addEventListener('DOMContentLoaded', () => {
     checkUrlHash();
     updateLikedCount();
 });
+
+// Theme toggle
+function initializeTheme() {
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Set initial theme
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+    } else if (!prefersDark) {
+        document.documentElement.setAttribute('data-theme', 'light');
+        updateThemeIcon('light');
+    }
+
+    // Toggle button click
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            document.documentElement.setAttribute('data-theme', newTheme === 'dark' ? '' : newTheme);
+            if (newTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+            }
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+    }
+
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+            if (e.matches) {
+                document.documentElement.removeAttribute('data-theme');
+                updateThemeIcon('dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                updateThemeIcon('light');
+            }
+        }
+    });
+}
+
+function updateThemeIcon(theme) {
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        themeToggle.title = theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환';
+    }
+}
 
 // Initialize card IDs and previews
 function initializeCards() {
