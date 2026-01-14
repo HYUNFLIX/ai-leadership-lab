@@ -626,13 +626,14 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    /* Hero Section - More compact */
     .hero {
-        padding: 25px 15px 20px;
+        padding: 20px 12px 15px;
     }
 
     .hero-content {
         flex-direction: column;
-        gap: 15px;
+        gap: 12px;
         text-align: center;
     }
 
@@ -641,21 +642,30 @@ body {
     }
 
     .hero h1 {
-        font-size: 1.4rem;
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+
+    .hero p {
+        font-size: 0.8rem;
     }
 
     .stats {
-        gap: 20px;
+        gap: 15px;
     }
 
     .stat-number {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
 
-    /* Disable sticky nav on mobile */
+    .stat-label {
+        font-size: 0.65rem;
+    }
+
+    /* Navigation - Non-sticky, compact */
     .nav {
         position: static;
-        padding: 15px;
+        padding: 12px;
     }
 
     .nav-title {
@@ -663,52 +673,226 @@ body {
     }
 
     .category-filters {
-        gap: 8px;
+        gap: 6px;
+        justify-content: center;
     }
 
     .filter-btn {
-        padding: 8px 14px;
-        font-size: 0.8rem;
+        padding: 6px 10px;
+        font-size: 0.7rem;
+        border-radius: 15px;
     }
 
+    .filter-btn .count {
+        padding: 1px 5px;
+        font-size: 0.65rem;
+        margin-left: 3px;
+    }
+
+    /* Search - Compact */
+    .search-container {
+        margin: 15px auto;
+        padding: 0 12px;
+    }
+
+    .search-box {
+        padding: 12px 15px;
+        font-size: 0.85rem;
+        border-radius: 10px;
+    }
+
+    /* Main Content */
+    .main-content {
+        padding: 12px;
+    }
+
+    /* Category Headers - Compact */
+    .category-section {
+        margin-bottom: 35px;
+    }
+
+    .category-header {
+        gap: 10px;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+
+    .category-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+
+    .category-title {
+        font-size: 1.1rem;
+    }
+
+    .category-count {
+        padding: 3px 10px;
+        font-size: 0.7rem;
+    }
+
+    /* Cards - Compact */
     .prompts-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .prompt-card {
         height: auto;
-        min-height: 200px;
+        min-height: 150px;
     }
 
-    .category-filters {
-        justify-content: center;
+    .card-header {
+        padding: 12px 12px 8px;
+        gap: 8px;
+    }
+
+    .card-id {
+        font-size: 0.65rem;
+        margin-bottom: 2px;
+    }
+
+    .card-title {
+        font-size: 0.9rem;
+        margin-bottom: 2px;
+    }
+
+    .card-desc {
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+
+    .card-actions {
+        gap: 5px;
+    }
+
+    .action-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+        border-radius: 7px;
+    }
+
+    .card-body {
+        padding: 0 12px 12px;
+    }
+
+    .prompt-preview {
+        padding: 10px;
+        font-size: 0.7rem;
+        line-height: 1.5;
+        border-radius: 8px;
+    }
+
+    .click-hint {
+        font-size: 0.65rem;
+        padding: 5px 0;
+    }
+
+    /* Modal - Mobile Optimized */
+    .modal-overlay {
+        padding: 10px;
     }
 
     .modal {
-        max-height: 95vh;
-        margin: 10px;
+        max-height: 90vh;
+        border-radius: 15px;
     }
 
     .modal-header {
-        padding: 20px;
+        padding: 15px;
+        gap: 12px;
+    }
+
+    .modal-id {
+        font-size: 0.7rem;
+        margin-bottom: 4px;
+    }
+
+    .modal-title {
+        font-size: 1rem;
+        margin-bottom: 4px;
+    }
+
+    .modal-desc {
+        font-size: 0.8rem;
+    }
+
+    .modal-close {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+        border-radius: 8px;
     }
 
     .modal-body {
-        padding: 20px;
+        padding: 15px;
+    }
+
+    .modal-prompt-text {
+        padding: 15px;
+        font-size: 0.75rem;
+        line-height: 1.7;
+        border-radius: 10px;
     }
 
     .modal-footer {
-        padding: 15px 20px;
-        flex-wrap: wrap;
+        padding: 12px 15px;
+        gap: 8px;
+        flex-wrap: nowrap;
     }
 
     .modal-btn {
-        padding: 14px;
+        padding: 10px 8px;
+        font-size: 0.8rem;
+        border-radius: 8px;
+        gap: 5px;
+    }
+
+    .modal-btn.copy-btn {
+        flex: 1.2;
     }
 
     .modal-btn.share-btn,
     .modal-btn.like-btn {
-        flex: 1;
+        flex: 0.6;
+        padding: 10px 6px;
+    }
+
+    /* Toast - Compact */
+    .toast {
+        bottom: 70px;
+        right: 15px;
+        left: 15px;
+        padding: 12px 20px;
+        font-size: 0.85rem;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* Footer - Compact */
+    .footer {
+        padding: 30px 15px;
+        margin-top: 40px;
+    }
+
+    .footer p {
+        font-size: 0.8rem;
+    }
+
+    .keyboard-hint {
+        display: none;
+    }
+
+    /* No Results */
+    .no-results {
+        padding: 40px 15px;
+    }
+
+    .no-results h3 {
+        font-size: 1.1rem;
     }
 }
 
