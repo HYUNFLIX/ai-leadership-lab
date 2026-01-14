@@ -651,15 +651,7 @@ body {
     }
 
     .stats {
-        gap: 15px;
-    }
-
-    .stat-number {
-        font-size: 1.2rem;
-    }
-
-    .stat-label {
-        font-size: 0.65rem;
+        display: none;
     }
 
     /* Navigation - Non-sticky, compact */
