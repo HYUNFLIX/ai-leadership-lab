@@ -652,6 +652,25 @@ body {
         font-size: 1.4rem;
     }
 
+    /* Disable sticky nav on mobile */
+    .nav {
+        position: static;
+        padding: 15px;
+    }
+
+    .nav-title {
+        display: none;
+    }
+
+    .category-filters {
+        gap: 8px;
+    }
+
+    .filter-btn {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+
     .prompts-grid {
         grid-template-columns: 1fr;
     }
