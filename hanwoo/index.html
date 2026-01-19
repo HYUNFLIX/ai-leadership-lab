@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전국한우협회 | 2025년도 사업실적 보고서</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        hanwoo: {
+                            brown: '#8B4513',
+                            tan: '#D2691E',
+                            cream: '#FFF8DC',
+                            gold: '#DAA520',
+                            dark: '#2C1810',
+                            earth: '#654321',
+                            grass: '#228B22',
+                            sage: '#9DC183',
+                        }
+                    },
+                    fontFamily: {
+                        'serif': ['Noto Serif KR', 'serif'],
+                        'sans': ['Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --scroll-progress: 0%;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        
+        .font-serif-kr {
+            font-family: 'Noto Serif KR', serif;
+        }
+        
+        /* 스크롤 프로그레스 바 */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--scroll-progress);
+            height: 4px;
+            background: linear-gradient(90deg, #DAA520, #8B4513);
+            z-index: 9999;
+            transition: width 0.1s ease-out;
+        }
+        
+        /* 네비게이션 */
+        .nav-blur {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        /* 히어로 배경 패턴 */
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(218, 165, 32, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(34, 139, 34, 0.08) 0%, transparent 50%);
+        }
+        
+        /* 아코디언 애니메이션 */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .accordion-content.active {
+            max-height: 5000px;
+        }
+        
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-btn.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* 카드 호버 효과 */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(44, 24, 16, 0.15);
+        }
+        
+        /* 테이블 스타일 */
+        .data-table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .data-table th {
+            background: linear-gradient(135deg, #2C1810 0%, #654321 100%);
+            color: white;
+        }
+        
+        .data-table tbody tr:nth-child(even) {
+            background-color: rgba(218, 165, 32, 0.05);
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: rgba(218, 165, 32, 0.1);
+        }
+        
+        /* 타임라인 */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, #DAA520 0%, #8B4513 100%);
+        }
+        
+        /* 스크롤 애니메이션 */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Top 버튼 */
+        .top-btn {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 모바일 메뉴 */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        /* 배지 스타일 */
+        .badge-success {
+            background: linear-gradient(135deg, #228B22 0%, #32CD32 100%);
+        }
+        
+        .badge-warning {
+            background: linear-gradient(135deg, #DAA520 0%, #FFD700 100%);
+        }
+        
+        .badge-info {
+            background: linear-gradient(135deg, #4169E1 0%, #6495ED 100%);
+        }
+        
+        /* 숫자 카운터 효과 */
+        .stat-number {
+            background: linear-gradient(135deg, #8B4513 0%, #DAA520 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* 섹션 구분선 */
+        .section-divider {
+            height: 4px;
+            background: linear-gradient(90deg, transparent 0%, #DAA520 50%, transparent 100%);
+        }
+        
+        /* 커스텀 스크롤바 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #FFF8DC;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #DAA520, #8B4513);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #8B4513, #654321);
+        }
+
+        /* 강조 텍스트 */
+        .highlight-text {
+            background: linear-gradient(120deg, rgba(218, 165, 32, 0.2) 0%, rgba(218, 165, 32, 0.2) 100%);
+            padding: 0 4px;
+        }
+    </style>
+</head>
+<body class="bg-hanwoo-cream text-hanwoo-dark">
+    <!-- 스크롤 프로그레스 바 -->
+    <div class="scroll-progress"></div>
+    
+    <!-- 네비게이션 -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 nav-blur bg-white/90 shadow-lg transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 lg:h-20">
+                <!-- 로고 -->
+                <a href="#hero" class="flex items-center gap-3">
+                    <img src="https://www.ihanwoo.org/images/common/ihanwoo_logo_new2.png" alt="전국한우협회 로고" class="h-10 lg:h-12 w-auto">
+                    <div class="hidden sm:block">
+                        <p class="text-xs text-hanwoo-earth">2025 사업실적 보고서</p>
+                    </div>
+                </a>
+                
+                <!-- 데스크탑 메뉴 -->
+                <div class="hidden lg:flex items-center gap-1">
+                    <a href="#law" class="px-4 py-2 text-sm font-medium text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all">한우법 제정</a>
+                    <a href="#feed" class="px-4 py-2 text-sm font-medium text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all">사료가격 대응</a>
+                    <a href="#import" class="px-4 py-2 text-sm font-medium text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all">수입 대응</a>
+                    <a href="#policy" class="px-4 py-2 text-sm font-medium text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all">정책 협약</a>
+                    <a href="#compensation" class="px-4 py-2 text-sm font-medium text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all">보상제도</a>
+                    <a href="#prevention" class="px-4 py-2 text-sm font-medium text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all">방역관리</a>
+                </div>
+                
+                <!-- 모바일 메뉴 버튼 -->
+                <button id="menuBtn" class="lg:hidden p-2 rounded-lg hover:bg-hanwoo-gold/10 transition-colors">
+                    <svg class="w-6 h-6 text-hanwoo-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 모바일 메뉴 -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 bottom-0 w-80 max-w-full bg-white z-50 shadow-2xl">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-8">
+                <img src="https://www.ihanwoo.org/images/common/ihanwoo_logo_new2.png" alt="전국한우협회 로고" class="h-10 w-auto">
+                <button id="closeMenuBtn" class="p-2 hover:bg-hanwoo-gold/10 rounded-lg transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <nav class="space-y-2">
+                <a href="#law" class="block px-4 py-3 text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all font-medium">한우법 제정</a>
+                <a href="#feed" class="block px-4 py-3 text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all font-medium">사료가격 대응</a>
+                <a href="#import" class="block px-4 py-3 text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all font-medium">수입 대응</a>
+                <a href="#policy" class="block px-4 py-3 text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all font-medium">정책 협약</a>
+                <a href="#compensation" class="block px-4 py-3 text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all font-medium">보상제도</a>
+                <a href="#prevention" class="block px-4 py-3 text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all font-medium">방역관리</a>
+                <a href="#other" class="block px-4 py-3 text-hanwoo-earth hover:text-hanwoo-brown hover:bg-hanwoo-gold/10 rounded-lg transition-all font-medium">기타 활동</a>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- 모바일 메뉴 오버레이 -->
+    <div id="menuOverlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+
+    <!-- 히어로 섹션 -->
+    <section id="hero" class="relative min-h-screen flex items-center hero-pattern pt-20">
+        <div class="absolute inset-0 bg-gradient-to-br from-hanwoo-cream via-white to-hanwoo-cream/80"></div>
+        
+        <!-- 장식 요소 -->
+        <div class="absolute top-32 right-10 w-64 h-64 bg-hanwoo-gold/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 left-10 w-96 h-96 bg-hanwoo-grass/10 rounded-full blur-3xl"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="fade-in-up">
+                    <div class="inline-flex items-center gap-2 bg-hanwoo-gold/20 text-hanwoo-brown px-4 py-2 rounded-full text-sm font-medium mb-6">
+                        <span class="w-2 h-2 bg-hanwoo-gold rounded-full animate-pulse"></span>
+                        2025년도 결산감사 자료
+                    </div>
+                    
+                    <h1 class="font-serif-kr text-4xl sm:text-5xl lg:text-6xl font-bold text-hanwoo-dark leading-tight mb-6">
+                        전국한우협회<br>
+                        <span class="text-hanwoo-brown">사업실적</span> 보고서
+                    </h1>
+                    
+                    <p class="text-lg lg:text-xl text-hanwoo-earth leading-relaxed mb-8">
+                        8만 한우농가의 염원을 담아<br>
+                        <span class="highlight-text font-semibold">한우법 제정</span>과 농가 권익 보호를 위해<br>
+                        끊임없이 노력한 한 해의 기록입니다.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#law" class="inline-flex items-center gap-2 bg-gradient-to-r from-hanwoo-brown to-hanwoo-tan text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg hover:shadow-hanwoo-brown/25 transition-all">
+                            주요 성과 보기
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </a>
+                        <a href="#stats" class="inline-flex items-center gap-2 bg-white border-2 border-hanwoo-gold text-hanwoo-brown px-6 py-3 rounded-xl font-medium hover:bg-hanwoo-gold/10 transition-all">
+                            통계 현황
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 주요 성과 요약 카드 -->
+                <div class="fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="bg-white rounded-3xl shadow-xl p-6 lg:p-8 border border-hanwoo-gold/20">
+                        <h3 class="font-serif-kr text-xl font-bold text-hanwoo-dark mb-6 flex items-center gap-3">
+                            <span class="w-10 h-10 bg-hanwoo-gold/20 rounded-xl flex items-center justify-center">
+                                <svg class="w-5 h-5 text-hanwoo-gold" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            </span>
+                            2025년 핵심 성과
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4 p-4 bg-green-50 rounded-2xl border border-green-200">
+                                <span class="badge-success text-white text-xs font-bold px-3 py-1 rounded-full">달성</span>
+                                <div>
+                                    <p class="font-semibold text-hanwoo-dark">한우법 제정·공포</p>
+                                    <p class="text-sm text-hanwoo-earth mt-1">'25.7.22 제정, '26.7.23 시행 예정</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-green-50 rounded-2xl border border-green-200">
+                                <span class="badge-success text-white text-xs font-bold px-3 py-1 rounded-full">달성</span>
+                                <div>
+                                    <p class="font-semibold text-hanwoo-dark">농협 사료가격 인하</p>
+                                    <p class="text-sm text-hanwoo-earth mt-1">'25.9.15부로 kg당 13원 인하</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-green-50 rounded-2xl border border-green-200">
+                                <span class="badge-success text-white text-xs font-bold px-3 py-1 rounded-full">달성</span>
+                                <div>
+                                    <p class="font-semibold text-hanwoo-dark">한-미 관세협상 성과</p>
+                                    <p class="text-sm text-hanwoo-earth mt-1">소고기·쌀 시장 추가개방 제외</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-amber-50 rounded-2xl border border-amber-200">
+                                <span class="badge-warning text-hanwoo-dark text-xs font-bold px-3 py-1 rounded-full">진행</span>
+                                <div>
+                                    <p class="font-semibold text-hanwoo-dark">살처분 보상금 제도 개선</p>
+                                    <p class="text-sm text-hanwoo-earth mt-1">보상금 한도 80%→90% 상향 추진</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 통계 섹션 -->
+    <section id="stats" class="py-16 lg:py-24 bg-gradient-to-b from-white to-hanwoo-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <h2 class="font-serif-kr text-3xl lg:text-4xl font-bold text-hanwoo-dark mb-4">한우산업 현황</h2>
+                <p class="text-hanwoo-earth text-lg">2021~2024년 생산비 및 수익성 추이</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 fade-in-up" style="transition-delay: 0.2s;">
+                <!-- 비육우 현황 -->
+                <div class="bg-white rounded-3xl shadow-lg p-6 lg:p-8 border border-hanwoo-gold/20 card-hover">
+                    <h3 class="font-serif-kr text-xl font-bold text-hanwoo-dark mb-6 flex items-center gap-3">
+                        <span class="w-3 h-8 bg-gradient-to-b from-hanwoo-gold to-hanwoo-brown rounded-full"></span>
+                        한우 비육우 현황
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="data-table w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-3 text-left rounded-tl-xl">연도</th>
+                                    <th class="px-4 py-3 text-right">생산비<br><span class="font-normal text-xs">(100kg/원)</span></th>
+                                    <th class="px-4 py-3 text-right">거세평균단가<br><span class="font-normal text-xs">(1kg)</span></th>
+                                    <th class="px-4 py-3 text-right rounded-tr-xl">순수익<br><span class="font-normal text-xs">(1두당)</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium">2021년</td>
+                                    <td class="px-4 py-3 text-right">1,266,000</td>
+                                    <td class="px-4 py-3 text-right">22,728</td>
+                                    <td class="px-4 py-3 text-right text-green-600 font-semibold">+292,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium">2022년</td>
+                                    <td class="px-4 py-3 text-right">1,293,000</td>
+                                    <td class="px-4 py-3 text-right">20,980</td>
+                                    <td class="px-4 py-3 text-right text-red-600 font-semibold">-689,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium">2023년</td>
+                                    <td class="px-4 py-3 text-right">1,290,000</td>
+                                    <td class="px-4 py-3 text-right">18,619</td>
+                                    <td class="px-4 py-3 text-right text-red-600 font-semibold">-1,426,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium">2024년</td>
+                                    <td class="px-4 py-3 text-right">1,276,000</td>
+                                    <td class="px-4 py-3 text-right">17,963</td>
+                                    <td class="px-4 py-3 text-right text-red-600 font-semibold">-1,614,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-4 text-sm text-red-600 font-medium bg-red-50 px-4 py-2 rounded-lg">
+                        ⚠️ 3년 연속 적자 지속 (통계청 자료)
+                    </p>
+                </div>
+                
+                <!-- 번식우 현황 -->
+                <div class="bg-white rounded-3xl shadow-lg p-6 lg:p-8 border border-hanwoo-gold/20 card-hover">
+                    <h3 class="font-serif-kr text-xl font-bold text-hanwoo-dark mb-6 flex items-center gap-3">
+                        <span class="w-3 h-8 bg-gradient-to-b from-hanwoo-grass to-hanwoo-sage rounded-full"></span>
+                        한우 번식우 현황
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="data-table w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-3 text-left rounded-tl-xl">연도</th>
+                                    <th class="px-4 py-3 text-right">사육비</th>
+                                    <th class="px-4 py-3 text-right">총수입</th>
+                                    <th class="px-4 py-3 text-right rounded-tr-xl">순수익<br><span class="font-normal text-xs">(1두당)</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium">2021년</td>
+                                    <td class="px-4 py-3 text-right">2,787,000</td>
+                                    <td class="px-4 py-3 text-right">3,351,000</td>
+                                    <td class="px-4 py-3 text-right text-green-600 font-semibold">+563,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium">2022년</td>
+                                    <td class="px-4 py-3 text-right">3,119,000</td>
+                                    <td class="px-4 py-3 text-right">2,710,000</td>
+                                    <td class="px-4 py-3 text-right text-red-600 font-semibold">-409,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium">2023년</td>
+                                    <td class="px-4 py-3 text-right">3,419,680</td>
+                                    <td class="px-4 py-3 text-right">2,143,395</td>
+                                    <td class="px-4 py-3 text-right text-red-600 font-semibold">-1,276,285</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium">2024년</td>
+                                    <td class="px-4 py-3 text-right">3,356,000</td>
+                                    <td class="px-4 py-3 text-right">2,241,000</td>
+                                    <td class="px-4 py-3 text-right text-red-600 font-semibold">-1,115,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-4 text-sm text-red-600 font-medium bg-red-50 px-4 py-2 rounded-lg">
+                        ⚠️ 번식우도 3년 연속 적자 상태
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 섹션 구분선 -->
+    <div class="section-divider"></div>
+
+    <!-- 한우법 제정 섹션 -->
+    <section id="law" class="py-16 lg:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <span class="inline-block bg-hanwoo-gold/20 text-hanwoo-brown px-4 py-2 rounded-full text-sm font-medium mb-4">핵심 성과</span>
+                <h2 class="font-serif-kr text-3xl lg:text-4xl font-bold text-hanwoo-dark mb-4">한우법 제정 활동</h2>
+                <p class="text-hanwoo-earth text-lg max-w-2xl mx-auto">
+                    '22년부터 여·야당과 정책 협약을 맺고 추진한 결과,<br>
+                    <span class="font-semibold text-hanwoo-brown">'25.7.22일 제정·공포</span>되었습니다.
+                </p>
+            </div>
+            
+            <!-- 한우법 주요 내용 아코디언 -->
+            <div class="max-w-4xl mx-auto space-y-4 fade-in-up" style="transition-delay: 0.2s;">
+                <!-- 아코디언 1: 한우법 주요 내용 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="law1">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-hanwoo-gold/20 rounded-xl flex items-center justify-center text-hanwoo-gold text-xl">📜</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">한우법 주요 내용</h3>
+                                <p class="text-sm text-hanwoo-earth">탄소중립에 따른 한우산업 전환 및 지원에 관한 법률</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="law1">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="grid gap-4">
+                                <div class="bg-hanwoo-cream/50 rounded-xl p-4">
+                                    <p class="font-semibold text-hanwoo-brown mb-2">제2조 (정의)</p>
+                                    <p class="text-sm text-hanwoo-earth">"한우"란 우리나라 고유의 유전특성과 순수혈통을 유지하며 사육되어 외래종과 분명히 구분되는 특징을 지니는 것으로 대통령령으로 정하는 바에 따라 인정된 품종의 소</p>
+                                </div>
+                                <div class="bg-hanwoo-cream/50 rounded-xl p-4">
+                                    <p class="font-semibold text-hanwoo-brown mb-2">제5조 (종합계획 수립)</p>
+                                    <p class="text-sm text-hanwoo-earth">한우산업의 발전을 위하여 관계 중앙행정기관의 장과 협의하여 5년마다 한우산업의 육성 및 지원을 위한 종합계획을 수립·시행</p>
+                                </div>
+                                <div class="bg-hanwoo-cream/50 rounded-xl p-4">
+                                    <p class="font-semibold text-hanwoo-brown mb-2">제10조 (한우산업발전협의회)</p>
+                                    <p class="text-sm text-hanwoo-earth">한우수급과 관련된 중장기적 정책 및 수급상황과 환경을 고려한 적정 사육두수 규모 관리 등 심의</p>
+                                </div>
+                                <div class="bg-hanwoo-cream/50 rounded-xl p-4">
+                                    <p class="font-semibold text-hanwoo-brown mb-2">제21조 (소비촉진)</p>
+                                    <p class="text-sm text-hanwoo-earth">한우의 판매확대 및 소비촉진을 위하여 공공급식의 확대, 시장개척 및 홍보 등 필요한 시책을 수립·시행</p>
+                                </div>
+                                <div class="bg-hanwoo-cream/50 rounded-xl p-4">
+                                    <p class="font-semibold text-hanwoo-brown mb-2">제26조 (기업 참여 제한)</p>
+                                    <p class="text-sm text-hanwoo-earth">일정 규모 이상의 기업이 한우 생산업에 참여하려는 경우 농림축산식품부령에 따른 기준을 충족해야 하고, 기존 한우농가와 협력계획 등을 마련</p>
+                                </div>
+                                <div class="bg-hanwoo-cream/50 rounded-xl p-4">
+                                    <p class="font-semibold text-hanwoo-brown mb-2">제27조 (유전자 보호 및 개량)</p>
+                                    <p class="text-sm text-hanwoo-earth">국가는 한우의 유전적 다양성을 유지하고 한우의 유전적 특성이 안정적으로 후세대로 전달되도록 운영관리 및 방안 강구</p>
+                                </div>
+                                <div class="bg-hanwoo-cream/50 rounded-xl p-4">
+                                    <p class="font-semibold text-hanwoo-brown mb-2">제31조 (한우의 날)</p>
+                                    <p class="text-sm text-hanwoo-earth">한우산업을 진흥하고 한우문화를 계승·발전시키며 한우의 가치와 중요성을 알리기 위해 <span class="font-bold text-hanwoo-dark">매년 11월 1일을 한우의 날</span>로 지정</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언 2: 추진 경과 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="law2">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-hanwoo-gold/20 rounded-xl flex items-center justify-center text-hanwoo-gold text-xl">📅</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">한우법 추진 경과</h3>
+                                <p class="text-sm text-hanwoo-earth">제19대 국회부터 제22대 국회까지의 여정</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="law2">
+                        <div class="px-6 pb-6">
+                            <div class="relative pl-8 space-y-6">
+                                <div class="timeline-item relative pl-6 pb-6">
+                                    <div class="absolute left-0 top-1 w-4 h-4 bg-hanwoo-earth rounded-full border-4 border-white shadow"></div>
+                                    <p class="text-sm text-hanwoo-earth">2014.8</p>
+                                    <p class="font-medium text-hanwoo-dark">제19대 국회 법안 발의 (새정치연합 박민수의원) 및 폐기</p>
+                                </div>
+                                <div class="timeline-item relative pl-6 pb-6">
+                                    <div class="absolute left-0 top-1 w-4 h-4 bg-hanwoo-tan rounded-full border-4 border-white shadow"></div>
+                                    <p class="text-sm text-hanwoo-earth">2024.5.28</p>
+                                    <p class="font-medium text-hanwoo-dark">제21대 국회 본회의 상정 및 통과</p>
+                                </div>
+                                <div class="timeline-item relative pl-6 pb-6">
+                                    <div class="absolute left-0 top-1 w-4 h-4 bg-red-500 rounded-full border-4 border-white shadow"></div>
+                                    <p class="text-sm text-hanwoo-earth">2024.5.29</p>
+                                    <p class="font-medium text-red-600">대통령 거부권 행사로 무산</p>
+                                </div>
+                                <div class="timeline-item relative pl-6 pb-6">
+                                    <div class="absolute left-0 top-1 w-4 h-4 bg-hanwoo-gold rounded-full border-4 border-white shadow"></div>
+                                    <p class="text-sm text-hanwoo-earth">2024.6.14 ~ 2025.2.10</p>
+                                    <p class="font-medium text-hanwoo-dark">제22대 국회 입법 발의 (7명)</p>
+                                    <p class="text-xs text-hanwoo-earth mt-1">문금주, 어기구, 이원택, 송옥주, 윤준병, 임미애, 박덕흠 의원</p>
+                                </div>
+                                <div class="timeline-item relative pl-6 pb-6">
+                                    <div class="absolute left-0 top-1 w-4 h-4 bg-hanwoo-gold rounded-full border-4 border-white shadow"></div>
+                                    <p class="text-sm text-hanwoo-earth">2025.1.14</p>
+                                    <p class="font-medium text-hanwoo-dark">농해수위 한우법 공청회 참석 및 필요성 피력</p>
+                                </div>
+                                <div class="timeline-item relative pl-6 pb-6">
+                                    <div class="absolute left-0 top-1 w-4 h-4 bg-hanwoo-gold rounded-full border-4 border-white shadow"></div>
+                                    <p class="text-sm text-hanwoo-earth">2025.4.29</p>
+                                    <p class="font-medium text-hanwoo-dark">한우법 법안소위 통과</p>
+                                </div>
+                                <div class="timeline-item relative pl-6 pb-6">
+                                    <div class="absolute left-0 top-1 w-4 h-4 bg-hanwoo-gold rounded-full border-4 border-white shadow"></div>
+                                    <p class="text-sm text-hanwoo-earth">2025.6.23</p>
+                                    <p class="font-medium text-hanwoo-dark">농해수위 여야합의로 통과</p>
+                                </div>
+                                <div class="timeline-item relative pl-6 pb-6">
+                                    <div class="absolute left-0 top-1 w-4 h-4 bg-hanwoo-gold rounded-full border-4 border-white shadow"></div>
+                                    <p class="text-sm text-hanwoo-earth">2025.7.3</p>
+                                    <p class="font-medium text-hanwoo-dark">법사위 통과 및 국회 본회의 통과</p>
+                                </div>
+                                <div class="timeline-item relative pl-6">
+                                    <div class="absolute left-0 top-1 w-4 h-4 bg-green-500 rounded-full border-4 border-white shadow"></div>
+                                    <p class="text-sm text-hanwoo-earth">2025.7.22</p>
+                                    <p class="font-semibold text-green-600 text-lg">🎉 한우법 제정·공포!</p>
+                                    <p class="text-sm text-hanwoo-earth mt-1">2026.7.23 시행 예정</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언 3: 국회의원 면담 활동 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="law3">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-hanwoo-gold/20 rounded-xl flex items-center justify-center text-hanwoo-gold text-xl">🤝</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">국회의원 면담 및 정책협약</h3>
+                                <p class="text-sm text-hanwoo-earth">법 통과를 위한 적극적인 활동</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="law3">
+                        <div class="px-6 pb-6">
+                            <div class="overflow-x-auto">
+                                <table class="data-table w-full text-sm">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-4 py-3 text-left rounded-tl-xl">일시</th>
+                                            <th class="px-4 py-3 text-left rounded-tr-xl">내용</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="px-4 py-3">'25.3.7</td><td class="px-4 py-3">더불어민주당 문금주의원 간담회</td></tr>
+                                        <tr><td class="px-4 py-3">'25.3.7</td><td class="px-4 py-3">진보당 전종덕의원 간담회</td></tr>
+                                        <tr><td class="px-4 py-3">'25.3.19</td><td class="px-4 py-3">더불어민주당 이원택의원 면담</td></tr>
+                                        <tr><td class="px-4 py-3">'25.3.19</td><td class="px-4 py-3">국민의힘 서천호의원 면담</td></tr>
+                                        <tr><td class="px-4 py-3">'25.4.1</td><td class="px-4 py-3">국민의힘 정희용의원 면담</td></tr>
+                                        <tr><td class="px-4 py-3">'25.4.1</td><td class="px-4 py-3">더불어민주당 임미애의원 면담</td></tr>
+                                        <tr><td class="px-4 py-3">'25.4.22</td><td class="px-4 py-3">국민의힘 대선공약 전달 및 면담</td></tr>
+                                        <tr><td class="px-4 py-3">'25.4.24</td><td class="px-4 py-3">더불어민주당 대선공약 전달 및 면담</td></tr>
+                                        <tr class="bg-green-50"><td class="px-4 py-3 font-semibold">'25.5.15</td><td class="px-4 py-3 font-semibold text-green-700">더불어민주당-전국한우협회 정책협약식</td></tr>
+                                        <tr class="bg-green-50"><td class="px-4 py-3 font-semibold">'25.5.23</td><td class="px-4 py-3 font-semibold text-green-700">국민의힘-전국한우협회 정책협약식</td></tr>
+                                        <tr><td class="px-4 py-3">'25.6.19</td><td class="px-4 py-3">더불어민주당 농해수위의원 간담회</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언 4: 향후 계획 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="law4">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-hanwoo-gold/20 rounded-xl flex items-center justify-center text-hanwoo-gold text-xl">🎯</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">향후 추진 계획</h3>
+                                <p class="text-sm text-hanwoo-earth">한우법 하위법령 제정 및 개정 추진</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="law4">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                                <p class="font-semibold text-blue-800 mb-2">한우법 하위법령 제정 ('26.1~7월)</p>
+                                <p class="text-sm text-blue-700">한우 현장 농가들의 목소리가 담길 수 있는 시행령, 시행규칙 제정</p>
+                                <p class="text-xs text-blue-600 mt-2">* 한우법 세부법령 제정 연구용역 ('25.8~'26.1) 진행 중</p>
+                            </div>
+                            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+                                <p class="font-semibold text-amber-800 mb-2">한우법 개정 추진</p>
+                                <p class="text-sm text-amber-700">한우법 조문 중 개정이 필요한 사항을 검토해 한우농가에게 실익이 담길 수 있도록 추후 개정 추진</p>
+                            </div>
+                            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+                                <p class="font-semibold text-green-800 mb-2">한우법 시행 ('26.7.23)</p>
+                                <p class="text-sm text-green-700">제정된 한우법이 본격적으로 시행됩니다</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 섹션 구분선 -->
+    <div class="section-divider"></div>
+
+    <!-- 사료가격 대응 섹션 -->
+    <section id="feed" class="py-16 lg:py-24 bg-hanwoo-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <span class="inline-block bg-hanwoo-grass/20 text-hanwoo-grass px-4 py-2 rounded-full text-sm font-medium mb-4">생산비 안정</span>
+                <h2 class="font-serif-kr text-3xl lg:text-4xl font-bold text-hanwoo-dark mb-4">사료가격 및 도축비 대응</h2>
+                <p class="text-hanwoo-earth text-lg max-w-2xl mx-auto">
+                    정부와 국회에 인하요인을 설명하고, 항의방문, 기자회견 등<br>
+                    적극적인 활동으로 <span class="font-semibold text-green-600">kg당 13원 인하</span> 성과를 이끌어냈습니다.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto space-y-4 fade-in-up" style="transition-delay: 0.2s;">
+                <!-- 아코디언: 현황 및 문제점 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="feed1">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center text-red-500 text-xl">📈</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">농협 사료가격·도축비 인상 현황</h3>
+                                <p class="text-sm text-hanwoo-earth">'25.5월 사료가격 13원/kg 인상, '25.6월 도축비 1만원 인상</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="feed1">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+                                <p class="font-semibold text-red-800 mb-2">사료가격 인상 ('25.5.29)</p>
+                                <p class="text-sm text-red-700">전 축종 13원/kg 인상</p>
+                                <p class="text-xs text-red-600 mt-1">조정 사유: '24.4분기 대비 환율 4.0% 상승, 곡물가 2.2% 상승, 경비 상승 등</p>
+                            </div>
+                            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+                                <p class="font-semibold text-red-800 mb-2">도축비 인상 ('25.6.1)</p>
+                                <p class="text-sm text-red-700">한우 도축비 1만원 인상</p>
+                                <p class="text-xs text-red-600 mt-1">조정 사유: FTA 전기세 감면 일몰 등</p>
+                            </div>
+                            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+                                <p class="font-semibold text-amber-800 mb-2">협회 사료 vs 농협 사료 가격 비교</p>
+                                <div class="overflow-x-auto mt-2">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-amber-300">
+                                                <th class="py-2 text-left">구분</th>
+                                                <th class="py-2 text-right">육성우</th>
+                                                <th class="py-2 text-right">큰소전기</th>
+                                                <th class="py-2 text-right">큰소후기</th>
+                                                <th class="py-2 text-right">번식우</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b border-amber-200">
+                                                <td class="py-2 font-medium">협회사료</td>
+                                                <td class="py-2 text-right">11,250원</td>
+                                                <td class="py-2 text-right">11,450원</td>
+                                                <td class="py-2 text-right">11,575원</td>
+                                                <td class="py-2 text-right">11,025원</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 font-medium">농협사료</td>
+                                                <td class="py-2 text-right">13,335원</td>
+                                                <td class="py-2 text-right">13,435원</td>
+                                                <td class="py-2 text-right">13,435원</td>
+                                                <td class="py-2 text-right">13,365원</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="text-xs text-amber-700 mt-2">* 협회 OEM사료가 농협사료 대비 평균 1포당 약 2,000원 정도 저렴</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언: 협회 대응 활동 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="feed2">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-hanwoo-gold/20 rounded-xl flex items-center justify-center text-hanwoo-gold text-xl">✊</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">협회 대응 활동</h3>
+                                <p class="text-sm text-hanwoo-earth">항의방문, 기자회견, 긴급회장단회의 등</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="feed2">
+                        <div class="px-6 pb-6 space-y-3">
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <span class="text-hanwoo-gold">•</span>
+                                <div>
+                                    <p class="font-medium text-hanwoo-dark">'25.5.21</p>
+                                    <p class="text-sm text-hanwoo-earth">전국한우협회 제3차 이사회 논의</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <span class="text-hanwoo-gold">•</span>
+                                <div>
+                                    <p class="font-medium text-hanwoo-dark">'25.5.26</p>
+                                    <p class="text-sm text-hanwoo-earth">제2차 긴급회장단회의 - 농협중앙회 항의 방문, 기자회견 및 대규모 집회 결정</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                                <span class="text-amber-600">•</span>
+                                <div>
+                                    <p class="font-medium text-hanwoo-dark">'25.5.28</p>
+                                    <p class="text-sm text-hanwoo-earth">농협중앙회 항의방문 및 부회장 면담</p>
+                                    <p class="text-xs text-amber-700 mt-1">사룟값·도축비 인상 철회 촉구, 사료가격조정·발전협의체 구성 요구</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
+                                <span class="text-red-600">•</span>
+                                <div>
+                                    <p class="font-medium text-hanwoo-dark">'25.5.29</p>
+                                    <p class="text-sm text-hanwoo-earth">「사룟값·도축비 인상 철회 촉구」 농협 규탄 기자회견</p>
+                                    <p class="text-xs text-red-700 mt-1">농협중앙회 본관 앞에서 20여명 참석, 6월 항쟁 집회 선포</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <span class="text-hanwoo-gold">•</span>
+                                <div>
+                                    <p class="font-medium text-hanwoo-dark">'25.6.30</p>
+                                    <p class="text-sm text-hanwoo-earth">대통령실 농림축산비서관 면담</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <span class="text-hanwoo-gold">•</span>
+                                <div>
+                                    <p class="font-medium text-hanwoo-dark">'25.7.2</p>
+                                    <p class="text-sm text-hanwoo-earth">농림축산식품부장관 간담회</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 성과 카드 -->
+                <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl shadow-lg p-6 text-white">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-white/80 text-sm">활동 성과</p>
+                            <p class="text-2xl font-bold">농협 사료값 kg당 13원 인하 ('25.9.15)</p>
+                            <p class="text-white/80 text-sm mt-1">전국한우협회-농협사료 사료협의체 구성 및 운영 ('26.1.27 1차회의)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 섹션 구분선 -->
+    <div class="section-divider"></div>
+
+    <!-- 미국산 쇠고기 수입 대응 섹션 -->
+    <section id="import" class="py-16 lg:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <span class="inline-block bg-red-100 text-red-600 px-4 py-2 rounded-full text-sm font-medium mb-4">수입 대응</span>
+                <h2 class="font-serif-kr text-3xl lg:text-4xl font-bold text-hanwoo-dark mb-4">美 30개월령 이상 쇠고기 수입 대응</h2>
+                <p class="text-hanwoo-earth text-lg max-w-2xl mx-auto">
+                    국회·정부에 반대의견 전달, 기자회견, 결의대회 등<br>
+                    <span class="font-semibold text-green-600">한-미 관세협상에서 소고기·쌀 시장 추가개방 제외</span> 성과 달성
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto space-y-4 fade-in-up" style="transition-delay: 0.2s;">
+                <!-- 아코디언: 배경 및 현황 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="import1">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center text-red-500 text-xl">🇺🇸</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">배경 및 현황</h3>
+                                <p class="text-sm text-hanwoo-earth">美 트럼프 행정부의 30개월령 수입제한 철폐 요구</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="import1">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+                                <p class="font-semibold text-red-800 mb-2">미국의 요구사항</p>
+                                <ul class="text-sm text-red-700 space-y-1">
+                                    <li>• 30개월 이상 포함, 월령 관계없이 육포·소시지 등 수입 금지 철폐 요구</li>
+                                    <li>• 유전자 변형농산물(GMO) 규제 완화</li>
+                                    <li>• 한국의 비관세장벽으로 지적</li>
+                                </ul>
+                            </div>
+                            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+                                <p class="font-semibold text-amber-800 mb-2">한-미 관세협상 타임라인</p>
+                                <div class="text-sm text-amber-700 space-y-2 mt-2">
+                                    <p>• '25.1.20 - 미국 트럼프 행정부 시작</p>
+                                    <p>• '25.4.2 - 한국 상호관세 25% 부과 및 유예</p>
+                                    <p>• '25.4~5월 - 한미 1~2차 실무 관세 기술협의</p>
+                                    <p>• '25.6월 - 3차 관세 기술협의</p>
+                                    <p>• '25.8.1 - 관세 협상 시한</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언: 협회 입장 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="import2">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-hanwoo-gold/20 rounded-xl flex items-center justify-center text-hanwoo-gold text-xl">📢</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">협회 입장</h3>
+                                <p class="text-sm text-hanwoo-earth">농축산물 시장 개방 카드 검토 반대</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="import2">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-hanwoo-cream rounded-xl p-4">
+                                <p class="font-semibold text-hanwoo-brown mb-2">30개월령 제한 철폐 시 우려사항</p>
+                                <ul class="text-sm text-hanwoo-earth space-y-2">
+                                    <li>• 전미육류수출협회 보고서: 월령 제한 철폐 시 <span class="font-bold">1,540억원~2,450억원</span> 추가수익 예상</li>
+                                    <li>• 가공식품 완전 개방: 햄버거 패티, 소시지, 육포 등</li>
+                                    <li>• BSE 발생 5개국(캐나다, 네덜란드, 덴마크, 프랑스, 아일랜드)도 철폐 요구 예상</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+                                <p class="font-semibold text-red-800 mb-2">현재 한우농가 상황</p>
+                                <ul class="text-sm text-red-700 space-y-1">
+                                    <li>• 1두당 161만원 적자 (3년 적자 지속)</li>
+                                    <li>• 우리나라는 이미 미국 소고기 수입 1위국</li>
+                                    <li>• '26년 미국 소고기 관세 철폐로 수입량 증가 예상</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언: 활동 내역 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="import3">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-hanwoo-gold/20 rounded-xl flex items-center justify-center text-hanwoo-gold text-xl">✊</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">협회 활동 내역</h3>
+                                <p class="text-sm text-hanwoo-earth">기자회견, 결의대회, 피켓 시위 등</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="import3">
+                        <div class="px-6 pb-6 space-y-3">
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <span class="text-hanwoo-gold">•</span>
+                                <div>
+                                    <p class="font-medium text-hanwoo-dark">'25.4~7월</p>
+                                    <p class="text-sm text-hanwoo-earth">국회·정부 활동: 농해수위 의원들 면담, 30개월령 수입제한 완화 반대 요구</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                                <span class="text-amber-600">•</span>
+                                <div>
+                                    <p class="font-medium text-hanwoo-dark">'25.6.30</p>
+                                    <p class="text-sm text-hanwoo-earth">한-미 관세 협의 공청회 참석 및 피켓 시위</p>
+                                    <p class="text-xs text-amber-700">서울 중구 포스트타워 10층</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
+                                <span class="text-red-600">•</span>
+                                <div>
+                                    <p class="font-medium text-hanwoo-dark">'25.7.18</p>
+                                    <p class="text-sm text-hanwoo-earth">한-미 상호관세 협상 농축산물 개방 반대 전국농축산인 기자회견</p>
+                                    <p class="text-xs text-red-700">용산 대통령실 앞, 약 50명 참석</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
+                                <span class="text-red-600">•</span>
+                                <div>
+                                    <p class="font-medium text-hanwoo-dark">'25.7.28</p>
+                                    <p class="text-sm text-hanwoo-earth">전국 농축산인 결의대회</p>
+                                    <p class="text-xs text-red-700">용산 대통령실 앞, 1,000명 이상 참석 (전국한우협회 250명)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
+                                <span class="text-red-600">•</span>
+                                <div>
+                                    <p class="font-medium text-hanwoo-dark">'25.7.30</p>
+                                    <p class="text-sm text-hanwoo-earth">"30개월령 이상 쇠고기 수입 개방 반대" 전국 한우농가 기자회견</p>
+                                    <p class="text-xs text-red-700">주한미국대사관 앞, 약 50명 참석</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 성과 카드 -->
+                <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl shadow-lg p-6 text-white">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-white/80 text-sm">활동 성과 ('25.7.31)</p>
+                            <p class="text-2xl font-bold">한-미 관세협상에서 소고기·쌀 시장 추가개방 제외!</p>
+                            <p class="text-white/80 text-sm mt-1">언론 인터뷰 등 100회 이상 노출</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 섹션 구분선 -->
+    <div class="section-divider"></div>
+
+    <!-- 정책 협약 섹션 -->
+    <section id="policy" class="py-16 lg:py-24 bg-hanwoo-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <span class="inline-block bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-medium mb-4">정책 활동</span>
+                <h2 class="font-serif-kr text-3xl lg:text-4xl font-bold text-hanwoo-dark mb-4">제21대 대선후보 공약 요구 및 정책협약</h2>
+                <p class="text-hanwoo-earth text-lg max-w-2xl mx-auto">
+                    '25.6.3 제21대 대통령선거를 앞두고<br>
+                    여·야 양당과 정책협약을 추진했습니다.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto space-y-4 fade-in-up" style="transition-delay: 0.2s;">
+                <!-- 아코디언: 공약 요구사항 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="policy1">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-500 text-xl">📋</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">주요 공약 요구사항</h3>
+                                <p class="text-sm text-hanwoo-earth">한우농가를 위한 4대 핵심 요구</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="policy1">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-hanwoo-gold/10 rounded-xl p-4 border border-hanwoo-gold/30">
+                                <p class="font-semibold text-hanwoo-brown mb-2">1. 한우법 제정</p>
+                                <p class="text-sm text-hanwoo-earth">구체적이고 재정적 지원이 되는 한우법 제정 요구 (통합법 발의 및 심의)</p>
+                            </div>
+                            <div class="bg-hanwoo-gold/10 rounded-xl p-4 border border-hanwoo-gold/30">
+                                <p class="font-semibold text-hanwoo-brown mb-2">2. 주요 가축전염병의 국가 책임방역 강화</p>
+                                <ul class="text-sm text-hanwoo-earth space-y-1 mt-2">
+                                    <li>• 50두 이상 농가도 1종 및 고위험 전염병 백신비 지원 (50% → 전액)</li>
+                                    <li>• 살처분 보상 한도 확대 (80% → 100% 상향)</li>
+                                    <li>• 백신 접종 부작용 피해 보상 확대 및 접수기간 확대 (14일 → 28일)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-hanwoo-gold/10 rounded-xl p-4 border border-hanwoo-gold/30">
+                                <p class="font-semibold text-hanwoo-brown mb-2">3. 농사용 전기료 갑 통폐합 지원</p>
+                                <ul class="text-sm text-hanwoo-earth space-y-1 mt-2">
+                                    <li>• 농사용 전기 통폐합 (갑·을 → 갑)</li>
+                                    <li>• 농사용 전기 범위 확대 (도축·육가공 등 산업용 → 농사용)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-hanwoo-gold/10 rounded-xl p-4 border border-hanwoo-gold/30">
+                                <p class="font-semibold text-hanwoo-brown mb-2">4. 사료안정기금 마련</p>
+                                <ul class="text-sm text-hanwoo-earth space-y-1 mt-2">
+                                    <li>• 기금 도입을 위한 법적근거 마련</li>
+                                    <li>• 재원 마련을 위한 기금 조성 및 조직 설치</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 정책협약 카드 -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-blue-50 rounded-2xl p-6 border border-blue-200 card-hover">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white font-bold">민주</div>
+                            <div>
+                                <p class="font-semibold text-blue-800">더불어민주당</p>
+                                <p class="text-sm text-blue-600">정책 협약식</p>
+                            </div>
+                        </div>
+                        <p class="text-blue-700 font-medium">'25.5.15 진행</p>
+                    </div>
+                    <div class="bg-red-50 rounded-2xl p-6 border border-red-200 card-hover">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center text-white font-bold">국힘</div>
+                            <div>
+                                <p class="font-semibold text-red-800">국민의힘</p>
+                                <p class="text-sm text-red-600">정책 협약식</p>
+                            </div>
+                        </div>
+                        <p class="text-red-700 font-medium">'25.5.23 진행</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 섹션 구분선 -->
+    <div class="section-divider"></div>
+
+    <!-- 보상제도 개선 섹션 -->
+    <section id="compensation" class="py-16 lg:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <span class="inline-block bg-purple-100 text-purple-600 px-4 py-2 rounded-full text-sm font-medium mb-4">제도 개선</span>
+                <h2 class="font-serif-kr text-3xl lg:text-4xl font-bold text-hanwoo-dark mb-4">살처분 보상금 및 각종 제도 개선</h2>
+                <p class="text-hanwoo-earth text-lg max-w-2xl mx-auto">
+                    살처분 보상금 지급 기준 및 제도 개선,<br>
+                    FTA 피해보전 특별법 연장 등을 추진했습니다.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto space-y-4 fade-in-up" style="transition-delay: 0.2s;">
+                <!-- 아코디언: 살처분 보상금 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="comp1">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-500 text-xl">💰</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">살처분 보상금 제도 개선</h3>
+                                <p class="text-sm text-hanwoo-earth">보상금 한도 상향 및 감액기준 완화</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="comp1">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+                                <p class="font-semibold text-red-800 mb-2">현행 문제점</p>
+                                <ul class="text-sm text-red-700 space-y-1">
+                                    <li>• '25.3월 전남 영암·무안 구제역 발생 시 감액 기준 과다 적용</li>
+                                    <li>• 발생두수 3두인 농가: 살처분 55두 시행 후 35% 감액, 45%만 지급</li>
+                                    <li>• 방역 미준수 3건에 과태료 3백만원 별도 부과 (이중 처벌)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+                                <p class="font-semibold text-green-800 mb-2">성과 (가축전염병예방법령 개정)</p>
+                                <ul class="text-sm text-green-700 space-y-2">
+                                    <li>✅ 보상금 한도 상향: <span class="font-bold">80% → 90%</span></li>
+                                    <li>✅ 최초 신고 보상금 한도: <span class="font-bold">100% 적용</span></li>
+                                    <li>✅ 감액 보상금 경감 비율 상향: <span class="font-bold">10% → 15%</span></li>
+                                    <li>✅ 럼피스킨 2종 하향: 농해수위 법안소위 통과</li>
+                                </ul>
+                                <p class="text-xs text-green-600 mt-2">* '26년 상반기 내 개정 전망</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언: FTA 피해보전 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="comp2">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-500 text-xl">🌐</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">FTA 피해보전 특별법 일몰 연장</h3>
+                                <p class="text-sm text-hanwoo-earth">'25.12월 일몰 → 2030년까지 연장 추진</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="comp2">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-hanwoo-cream rounded-xl p-4">
+                                <p class="font-semibold text-hanwoo-brown mb-2">현황</p>
+                                <ul class="text-sm text-hanwoo-earth space-y-1">
+                                    <li>• FTA피해보전직불금은 한·중 FTA 발효일('15.12)부터 10년간 시행</li>
+                                    <li>• '25.12월 일몰 예정</li>
+                                    <li>• '24년 지급액: 한우 53,119원/마리, 한우송아지 104,450원/마리</li>
+                                </ul>
+                            </div>
+                            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+                                <p class="font-semibold text-amber-800 mb-2">연장 필요성</p>
+                                <p class="text-sm text-amber-700">'25년 이후에도 미국('26년), 호주('28년), 캐나다('29년), 뉴질랜드('29년) 등 지속적으로 관세철폐가 이뤄지고 있어 농가보호 필요</p>
+                            </div>
+                            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+                                <p class="font-semibold text-green-800 mb-2">성과</p>
+                                <p class="text-sm text-green-700">일몰 연장법안 발의(5건) 및 <span class="font-bold">법안소위 통과('26.1.13)</span></p>
+                                <p class="text-xs text-green-600 mt-1">* 10년간 → 15년간 시행, ~2030년까지 일몰 연장(안)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언: 송아지생산안정제 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="comp3">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-hanwoo-gold/20 rounded-xl flex items-center justify-center text-hanwoo-gold text-xl">🐄</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">송아지생산안정제 개편</h3>
+                                <p class="text-sm text-hanwoo-earth">발동기준 변경 협의안 도출</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="comp3">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="overflow-x-auto">
+                                <table class="data-table w-full text-sm">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-4 py-3 text-left rounded-tl-xl">구분</th>
+                                            <th class="px-4 py-3 text-center">현행</th>
+                                            <th class="px-4 py-3 text-center">변경안</th>
+                                            <th class="px-4 py-3 text-center rounded-tr-xl">현행대비</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="px-4 py-3 font-medium">기준가격</td>
+                                            <td class="px-4 py-3 text-center">185만원 이하</td>
+                                            <td class="px-4 py-3 text-center font-semibold text-green-600">270만원 이하</td>
+                                            <td class="px-4 py-3 text-center text-green-600">46.0%↑</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 font-medium">가임암소수</td>
+                                            <td class="px-4 py-3 text-center">110만마리 미만</td>
+                                            <td class="px-4 py-3 text-center font-semibold text-green-600">155만마리 미만</td>
+                                            <td class="px-4 py-3 text-center text-green-600">40.9%↑</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                                <p class="font-semibold text-blue-800 mb-2">향후 계획</p>
+                                <ul class="text-sm text-blue-700 space-y-1">
+                                    <li>• 축산발전심의위원회 상정·심의 ('26년 상반기)</li>
+                                    <li>• 사업시행지침 및 운영요령 개정 ('26년 상반기)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 섹션 구분선 -->
+    <div class="section-divider"></div>
+
+    <!-- 방역관리 섹션 -->
+    <section id="prevention" class="py-16 lg:py-24 bg-hanwoo-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <span class="inline-block bg-green-100 text-green-600 px-4 py-2 rounded-full text-sm font-medium mb-4">방역관리</span>
+                <h2 class="font-serif-kr text-3xl lg:text-4xl font-bold text-hanwoo-dark mb-4">2026년 럼피스킨 방역관리 계획</h2>
+                <p class="text-hanwoo-earth text-lg max-w-2xl mx-auto">
+                    민관학 협업을 통해 조기 안정화 및 추가 발생 최소화,<br>
+                    가축질병 관리 등급 하향(1종→2종) 추진
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto space-y-4 fade-in-up" style="transition-delay: 0.2s;">
+                <!-- 아코디언: 현황 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="prev1">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-500 text-xl">🦠</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">럼피스킨 현황 및 추진 실적</h3>
+                                <p class="text-sm text-hanwoo-earth">'23년 첫 발생 이후 '25년 비발생 달성</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="prev1">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="grid sm:grid-cols-3 gap-4">
+                                <div class="bg-red-50 rounded-xl p-4 text-center">
+                                    <p class="text-2xl font-bold text-red-600">107건</p>
+                                    <p class="text-sm text-red-700">2023년 발생</p>
+                                    <p class="text-xs text-red-600">('23.10.19~11.20)</p>
+                                </div>
+                                <div class="bg-amber-50 rounded-xl p-4 text-center">
+                                    <p class="text-2xl font-bold text-amber-600">24건</p>
+                                    <p class="text-sm text-amber-700">2024년 발생</p>
+                                    <p class="text-xs text-amber-600">('24.8.12~12.23)</p>
+                                </div>
+                                <div class="bg-green-50 rounded-xl p-4 text-center">
+                                    <p class="text-2xl font-bold text-green-600">0건</p>
+                                    <p class="text-sm text-green-700">2025년 발생</p>
+                                    <p class="text-xs text-green-600">(비발생)</p>
+                                </div>
+                            </div>
+                            <div class="bg-hanwoo-cream rounded-xl p-4">
+                                <p class="font-semibold text-hanwoo-brown mb-2">추진 실적</p>
+                                <ul class="text-sm text-hanwoo-earth space-y-1">
+                                    <li>• (백신 접종) 전국 일제 접종 약 3,801천두 (4월)</li>
+                                    <li>• (위험 관리) 매개곤충 예찰·방제 실시 ('25.5월~11월)</li>
+                                    <li>• (제도 개선) 관리 등급 하향 추진 (1종→2종)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언: 2026년 방역관리 계획 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="prev2">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-500 text-xl">📋</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">2026년 방역관리 추진 방안</h3>
+                                <p class="text-sm text-hanwoo-earth">백신접종 전략 및 향후 계획</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="prev2">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                                <p class="font-semibold text-blue-800 mb-2">백신접종 전략</p>
+                                <ul class="text-sm text-blue-700 space-y-2">
+                                    <li><span class="font-medium">(기본전략)</span> 전국 단위 농가 자율접종 전환, 서해안 등 위험도 높은 40개 시군은 접종 유지</li>
+                                    <li><span class="font-medium">(고위험지역)</span> 50두 미만 소규모 농가 의무 백신접종(접종지원 포함)</li>
+                                    <li><span class="font-medium">(그외 전국)</span> 희망 농가에 한해 무상공급, 자가접종 원칙</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+                                <p class="font-semibold text-green-800 mb-2">향후 추진 계획</p>
+                                <ul class="text-sm text-green-700 space-y-1">
+                                    <li>• 럼피스킨 가축전염병 등급 조정 (1종 → 2종) 대응 ('26년 상반기)</li>
+                                    <li>• 「럼피스킨 방역실시요령」(고시) 제정 ('26년 상반기)</li>
+                                    <li>• '26년 비발생 유지 시 '27년 자체 청정화 선포 가능</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 섹션 구분선 -->
+    <div class="section-divider"></div>
+
+    <!-- 기타 활동 섹션 -->
+    <section id="other" class="py-16 lg:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <span class="inline-block bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium mb-4">기타 활동</span>
+                <h2 class="font-serif-kr text-3xl lg:text-4xl font-bold text-hanwoo-dark mb-4">기타 주요 활동</h2>
+                <p class="text-hanwoo-earth text-lg max-w-2xl mx-auto">
+                    농가 권익 보호를 위한 다양한 활동을 진행했습니다.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto space-y-4 fade-in-up" style="transition-delay: 0.2s;">
+                <!-- 아코디언: 예산 건의 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="other1">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-500 text-xl">💵</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">국회 예산 증액 건의</h3>
+                                <p class="text-sm text-hanwoo-earth">축산물직거래판매장 이차보전 예산 증액 추진</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="other1">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-hanwoo-cream rounded-xl p-4">
+                                <p class="text-sm text-hanwoo-earth">유통구조 개선 및 산지가격과 연동하는 한우직거래판매장 지원을 위한 42백만원 반영 요구</p>
+                            </div>
+                            <div class="text-sm text-hanwoo-earth">
+                                <p class="font-medium mb-2">경과:</p>
+                                <ul class="space-y-1">
+                                    <li>• '25.11.12 국회 예산 증액 요구 의원실 면담</li>
+                                    <li>• '25년 농해수위 미반영으로 브랜드 경영체 사업 기준 완화 등 건의</li>
+                                    <li>• '26년 추경 시 예산 건의 및 '27년 정부예산 반영 지속 요구 예정</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언: 자연재해 대응 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="other2">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-500 text-xl">🌊</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">자연재해 대응 자연재난 복구비 현실화</h3>
+                                <p class="text-sm text-hanwoo-earth">가축입식비 지원 단가 인상 요구</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="other2">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+                                <p class="font-semibold text-red-800 mb-2">현행 문제점</p>
+                                <p class="text-sm text-red-700">현행 송아지(6~7개월) 입식비 168만원은 시세 대비 현저히 낮아 영농재개가 어려움</p>
+                            </div>
+                            <div class="bg-hanwoo-cream rounded-xl p-4">
+                                <p class="font-semibold text-hanwoo-brown mb-2">협회 요구사항</p>
+                                <ul class="text-sm text-hanwoo-earth space-y-1">
+                                    <li>• 송아지 실거래가(7~8개월령)를 반영한 가축입식비 지원 단가 인상</li>
+                                    <li>• 직전 3개월 평균가격의 80% 지원 건의 (250만원 이상으로 상향)</li>
+                                    <li>• 자기 부담률 완화 (지원 70%, 융자 20%, 자부담 10%)</li>
+                                    <li>• 축산 사료·조사료·톱밥 및 기자재 등 재난복구 항목 포함</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언: 가축분뇨 전자관리대장 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="other3">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-500 text-xl">📱</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">가축분뇨 전자관리대장 시범사업 대응</h3>
+                                <p class="text-sm text-hanwoo-earth">시범 사업 지연 및 계분부터 우선 적용 계획</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="other3">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-hanwoo-cream rounded-xl p-4">
+                                <p class="font-semibold text-hanwoo-brown mb-2">협회 입장</p>
+                                <ul class="text-sm text-hanwoo-earth space-y-1">
+                                    <li>• 한우농가 대부분 고령화 (평균 연령 68세)</li>
+                                    <li>• 전체 농가 중 위탁 처리 농가는 10% 미만</li>
+                                    <li>• 전자관리대장 입력이 어려운 상황</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+                                <p class="font-semibold text-green-800 mb-2">성과</p>
+                                <p class="text-sm text-green-700">시범사업 지연 / 계분부터 우선 적용 계획</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 아코디언: 경축순환 활성화 -->
+                <div class="bg-white rounded-2xl shadow-lg border border-hanwoo-gold/20 overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 flex items-center justify-between text-left hover:bg-hanwoo-gold/5 transition-colors" data-accordion="other4">
+                        <div class="flex items-center gap-4">
+                            <span class="w-12 h-12 bg-hanwoo-grass/20 rounded-xl flex items-center justify-center text-hanwoo-grass text-xl">♻️</span>
+                            <div>
+                                <h3 class="font-semibold text-hanwoo-dark text-lg">경축순환 활성화 방안</h3>
+                                <p class="text-sm text-hanwoo-earth">지속가능한 축산업을 위한 활성화 방안 추진</p>
+                            </div>
+                        </div>
+                        <svg class="accordion-icon w-6 h-6 text-hanwoo-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content" id="other4">
+                        <div class="px-6 pb-6 space-y-4">
+                            <div class="bg-hanwoo-cream rounded-xl p-4">
+                                <p class="font-semibold text-hanwoo-brown mb-2">주요 추진 방안</p>
+                                <ul class="text-sm text-hanwoo-earth space-y-2">
+                                    <li><span class="font-medium">(품질 개선)</span> 품질 표시 기준 및 퇴액비 성분 표시, 펠렛 퇴비화 시설 지원</li>
+                                    <li><span class="font-medium">(환경 부하 개선)</span> 토양 비옥도 정보 제공, 경축순환 직불금 마련</li>
+                                    <li><span class="font-medium">(처리 지원 강화)</span> 공동자원화시설 국비 지원 상향 (40→70%)</li>
+                                    <li><span class="font-medium">(거버넌스 강화)</span> 지역단위 경축순환 협의체 구성·운영 ('26~)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="bg-hanwoo-dark text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="https://www.ihanwoo.org/images/common/ihanwoo_logo_new2.png" alt="전국한우협회 로고" class="h-12 w-auto brightness-0 invert">
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        8만 한우농가의 권익 보호와<br>
+                        한우산업 발전을 위해 노력합니다.
+                    </p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-400">2025년도 결산감사 자료 · 사업보고서</p>
+                    <p class="text-sm text-gray-500 mt-2">© 2025 전국한우협회. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Top 버튼 -->
+    <button id="topBtn" class="top-btn fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-hanwoo-gold to-hanwoo-brown text-white rounded-full shadow-lg hover:shadow-xl transition-all z-40 flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+        </svg>
+    </button>
+
+    <script>
+        // 스크롤 프로그레스 바
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            document.documentElement.style.setProperty('--scroll-progress', progress + '%');
+        });
+
+        // Top 버튼 표시/숨김
+        const topBtn = document.getElementById('topBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                topBtn.classList.add('visible');
+            } else {
+                topBtn.classList.remove('visible');
+            }
+        });
+
+        topBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 모바일 메뉴
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        function openMenu() {
+            mobileMenu.classList.add('active');
+            menuOverlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        menuBtn.addEventListener('click', openMenu);
+        closeMenuBtn.addEventListener('click', closeMenu);
+        menuOverlay.addEventListener('click', closeMenu);
+
+        // 모바일 메뉴 링크 클릭 시 메뉴 닫기
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // 아코디언
+        document.querySelectorAll('.accordion-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const accordionId = this.getAttribute('data-accordion');
+                const content = document.getElementById(accordionId);
+                const isActive = this.classList.contains('active');
+
+                // 모든 아코디언 닫기 (같은 섹션 내에서만)
+                const section = this.closest('section');
+                if (section) {
+                    section.querySelectorAll('.accordion-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    section.querySelectorAll('.accordion-content').forEach(c => {
+                        c.classList.remove('active');
+                    });
+                }
+
+                // 클릭한 아코디언 토글
+                if (!isActive) {
+                    this.classList.add('active');
+                    content.classList.add('active');
+                }
+            });
+        });
+
+        // 스크롤 애니메이션
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 네비게이션 스크롤 시 스타일 변경
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
+</html>
