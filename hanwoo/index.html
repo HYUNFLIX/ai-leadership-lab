@@ -30,193 +30,7 @@
             }
         }
     </script>
-    <style>
-        :root {
-            --scroll-progress: 0%;
-        }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-        }
-        
-        .font-serif-kr {
-            font-family: 'Noto Serif KR', serif;
-        }
-        
-        /* 스크롤 프로그레스 바 */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: var(--scroll-progress);
-            height: 4px;
-            background: linear-gradient(90deg, #DAA520, #8B4513);
-            z-index: 9999;
-            transition: width 0.1s ease-out;
-        }
-        
-        /* 네비게이션 */
-        .nav-blur {
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-        
-        /* 히어로 배경 패턴 */
-        .hero-pattern {
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(218, 165, 32, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(34, 139, 34, 0.08) 0%, transparent 50%);
-        }
-        
-        /* 아코디언 애니메이션 */
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .accordion-content.active {
-            max-height: 5000px;
-        }
-        
-        .accordion-icon {
-            transition: transform 0.3s ease;
-        }
-        
-        .accordion-btn.active .accordion-icon {
-            transform: rotate(180deg);
-        }
-        
-        /* 카드 호버 효과 */
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(44, 24, 16, 0.15);
-        }
-        
-        /* 테이블 스타일 */
-        .data-table {
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-        
-        .data-table th {
-            background: linear-gradient(135deg, #2C1810 0%, #654321 100%);
-            color: white;
-        }
-        
-        .data-table tbody tr:nth-child(even) {
-            background-color: rgba(218, 165, 32, 0.05);
-        }
-        
-        .data-table tbody tr:hover {
-            background-color: rgba(218, 165, 32, 0.1);
-        }
-        
-        /* 타임라인 */
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 3px;
-            height: 100%;
-            background: linear-gradient(180deg, #DAA520 0%, #8B4513 100%);
-        }
-        
-        /* 스크롤 애니메이션 */
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .fade-in-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Top 버튼 */
-        .top-btn {
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .top-btn.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        /* 모바일 메뉴 */
-        .mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-        
-        /* 배지 스타일 */
-        .badge-success {
-            background: linear-gradient(135deg, #228B22 0%, #32CD32 100%);
-        }
-        
-        .badge-warning {
-            background: linear-gradient(135deg, #DAA520 0%, #FFD700 100%);
-        }
-        
-        .badge-info {
-            background: linear-gradient(135deg, #4169E1 0%, #6495ED 100%);
-        }
-        
-        /* 숫자 카운터 효과 */
-        .stat-number {
-            background: linear-gradient(135deg, #8B4513 0%, #DAA520 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* 섹션 구분선 */
-        .section-divider {
-            height: 4px;
-            background: linear-gradient(90deg, transparent 0%, #DAA520 50%, transparent 100%);
-        }
-        
-        /* 커스텀 스크롤바 */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #FFF8DC;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #DAA520, #8B4513);
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #8B4513, #654321);
-        }
-
-        /* 강조 텍스트 */
-        .highlight-text {
-            background: linear-gradient(120deg, rgba(218, 165, 32, 0.2) 0%, rgba(218, 165, 32, 0.2) 100%);
-            padding: 0 4px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-hanwoo-cream text-hanwoo-dark">
     <!-- 스크롤 프로그레스 바 -->
@@ -279,6 +93,118 @@
     
     <!-- 모바일 메뉴 오버레이 -->
     <div id="menuOverlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+
+    <!-- 접근성 툴바 -->
+    <div id="accessibilityToolbar" class="fixed top-20 right-4 z-40 flex flex-col gap-2">
+        <!-- 글꼴 크기 조절 -->
+        <div class="accessibility-panel bg-white rounded-2xl shadow-lg p-3 border-2 border-hanwoo-gold/30">
+            <p class="text-xs font-bold text-hanwoo-dark mb-2 text-center">글자 크기</p>
+            <div class="flex gap-1">
+                <button id="fontSmall" class="font-size-btn w-10 h-10 rounded-xl bg-hanwoo-cream hover:bg-hanwoo-gold/30 text-hanwoo-dark font-bold transition-all" title="작게">가</button>
+                <button id="fontMedium" class="font-size-btn w-10 h-10 rounded-xl bg-hanwoo-gold/50 hover:bg-hanwoo-gold/30 text-hanwoo-dark font-bold text-lg transition-all active" title="보통">가</button>
+                <button id="fontLarge" class="font-size-btn w-10 h-10 rounded-xl bg-hanwoo-cream hover:bg-hanwoo-gold/30 text-hanwoo-dark font-bold text-xl transition-all" title="크게">가</button>
+            </div>
+        </div>
+
+        <!-- 고대비 모드 -->
+        <button id="contrastToggle" class="accessibility-panel bg-white rounded-2xl shadow-lg p-3 border-2 border-hanwoo-gold/30 hover:bg-hanwoo-gold/10 transition-all flex items-center gap-2" title="고대비 모드">
+            <span class="w-8 h-8 rounded-xl bg-hanwoo-dark text-white flex items-center justify-center text-sm">흑</span>
+            <span class="text-xs font-bold text-hanwoo-dark">고대비</span>
+        </button>
+
+        <!-- 음성으로 듣기 -->
+        <button id="ttsToggle" class="accessibility-panel bg-white rounded-2xl shadow-lg p-3 border-2 border-hanwoo-gold/30 hover:bg-hanwoo-gold/10 transition-all flex items-center gap-2" title="음성으로 듣기">
+            <span class="w-8 h-8 rounded-xl bg-hanwoo-grass text-white flex items-center justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                </svg>
+            </span>
+            <span class="text-xs font-bold text-hanwoo-dark">음성</span>
+        </button>
+
+        <!-- 모두 펼치기 -->
+        <button id="expandAll" class="accessibility-panel bg-white rounded-2xl shadow-lg p-3 border-2 border-hanwoo-gold/30 hover:bg-hanwoo-gold/10 transition-all flex items-center gap-2" title="모든 내용 펼치기">
+            <span class="w-8 h-8 rounded-xl bg-hanwoo-tan text-white flex items-center justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                </svg>
+            </span>
+            <span class="text-xs font-bold text-hanwoo-dark">펼치기</span>
+        </button>
+
+        <!-- 인쇄하기 -->
+        <button id="printBtn" class="accessibility-panel bg-white rounded-2xl shadow-lg p-3 border-2 border-hanwoo-gold/30 hover:bg-hanwoo-gold/10 transition-all flex items-center gap-2" title="인쇄하기">
+            <span class="w-8 h-8 rounded-xl bg-blue-500 text-white flex items-center justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                </svg>
+            </span>
+            <span class="text-xs font-bold text-hanwoo-dark">인쇄</span>
+        </button>
+    </div>
+
+    <!-- 플로팅 목차 (왼쪽) -->
+    <div id="floatingToc" class="floating-toc fixed left-4 top-1/2 -translate-y-1/2 z-40 hidden lg:block">
+        <div class="bg-white rounded-2xl shadow-lg p-4 border-2 border-hanwoo-gold/30">
+            <p class="text-sm font-bold text-hanwoo-dark mb-3 text-center">목차</p>
+            <nav class="flex flex-col gap-2">
+                <a href="#hero" class="toc-link flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-hanwoo-earth hover:bg-hanwoo-gold/20 transition-all" data-section="hero">
+                    <span class="toc-dot w-3 h-3 rounded-full bg-hanwoo-gold/30"></span>
+                    처음으로
+                </a>
+                <a href="#stats" class="toc-link flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-hanwoo-earth hover:bg-hanwoo-gold/20 transition-all" data-section="stats">
+                    <span class="toc-dot w-3 h-3 rounded-full bg-hanwoo-gold/30"></span>
+                    현황
+                </a>
+                <a href="#law" class="toc-link flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-hanwoo-earth hover:bg-hanwoo-gold/20 transition-all" data-section="law">
+                    <span class="toc-dot w-3 h-3 rounded-full bg-hanwoo-gold/30"></span>
+                    한우법
+                </a>
+                <a href="#feed" class="toc-link flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-hanwoo-earth hover:bg-hanwoo-gold/20 transition-all" data-section="feed">
+                    <span class="toc-dot w-3 h-3 rounded-full bg-hanwoo-gold/30"></span>
+                    사료가격
+                </a>
+                <a href="#import" class="toc-link flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-hanwoo-earth hover:bg-hanwoo-gold/20 transition-all" data-section="import">
+                    <span class="toc-dot w-3 h-3 rounded-full bg-hanwoo-gold/30"></span>
+                    수입대응
+                </a>
+                <a href="#policy" class="toc-link flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-hanwoo-earth hover:bg-hanwoo-gold/20 transition-all" data-section="policy">
+                    <span class="toc-dot w-3 h-3 rounded-full bg-hanwoo-gold/30"></span>
+                    정책협약
+                </a>
+                <a href="#compensation" class="toc-link flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-hanwoo-earth hover:bg-hanwoo-gold/20 transition-all" data-section="compensation">
+                    <span class="toc-dot w-3 h-3 rounded-full bg-hanwoo-gold/30"></span>
+                    보상제도
+                </a>
+                <a href="#prevention" class="toc-link flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-hanwoo-earth hover:bg-hanwoo-gold/20 transition-all" data-section="prevention">
+                    <span class="toc-dot w-3 h-3 rounded-full bg-hanwoo-gold/30"></span>
+                    방역관리
+                </a>
+                <a href="#other" class="toc-link flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-hanwoo-earth hover:bg-hanwoo-gold/20 transition-all" data-section="other">
+                    <span class="toc-dot w-3 h-3 rounded-full bg-hanwoo-gold/30"></span>
+                    기타활동
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- 페이지 위치 안내 -->
+    <div id="pageIndicator" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 bg-white/95 rounded-full shadow-lg px-6 py-3 border-2 border-hanwoo-gold/30 flex items-center gap-4">
+        <button id="prevSection" class="w-10 h-10 rounded-full bg-hanwoo-gold/20 hover:bg-hanwoo-gold/40 flex items-center justify-center transition-all">
+            <svg class="w-6 h-6 text-hanwoo-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </button>
+        <div class="text-center">
+            <p id="currentSectionName" class="text-sm font-bold text-hanwoo-dark">처음</p>
+            <p id="pageProgress" class="text-xs text-hanwoo-earth">1 / 9</p>
+        </div>
+        <button id="nextSection" class="w-10 h-10 rounded-full bg-hanwoo-gold/20 hover:bg-hanwoo-gold/40 flex items-center justify-center transition-all">
+            <svg class="w-6 h-6 text-hanwoo-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </button>
+    </div>
 
     <!-- 히어로 섹션 -->
     <section id="hero" class="relative min-h-screen flex items-center hero-pattern pt-20">
@@ -1533,110 +1459,6 @@
         </svg>
     </button>
 
-    <script>
-        // 스크롤 프로그레스 바
-        window.addEventListener('scroll', () => {
-            const scrollTop = document.documentElement.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const progress = (scrollTop / scrollHeight) * 100;
-            document.documentElement.style.setProperty('--scroll-progress', progress + '%');
-        });
-
-        // Top 버튼 표시/숨김
-        const topBtn = document.getElementById('topBtn');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                topBtn.classList.add('visible');
-            } else {
-                topBtn.classList.remove('visible');
-            }
-        });
-
-        topBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // 모바일 메뉴
-        const menuBtn = document.getElementById('menuBtn');
-        const closeMenuBtn = document.getElementById('closeMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const menuOverlay = document.getElementById('menuOverlay');
-
-        function openMenu() {
-            mobileMenu.classList.add('active');
-            menuOverlay.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeMenu() {
-            mobileMenu.classList.remove('active');
-            menuOverlay.classList.add('hidden');
-            document.body.style.overflow = '';
-        }
-
-        menuBtn.addEventListener('click', openMenu);
-        closeMenuBtn.addEventListener('click', closeMenu);
-        menuOverlay.addEventListener('click', closeMenu);
-
-        // 모바일 메뉴 링크 클릭 시 메뉴 닫기
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', closeMenu);
-        });
-
-        // 아코디언
-        document.querySelectorAll('.accordion-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const accordionId = this.getAttribute('data-accordion');
-                const content = document.getElementById(accordionId);
-                const isActive = this.classList.contains('active');
-
-                // 모든 아코디언 닫기 (같은 섹션 내에서만)
-                const section = this.closest('section');
-                if (section) {
-                    section.querySelectorAll('.accordion-btn').forEach(b => {
-                        b.classList.remove('active');
-                    });
-                    section.querySelectorAll('.accordion-content').forEach(c => {
-                        c.classList.remove('active');
-                    });
-                }
-
-                // 클릭한 아코디언 토글
-                if (!isActive) {
-                    this.classList.add('active');
-                    content.classList.add('active');
-                }
-            });
-        });
-
-        // 스크롤 애니메이션
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in-up').forEach(el => {
-            observer.observe(el);
-        });
-
-        // 네비게이션 스크롤 시 스타일 변경
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                navbar.classList.add('shadow-lg');
-            } else {
-                navbar.classList.remove('shadow-lg');
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

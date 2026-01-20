@@ -9,7 +9,6 @@
 
   // ================ DOM Elements ================
   const elements = {
-    loader: document.getElementById('loader'),
     navbar: document.getElementById('navbar'),
     navMenu: document.getElementById('navMenu'),
     navToggle: document.getElementById('navToggle'),
@@ -62,15 +61,6 @@
   function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
-  }
-
-  // ================ Loading Screen ================
-  function hideLoader() {
-    setTimeout(() => {
-      elements.loader.classList.add('loaded');
-      document.body.style.overflow = 'visible';
-      initAnimations();
-    }, 1500);
   }
 
   // ================ Navigation ================
@@ -704,8 +694,8 @@
       return;
     }
     
-    // Hide loader after page load
-    hideLoader();
+    // Initialize animations
+    initAnimations();
     
     // Initialize all components
     initNavigation();
