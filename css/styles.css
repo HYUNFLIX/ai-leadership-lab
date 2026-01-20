@@ -304,8 +304,9 @@ ul {
 }
 
 .logo-img {
-  height: 36px;
+  height: 40px;
   width: auto;
+  max-width: 200px;
 }
 
 .logo-icon {
@@ -2123,8 +2124,9 @@ html.dark-mode .theme-toggle .moon-icon {
 }
 
 .footer-logo-img {
-  height: 32px;
+  height: 36px;
   width: auto;
+  max-width: 180px;
 }
 
 .footer-tagline {
