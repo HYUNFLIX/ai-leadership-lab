@@ -1,35 +1,41 @@
-/* Dark Mode (default) */
+/* Dark Mode (default) - Google AI Studio Style */
 :root {
-    --primary: #1a1a2e;
-    --secondary: #16213e;
-    --accent: #e94560;
-    --accent-light: #ff6b6b;
-    --text: #eaeaea;
-    --text-muted: #a0a0a0;
-    --card-bg: #0f0f23;
-    --border: #2a2a4a;
-    --like-color: #ff6b6b;
-    --prompt-bg: #0a0a1a;
-    --prompt-text: #c0c0c0;
+    --primary: #0d1117;
+    --secondary: #161b22;
+    --accent: #58a6ff;
+    --accent-light: #79c0ff;
+    --accent-gradient: linear-gradient(135deg, #58a6ff 0%, #a371f7 100%);
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --card-bg: #161b22;
+    --border: #30363d;
+    --border-gradient: linear-gradient(135deg, #58a6ff33, #a371f733);
+    --like-color: #f85149;
+    --prompt-bg: #0d1117;
+    --prompt-text: #c9d1d9;
+    --glow-color: rgba(88, 166, 255, 0.15);
 }
 
 /* Light Mode */
 [data-theme="light"] {
-    --primary: #f5f5f7;
-    --secondary: #e8e8ed;
-    --accent: #e94560;
-    --accent-light: #ff6b6b;
-    --text: #1a1a2e;
-    --text-muted: #666677;
+    --primary: #f6f8fa;
+    --secondary: #ffffff;
+    --accent: #0969da;
+    --accent-light: #218bff;
+    --accent-gradient: linear-gradient(135deg, #0969da 0%, #8250df 100%);
+    --text: #1f2328;
+    --text-muted: #656d76;
     --card-bg: #ffffff;
-    --border: #d0d0d8;
-    --like-color: #e94560;
-    --prompt-bg: #f0f0f5;
-    --prompt-text: #444455;
+    --border: #d0d7de;
+    --border-gradient: linear-gradient(135deg, #0969da33, #8250df33);
+    --like-color: #cf222e;
+    --prompt-bg: #f6f8fa;
+    --prompt-text: #424a53;
+    --glow-color: rgba(9, 105, 218, 0.1);
 }
 
 [data-theme="light"] .hero h1 {
-    background: linear-gradient(135deg, #1a1a2e 0%, #e94560 100%);
+    background: linear-gradient(135deg, #1f2328 0%, #0969da 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -76,7 +82,7 @@ body {
     font-size: 1.8rem;
     font-weight: 900;
     margin-bottom: 8px;
-    background: linear-gradient(135deg, #fff 0%, #e94560 100%);
+    background: linear-gradient(135deg, #fff 0%, #58a6ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -261,37 +267,70 @@ body {
     margin-left: auto;
 }
 
-/* Prompt Cards - Compact */
+/* Prompt Cards - Google AI Studio Style */
 .prompts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
+    gap: 16px;
 }
 
 .prompt-card {
     background: var(--card-bg);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
-    height: 220px;
+    height: auto;
+    min-height: 140px;
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+.prompt-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent 0%, transparent 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: all 0.3s ease;
 }
 
 .prompt-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-2px);
     border-color: var(--accent);
-    box-shadow: 0 20px 40px rgba(233, 69, 96, 0.15);
+    box-shadow: 0 8px 30px var(--glow-color);
+}
+
+.prompt-card:hover::before {
+    background: var(--accent-gradient);
+    opacity: 1;
 }
 
 .card-header {
-    padding: 20px 20px 10px;
+    padding: 20px 20px 12px;
     display: flex;
-    justify-content: space-between;
     align-items: flex-start;
-    gap: 10px;
+    gap: 14px;
+}
+
+.card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
 }
 
 .card-header-text {
@@ -300,31 +339,44 @@ body {
 }
 
 .card-id {
-    font-size: 0.75rem;
-    color: var(--accent);
-    font-family: 'JetBrains Mono', monospace;
-    margin-bottom: 4px;
+    display: none;
 }
 
 .card-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 4px;
-    color: white;
-    white-space: nowrap;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .card-desc {
-    font-size: 0.85rem;
-    color: var(--text);
-    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-weight: 400;
     line-height: 1.5;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+/* Card Actions - Hidden by default, show on hover */
+.card-actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.prompt-card:hover .card-actions {
+    opacity: 1;
 }
 
 /* Card Actions */
@@ -335,16 +387,16 @@ body {
 }
 
 .action-btn {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border: 1px solid var(--border);
-    background: transparent;
-    border-radius: 10px;
+    background: var(--card-bg);
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 0.9rem;
     transition: all 0.2s ease;
     color: var(--text-muted);
 }
@@ -365,29 +417,13 @@ body {
     background: #ff5252;
 }
 
-/* Card Body - Preview */
+/* Card Body - Hidden for cleaner look */
 .card-body {
-    padding: 0 20px 20px;
-    flex: 1;
-    overflow: hidden;
+    display: none;
 }
 
 .prompt-preview {
-    background: var(--prompt-bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 15px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    line-height: 1.6;
-    color: var(--text-muted);
-    height: 100%;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    white-space: pre-wrap;
-    word-break: keep-all;
+    display: none;
 }
 
 .prompt-text {
@@ -815,19 +851,19 @@ body {
     }
 
     .card-body {
-        padding: 0 12px 12px;
+        display: none;
     }
 
     .prompt-preview {
-        padding: 10px;
-        font-size: 0.7rem;
-        line-height: 1.5;
-        border-radius: 8px;
+        display: none;
     }
 
     .click-hint {
-        font-size: 0.65rem;
-        padding: 5px 0;
+        display: none;
+    }
+
+    .card-actions {
+        opacity: 1;
     }
 
     /* Modal - Mobile Optimized */
