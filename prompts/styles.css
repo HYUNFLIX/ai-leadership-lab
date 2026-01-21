@@ -88,6 +88,20 @@ body {
     margin: 0;
 }
 
+/* Book Cover */
+.book-cover {
+    width: 120px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.book-cover:hover {
+    transform: scale(1.05);
+}
+
 .stats {
     display: flex;
     gap: 30px;
@@ -606,6 +620,31 @@ body {
     margin-top: 80px;
 }
 
+.footer-book {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.footer-author {
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-bottom: 15px;
+}
+
+.footer-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.footer-copyright {
+    margin-top: 20px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
 .footer p {
     color: var(--text-muted);
     font-size: 0.95rem;
@@ -654,6 +693,12 @@ body {
 
     .stats {
         display: none;
+    }
+
+    /* Book Cover - Mobile */
+    .book-cover {
+        width: 80px;
+        border-radius: 6px;
     }
 
     /* Navigation - Non-sticky, compact */
@@ -870,6 +915,24 @@ body {
     .footer {
         padding: 30px 15px;
         margin-top: 40px;
+    }
+
+    .footer-book {
+        font-size: 0.9rem;
+    }
+
+    .footer-author {
+        font-size: 0.75rem;
+        margin-bottom: 10px;
+    }
+
+    .footer-desc {
+        font-size: 0.75rem;
+    }
+
+    .footer-copyright {
+        margin-top: 15px;
+        font-size: 0.65rem;
     }
 
     .footer p {
