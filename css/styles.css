@@ -1820,6 +1820,23 @@ html.dark-mode .theme-toggle .moon-icon {
   letter-spacing: 0.05em;
 }
 
+.book-badge-new {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.book-meta {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+}
+
 .book-content {
   padding: var(--spacing-xl);
 }
