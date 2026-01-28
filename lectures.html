@@ -798,6 +798,68 @@
             border-color: var(--danger);
         }
 
+        /* Dashboard Toggle */
+        .dashboard-section {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .dashboard-header:hover {
+            background: var(--bg-secondary);
+        }
+
+        .dashboard-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dashboard-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .dashboard-toggle .toggle-icon {
+            transition: transform 0.3s;
+        }
+
+        .dashboard-toggle.open .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .dashboard-content {
+            display: none;
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .dashboard-content.open {
+            display: block;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
         /* ================ Utilities ================ */
         .text-success { color: var(--success); }
         .text-warning { color: var(--warning); }
@@ -919,45 +981,66 @@
 
     <div class="container">
         <!-- Dashboard -->
-        <div class="dashboard">
-            <div class="stat-card">
-                <div class="stat-icon purple">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2"/>
-                        <path d="M16 2v4M8 2v4M3 10h18"/>
+        <div class="dashboard-section">
+            <div class="dashboard-header" onclick="toggleDashboard()">
+                <h2>
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1"/>
+                    </svg>
+                    대시보드
+                </h2>
+                <div class="dashboard-toggle" id="dashboardToggle">
+                    <span id="dashboardToggleText">보기</span>
+                    <svg class="toggle-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6l4 4 4-4"/>
                     </svg>
                 </div>
-                <div class="stat-value" id="totalLectures">0</div>
-                <div class="stat-label">총 강의 수</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon green">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-                    </svg>
+            <div class="dashboard-content" id="dashboardContent">
+                <div class="dashboard">
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                                <path d="M16 2v4M8 2v4M3 10h18"/>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="totalLectures">0</div>
+                        <div class="stat-label">총 강의 수</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="totalRevenue">0</div>
+                        <div class="stat-label">총 강의료</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon yellow">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="totalHours">0</div>
+                        <div class="stat-label">총 교육시간</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                                <path d="M22 4L12 14.01l-3-3"/>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="paidCount">0</div>
+                        <div class="stat-label">입금 완료</div>
+                    </div>
                 </div>
-                <div class="stat-value" id="totalRevenue">0</div>
-                <div class="stat-label">총 강의료</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon yellow">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 6v6l4 2"/>
-                    </svg>
-                </div>
-                <div class="stat-value" id="totalHours">0</div>
-                <div class="stat-label">총 교육시간</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon blue">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                        <path d="M22 4L12 14.01l-3-3"/>
-                    </svg>
-                </div>
-                <div class="stat-value" id="paidCount">0</div>
-                <div class="stat-label">입금 완료</div>
             </div>
         </div>
 
@@ -1532,6 +1615,16 @@
         // ================ UI Functions ================
         function hideLoading() {
             document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function toggleDashboard() {
+            const content = document.getElementById('dashboardContent');
+            const toggle = document.getElementById('dashboardToggle');
+            const toggleText = document.getElementById('dashboardToggleText');
+
+            const isOpen = content.classList.toggle('open');
+            toggle.classList.toggle('open', isOpen);
+            toggleText.textContent = isOpen ? '접기' : '보기';
         }
 
         function showToast(message, type = 'success') {
