@@ -39,19 +39,13 @@
     <!-- ==================== HEADER ==================== -->
     <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                    </svg>
-                </div>
-                <span class="font-bold text-slate-800 text-sm hidden sm:inline">AI Leadership Lab</span>
+            <a href="https://leadership.ai.kr" class="flex items-center gap-2">
+                <img src="../images/logo_.png" alt="AI Leadership Lab" class="h-8 w-auto">
             </a>
             <nav class="flex items-center gap-1">
-                <a href="#sectionHero" class="text-xs text-slate-500 hover:text-indigo-600 transition-colors px-2.5 py-1.5 rounded-md hover:bg-indigo-50">행사 안내</a>
-                <a href="#sectionBook" class="text-xs text-slate-500 hover:text-indigo-600 transition-colors px-2.5 py-1.5 rounded-md hover:bg-indigo-50">도서 소개</a>
-                <a href="#sectionParticipant" class="text-xs text-slate-500 hover:text-indigo-600 transition-colors px-2.5 py-1.5 rounded-md hover:bg-indigo-50">참가 신청</a>
+                <a href="#sectionHero" class="nav-link text-xs text-slate-500 hover:text-indigo-600 transition-colors px-2.5 py-1.5 rounded-md hover:bg-indigo-50">행사 안내</a>
+                <a href="#sectionBook" class="nav-link text-xs text-slate-500 hover:text-indigo-600 transition-colors px-2.5 py-1.5 rounded-md hover:bg-indigo-50">도서 소개</a>
+                <a href="#sectionParticipant" class="nav-link text-xs text-slate-500 hover:text-indigo-600 transition-colors px-2.5 py-1.5 rounded-md hover:bg-indigo-50">참가 신청</a>
             </nav>
         </div>
     </header>
@@ -64,16 +58,25 @@
         </div>
         <!-- Glow effect -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-400 rounded-full blur-3xl opacity-20"></div>
+        <!-- Floating Particles -->
+        <div class="floating-particles">
+            <div class="particle" style="--delay: 0s; --x: 15%; --y: 25%;"></div>
+            <div class="particle" style="--delay: 1.2s; --x: 82%; --y: 18%;"></div>
+            <div class="particle" style="--delay: 0.6s; --x: 70%; --y: 72%;"></div>
+            <div class="particle" style="--delay: 2s; --x: 25%; --y: 78%;"></div>
+            <div class="particle" style="--delay: 1.8s; --x: 50%; --y: 12%;"></div>
+            <div class="particle" style="--delay: 0.3s; --x: 90%; --y: 55%;"></div>
+        </div>
 
-        <div class="relative max-w-4xl mx-auto px-4 py-10 md:py-16 text-center">
-            <div class="inline-block bg-white/10 backdrop-blur-sm text-indigo-200 text-xs font-medium px-4 py-1.5 rounded-full mb-4 border border-white/20">
+        <div class="relative max-w-4xl mx-auto px-4 pt-10 pb-20 md:pt-16 md:pb-24 text-center">
+            <div class="inline-block bg-white/10 backdrop-blur-sm text-indigo-200 text-xs font-medium px-4 py-1.5 rounded-full mb-4 border border-white/20 hero-animate hero-fade-in">
                 AI 저자의 북 콘서트
             </div>
-            <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight mb-3">
+            <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight mb-3 hero-animate hero-slide-up">
                 AI 시대의 팀장은<br>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 to-cyan-200">다르게 일합니다</span>
             </h1>
-            <p class="text-indigo-200 text-sm md:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
+            <p class="text-indigo-200 text-sm md:text-base max-w-2xl mx-auto mb-8 leading-relaxed hero-animate hero-slide-up-delay">
                 AI를 활용하는 리더와 그렇지 않은 리더의 차이,<br class="hidden md:block">
                 그 해답을 저자 김현과 함께 나눕니다.
             </p>
@@ -123,10 +126,18 @@
                 </div>
             </div>
         </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <span class="scroll-text">Scroll</span>
+            <div class="scroll-icon">
+                <div class="scroll-dot"></div>
+            </div>
+        </div>
     </section>
 
     <!-- ==================== EVENT DETAILS ==================== -->
-    <section class="max-w-4xl mx-auto px-4 py-12 md:py-16">
+    <section class="max-w-4xl mx-auto px-4 py-12 md:py-16 section-reveal">
         <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl overflow-hidden">
             <!-- 헤더 -->
             <div class="px-6 md:px-10 pt-8 pb-6 border-b border-slate-700/50">
@@ -229,7 +240,7 @@
     </section>
 
     <!-- ==================== BOOK INTRO ==================== -->
-    <section id="sectionBook" class="max-w-4xl mx-auto px-4 pb-12">
+    <section id="sectionBook" class="max-w-4xl mx-auto px-4 pb-12 section-reveal">
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="flex flex-col md:flex-row">
                 <!-- Book Cover -->
@@ -284,7 +295,7 @@
     </section>
 
     <!-- ==================== MAIN TABS (PARTICIPANT) ==================== -->
-    <section id="sectionParticipant" class="max-w-4xl mx-auto px-4 pb-16">
+    <section id="sectionParticipant" class="max-w-4xl mx-auto px-4 pb-16 section-reveal">
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
             <!-- Tab Navigation -->
             <div class="flex border-b border-slate-200">
@@ -472,6 +483,51 @@
         btnBackToTop.addEventListener("click", () => {
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
+
+        // Scroll Reveal for Sections
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("revealed");
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll(".section-reveal").forEach((el) => {
+            revealObserver.observe(el);
+        });
+
+        // Active Nav Link on Scroll
+        const navLinks = document.querySelectorAll(".nav-link");
+        const sections = document.querySelectorAll("section[id]");
+
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute("id");
+                    navLinks.forEach((link) => {
+                        if (link.getAttribute("href") === "#" + id) {
+                            link.classList.add("active");
+                        } else {
+                            link.classList.remove("active");
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: "-50% 0% -50% 0%" });
+
+        sections.forEach((section) => {
+            navObserver.observe(section);
+        });
+
+        // Hide scroll indicator on scroll
+        const scrollIndicator = document.querySelector(".scroll-indicator");
+        if (scrollIndicator) {
+            window.addEventListener("scroll", () => {
+                scrollIndicator.style.opacity = window.scrollY > 100 ? "0" : "1";
+                scrollIndicator.style.transition = "opacity 0.3s ease";
+            });
+        }
     </script>
 </body>
 </html>
