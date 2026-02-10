@@ -203,18 +203,18 @@ button:focus-visible {
     top: var(--y);
     width: 6px;
     height: 6px;
-    background: radial-gradient(circle, rgba(165, 180, 252, 0.8) 0%, rgba(99, 102, 241, 0.4) 100%);
+    background: radial-gradient(circle, rgba(192, 132, 252, 0.8) 0%, rgba(168, 85, 247, 0.4) 100%);
     border-radius: 50%;
     animation: particleFloat 4s ease-in-out infinite;
     animation-delay: var(--delay);
-    box-shadow: 0 0 12px rgba(129, 140, 248, 0.5), 0 0 24px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 0 12px rgba(192, 132, 252, 0.5), 0 0 24px rgba(168, 85, 247, 0.2);
 }
 
 /* ============================
    Gradient Text
    ============================ */
 .text-gradient {
-    background: linear-gradient(135deg, #06b6d4, #6366f1); /* cyan-500 → indigo-500 */
+    background: linear-gradient(135deg, #22d3ee, #c084fc); /* cyan-400 → purple-400 */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
