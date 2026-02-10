@@ -82,26 +82,40 @@
                 그 해답을 저자 김현과 함께 나눕니다.
             </p>
 
-            <!-- Event Info Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl mx-auto">
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
-                    <div class="text-indigo-300 text-xs mb-1">일시</div>
-                    <div class="text-white font-semibold text-sm">2026. 2. 23 (일)</div>
-                    <div class="text-indigo-300 text-xs mt-0.5">19:00 ~ 20:00</div>
-                </div>
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
-                    <div class="text-indigo-300 text-xs mb-1">장소</div>
-                    <a href="https://naver.me/xDJuzUCI" target="_blank" rel="noopener"
-                       class="text-white font-semibold text-sm hover:text-indigo-200 transition-colors">MARU180 이벤트홀</a>
-                    <div class="text-indigo-300 text-xs mt-0.5">
+            <!-- Event Info -->
+            <div class="max-w-2xl mx-auto space-y-4">
+                <!-- 일시 & 장소 (메인 정보) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-white/15 backdrop-blur-sm rounded-2xl px-6 py-5 border border-white/20 text-left">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            </div>
+                            <span class="text-indigo-200 text-xs font-medium tracking-wide uppercase">일시</span>
+                        </div>
+                        <div class="text-white font-bold text-lg md:text-xl leading-snug">2026. 2. 23 (일)</div>
+                        <div class="text-indigo-200 font-semibold text-base mt-1">19:00 ~ 20:00</div>
+                    </div>
+                    <div class="bg-white/15 backdrop-blur-sm rounded-2xl px-6 py-5 border border-white/20 text-left">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            </div>
+                            <span class="text-indigo-200 text-xs font-medium tracking-wide uppercase">장소</span>
+                        </div>
+                        <div class="text-white font-bold text-lg md:text-xl leading-snug">MARU180 이벤트홀</div>
                         <a href="https://naver.me/xDJuzUCI" target="_blank" rel="noopener"
-                           class="text-indigo-300 hover:text-indigo-200 transition-colors underline underline-offset-2">네이버 지도 보기</a>
+                           class="inline-flex items-center gap-1.5 text-indigo-200 hover:text-white text-sm font-medium mt-2 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            네이버 지도 보기
+                        </a>
                     </div>
                 </div>
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
-                    <div class="text-indigo-300 text-xs mb-1">내용</div>
-                    <div class="text-white font-semibold text-sm">강의 및 Q&A</div>
-                    <div class="text-indigo-300 text-xs mt-0.5">세부 내용 준비중</div>
+                <!-- 내용 (서브 정보) -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl px-5 py-3 border border-white/10 flex items-center justify-center gap-6 text-sm">
+                    <span class="text-indigo-300">내용</span>
+                    <span class="text-white font-semibold">강의 및 Q&A</span>
+                    <span class="text-indigo-300/70">| 세부 내용 준비중</span>
                 </div>
             </div>
         </div>
