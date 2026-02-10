@@ -7,6 +7,8 @@
     <meta name="description" content="김현 저자와 함께하는 AI 전문가의 인사이트 공유회. 2026년 2월 23일(월) 오후 7시 MARU180. 선착순 60명 한정!">
     <meta property="og:title" content="AI 전문가의 인사이트 공유회 - AI로 내 일의 생산성을 레벨업하는 법">
     <meta property="og:description" content="AI를 활용하는 리더와 그렇지 않은 리더의 차이, 그 해답을 저자 김현과 함께 나눕니다.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://leadership.ai.kr/book-concert/">
     <meta property="og:image" content="https://leadership.ai.kr/images/Book3.jpg">
 
     <!-- Tailwind CSS CDN -->
@@ -67,8 +69,30 @@
         </div>
 
         <div class="relative max-w-4xl mx-auto px-4 pt-16 pb-24 md:pt-24 md:pb-32 text-center">
-            <div class="inline-block bg-white/10 text-indigo-300 text-xs font-semibold px-5 py-2 rounded-full mb-6 border border-indigo-400/30 backdrop-blur-sm hero-animate hero-fade-in">
+            <div class="inline-block bg-white/10 text-indigo-300 text-xs font-semibold px-5 py-2 rounded-full mb-4 border border-indigo-400/30 backdrop-blur-sm hero-animate hero-fade-in">
                 AI 전문가의 인사이트 공유회
+            </div>
+            <!-- D-day Countdown -->
+            <div id="ddayCountdown" class="flex items-center justify-center gap-3 mb-6 hero-animate hero-fade-in">
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl px-3.5 py-2 border border-white/10 min-w-[60px] text-center">
+                    <div id="ddayDays" class="text-2xl font-extrabold text-white leading-none">0</div>
+                    <div class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">Days</div>
+                </div>
+                <span class="text-slate-500 text-lg font-light">:</span>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl px-3.5 py-2 border border-white/10 min-w-[60px] text-center">
+                    <div id="ddayHours" class="text-2xl font-extrabold text-white leading-none">0</div>
+                    <div class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">Hours</div>
+                </div>
+                <span class="text-slate-500 text-lg font-light">:</span>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl px-3.5 py-2 border border-white/10 min-w-[60px] text-center">
+                    <div id="ddayMinutes" class="text-2xl font-extrabold text-white leading-none">0</div>
+                    <div class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">Min</div>
+                </div>
+                <span class="text-slate-500 text-lg font-light">:</span>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl px-3.5 py-2 border border-white/10 min-w-[60px] text-center">
+                    <div id="ddaySeconds" class="text-2xl font-extrabold text-white leading-none">0</div>
+                    <div class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">Sec</div>
+                </div>
             </div>
             <h1 class="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-4 hero-animate hero-slide-up">
                 AI로 내 일의<br>
@@ -151,7 +175,7 @@
                     저자 김현과 함께하는<br class="sm:hidden"> 특별한 저녁
                 </h2>
                 <p class="text-slate-400 text-sm mt-2">
-                    『AI로 내 일의 생산성을 레벨업하는 법』 저자 김현 소장과 함께하는 특별한 만남에 초대합니다.
+                    『AI 시대의 팀장은 다르게 일합니다』 저자 김현 소장과 함께하는 특별한 만남에 초대합니다.
                 </p>
             </div>
 
@@ -459,6 +483,16 @@
         </div>
     </div>
 
+    <!-- ==================== MOBILE STICKY CTA ==================== -->
+    <div id="mobileCta" class="fixed bottom-0 left-0 right-0 z-40 md:hidden translate-y-full transition-transform duration-300">
+        <div class="bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-3 safe-area-bottom">
+            <a href="#sectionParticipant"
+               class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl text-center transition-colors shadow-lg">
+                참가 신청하기
+            </a>
+        </div>
+    </div>
+
     <!-- ==================== BACK TO TOP BUTTON ==================== -->
     <button id="btnBackToTop"
             class="fixed bottom-6 right-6 w-11 h-11 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 translate-y-4 pointer-events-none z-50"
@@ -485,6 +519,34 @@
         btnBackToTop.addEventListener("click", () => {
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
+
+        // Mobile Sticky CTA - show after hero, hide at registration section
+        const mobileCta = document.getElementById("mobileCta");
+        const participantSection = document.getElementById("sectionParticipant");
+        if (mobileCta) {
+            const ctaObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.target.id === "sectionHero") {
+                        // Show CTA when hero is out of view
+                        if (!entry.isIntersecting) {
+                            mobileCta.classList.remove("translate-y-full");
+                        } else {
+                            mobileCta.classList.add("translate-y-full");
+                        }
+                    }
+                    if (entry.target.id === "sectionParticipant") {
+                        // Hide CTA when registration section is visible
+                        if (entry.isIntersecting) {
+                            mobileCta.classList.add("translate-y-full");
+                        }
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            const heroSection = document.getElementById("sectionHero");
+            if (heroSection) ctaObserver.observe(heroSection);
+            if (participantSection) ctaObserver.observe(participantSection);
+        }
 
         // Scroll Reveal for Sections
         const revealObserver = new IntersectionObserver((entries) => {
@@ -521,6 +583,34 @@
         sections.forEach((section) => {
             navObserver.observe(section);
         });
+
+        // D-day Countdown (2026-02-23 19:00 KST)
+        (function() {
+            const target = new Date("2026-02-23T19:00:00+09:00").getTime();
+            const $days = document.getElementById("ddayDays");
+            const $hours = document.getElementById("ddayHours");
+            const $minutes = document.getElementById("ddayMinutes");
+            const $seconds = document.getElementById("ddaySeconds");
+            const $container = document.getElementById("ddayCountdown");
+
+            function update() {
+                const diff = target - Date.now();
+                if (diff <= 0) {
+                    $container.innerHTML = '<span class="text-indigo-300 text-sm font-semibold bg-white/10 px-5 py-2 rounded-full border border-indigo-400/30">행사가 진행 중입니다!</span>';
+                    return;
+                }
+                const d = Math.floor(diff / 86400000);
+                const h = Math.floor((diff % 86400000) / 3600000);
+                const m = Math.floor((diff % 3600000) / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
+                $days.textContent = d;
+                $hours.textContent = String(h).padStart(2, "0");
+                $minutes.textContent = String(m).padStart(2, "0");
+                $seconds.textContent = String(s).padStart(2, "0");
+                requestAnimationFrame(() => setTimeout(update, 1000));
+            }
+            update();
+        })();
 
         // Hide scroll indicator on scroll
         const scrollIndicator = document.querySelector(".scroll-indicator");

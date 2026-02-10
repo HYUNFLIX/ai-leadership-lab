@@ -221,7 +221,7 @@ formRegister.addEventListener("submit", async (e) => {
             status: "confirmed"
         });
 
-        alert("참가 신청이 완료되었습니다!\n북 콘서트에서 만나 뵙겠습니다.");
+        alert("참가 신청이 완료되었습니다!\n인사이트 공유회에서 만나 뵙겠습니다.");
         formRegister.reset();
     } catch (error) {
         console.error("Registration error:", error);
