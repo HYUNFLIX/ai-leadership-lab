@@ -52,10 +52,6 @@
                 <a href="#sectionHero" class="text-xs text-slate-500 hover:text-indigo-600 transition-colors px-2.5 py-1.5 rounded-md hover:bg-indigo-50">행사 안내</a>
                 <a href="#sectionBook" class="text-xs text-slate-500 hover:text-indigo-600 transition-colors px-2.5 py-1.5 rounded-md hover:bg-indigo-50">도서 소개</a>
                 <a href="#sectionParticipant" class="text-xs text-slate-500 hover:text-indigo-600 transition-colors px-2.5 py-1.5 rounded-md hover:bg-indigo-50">참가 신청</a>
-                <a href="admin.html"
-                   class="text-xs text-slate-400 hover:text-indigo-600 transition-colors px-2.5 py-1.5 rounded-md hover:bg-indigo-50">
-                    관리자
-                </a>
             </nav>
         </div>
     </header>
@@ -69,15 +65,15 @@
         <!-- Glow effect -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-400 rounded-full blur-3xl opacity-20"></div>
 
-        <div class="relative max-w-4xl mx-auto px-4 py-16 md:py-24 text-center">
-            <div class="inline-block bg-white/10 backdrop-blur-sm text-indigo-200 text-xs font-medium px-4 py-1.5 rounded-full mb-6 border border-white/20">
+        <div class="relative max-w-4xl mx-auto px-4 py-10 md:py-16 text-center">
+            <div class="inline-block bg-white/10 backdrop-blur-sm text-indigo-200 text-xs font-medium px-4 py-1.5 rounded-full mb-4 border border-white/20">
                 AI 저자의 북 콘서트
             </div>
-            <h1 class="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-4">
+            <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight mb-3">
                 AI 시대의 팀장은<br>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 to-cyan-200">다르게 일합니다</span>
             </h1>
-            <p class="text-indigo-200 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p class="text-indigo-200 text-sm md:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
                 AI를 활용하는 리더와 그렇지 않은 리더의 차이,<br class="hidden md:block">
                 그 해답을 저자 김현과 함께 나눕니다.
             </p>
@@ -116,10 +112,17 @@
                         </a>
                     </div>
                 </div>
-                <!-- 참가비 -->
-                <div class="bg-emerald-500/15 backdrop-blur-sm rounded-xl px-5 py-3 border border-emerald-400/20 flex items-center justify-center gap-3 text-sm">
-                    <span class="text-emerald-300 font-semibold">참가비</span>
-                    <span class="text-white font-bold text-base">무료</span>
+                <!-- 참가비 + 신청 CTA -->
+                <div class="flex flex-col sm:flex-row items-center gap-3">
+                    <div class="bg-emerald-500/15 backdrop-blur-sm rounded-xl px-5 py-3 border border-emerald-400/20 flex items-center justify-center gap-3 text-sm flex-1 w-full">
+                        <span class="text-emerald-300 font-semibold">참가비</span>
+                        <span class="text-white font-bold text-base">무료</span>
+                        <span class="text-emerald-300/60 text-xs">| 선착순 60명</span>
+                    </div>
+                    <a href="#sectionParticipant"
+                       class="w-full sm:w-auto bg-white hover:bg-indigo-50 text-indigo-700 font-bold py-3.5 px-8 rounded-xl text-sm transition-colors shadow-lg shadow-indigo-900/30 whitespace-nowrap text-center">
+                        참가 신청하기
+                    </a>
                 </div>
             </div>
         </div>
@@ -158,11 +161,23 @@
                             <span>현장에서 바로 쓸 수 있는 실전 사례와 프레임워크</span>
                         </li>
                     </ul>
-                    <a href="https://product.kyobobook.co.kr/detail/S000219080456" target="_blank" rel="noopener"
-                       class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors w-fit">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                        교보문고에서 보기
-                    </a>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="https://product.kyobobook.co.kr/detail/S000219080456" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            교보문고
+                        </a>
+                        <a href="https://www.yes24.com/product/goods/175467058" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 bg-slate-700 hover:bg-slate-800 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            예스24
+                        </a>
+                        <a href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=384732664" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            알라딘
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
