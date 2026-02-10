@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - AI 저자의 북 콘서트</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="admin.css">
+
+    <!-- Firebase v9 (Compat CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen">
+
+    <!-- ==================== LOGIN SCREEN ==================== -->
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center px-4">
+        <div class="w-full max-w-sm">
+            <!-- Logo -->
+            <div class="text-center mb-8">
+                <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-200">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <h1 class="text-xl font-bold text-slate-900">관리자 대시보드</h1>
+                <p class="text-sm text-slate-500 mt-1">AI 저자의 북 콘서트</p>
+            </div>
+
+            <!-- Login Card -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <form id="formLogin" class="space-y-4" onsubmit="return false;">
+                    <div>
+                        <label for="loginEmail" class="block text-sm font-medium text-slate-700 mb-1.5">이메일</label>
+                        <input type="email" id="loginEmail" required placeholder="admin@example.com" autofocus
+                               class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="loginPassword" class="block text-sm font-medium text-slate-700 mb-1.5">비밀번호</label>
+                        <input type="password" id="loginPassword" required placeholder="비밀번호 입력"
+                               class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                    </div>
+                    <button type="submit" id="btnLogin"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-xl text-sm transition-colors">
+                        로그인
+                    </button>
+                </form>
+                <div class="mt-4 text-center">
+                    <a href="index.html" class="text-xs text-slate-400 hover:text-indigo-500 transition-colors">
+                        &larr; 메인 페이지로 돌아가기
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== DASHBOARD (Hidden until auth) ==================== -->
+    <div id="dashboardScreen" class="hidden">
+
+        <!-- Top Navigation -->
+        <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-sm font-bold text-slate-900">관리자 대시보드</h1>
+                        <p class="text-xs text-slate-400">AI 저자의 북 콘서트</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="adminUserEmail" class="hidden sm:inline text-xs text-slate-500"></span>
+                    <a href="index.html" class="text-xs text-slate-500 hover:text-indigo-600 border border-slate-200 hover:border-indigo-200 px-3 py-1.5 rounded-lg transition-colors">
+                        메인 페이지
+                    </a>
+                    <button id="btnLogout"
+                            class="text-xs text-white bg-slate-700 hover:bg-red-600 px-3 py-1.5 rounded-lg transition-colors">
+                        로그아웃
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <!-- Total Registrations -->
+                <div class="bg-white rounded-xl border border-slate-200 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-medium text-slate-500">총 신청 건수</span>
+                        <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        </div>
+                    </div>
+                    <div id="statTotalDocs" class="text-2xl font-bold text-slate-900">0</div>
+                    <div class="text-xs text-slate-400 mt-1">건</div>
+                </div>
+                <!-- Total People -->
+                <div class="bg-white rounded-xl border border-slate-200 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-medium text-slate-500">총 참가 인원</span>
+                        <div class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                    </div>
+                    <div id="statTotalPeople" class="text-2xl font-bold text-slate-900">0</div>
+                    <div class="text-xs text-slate-400 mt-1">명</div>
+                </div>
+                <!-- Today Registrations -->
+                <div class="bg-white rounded-xl border border-slate-200 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-medium text-slate-500">오늘 신청</span>
+                        <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                    </div>
+                    <div id="statTodayDocs" class="text-2xl font-bold text-slate-900">0</div>
+                    <div class="text-xs text-slate-400 mt-1">건</div>
+                </div>
+                <!-- Average Count -->
+                <div class="bg-white rounded-xl border border-slate-200 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-medium text-slate-500">평균 동반 인원</span>
+                        <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        </div>
+                    </div>
+                    <div id="statAvgCount" class="text-2xl font-bold text-slate-900">0</div>
+                    <div class="text-xs text-slate-400 mt-1">명/건</div>
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="bg-white rounded-xl border border-slate-200 p-4 mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-sm font-bold text-slate-900">신청자 목록</h2>
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-xs text-emerald-600 font-medium">실시간</span>
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <div class="relative flex-1 sm:flex-none">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input type="text" id="searchInput" placeholder="이름 또는 전화번호 검색..."
+                               class="w-full sm:w-64 pl-10 pr-4 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                    </div>
+                    <button id="btnExportCSV"
+                            class="flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-indigo-600 border border-slate-200 hover:border-indigo-200 px-3 py-2 rounded-lg transition-colors whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        CSV 내보내기
+                    </button>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-slate-50 border-b border-slate-200">
+                            <tr>
+                                <th class="px-4 sm:px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">No.</th>
+                                <th class="px-4 sm:px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">이름</th>
+                                <th class="px-4 sm:px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">전화번호</th>
+                                <th class="px-4 sm:px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">이메일</th>
+                                <th class="px-4 sm:px-6 py-3.5 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">인원</th>
+                                <th class="px-4 sm:px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden sm:table-cell">신청일시</th>
+                                <th class="px-4 sm:px-6 py-3.5 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">상태</th>
+                                <th class="px-4 sm:px-6 py-3.5 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">관리</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-slate-100">
+                            <!-- Rows inserted by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Empty State -->
+                <div id="emptyState" class="hidden text-center py-16">
+                    <svg class="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+                    <p class="text-slate-400 text-sm">아직 신청자가 없습니다.</p>
+                </div>
+                <!-- Search No Result -->
+                <div id="searchNoResult" class="hidden text-center py-16">
+                    <svg class="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <p class="text-slate-400 text-sm">검색 결과가 없습니다.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-center">
+            <p class="text-xs text-slate-400">&copy; 2026 AI Leadership Lab. 관리자 전용 페이지.</p>
+        </footer>
+    </div>
+
+    <!-- ==================== EDIT MODAL ==================== -->
+    <div id="modalEdit" class="modal-overlay hidden">
+        <div class="modal-content bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6">
+            <div class="flex items-center justify-between mb-5">
+                <h3 class="text-lg font-bold text-slate-900">신청 정보 수정</h3>
+                <button id="btnCloseEdit" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <form id="formEdit" class="space-y-4" onsubmit="return false;">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="editName" class="block text-sm font-medium text-slate-700 mb-1.5">이름</label>
+                        <input type="text" id="editName" required
+                               class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="editPhone" class="block text-sm font-medium text-slate-700 mb-1.5">전화번호</label>
+                        <input type="tel" id="editPhone" required
+                               class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                    </div>
+                </div>
+                <div>
+                    <label for="editEmail" class="block text-sm font-medium text-slate-700 mb-1.5">이메일</label>
+                    <input type="email" id="editEmail" required
+                           class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="editCount" class="block text-sm font-medium text-slate-700 mb-1.5">신청 인원</label>
+                        <select id="editCount" required
+                                class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-white">
+                            <option value="1">1명</option>
+                            <option value="2">2명</option>
+                            <option value="3">3명</option>
+                            <option value="4">4명</option>
+                            <option value="5">5명</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="editStatus" class="block text-sm font-medium text-slate-700 mb-1.5">상태</label>
+                        <select id="editStatus" required
+                                class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-white">
+                            <option value="confirmed">확인됨</option>
+                            <option value="pending">대기중</option>
+                            <option value="cancelled">취소됨</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="submit" id="btnSaveEdit"
+                            class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl text-sm transition-colors">
+                        저장
+                    </button>
+                    <button type="button" id="btnCancelEdit"
+                            class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 rounded-xl text-sm transition-colors">
+                        취소
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Script -->
+    <script src="admin.js"></script>
+</body>
+</html>
