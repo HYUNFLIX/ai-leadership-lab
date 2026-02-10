@@ -186,6 +186,18 @@ formRegister.addEventListener("submit", async (e) => {
 
     if (!validateRegistration(name, phone, email)) return;
 
+    const consent = $("#regConsent");
+    if (consent && !consent.checked) {
+        alert("개인정보 수집·이용에 동의해 주세요.");
+        return;
+    }
+
+    const photoConsent = $("#regPhotoConsent");
+    if (photoConsent && !photoConsent.checked) {
+        alert("행사 촬영 및 활용에 동의해 주세요.");
+        return;
+    }
+
     btnRegister.disabled = true;
     btnRegister.textContent = "신청 중...";
 
