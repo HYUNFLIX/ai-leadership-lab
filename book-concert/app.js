@@ -192,6 +192,12 @@ formRegister.addEventListener("submit", async (e) => {
         return;
     }
 
+    const photoConsent = $("#regPhotoConsent");
+    if (photoConsent && !photoConsent.checked) {
+        alert("행사 촬영 및 활용에 동의해 주세요.");
+        return;
+    }
+
     btnRegister.disabled = true;
     btnRegister.textContent = "신청 중...";
 
