@@ -340,8 +340,7 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
     .hero-animate,
     .particle,
-    .scroll-indicator,
-    .scroll-dot {
+    .scroll-indicator {
         animation: none !important;
         opacity: 1 !important;
     }
