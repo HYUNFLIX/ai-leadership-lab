@@ -1033,5 +1033,57 @@
             loadLecturesByYear();
         }
     </script>
+
+    <!-- ==================== Book Concert Popup ==================== -->
+    <div id="bookConcertPopup" class="popup-overlay" aria-hidden="true">
+        <div class="popup-backdrop"></div>
+        <div class="popup-content">
+            <button class="popup-close" onclick="closeBookConcertPopup()" aria-label="닫기">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            <a href="book-concert/" class="popup-image-link">
+                <img src="images/bookcon_pop.jpg" alt="출간 기념 무료 북콘서트 - AI로 내 일의 생산성을 레벨업하는 법" class="popup-image">
+            </a>
+            <div class="popup-footer">
+                <label class="popup-today-close">
+                    <input type="checkbox" id="popupTodayClose">
+                    <span>오늘 하루 보지 않기</span>
+                </label>
+                <a href="book-concert/" class="popup-cta">참가 신청하기 →</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function() {
+            var popup = document.getElementById('bookConcertPopup');
+            var backdrop = popup.querySelector('.popup-backdrop');
+            var todayCheck = document.getElementById('popupTodayClose');
+
+            // Check if user dismissed today
+            var dismissKey = 'bookConcertPopup_dismiss';
+            var saved = localStorage.getItem(dismissKey);
+            if (saved && new Date().toDateString() === new Date(saved).toDateString()) {
+                return; // Don't show today
+            }
+
+            // Show popup after short delay
+            setTimeout(function() {
+                popup.classList.add('active');
+                popup.setAttribute('aria-hidden', 'false');
+            }, 800);
+
+            backdrop.addEventListener('click', function() { closeBookConcertPopup(); });
+
+            window.closeBookConcertPopup = function() {
+                if (todayCheck && todayCheck.checked) {
+                    localStorage.setItem(dismissKey, new Date().toISOString());
+                }
+                popup.classList.remove('active');
+                popup.setAttribute('aria-hidden', 'true');
+            };
+        })();
+    </script>
 </body>
 </html>
