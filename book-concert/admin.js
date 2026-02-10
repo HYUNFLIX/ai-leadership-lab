@@ -48,9 +48,7 @@ const btnExportCSV = $("#btnExportCSV");
 
 // Stats
 const statTotalDocs = $("#statTotalDocs");
-const statTotalPeople = $("#statTotalPeople");
 const statTodayDocs = $("#statTodayDocs");
-const statAvgCount = $("#statAvgCount");
 
 // Edit Modal
 const modalEdit = $("#modalEdit");
@@ -58,7 +56,6 @@ const formEdit = $("#formEdit");
 const editName = $("#editName");
 const editPhone = $("#editPhone");
 const editEmail = $("#editEmail");
-const editCount = $("#editCount");
 const editStatus = $("#editStatus");
 const btnSaveEdit = $("#btnSaveEdit");
 const btnCloseEdit = $("#btnCloseEdit");
@@ -167,13 +164,11 @@ function stopRealtimeListener() {
 // ============================================================
 function updateStats(docs) {
     const totalDocs = docs.length;
-    let totalPeople = 0;
     let todayDocs = 0;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     docs.forEach((d) => {
-        totalPeople += d.count || 1;
         if (d.timestamp) {
             const ts = d.timestamp.toDate ? d.timestamp.toDate() : new Date(d.timestamp);
             if (ts >= today) todayDocs++;
@@ -181,9 +176,7 @@ function updateStats(docs) {
     });
 
     statTotalDocs.textContent = totalDocs;
-    statTotalPeople.textContent = totalPeople;
     statTodayDocs.textContent = todayDocs;
-    statAvgCount.textContent = totalDocs > 0 ? (totalPeople / totalDocs).toFixed(1) : "0";
 }
 
 // ============================================================
@@ -238,7 +231,6 @@ function renderTable(docs) {
             <td class="px-4 sm:px-6 py-4 font-medium text-slate-900 whitespace-nowrap">${escapeHtml(data.name)}</td>
             <td class="px-4 sm:px-6 py-4 text-slate-600 whitespace-nowrap">${escapeHtml(formatPhone(data.phone))}</td>
             <td class="px-4 sm:px-6 py-4 text-slate-600 whitespace-nowrap hidden md:table-cell">${escapeHtml(data.email)}</td>
-            <td class="px-4 sm:px-6 py-4 text-center text-slate-700 font-medium">${data.count || 1}</td>
             <td class="px-4 sm:px-6 py-4 text-slate-500 text-xs whitespace-nowrap hidden sm:table-cell">${formatTimestamp(data.timestamp)}</td>
             <td class="px-4 sm:px-6 py-4 text-center">
                 <span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full ${statusClass}">${statusLabel}</span>
@@ -290,7 +282,6 @@ function openEditModal(docId) {
     editName.value = data.name || "";
     editPhone.value = formatPhone(data.phone || "");
     editEmail.value = data.email || "";
-    editCount.value = data.count || 1;
     editStatus.value = data.status || "confirmed";
 
     openModal("modalEdit");
@@ -302,7 +293,6 @@ formEdit.addEventListener("submit", async () => {
     const name = editName.value.trim();
     const phone = editPhone.value.trim();
     const email = editEmail.value.trim();
-    const count = parseInt(editCount.value, 10);
     const status = editStatus.value;
 
     if (!name) { alert("이름을 입력해 주세요."); return; }
@@ -317,7 +307,6 @@ formEdit.addEventListener("submit", async () => {
             name,
             phone: normalizePhone(phone),
             email,
-            count,
             status
         });
         closeModal("modalEdit");
@@ -344,13 +333,12 @@ btnExportCSV.addEventListener("click", () => {
     }
 
     const BOM = "\uFEFF";
-    const headers = ["No.", "이름", "전화번호", "이메일", "인원", "신청일시", "상태"];
+    const headers = ["No.", "이름", "전화번호", "이메일", "신청일시", "상태"];
     const rows = allDocs.map((d, i) => [
         i + 1,
         d.name,
         formatPhone(d.phone),
         d.email,
-        d.count || 1,
         formatTimestamp(d.timestamp),
         d.status === "confirmed" ? "확인됨" : d.status === "pending" ? "대기중" : d.status === "cancelled" ? "취소됨" : d.status
     ]);

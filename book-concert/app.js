@@ -36,7 +36,6 @@ const formRegister = $("#formRegister");
 const regName = $("#regName");
 const regPhone = $("#regPhone");
 const regEmail = $("#regEmail");
-const regCount = $("#regCount");
 const btnRegister = $("#btnRegister");
 
 // Check form
@@ -51,7 +50,6 @@ const checkNoResult = $("#checkNoResult");
 const resName = $("#resName");
 const resPhone = $("#resPhone");
 const resEmail = $("#resEmail");
-const resCount = $("#resCount");
 const resTimestamp = $("#resTimestamp");
 const btnEdit = $("#btnEdit");
 const btnDelete = $("#btnDelete");
@@ -62,7 +60,6 @@ const formEdit = $("#formEdit");
 const editName = $("#editName");
 const editPhone = $("#editPhone");
 const editEmail = $("#editEmail");
-const editCount = $("#editCount");
 const btnSaveEdit = $("#btnSaveEdit");
 
 // ============================================================
@@ -162,7 +159,6 @@ formRegister.addEventListener("submit", async () => {
     const name = regName.value.trim();
     const phone = regPhone.value.trim();
     const email = regEmail.value.trim();
-    const count = parseInt(regCount.value, 10);
 
     if (!validateRegistration(name, phone, email)) return;
 
@@ -185,7 +181,6 @@ formRegister.addEventListener("submit", async () => {
             name: name,
             phone: phoneNorm,
             email: email,
-            count: count,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             status: "confirmed"
         });
@@ -234,7 +229,6 @@ formCheck.addEventListener("submit", async () => {
             resName.textContent = data.name;
             resPhone.textContent = formatPhone(data.phone);
             resEmail.textContent = data.email;
-            resCount.textContent = data.count + "명";
             resTimestamp.textContent = formatTimestamp(data.timestamp);
 
             checkResult.classList.remove("hidden");
@@ -262,7 +256,6 @@ btnEdit.addEventListener("click", async () => {
         editName.value = data.name;
         editPhone.value = formatPhone(data.phone);
         editEmail.value = data.email;
-        editCount.value = data.count;
         openModal("modalEdit");
     } catch (error) {
         console.error("Edit fetch error:", error);
@@ -276,7 +269,6 @@ formEdit.addEventListener("submit", async () => {
     const name = editName.value.trim();
     const phone = editPhone.value.trim();
     const email = editEmail.value.trim();
-    const count = parseInt(editCount.value, 10);
 
     if (!validateRegistration(name, phone, email)) return;
 
@@ -287,8 +279,7 @@ formEdit.addEventListener("submit", async () => {
         await participantsRef.doc(currentDocId).update({
             name: name,
             phone: normalizePhone(phone),
-            email: email,
-            count: count
+            email: email
         });
 
         alert("수정이 완료되었습니다.");
@@ -297,7 +288,6 @@ formEdit.addEventListener("submit", async () => {
         resName.textContent = name;
         resPhone.textContent = formatPhone(phone);
         resEmail.textContent = email;
-        resCount.textContent = count + "명";
     } catch (error) {
         console.error("Update error:", error);
         alert("수정 중 오류가 발생했습니다.\n\n오류: " + error.message);
