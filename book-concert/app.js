@@ -132,6 +132,29 @@ function formatTimestamp(ts) {
 }
 
 // ============================================================
+// Phone Auto-Formatting
+// ============================================================
+function autoFormatPhone(e) {
+    const input = e.target;
+    const cursor = input.selectionStart;
+    const prevLen = input.value.length;
+    const nums = input.value.replace(/[^0-9]/g, "").slice(0, 11);
+    let formatted = nums;
+    if (nums.length > 7) {
+        formatted = nums.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
+    } else if (nums.length > 3) {
+        formatted = nums.replace(/(\d{3})(\d{0,4})/, "$1-$2");
+    }
+    input.value = formatted;
+    const diff = formatted.length - prevLen;
+    input.setSelectionRange(cursor + diff, cursor + diff);
+}
+
+[regPhone, chkPhone, editPhone].forEach((el) => {
+    if (el) el.addEventListener("input", autoFormatPhone);
+});
+
+// ============================================================
 // Validation
 // ============================================================
 function validateRegistration(name, phone, email) {
@@ -155,7 +178,8 @@ function validateRegistration(name, phone, email) {
 // ============================================================
 // 1. 참가 신청 (Create)
 // ============================================================
-formRegister.addEventListener("submit", async () => {
+formRegister.addEventListener("submit", async (e) => {
+    e.preventDefault();
     const name = regName.value.trim();
     const phone = regPhone.value.trim();
     const email = regEmail.value.trim();
@@ -199,7 +223,8 @@ formRegister.addEventListener("submit", async () => {
 // ============================================================
 // 2. 신청 조회 (Read)
 // ============================================================
-formCheck.addEventListener("submit", async () => {
+formCheck.addEventListener("submit", async (e) => {
+    e.preventDefault();
     const name = chkName.value.trim();
     const phone = chkPhone.value.trim();
 
@@ -263,7 +288,8 @@ btnEdit.addEventListener("click", async () => {
     }
 });
 
-formEdit.addEventListener("submit", async () => {
+formEdit.addEventListener("submit", async (e) => {
+    e.preventDefault();
     if (!currentDocId) return;
 
     const name = editName.value.trim();

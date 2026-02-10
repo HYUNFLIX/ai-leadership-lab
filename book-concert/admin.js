@@ -81,7 +81,8 @@ auth.onAuthStateChanged((user) => {
 // ============================================================
 // Login
 // ============================================================
-formLogin.addEventListener("submit", async () => {
+formLogin.addEventListener("submit", async (e) => {
+    e.preventDefault();
     const email = loginEmail.value.trim();
     const password = loginPassword.value.trim();
 
@@ -287,7 +288,8 @@ function openEditModal(docId) {
     openModal("modalEdit");
 }
 
-formEdit.addEventListener("submit", async () => {
+formEdit.addEventListener("submit", async (e) => {
+    e.preventDefault();
     if (!editingDocId) return;
 
     const name = editName.value.trim();
