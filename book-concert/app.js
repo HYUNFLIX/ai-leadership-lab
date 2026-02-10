@@ -4,12 +4,12 @@
 // Firebase Console > 프로젝트 설정 > 일반 > 내 앱 > SDK 설정 및 구성
 // ============================================================
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyBsYhirjhAxINaZhYMdPavYxYht4qROqRs",
+    authDomain: "book-concert-967de.firebaseapp.com",
+    projectId: "book-concert-967de",
+    storageBucket: "book-concert-967de.firebasestorage.app",
+    messagingSenderId: "814514997129",
+    appId: "1:814514997129:web:87942dd13339b46a780358"
 };
 
 // Initialize Firebase
