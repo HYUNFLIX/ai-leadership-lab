@@ -111,7 +111,7 @@
         <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
                 <!-- Total Registrations -->
                 <div class="bg-white rounded-xl border border-slate-200 p-5">
                     <div class="flex items-center justify-between mb-3">
@@ -123,17 +123,6 @@
                     <div id="statTotalDocs" class="text-2xl font-bold text-slate-900">0</div>
                     <div class="text-xs text-slate-400 mt-1">건</div>
                 </div>
-                <!-- Total People -->
-                <div class="bg-white rounded-xl border border-slate-200 p-5">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs font-medium text-slate-500">총 참가 인원</span>
-                        <div class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        </div>
-                    </div>
-                    <div id="statTotalPeople" class="text-2xl font-bold text-slate-900">0</div>
-                    <div class="text-xs text-slate-400 mt-1">명</div>
-                </div>
                 <!-- Today Registrations -->
                 <div class="bg-white rounded-xl border border-slate-200 p-5">
                     <div class="flex items-center justify-between mb-3">
@@ -144,17 +133,6 @@
                     </div>
                     <div id="statTodayDocs" class="text-2xl font-bold text-slate-900">0</div>
                     <div class="text-xs text-slate-400 mt-1">건</div>
-                </div>
-                <!-- Average Count -->
-                <div class="bg-white rounded-xl border border-slate-200 p-5">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs font-medium text-slate-500">평균 동반 인원</span>
-                        <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                            <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                        </div>
-                    </div>
-                    <div id="statAvgCount" class="text-2xl font-bold text-slate-900">0</div>
-                    <div class="text-xs text-slate-400 mt-1">명/건</div>
                 </div>
             </div>
 
@@ -192,7 +170,6 @@
                                 <th class="px-4 sm:px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">이름</th>
                                 <th class="px-4 sm:px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">전화번호</th>
                                 <th class="px-4 sm:px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">이메일</th>
-                                <th class="px-4 sm:px-6 py-3.5 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">인원</th>
                                 <th class="px-4 sm:px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden sm:table-cell">신청일시</th>
                                 <th class="px-4 sm:px-6 py-3.5 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">상태</th>
                                 <th class="px-4 sm:px-6 py-3.5 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">관리</th>
@@ -249,27 +226,14 @@
                     <input type="email" id="editEmail" required
                            class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="editCount" class="block text-sm font-medium text-slate-700 mb-1.5">신청 인원</label>
-                        <select id="editCount" required
-                                class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-white">
-                            <option value="1">1명</option>
-                            <option value="2">2명</option>
-                            <option value="3">3명</option>
-                            <option value="4">4명</option>
-                            <option value="5">5명</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="editStatus" class="block text-sm font-medium text-slate-700 mb-1.5">상태</label>
+                <div>
+                    <label for="editStatus" class="block text-sm font-medium text-slate-700 mb-1.5">상태</label>
                         <select id="editStatus" required
                                 class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-white">
                             <option value="confirmed">확인됨</option>
                             <option value="pending">대기중</option>
                             <option value="cancelled">취소됨</option>
                         </select>
-                    </div>
                 </div>
                 <div class="flex gap-3 pt-2">
                     <button type="submit" id="btnSaveEdit"

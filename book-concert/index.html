@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 저자의 북 콘서트 - AI 시대의 팀장은 다르게 일합니다</title>
-    <meta name="description" content="김현 저자와 함께하는 AI 시대의 리더십 북 콘서트. AI 시대의 팀장은 다르게 일합니다.">
+    <meta name="description" content="김현 저자와 함께하는 AI 시대의 리더십 북 콘서트. 2026년 2월 23일(일) 19:00 MARU180 이벤트홀.">
+    <meta property="og:title" content="AI 저자의 북 콘서트 - AI 시대의 팀장은 다르게 일합니다">
+    <meta property="og:description" content="AI를 활용하는 리더와 그렇지 않은 리더의 차이, 그 해답을 저자 김현과 함께 나눕니다.">
+    <meta property="og:image" content="https://leadership.ai.kr/images/Book3.jpg">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -78,15 +81,19 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl mx-auto">
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
                     <div class="text-indigo-300 text-xs mb-1">일시</div>
-                    <div class="text-white font-semibold text-sm">2026년 3월 (추후 확정)</div>
+                    <div class="text-white font-semibold text-sm">2026. 2. 23 (일)</div>
+                    <div class="text-indigo-300 text-xs mt-0.5">19:00 ~ 21:00</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
                     <div class="text-indigo-300 text-xs mb-1">장소</div>
-                    <div class="text-white font-semibold text-sm">추후 공지</div>
+                    <a href="https://maru.org/maru/contact" target="_blank" rel="noopener"
+                       class="text-white font-semibold text-sm hover:text-indigo-200 transition-colors">MARU180 이벤트홀</a>
+                    <div class="text-indigo-300 text-xs mt-0.5">서울 강남구</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
                     <div class="text-indigo-300 text-xs mb-1">저자</div>
-                    <div class="text-white font-semibold text-sm">김현 (AI Leadership Lab)</div>
+                    <div class="text-white font-semibold text-sm">김현</div>
+                    <div class="text-indigo-300 text-xs mt-0.5">AI Leadership Lab 소장</div>
                 </div>
             </div>
         </div>
@@ -98,15 +105,9 @@
             <div class="flex flex-col md:flex-row">
                 <!-- Book Cover -->
                 <div class="md:w-2/5 bg-gradient-to-br from-indigo-50 to-slate-100 flex items-center justify-center p-8 md:p-12">
-                    <div class="w-48 md:w-56 aspect-[3/4] bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-lg shadow-2xl flex flex-col items-center justify-center text-white p-6 relative overflow-hidden">
-                        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 20px 20px;"></div>
-                        <div class="relative text-center">
-                            <div class="text-xs text-indigo-300 mb-2">김현 지음</div>
-                            <div class="text-lg font-bold leading-snug mb-3">AI 시대의<br>팀장은<br>다르게<br>일합니다</div>
-                            <div class="w-8 h-0.5 bg-indigo-400 mx-auto mb-3"></div>
-                            <div class="text-[10px] text-indigo-300">AI Leadership Lab</div>
-                        </div>
-                    </div>
+                    <img src="https://leadership.ai.kr/images/Book3.jpg"
+                         alt="AI 시대의 팀장은 다르게 일합니다 - 김현 지음"
+                         class="w-48 md:w-56 rounded-lg shadow-2xl">
                 </div>
                 <!-- Book Description -->
                 <div class="md:w-3/5 p-6 md:p-10 flex flex-col justify-center">
@@ -202,17 +203,6 @@
                         <input type="email" id="regEmail" required placeholder="example@email.com"
                                class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
                     </div>
-                    <div>
-                        <label for="regCount" class="block text-sm font-medium text-slate-700 mb-1.5">신청 인원 <span class="text-red-500">*</span></label>
-                        <select id="regCount" required
-                                class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-white">
-                            <option value="1">1명</option>
-                            <option value="2">2명</option>
-                            <option value="3">3명</option>
-                            <option value="4">4명</option>
-                            <option value="5">5명</option>
-                        </select>
-                    </div>
                     <button type="submit" id="btnRegister"
                             class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-xl text-sm transition-colors mt-2">
                         참가 신청하기
@@ -253,7 +243,6 @@
                             <div class="flex justify-between"><span class="text-slate-500">이름</span><span id="resName" class="font-medium"></span></div>
                             <div class="flex justify-between"><span class="text-slate-500">전화번호</span><span id="resPhone" class="font-medium"></span></div>
                             <div class="flex justify-between"><span class="text-slate-500">이메일</span><span id="resEmail" class="font-medium"></span></div>
-                            <div class="flex justify-between"><span class="text-slate-500">신청 인원</span><span id="resCount" class="font-medium"></span></div>
                             <div class="flex justify-between"><span class="text-slate-500">신청 일시</span><span id="resTimestamp" class="font-medium"></span></div>
                         </div>
                         <div class="flex gap-3 mt-5">
@@ -280,7 +269,13 @@
         <div class="max-w-4xl mx-auto px-4 py-8 text-center space-y-2">
             <p class="text-slate-300 font-medium">AI Leadership Lab</p>
             <p>&copy; 2026 AI Leadership Lab. All rights reserved.</p>
-            <p>문의: <a href="mailto:hyunnet@gmail.com" class="text-indigo-400 hover:text-indigo-300 transition-colors">hyunnet@gmail.com</a></p>
+            <p>행사 문의:
+                <a href="mailto:hyunnet@gmail.com" class="text-indigo-400 hover:text-indigo-300 transition-colors">hyunnet@gmail.com</a>
+                &middot;
+                <a href="tel:010-6613-5782" class="text-indigo-400 hover:text-indigo-300 transition-colors">010-6613-5782</a>
+                &middot;
+                <a href="tel:010-5261-9459" class="text-indigo-400 hover:text-indigo-300 transition-colors">010-5261-9459</a>
+            </p>
         </div>
     </footer>
 
@@ -308,17 +303,6 @@
                     <label class="block text-sm font-medium text-slate-700 mb-1.5">이메일</label>
                     <input type="email" id="editEmail" required
                            class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1.5">신청 인원</label>
-                    <select id="editCount" required
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-white">
-                        <option value="1">1명</option>
-                        <option value="2">2명</option>
-                        <option value="3">3명</option>
-                        <option value="4">4명</option>
-                        <option value="5">5명</option>
-                    </select>
                 </div>
                 <button type="submit" id="btnSaveEdit"
                         class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-xl text-sm transition-colors">
