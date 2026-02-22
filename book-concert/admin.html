@@ -111,7 +111,7 @@
         <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 <!-- Total Registrations -->
                 <div class="bg-white rounded-xl border border-slate-200 p-5">
                     <div class="flex items-center justify-between mb-3">
@@ -133,6 +133,25 @@
                     </div>
                     <div id="statTodayDocs" class="text-2xl font-bold text-slate-900">0</div>
                     <div class="text-xs text-slate-400 mt-1">명</div>
+                </div>
+                <!-- Registration Toggle -->
+                <div id="regToggleCard" class="bg-white rounded-xl border border-slate-200 p-5 col-span-2 lg:col-span-1">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-medium text-slate-500">신청 접수 상태</span>
+                        <div id="regStatusIcon" class="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div id="regStatusText" class="text-sm font-bold text-slate-900">로딩 중...</div>
+                            <div id="regStatusSub" class="text-xs text-slate-400 mt-0.5"></div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="regToggle" class="sr-only peer" disabled>
+                            <div class="w-11 h-6 bg-slate-200 peer-focus:ring-2 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                        </label>
+                    </div>
                 </div>
             </div>
 

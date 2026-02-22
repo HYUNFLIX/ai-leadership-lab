@@ -19,7 +19,7 @@ const participantsRef = db.collection("participants");
 // Global State
 // ============================================================
 let currentDocId = null;
-const REGISTRATION_CLOSED = true; // true: 신청 마감 / false: 신청 가능
+let REGISTRATION_CLOSED = false; // Firestore에서 실시간 업데이트
 
 // ============================================================
 // DOM Elements
@@ -180,12 +180,24 @@ function validateRegistration(name, phone, email) {
 // 1. 참가 신청 (Create)
 // ============================================================
 // ============================================================
-// Registration Closed UI
+// Registration Closed - Firestore Realtime
 // ============================================================
-if (REGISTRATION_CLOSED) {
-    // Replace form with closed message
+const settingsRef = db.collection("settings").doc("registration");
+const _origFormHTML = $("#panelRegister") ? $("#panelRegister").innerHTML : "";
+
+settingsRef.onSnapshot((doc) => {
+    const closed = doc.exists ? doc.data().closed : false;
+    REGISTRATION_CLOSED = closed;
+    applyClosedUI(closed);
+}, (error) => {
+    console.error("Settings read error:", error);
+});
+
+function applyClosedUI(closed) {
     const panelReg = $("#panelRegister");
-    if (panelReg) {
+    if (!panelReg) return;
+
+    if (closed) {
         panelReg.innerHTML = `
             <div class="text-center py-12">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
@@ -197,27 +209,33 @@ if (REGISTRATION_CLOSED) {
                 <p class="text-sm text-slate-500 leading-relaxed">많은 관심에 감사드립니다.<br>다음 행사에서 만나 뵙겠습니다.</p>
             </div>
         `;
+        // Disable CTA buttons
+        document.querySelectorAll(".btn-pill-primary").forEach((btn) => {
+            btn.textContent = "신청 마감";
+            btn.classList.add("pointer-events-none", "opacity-50");
+            btn.removeAttribute("href");
+        });
+        // Hide mobile sticky CTA
+        const mobileCta = document.getElementById("mobileCta");
+        if (mobileCta) mobileCta.style.display = "none";
+    } else {
+        // Restore form if it was replaced
+        if (!$("#formRegister")) {
+            panelReg.innerHTML = _origFormHTML;
+            // Re-bind phone auto-formatting
+            const newRegPhone = $("#regPhone");
+            if (newRegPhone) newRegPhone.addEventListener("input", autoFormatPhone);
+        }
+        // Restore CTA buttons
+        document.querySelectorAll(".btn-pill-primary").forEach((btn) => {
+            btn.textContent = "참가 신청하기";
+            btn.classList.remove("pointer-events-none", "opacity-50");
+            btn.setAttribute("href", "#sectionParticipant");
+        });
+        // Show mobile sticky CTA
+        const mobileCta = document.getElementById("mobileCta");
+        if (mobileCta) mobileCta.style.display = "";
     }
-
-    // Disable all CTA buttons
-    document.querySelectorAll(".btn-pill-primary").forEach((btn) => {
-        btn.textContent = "신청 마감";
-        btn.classList.add("pointer-events-none", "opacity-50");
-        btn.removeAttribute("href");
-    });
-
-    // Update event details CTA
-    const detailCta = document.querySelector(".bg-indigo-600.hover\\:bg-indigo-500");
-    if (detailCta) {
-        detailCta.textContent = "신청 마감";
-        detailCta.classList.remove("bg-indigo-600", "hover:bg-indigo-500");
-        detailCta.classList.add("bg-slate-600", "pointer-events-none", "opacity-50");
-        detailCta.removeAttribute("href");
-    }
-
-    // Hide mobile sticky CTA
-    const mobileCta = document.getElementById("mobileCta");
-    if (mobileCta) mobileCta.remove();
 }
 
 if (formRegister) formRegister.addEventListener("submit", async (e) => {
