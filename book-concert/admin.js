@@ -21,6 +21,7 @@ const participantsRef = db.collection("participants");
 let unsubscribe = null;       // onSnapshot 리스너 해제
 let allDocs = [];             // 전체 문서 캐시 (검색 필터용)
 let editingDocId = null;      // 수정 중인 문서 ID
+const settingsRef = db.collection("settings").doc("registration");
 
 // ============================================================
 // DOM
@@ -71,12 +72,64 @@ auth.onAuthStateChanged((user) => {
         dashboardScreen.classList.add("fade-in");
         adminUserEmail.textContent = user.email;
         startRealtimeListener();
+        initRegToggle();
     } else {
         dashboardScreen.classList.add("hidden");
         loginScreen.classList.remove("hidden");
         stopRealtimeListener();
     }
 });
+
+// ============================================================
+// Registration Toggle (신청 마감 온/오프)
+// ============================================================
+function initRegToggle() {
+    const toggle = document.getElementById("regToggle");
+    const statusText = document.getElementById("regStatusText");
+    const statusSub = document.getElementById("regStatusSub");
+    const statusIcon = document.getElementById("regStatusIcon");
+
+    // Listen to settings in realtime
+    settingsRef.onSnapshot((doc) => {
+        const closed = doc.exists ? doc.data().closed : false;
+        toggle.checked = !closed;
+        toggle.disabled = false;
+        updateToggleUI(!closed);
+    }, (error) => {
+        console.error("Settings listener error:", error);
+        statusText.textContent = "오류";
+        statusSub.textContent = "설정을 불러올 수 없습니다";
+    });
+
+    // Toggle change handler
+    toggle.addEventListener("change", async () => {
+        const isOpen = toggle.checked;
+        toggle.disabled = true;
+        try {
+            await settingsRef.set({ closed: !isOpen }, { merge: true });
+        } catch (error) {
+            console.error("Toggle error:", error);
+            alert("상태 변경 중 오류가 발생했습니다.\n\n오류: " + error.message);
+            toggle.checked = !isOpen; // revert
+        } finally {
+            toggle.disabled = false;
+        }
+    });
+
+    function updateToggleUI(isOpen) {
+        if (isOpen) {
+            statusText.textContent = "접수 중";
+            statusSub.textContent = "신청을 받고 있습니다";
+            statusIcon.className = "w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center";
+            statusIcon.innerHTML = '<svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>';
+        } else {
+            statusText.textContent = "마감됨";
+            statusSub.textContent = "신청이 중단되었습니다";
+            statusIcon.className = "w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center";
+            statusIcon.innerHTML = '<svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>';
+        }
+    }
+}
 
 // ============================================================
 // Login
