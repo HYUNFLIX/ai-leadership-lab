@@ -180,21 +180,9 @@ function validateRegistration(name, phone, email) {
 // ============================================================
 formRegister.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const name = regName.value.trim();
-    const phone = regPhone.value.trim();
-    const email = regEmail.value.trim();
 
-    if (!validateRegistration(name, phone, email)) return;
-
-    const consent = $("#regConsent");
-    if (consent && !consent.checked) {
-        alert("개인정보 수집·이용에 동의해 주세요.");
-        return;
-    }
-
-    const photoConsent = $("#regPhotoConsent");
-    if (photoConsent && !photoConsent.checked) {
-        alert("행사 촬영 및 활용에 동의해 주세요.");
+    alert("신청이 마감되었습니다.\n많은 관심에 감사드립니다.");
+    return;
         return;
     }
 
