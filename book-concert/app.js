@@ -191,6 +191,8 @@ settingsRef.onSnapshot((doc) => {
     applyClosedUI(closed);
 }, (error) => {
     console.error("Settings read error:", error);
+    // Firestore 규칙 오류 시에도 기본 상태 적용
+    console.warn("settings/registration 문서 읽기 실패 - Firestore 보안 규칙을 확인하세요.");
 });
 
 function applyClosedUI(closed) {
@@ -209,10 +211,12 @@ function applyClosedUI(closed) {
                 <p class="text-sm text-slate-500 leading-relaxed">많은 관심에 감사드립니다.<br>다음 행사에서 만나 뵙겠습니다.</p>
             </div>
         `;
-        // Disable CTA buttons
-        document.querySelectorAll(".btn-pill-primary").forEach((btn) => {
+        // Disable ALL CTA buttons/links pointing to registration
+        document.querySelectorAll('a[href="#sectionParticipant"], .btn-pill-primary').forEach((btn) => {
+            btn.dataset.origText = btn.textContent.trim();
+            btn.dataset.origHref = btn.getAttribute("href") || "";
             btn.textContent = "신청 마감";
-            btn.classList.add("pointer-events-none", "opacity-50");
+            btn.classList.add("pointer-events-none", "opacity-50", "cta-closed");
             btn.removeAttribute("href");
         });
         // Hide mobile sticky CTA
@@ -226,11 +230,11 @@ function applyClosedUI(closed) {
             const newRegPhone = $("#regPhone");
             if (newRegPhone) newRegPhone.addEventListener("input", autoFormatPhone);
         }
-        // Restore CTA buttons
-        document.querySelectorAll(".btn-pill-primary").forEach((btn) => {
-            btn.textContent = "참가 신청하기";
-            btn.classList.remove("pointer-events-none", "opacity-50");
-            btn.setAttribute("href", "#sectionParticipant");
+        // Restore ALL CTA buttons/links
+        document.querySelectorAll(".cta-closed").forEach((btn) => {
+            btn.textContent = btn.dataset.origText || "참가 신청하기";
+            btn.setAttribute("href", btn.dataset.origHref || "#sectionParticipant");
+            btn.classList.remove("pointer-events-none", "opacity-50", "cta-closed");
         });
         // Show mobile sticky CTA
         const mobileCta = document.getElementById("mobileCta");
@@ -243,6 +247,24 @@ if (formRegister) formRegister.addEventListener("submit", async (e) => {
 
     if (REGISTRATION_CLOSED) {
         alert("신청이 마감되었습니다.\n많은 관심에 감사드립니다.");
+        return;
+    }
+
+    const name = regName.value.trim();
+    const phone = regPhone.value.trim();
+    const email = regEmail.value.trim();
+
+    if (!validateRegistration(name, phone, email)) return;
+
+    // Consent checks
+    const consent = document.getElementById("regConsent");
+    const photoConsent = document.getElementById("regPhotoConsent");
+    if (consent && !consent.checked) {
+        alert("개인정보 수집·이용에 동의해 주세요.");
+        return;
+    }
+    if (photoConsent && !photoConsent.checked) {
+        alert("행사 촬영 및 활용에 동의해 주세요.");
         return;
     }
 
