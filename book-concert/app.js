@@ -19,6 +19,7 @@ const participantsRef = db.collection("participants");
 // Global State
 // ============================================================
 let currentDocId = null;
+const REGISTRATION_CLOSED = true; // true: 신청 마감 / false: 신청 가능
 
 // ============================================================
 // DOM Elements
@@ -178,11 +179,52 @@ function validateRegistration(name, phone, email) {
 // ============================================================
 // 1. 참가 신청 (Create)
 // ============================================================
-formRegister.addEventListener("submit", async (e) => {
+// ============================================================
+// Registration Closed UI
+// ============================================================
+if (REGISTRATION_CLOSED) {
+    // Replace form with closed message
+    const panelReg = $("#panelRegister");
+    if (panelReg) {
+        panelReg.innerHTML = `
+            <div class="text-center py-12">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
+                    <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">신청이 마감되었습니다</h3>
+                <p class="text-sm text-slate-500 leading-relaxed">많은 관심에 감사드립니다.<br>다음 행사에서 만나 뵙겠습니다.</p>
+            </div>
+        `;
+    }
+
+    // Disable all CTA buttons
+    document.querySelectorAll(".btn-pill-primary").forEach((btn) => {
+        btn.textContent = "신청 마감";
+        btn.classList.add("pointer-events-none", "opacity-50");
+        btn.removeAttribute("href");
+    });
+
+    // Update event details CTA
+    const detailCta = document.querySelector(".bg-indigo-600.hover\\:bg-indigo-500");
+    if (detailCta) {
+        detailCta.textContent = "신청 마감";
+        detailCta.classList.remove("bg-indigo-600", "hover:bg-indigo-500");
+        detailCta.classList.add("bg-slate-600", "pointer-events-none", "opacity-50");
+        detailCta.removeAttribute("href");
+    }
+
+    // Hide mobile sticky CTA
+    const mobileCta = document.getElementById("mobileCta");
+    if (mobileCta) mobileCta.remove();
+}
+
+if (formRegister) formRegister.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    alert("신청이 마감되었습니다.\n많은 관심에 감사드립니다.");
-    return;
+    if (REGISTRATION_CLOSED) {
+        alert("신청이 마감되었습니다.\n많은 관심에 감사드립니다.");
         return;
     }
 
