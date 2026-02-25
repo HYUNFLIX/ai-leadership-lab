@@ -154,18 +154,31 @@
   }
 
   // ================ Enhanced Projects Marquee ================
+  let marqueeInitialized = false;
+
   function initProjectsMarquee() {
     if (!elements.marqueeTrack) return;
 
-    // Clone items for seamless infinite scroll
+    // Prevent re-initialization on resize (memory leak fix)
+    if (marqueeInitialized) {
+      // Only recalculate duration on resize
+      const trackWidth = elements.marqueeTrack.scrollWidth / 3;
+      const viewportWidth = window.innerWidth;
+      const duration = (trackWidth / viewportWidth) * config.marqueeSpeed;
+      elements.marqueeTrack.style.setProperty('--marquee-duration', `${duration}s`);
+      return;
+    }
+
+    // Clone items for seamless infinite scroll (only once)
     const items = elements.marqueeTrack.innerHTML;
-    elements.marqueeTrack.innerHTML = items + items + items; // Triple for smoother animation
+    elements.marqueeTrack.innerHTML = items + items + items;
+    marqueeInitialized = true;
 
     // Calculate and set animation duration based on content width
     const trackWidth = elements.marqueeTrack.scrollWidth / 3;
     const viewportWidth = window.innerWidth;
     const duration = (trackWidth / viewportWidth) * config.marqueeSpeed;
-    
+
     elements.marqueeTrack.style.setProperty('--marquee-duration', `${duration}s`);
     elements.marqueeTrack.style.setProperty('--marquee-width', `${trackWidth}px`);
 
@@ -293,9 +306,6 @@
       // Here you would typically send the data to your server
       showSuccess(form, '감사합니다! 문의사항이 접수되었습니다.');
       form.reset();
-      
-      // Log for development (remove in production)
-      console.log('Form submitted:', data);
     } else {
       showError(form, errors[0]);
     }
@@ -612,12 +622,27 @@
     if (!cubeScene || !cube) return;
 
     let isHovering = false;
+    let isVisible = false;
     let mouseX = 0;
     let mouseY = 0;
     let currentRotateX = -20;
     let currentRotateY = 0;
-    let autoRotateY = 0;
     let animationId = null;
+
+    // Visibility observer - only animate when cube is visible
+    const visibilityObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && !animationId) {
+          animate();
+        } else if (!isVisible && animationId) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
+        }
+      });
+    }, { threshold: 0.1 });
+
+    visibilityObserver.observe(cubeScene);
 
     // Mouse move handler
     cubeScene.addEventListener('mousemove', (e) => {
@@ -659,8 +684,13 @@
       mouseY = 0;
     });
 
-    // Animation loop for smooth interaction
+    // Animation loop for smooth interaction (only runs when visible)
     function animate() {
+      if (!isVisible) {
+        animationId = null;
+        return;
+      }
+
       if (isHovering) {
         // Interactive rotation based on mouse position
         const targetRotateX = -20 + mouseY * 30;
@@ -676,10 +706,14 @@
       animationId = requestAnimationFrame(animate);
     }
 
-    animate();
+    // Start animation only if visible
+    if (isVisible) {
+      animate();
+    }
 
     // Cleanup function
     return () => {
+      visibilityObserver.disconnect();
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
@@ -717,8 +751,6 @@
     
     // Add loaded class to body
     document.body.classList.add('loaded');
-    
-    console.log('AI Leadership Lab website initialized successfully! Version 2.1');
   }
 
   // ================ Start Application ================

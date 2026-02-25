@@ -1830,13 +1830,6 @@ html.dark-mode .theme-toggle .moon-icon {
   50% { transform: scale(1.05); }
 }
 
-.book-meta {
-  font-size: var(--font-size-sm);
-  color: var(--color-primary);
-  font-weight: 600;
-  margin-bottom: var(--spacing-sm);
-}
-
 .book-content {
   padding: var(--spacing-xl);
 }
@@ -2154,7 +2147,7 @@ html.dark-mode .theme-toggle .moon-icon {
 .footer-logo-sub {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--primary);
 }
 
 .footer-tagline {
