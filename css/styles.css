@@ -115,13 +115,12 @@ html.dark-mode .hero-gradient {
 }
 
 html.dark-mode .navbar {
-  background: transparent;
+  background: rgba(15, 23, 42, 0.92);
 }
 
 html.dark-mode .navbar.scrolled {
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.96);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* ================ Reset & Base ================ */
@@ -277,15 +276,16 @@ ul {
   top: 0;
   left: 0;
   right: 0;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 1000;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
 }
 
 .nav-wrapper {
@@ -405,10 +405,6 @@ html.dark-mode .nav-menu.nav-pill {
 
 html.dark-mode .nav-pill .nav-link:hover {
   background: rgba(255, 255, 255, 0.08);
-}
-
-html.dark-mode .navbar.scrolled {
-  background: rgba(15, 23, 42, 0.85);
 }
 
 /* Theme Toggle Button */
