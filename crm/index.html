@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM - 고객사 관리 시스템</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        * { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+        body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); min-height: 100vh; }
+
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .glass-dark { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+
+        /* Status Colors */
+        .status-lead { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+        .status-proposal { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .status-negotiation { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .status-contract { background: linear-gradient(135deg, #10b981, #059669); }
+        .status-lost { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .status-badge-lead { background: rgba(99,102,241,0.2); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
+        .status-badge-proposal { background: rgba(245,158,11,0.2); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+        .status-badge-negotiation { background: rgba(59,130,246,0.2); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+        .status-badge-contract { background: rgba(16,185,129,0.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+        .status-badge-lost { background: rgba(239,68,68,0.2); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+
+        /* Kanban */
+        .kanban-column { min-height: 500px; }
+        .kanban-card { cursor: grab; transition: all 0.2s; }
+        .kanban-card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .kanban-card.dragging { opacity: 0.5; cursor: grabbing; }
+        .kanban-column.drag-over { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.5); }
+
+        /* Modal */
+        .modal { display: none; }
+        .modal.active { display: flex; }
+        .modal-content { animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Toast */
+        .toast { transform: translateX(150%); transition: transform 0.3s ease; }
+        .toast.show { transform: translateX(0); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
+        /* Tab */
+        .tab-btn { transition: all 0.2s; }
+        .tab-btn.active { background: rgba(99,102,241,0.3); border-color: #6366f1; }
+
+        /* Input */
+        input, select, textarea {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            transition: all 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #6366f1;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+        }
+        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4); }
+
+        select option { background: #1e293b; color: white; }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Header -->
+    <header class="glass-dark sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="../index.html" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="ri-arrow-left-line text-xl"></i>
+                    </a>
+                    <h1 class="text-xl font-bold flex items-center gap-2">
+                        <i class="ri-building-4-line text-indigo-400"></i>
+                        고객사 관리 (CRM)
+                    </h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <!-- View Toggle -->
+                    <div class="flex glass rounded-lg p-1">
+                        <button id="kanban-view-btn" class="tab-btn active px-3 py-1.5 rounded-md text-sm flex items-center gap-1">
+                            <i class="ri-layout-column-line"></i> 파이프라인
+                        </button>
+                        <button id="list-view-btn" class="tab-btn px-3 py-1.5 rounded-md text-sm flex items-center gap-1">
+                            <i class="ri-list-check"></i> 목록
+                        </button>
+                    </div>
+                    <!-- Export -->
+                    <div class="relative">
+                        <button id="export-btn" class="glass px-3 py-2 rounded-lg text-sm hover:bg-white/10 transition-colors flex items-center gap-1">
+                            <i class="ri-download-line"></i> 내보내기
+                        </button>
+                        <div id="export-menu" class="hidden absolute right-0 top-full mt-2 glass rounded-lg py-2 min-w-[140px] z-50">
+                            <button onclick="exportCSV()" class="w-full px-4 py-2 text-left text-sm hover:bg-white/10 flex items-center gap-2">
+                                <i class="ri-file-excel-line text-green-400"></i> CSV (Excel)
+                            </button>
+                            <button onclick="exportJSON()" class="w-full px-4 py-2 text-left text-sm hover:bg-white/10 flex items-center gap-2">
+                                <i class="ri-braces-line text-yellow-400"></i> JSON
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Add Client -->
+                    <button onclick="openAddModal()" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">
+                        <i class="ri-add-line"></i> 고객사 추가
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats -->
+    <section class="max-w-7xl mx-auto px-4 py-6">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div class="glass rounded-xl p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg status-lead flex items-center justify-center">
+                        <i class="ri-user-search-line"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold" id="stat-lead">0</div>
+                        <div class="text-xs text-gray-400">잠재고객</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg status-proposal flex items-center justify-center">
+                        <i class="ri-file-list-3-line"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold" id="stat-proposal">0</div>
+                        <div class="text-xs text-gray-400">제안중</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg status-negotiation flex items-center justify-center">
+                        <i class="ri-discuss-line"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold" id="stat-negotiation">0</div>
+                        <div class="text-xs text-gray-400">협상중</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg status-contract flex items-center justify-center">
+                        <i class="ri-checkbox-circle-line"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold" id="stat-contract">0</div>
+                        <div class="text-xs text-gray-400">계약완료</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+                        <i class="ri-money-dollar-circle-line"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold" id="stat-total-amount">0</div>
+                        <div class="text-xs text-gray-400">총 계약금액</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search & Filter -->
+    <section class="max-w-7xl mx-auto px-4 pb-4">
+        <div class="flex flex-wrap gap-3">
+            <div class="flex-1 min-w-[200px]">
+                <div class="relative">
+                    <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="search-input" placeholder="회사명, 담당자 검색..."
+                           class="w-full pl-10 pr-4 py-2.5 rounded-lg">
+                </div>
+            </div>
+            <select id="filter-status" class="px-4 py-2.5 rounded-lg min-w-[120px]">
+                <option value="all">전체 상태</option>
+                <option value="lead">잠재고객</option>
+                <option value="proposal">제안중</option>
+                <option value="negotiation">협상중</option>
+                <option value="contract">계약완료</option>
+                <option value="lost">실패</option>
+            </select>
+            <select id="filter-interest" class="px-4 py-2.5 rounded-lg min-w-[140px]">
+                <option value="all">전체 관심사</option>
+                <option value="ai-leadership">AI 리더십</option>
+                <option value="digital-transformation">디지털 전환</option>
+                <option value="innovation">혁신</option>
+                <option value="leadership">리더십</option>
+                <option value="communication">소통</option>
+                <option value="team-building">팀빌딩</option>
+            </select>
+        </div>
+    </section>
+
+    <!-- Kanban View -->
+    <section id="kanban-view" class="max-w-7xl mx-auto px-4 pb-8">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <!-- Lead Column -->
+            <div class="kanban-column glass rounded-xl p-4" data-status="lead">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
+                        잠재고객
+                    </h3>
+                    <span class="text-sm text-gray-400 kanban-count">0</span>
+                </div>
+                <div class="kanban-cards space-y-3"></div>
+            </div>
+
+            <!-- Proposal Column -->
+            <div class="kanban-column glass rounded-xl p-4" data-status="proposal">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                        제안중
+                    </h3>
+                    <span class="text-sm text-gray-400 kanban-count">0</span>
+                </div>
+                <div class="kanban-cards space-y-3"></div>
+            </div>
+
+            <!-- Negotiation Column -->
+            <div class="kanban-column glass rounded-xl p-4" data-status="negotiation">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-blue-500"></span>
+                        협상중
+                    </h3>
+                    <span class="text-sm text-gray-400 kanban-count">0</span>
+                </div>
+                <div class="kanban-cards space-y-3"></div>
+            </div>
+
+            <!-- Contract Column -->
+            <div class="kanban-column glass rounded-xl p-4" data-status="contract">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                        계약완료
+                    </h3>
+                    <span class="text-sm text-gray-400 kanban-count">0</span>
+                </div>
+                <div class="kanban-cards space-y-3"></div>
+            </div>
+
+            <!-- Lost Column -->
+            <div class="kanban-column glass rounded-xl p-4" data-status="lost">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                        실패
+                    </h3>
+                    <span class="text-sm text-gray-400 kanban-count">0</span>
+                </div>
+                <div class="kanban-cards space-y-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- List View -->
+    <section id="list-view" class="max-w-7xl mx-auto px-4 pb-8 hidden">
+        <div class="glass rounded-xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-white/5 border-b border-white/10">
+                        <tr>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">회사명</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">담당자</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">연락처</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">상태</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">계약금액</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">마지막 연락</th>
+                            <th class="text-center px-4 py-3 text-sm font-medium text-gray-400">작업</th>
+                        </tr>
+                    </thead>
+                    <tbody id="client-table-body" class="divide-y divide-white/5">
+                        <!-- Client rows will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="empty-list" class="hidden py-12 text-center text-gray-400">
+                <i class="ri-inbox-line text-4xl mb-3"></i>
+                <p>등록된 고객사가 없습니다.</p>
+                <button onclick="openAddModal()" class="mt-3 text-indigo-400 hover:text-indigo-300">
+                    + 첫 고객사 추가하기
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add/Edit Client Modal -->
+    <div id="client-modal" class="modal fixed inset-0 z-50 items-center justify-center p-4 bg-black/70">
+        <div class="modal-content glass-dark rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-white/10">
+                <div class="flex items-center justify-between">
+                    <h2 id="modal-title" class="text-xl font-bold">고객사 추가</h2>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-white">
+                        <i class="ri-close-line text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+            <form id="client-form" class="p-6 space-y-6">
+                <input type="hidden" id="client-id">
+
+                <!-- Company Info -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">회사 정보</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">회사명 <span class="text-red-400">*</span></label>
+                            <input type="text" id="company-name" required class="w-full px-4 py-2.5 rounded-lg" placeholder="예: 삼성전자">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">상태</label>
+                            <select id="client-status" class="w-full px-4 py-2.5 rounded-lg">
+                                <option value="lead">잠재고객</option>
+                                <option value="proposal">제안중</option>
+                                <option value="negotiation">협상중</option>
+                                <option value="contract">계약완료</option>
+                                <option value="lost">실패</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">담당자 정보</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">담당자명</label>
+                            <input type="text" id="contact-name" class="w-full px-4 py-2.5 rounded-lg" placeholder="예: 김철수">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">직책</label>
+                            <input type="text" id="contact-title" class="w-full px-4 py-2.5 rounded-lg" placeholder="예: 인사팀장">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">전화번호</label>
+                            <input type="tel" id="contact-phone" class="w-full px-4 py-2.5 rounded-lg" placeholder="예: 010-1234-5678">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">이메일</label>
+                            <input type="email" id="contact-email" class="w-full px-4 py-2.5 rounded-lg" placeholder="예: kim@company.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interest & Contract -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">강의/계약 정보</h3>
+                    <div>
+                        <label class="block text-sm mb-2">관심 주제</label>
+                        <div class="flex flex-wrap gap-2" id="interest-tags">
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="interests" value="ai-leadership" class="hidden peer">
+                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">AI 리더십</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="interests" value="digital-transformation" class="hidden peer">
+                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">디지털 전환</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="interests" value="innovation" class="hidden peer">
+                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">혁신</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="interests" value="leadership" class="hidden peer">
+                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">리더십</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="interests" value="communication" class="hidden peer">
+                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">소통</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="interests" value="team-building" class="hidden peer">
+                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">팀빌딩</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">계약금액 (만원)</label>
+                            <input type="number" id="contract-amount" class="w-full px-4 py-2.5 rounded-lg" placeholder="예: 500">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">마지막 연락일</label>
+                            <input type="date" id="last-contact" class="w-full px-4 py-2.5 rounded-lg">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div>
+                    <label class="block text-sm mb-1">메모</label>
+                    <textarea id="client-notes" rows="3" class="w-full px-4 py-2.5 rounded-lg resize-none" placeholder="고객사 관련 메모..."></textarea>
+                </div>
+
+                <!-- Submit -->
+                <div class="flex justify-end gap-3 pt-4 border-t border-white/10">
+                    <button type="button" onclick="closeModal()" class="px-6 py-2.5 rounded-lg glass hover:bg-white/10 transition-colors">
+                        취소
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors font-medium">
+                        저장
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Client Detail Modal -->
+    <div id="detail-modal" class="modal fixed inset-0 z-50 items-center justify-center p-4 bg-black/70">
+        <div class="modal-content glass-dark rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-white/10">
+                <div class="flex items-center justify-between">
+                    <h2 id="detail-company-name" class="text-xl font-bold">회사명</h2>
+                    <div class="flex items-center gap-2">
+                        <button onclick="editCurrentClient()" class="px-3 py-1.5 rounded-lg glass hover:bg-white/10 text-sm flex items-center gap-1">
+                            <i class="ri-edit-line"></i> 수정
+                        </button>
+                        <button onclick="deleteCurrentClient()" class="px-3 py-1.5 rounded-lg glass hover:bg-red-500/20 text-red-400 text-sm flex items-center gap-1">
+                            <i class="ri-delete-bin-line"></i> 삭제
+                        </button>
+                        <button onclick="closeDetailModal()" class="text-gray-400 hover:text-white ml-2">
+                            <i class="ri-close-line text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Client Info -->
+                    <div class="space-y-4">
+                        <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">고객 정보</h3>
+                        <div class="glass rounded-xl p-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-400">상태</span>
+                                <span id="detail-status" class="px-3 py-1 rounded-full text-sm status-badge-lead">잠재고객</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-400">담당자</span>
+                                <span id="detail-contact"></span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-400">전화번호</span>
+                                <a id="detail-phone" href="#" class="text-indigo-400 hover:underline"></a>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-400">이메일</span>
+                                <a id="detail-email" href="#" class="text-indigo-400 hover:underline"></a>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-400">계약금액</span>
+                                <span id="detail-amount" class="font-semibold text-emerald-400"></span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-400">마지막 연락</span>
+                                <span id="detail-last-contact"></span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm text-gray-400 mb-2">관심 주제</h4>
+                            <div id="detail-interests" class="flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm text-gray-400 mb-2">메모</h4>
+                            <div id="detail-notes" class="glass rounded-xl p-4 text-sm whitespace-pre-wrap"></div>
+                        </div>
+                    </div>
+
+                    <!-- Contact History -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">상담 이력</h3>
+                            <button onclick="openHistoryForm()" class="text-indigo-400 hover:text-indigo-300 text-sm flex items-center gap-1">
+                                <i class="ri-add-line"></i> 추가
+                            </button>
+                        </div>
+
+                        <!-- Add History Form -->
+                        <div id="history-form" class="hidden glass rounded-xl p-4 space-y-3">
+                            <div class="grid grid-cols-2 gap-3">
+                                <select id="history-type" class="px-3 py-2 rounded-lg text-sm">
+                                    <option value="call">전화</option>
+                                    <option value="meeting">미팅</option>
+                                    <option value="email">이메일</option>
+                                    <option value="other">기타</option>
+                                </select>
+                                <input type="date" id="history-date" class="px-3 py-2 rounded-lg text-sm">
+                            </div>
+                            <textarea id="history-content" rows="2" class="w-full px-3 py-2 rounded-lg text-sm resize-none" placeholder="상담 내용..."></textarea>
+                            <div class="flex justify-end gap-2">
+                                <button type="button" onclick="closeHistoryForm()" class="px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:text-white">취소</button>
+                                <button type="button" onclick="saveHistory()" class="px-3 py-1.5 rounded-lg text-sm bg-indigo-600 hover:bg-indigo-500">저장</button>
+                            </div>
+                        </div>
+
+                        <div id="history-list" class="space-y-3 max-h-[400px] overflow-y-auto">
+                            <!-- History items will be inserted here -->
+                        </div>
+                        <div id="history-empty" class="hidden text-center py-8 text-gray-400">
+                            <i class="ri-chat-history-line text-3xl mb-2"></i>
+                            <p class="text-sm">상담 이력이 없습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast fixed bottom-6 right-6 px-6 py-3 rounded-xl shadow-lg z-50">
+        <span id="toast-message"></span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="crm.js"></script>
+</body>
+</html>
