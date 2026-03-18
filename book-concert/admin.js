@@ -1,44 +1,21 @@
 // ============================================================
-// Firebase Configuration
+// Admin Dashboard - API-based (Firebase 제거 버전)
 // ============================================================
-const firebaseConfig = {
-    apiKey: "AIzaSyBsYhirjhAxINaZhYMdPavYxYht4qROqRs",
-    authDomain: "book-concert-967de.firebaseapp.com",
-    projectId: "book-concert-967de",
-    storageBucket: "book-concert-967de.firebasestorage.app",
-    messagingSenderId: "814514997129",
-    appId: "1:814514997129:web:87942dd13339b46a780358"
-};
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
-const participantsRef = db.collection("participants");
-
-// ============================================================
 // State
-// ============================================================
-let unsubscribe = null;       // onSnapshot 리스너 해제
-let allDocs = [];             // 전체 문서 캐시 (검색 필터용)
-let editingDocId = null;      // 수정 중인 문서 ID
-const settingsRef = db.collection("settings").doc("registration");
+let allDocs = [];
+let editingDocId = null;
+let pollInterval = null;
 
-// ============================================================
 // DOM
-// ============================================================
 const $ = (sel) => document.querySelector(sel);
 
-// Screens
 const loginScreen = $("#loginScreen");
 const dashboardScreen = $("#dashboardScreen");
-
-// Login
 const formLogin = $("#formLogin");
 const loginEmail = $("#loginEmail");
 const loginPassword = $("#loginPassword");
 const btnLogin = $("#btnLogin");
-
-// Dashboard
 const adminUserEmail = $("#adminUserEmail");
 const btnLogout = $("#btnLogout");
 const tableBody = $("#tableBody");
@@ -46,12 +23,8 @@ const emptyState = $("#emptyState");
 const searchNoResult = $("#searchNoResult");
 const searchInput = $("#searchInput");
 const btnExportCSV = $("#btnExportCSV");
-
-// Stats
 const statTotalDocs = $("#statTotalDocs");
 const statTodayDocs = $("#statTodayDocs");
-
-// Edit Modal
 const modalEdit = $("#modalEdit");
 const formEdit = $("#formEdit");
 const editName = $("#editName");
@@ -63,54 +36,65 @@ const btnCloseEdit = $("#btnCloseEdit");
 const btnCancelEdit = $("#btnCancelEdit");
 
 // ============================================================
-// Auth State Observer
+// Auth Check on Load
 // ============================================================
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        loginScreen.classList.add("hidden");
-        dashboardScreen.classList.remove("hidden");
-        dashboardScreen.classList.add("fade-in");
-        adminUserEmail.textContent = user.email;
-        startRealtimeListener();
-        initRegToggle();
-    } else {
-        dashboardScreen.classList.add("hidden");
-        loginScreen.classList.remove("hidden");
-        stopRealtimeListener();
+async function checkAuth() {
+    try {
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+            const data = await res.json();
+            showDashboard(data.user);
+        }
+    } catch (e) {
+        // Not logged in
     }
-});
+}
+checkAuth();
+
+function showDashboard(user) {
+    loginScreen.classList.add("hidden");
+    dashboardScreen.classList.remove("hidden");
+    dashboardScreen.classList.add("fade-in");
+    adminUserEmail.textContent = user.email;
+    loadParticipants();
+    initRegToggle();
+    // Poll every 10 seconds
+    pollInterval = setInterval(loadParticipants, 10000);
+}
 
 // ============================================================
-// Registration Toggle (신청 마감 온/오프)
+// Registration Toggle
 // ============================================================
-function initRegToggle() {
+async function initRegToggle() {
     const toggle = document.getElementById("regToggle");
     const statusText = document.getElementById("regStatusText");
     const statusSub = document.getElementById("regStatusSub");
     const statusIcon = document.getElementById("regStatusIcon");
 
-    // Listen to settings in realtime
-    settingsRef.onSnapshot((doc) => {
-        const closed = doc.exists ? doc.data().closed : false;
+    try {
+        const res = await fetch("/api/participants/settings");
+        const data = await res.json();
+        const closed = data.closed;
         toggle.checked = !closed;
         toggle.disabled = false;
         updateToggleUI(!closed);
-    }, (error) => {
-        console.error("Settings listener error:", error);
+    } catch (error) {
         statusText.textContent = "오류";
         statusSub.textContent = "설정을 불러올 수 없습니다";
-    });
+    }
 
-    // Toggle change handler
     toggle.addEventListener("change", async () => {
         const isOpen = toggle.checked;
         toggle.disabled = true;
         try {
-            await settingsRef.set({ closed: !isOpen }, { merge: true });
+            await fetch("/api/participants/settings/registration", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ closed: !isOpen })
+            });
         } catch (error) {
-            console.error("Toggle error:", error);
-            alert("상태 변경 중 오류가 발생했습니다.\n\n오류: " + error.message);
-            toggle.checked = !isOpen; // revert
+            alert("상태 변경 중 오류가 발생했습니다.");
+            toggle.checked = !isOpen;
         } finally {
             toggle.disabled = false;
         }
@@ -148,20 +132,22 @@ formLogin.addEventListener("submit", async (e) => {
     btnLogin.textContent = "로그인 중...";
 
     try {
-        await auth.signInWithEmailAndPassword(email, password);
-        formLogin.reset();
-    } catch (error) {
-        console.error("Login error:", error);
-        let msg = "로그인에 실패했습니다.";
-        switch (error.code) {
-            case "auth/user-not-found": msg = "등록되지 않은 이메일입니다."; break;
-            case "auth/wrong-password":
-            case "auth/invalid-credential": msg = "비밀번호가 올바르지 않습니다."; break;
-            case "auth/invalid-email": msg = "이메일 형식이 올바르지 않습니다."; break;
-            case "auth/too-many-requests": msg = "로그인 시도가 너무 많습니다. 잠시 후 다시 시도해 주세요."; break;
-            default: msg = "로그인 오류: " + error.message;
+        const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.error || "로그인에 실패했습니다.");
+            return;
         }
-        alert(msg);
+
+        formLogin.reset();
+        showDashboard(data.user);
+    } catch (error) {
+        alert("로그인 오류: " + error.message);
     } finally {
         btnLogin.disabled = false;
         btnLogin.textContent = "로그인";
@@ -174,47 +160,32 @@ formLogin.addEventListener("submit", async (e) => {
 btnLogout.addEventListener("click", async () => {
     if (!confirm("로그아웃 하시겠습니까?")) return;
     try {
-        await auth.signOut();
-    } catch (error) {
-        console.error("Logout error:", error);
-    }
+        await fetch("/api/auth/logout", { method: "POST" });
+    } catch (e) {}
+    dashboardScreen.classList.add("hidden");
+    loginScreen.classList.remove("hidden");
+    if (pollInterval) clearInterval(pollInterval);
+    allDocs = [];
+    tableBody.innerHTML = "";
 });
 
 // ============================================================
-// Realtime Listener (onSnapshot)
+// Load Participants
 // ============================================================
-function startRealtimeListener() {
-    if (unsubscribe) return;
-
-    unsubscribe = participantsRef
-        .orderBy("timestamp", "desc")
-        .onSnapshot(
-            (snapshot) => {
-                allDocs = [];
-                snapshot.forEach((doc) => {
-                    allDocs.push({ id: doc.id, ...doc.data() });
-                });
-                updateStats(allDocs);
-                renderTable(filterDocs(allDocs));
-            },
-            (error) => {
-                console.error("Realtime listener error:", error);
-                alert("데이터 로드 중 오류가 발생했습니다.\n\n오류: " + error.message);
-            }
-        );
-}
-
-function stopRealtimeListener() {
-    if (unsubscribe) {
-        unsubscribe();
-        unsubscribe = null;
+async function loadParticipants() {
+    try {
+        const res = await fetch("/api/participants");
+        if (!res.ok) return;
+        allDocs = await res.json();
+        updateStats(allDocs);
+        renderTable(filterDocs(allDocs));
+    } catch (error) {
+        console.error("Load error:", error);
     }
-    allDocs = [];
-    tableBody.innerHTML = "";
 }
 
 // ============================================================
-// Stats Calculation
+// Stats
 // ============================================================
 function updateStats(docs) {
     const totalDocs = docs.length;
@@ -223,8 +194,8 @@ function updateStats(docs) {
     today.setHours(0, 0, 0, 0);
 
     docs.forEach((d) => {
-        if (d.timestamp) {
-            const ts = d.timestamp.toDate ? d.timestamp.toDate() : new Date(d.timestamp);
+        if (d.created_at) {
+            const ts = new Date(d.created_at);
             if (ts >= today) todayDocs++;
         }
     });
@@ -285,7 +256,7 @@ function renderTable(docs) {
             <td class="px-4 sm:px-6 py-4 font-medium text-slate-900 whitespace-nowrap">${escapeHtml(data.name)}</td>
             <td class="px-4 sm:px-6 py-4 text-slate-600 whitespace-nowrap">${escapeHtml(formatPhone(data.phone))}</td>
             <td class="px-4 sm:px-6 py-4 text-slate-600 whitespace-nowrap hidden md:table-cell">${escapeHtml(data.email)}</td>
-            <td class="px-4 sm:px-6 py-4 text-slate-500 text-xs whitespace-nowrap hidden sm:table-cell">${formatTimestamp(data.timestamp)}</td>
+            <td class="px-4 sm:px-6 py-4 text-slate-500 text-xs whitespace-nowrap hidden sm:table-cell">${formatTimestamp(data.created_at)}</td>
             <td class="px-4 sm:px-6 py-4 text-center">
                 <span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full ${statusClass}">${statusLabel}</span>
             </td>
@@ -301,10 +272,7 @@ function renderTable(docs) {
             </td>
         `;
 
-        // Edit button
         tr.querySelector(".btn-edit").addEventListener("click", () => openEditModal(data.id));
-
-        // Delete button
         tr.querySelector(".btn-delete").addEventListener("click", () => handleDelete(data.id, data.name));
 
         tableBody.appendChild(tr);
@@ -318,10 +286,11 @@ async function handleDelete(docId, name) {
     if (!confirm(`"${name}" 님의 신청을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) return;
 
     try {
-        await participantsRef.doc(docId).delete();
+        await fetch(`/api/participants/${docId}/admin`, { method: "DELETE" });
+        await loadParticipants();
     } catch (error) {
         console.error("Delete error:", error);
-        alert("삭제 중 오류가 발생했습니다.\n\n오류: " + error.message);
+        alert("삭제 중 오류가 발생했습니다.");
     }
 }
 
@@ -358,17 +327,17 @@ formEdit.addEventListener("submit", async (e) => {
     btnSaveEdit.textContent = "저장 중...";
 
     try {
-        await participantsRef.doc(editingDocId).update({
-            name,
-            phone: normalizePhone(phone),
-            email,
-            status
+        await fetch(`/api/participants/${editingDocId}/admin`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, phone, email, status })
         });
         closeModal("modalEdit");
         editingDocId = null;
+        await loadParticipants();
     } catch (error) {
         console.error("Update error:", error);
-        alert("수정 중 오류가 발생했습니다.\n\n오류: " + error.message);
+        alert("수정 중 오류가 발생했습니다.");
     } finally {
         btnSaveEdit.disabled = false;
         btnSaveEdit.textContent = "저장";
@@ -394,7 +363,7 @@ btnExportCSV.addEventListener("click", () => {
         d.name,
         formatPhone(d.phone),
         d.email,
-        formatTimestamp(d.timestamp),
+        formatTimestamp(d.created_at),
         d.status === "confirmed" ? "확인됨" : d.status === "pending" ? "대기중" : d.status === "cancelled" ? "취소됨" : d.status
     ]);
 
@@ -450,7 +419,7 @@ function formatPhone(phone) {
 
 function formatTimestamp(ts) {
     if (!ts) return "-";
-    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    const d = new Date(ts);
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, "0");
     const dd = String(d.getDate()).padStart(2, "0");

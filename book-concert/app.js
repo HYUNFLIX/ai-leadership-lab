@@ -1,29 +1,12 @@
 // ============================================================
-// Firebase Configuration
+// API-based Book Concert App (Firebase 제거 버전)
 // ============================================================
-const firebaseConfig = {
-    apiKey: "AIzaSyBsYhirjhAxINaZhYMdPavYxYht4qROqRs",
-    authDomain: "book-concert-967de.firebaseapp.com",
-    projectId: "book-concert-967de",
-    storageBucket: "book-concert-967de.firebasestorage.app",
-    messagingSenderId: "814514997129",
-    appId: "1:814514997129:web:87942dd13339b46a780358"
-};
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const participantsRef = db.collection("participants");
-
-// ============================================================
 // Global State
-// ============================================================
 let currentDocId = null;
-let REGISTRATION_CLOSED = false; // Firestore에서 실시간 업데이트
+let REGISTRATION_CLOSED = false;
 
-// ============================================================
 // DOM Elements
-// ============================================================
 const $ = (sel) => document.querySelector(sel);
 
 // Tabs
@@ -123,7 +106,7 @@ function formatPhone(phone) {
 
 function formatTimestamp(ts) {
     if (!ts) return "-";
-    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    const d = new Date(ts);
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, "0");
     const dd = String(d.getDate()).padStart(2, "0");
@@ -177,23 +160,20 @@ function validateRegistration(name, phone, email) {
 }
 
 // ============================================================
-// 1. 참가 신청 (Create)
+// Registration Closed - 서버에서 체크
 // ============================================================
-// ============================================================
-// Registration Closed - Firestore Realtime
-// ============================================================
-const settingsRef = db.collection("settings").doc("registration");
 const _origFormHTML = $("#panelRegister") ? $("#panelRegister").innerHTML : "";
 
-settingsRef.onSnapshot((doc) => {
-    const closed = doc.exists ? doc.data().closed : false;
-    REGISTRATION_CLOSED = closed;
-    applyClosedUI(closed);
-}, (error) => {
-    console.error("Settings read error:", error);
-    // Firestore 규칙 오류 시에도 기본 상태 적용
-    console.warn("settings/registration 문서 읽기 실패 - Firestore 보안 규칙을 확인하세요.");
-});
+async function checkRegistrationStatus() {
+    try {
+        const res = await fetch("/api/participants/settings");
+        const data = await res.json();
+        REGISTRATION_CLOSED = data.closed;
+        applyClosedUI(data.closed);
+    } catch (error) {
+        console.error("Settings read error:", error);
+    }
+}
 
 function applyClosedUI(closed) {
     const panelReg = $("#panelRegister");
@@ -211,7 +191,6 @@ function applyClosedUI(closed) {
                 <p class="text-sm text-slate-500 leading-relaxed">많은 관심에 감사드립니다.<br>다음 행사에서 만나 뵙겠습니다.</p>
             </div>
         `;
-        // Disable ALL CTA buttons/links pointing to registration
         document.querySelectorAll('a[href="#sectionParticipant"], .btn-pill-primary').forEach((btn) => {
             btn.dataset.origText = btn.textContent.trim();
             btn.dataset.origHref = btn.getAttribute("href") || "";
@@ -219,29 +198,31 @@ function applyClosedUI(closed) {
             btn.classList.add("pointer-events-none", "opacity-50", "cta-closed");
             btn.removeAttribute("href");
         });
-        // Hide mobile sticky CTA
         const mobileCta = document.getElementById("mobileCta");
         if (mobileCta) mobileCta.style.display = "none";
     } else {
-        // Restore form if it was replaced
         if (!$("#formRegister")) {
             panelReg.innerHTML = _origFormHTML;
-            // Re-bind phone auto-formatting
             const newRegPhone = $("#regPhone");
             if (newRegPhone) newRegPhone.addEventListener("input", autoFormatPhone);
         }
-        // Restore ALL CTA buttons/links
         document.querySelectorAll(".cta-closed").forEach((btn) => {
             btn.textContent = btn.dataset.origText || "참가 신청하기";
             btn.setAttribute("href", btn.dataset.origHref || "#sectionParticipant");
             btn.classList.remove("pointer-events-none", "opacity-50", "cta-closed");
         });
-        // Show mobile sticky CTA
         const mobileCta = document.getElementById("mobileCta");
         if (mobileCta) mobileCta.style.display = "";
     }
 }
 
+// 초기 체크 + 주기적 폴링 (30초)
+checkRegistrationStatus();
+setInterval(checkRegistrationStatus, 30000);
+
+// ============================================================
+// 1. 참가 신청 (Create)
+// ============================================================
 if (formRegister) formRegister.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -256,7 +237,6 @@ if (formRegister) formRegister.addEventListener("submit", async (e) => {
 
     if (!validateRegistration(name, phone, email)) return;
 
-    // Consent checks
     const consent = document.getElementById("regConsent");
     const photoConsent = document.getElementById("regPhotoConsent");
     if (consent && !consent.checked) {
@@ -272,30 +252,23 @@ if (formRegister) formRegister.addEventListener("submit", async (e) => {
     btnRegister.textContent = "신청 중...";
 
     try {
-        const phoneNorm = normalizePhone(phone);
-        const existing = await participantsRef
-            .where("phone", "==", phoneNorm)
-            .where("name", "==", name)
-            .get();
+        const res = await fetch("/api/participants/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, phone: normalizePhone(phone), email })
+        });
+        const data = await res.json();
 
-        if (!existing.empty) {
-            alert("이미 동일한 이름과 전화번호로 신청된 내역이 있습니다.\n'신청 확인/수정' 탭에서 확인해 주세요.");
+        if (!res.ok) {
+            alert(data.error || "신청 중 오류가 발생했습니다.");
             return;
         }
-
-        await participantsRef.add({
-            name: name,
-            phone: phoneNorm,
-            email: email,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            status: "confirmed"
-        });
 
         alert("참가 신청이 완료되었습니다!\n인사이트 공유회에서 만나 뵙겠습니다.");
         formRegister.reset();
     } catch (error) {
         console.error("Registration error:", error);
-        alert("신청 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.\n\n오류: " + error.message);
+        alert("신청 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.");
     } finally {
         btnRegister.disabled = false;
         btnRegister.textContent = "참가 신청하기";
@@ -319,31 +292,31 @@ formCheck.addEventListener("submit", async (e) => {
     checkNoResult.classList.add("hidden");
 
     try {
-        const phoneNorm = normalizePhone(phone);
-        const snapshot = await participantsRef
-            .where("name", "==", name)
-            .where("phone", "==", phoneNorm)
-            .get();
+        const res = await fetch("/api/participants/check", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, phone })
+        });
+        const result = await res.json();
 
-        if (snapshot.empty) {
+        if (!result.found) {
             checkNoResult.classList.remove("hidden");
             currentDocId = null;
         } else {
-            const doc = snapshot.docs[0];
-            const data = doc.data();
-            currentDocId = doc.id;
+            const data = result.data;
+            currentDocId = data.id;
 
             resName.textContent = data.name;
             resPhone.textContent = formatPhone(data.phone);
             resEmail.textContent = data.email;
-            resTimestamp.textContent = formatTimestamp(data.timestamp);
+            resTimestamp.textContent = formatTimestamp(data.created_at);
 
             checkResult.classList.remove("hidden");
             checkResult.classList.add("animate-fade-in");
         }
     } catch (error) {
         console.error("Query error:", error);
-        alert("조회 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.\n\n오류: " + error.message);
+        alert("조회 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.");
     } finally {
         btnCheck.disabled = false;
         btnCheck.textContent = "내 신청 조회하기";
@@ -353,21 +326,12 @@ formCheck.addEventListener("submit", async (e) => {
 // ============================================================
 // 3. 신청 수정 (Update)
 // ============================================================
-btnEdit.addEventListener("click", async () => {
+btnEdit.addEventListener("click", () => {
     if (!currentDocId) return;
-
-    try {
-        const doc = await participantsRef.doc(currentDocId).get();
-        if (!doc.exists) { alert("신청 내역을 찾을 수 없습니다."); return; }
-        const data = doc.data();
-        editName.value = data.name;
-        editPhone.value = formatPhone(data.phone);
-        editEmail.value = data.email;
-        openModal("modalEdit");
-    } catch (error) {
-        console.error("Edit fetch error:", error);
-        alert("정보를 불러오는 중 오류가 발생했습니다.");
-    }
+    editName.value = resName.textContent;
+    editPhone.value = resPhone.textContent;
+    editEmail.value = resEmail.textContent;
+    openModal("modalEdit");
 });
 
 formEdit.addEventListener("submit", async (e) => {
@@ -384,11 +348,17 @@ formEdit.addEventListener("submit", async (e) => {
     btnSaveEdit.textContent = "저장 중...";
 
     try {
-        await participantsRef.doc(currentDocId).update({
-            name: name,
-            phone: normalizePhone(phone),
-            email: email
+        const res = await fetch(`/api/participants/${currentDocId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, phone, email })
         });
+
+        if (!res.ok) {
+            const data = await res.json();
+            alert(data.error || "수정 중 오류가 발생했습니다.");
+            return;
+        }
 
         alert("수정이 완료되었습니다.");
         closeModal("modalEdit");
@@ -398,7 +368,7 @@ formEdit.addEventListener("submit", async (e) => {
         resEmail.textContent = email;
     } catch (error) {
         console.error("Update error:", error);
-        alert("수정 중 오류가 발생했습니다.\n\n오류: " + error.message);
+        alert("수정 중 오류가 발생했습니다.");
     } finally {
         btnSaveEdit.disabled = false;
         btnSaveEdit.textContent = "수정 완료";
@@ -413,7 +383,7 @@ btnDelete.addEventListener("click", async () => {
     if (!confirm("정말 신청을 취소하시겠습니까?\n이 작업은 되돌릴 수 없습니다.")) return;
 
     try {
-        await participantsRef.doc(currentDocId).delete();
+        await fetch(`/api/participants/${currentDocId}`, { method: "DELETE" });
         alert("신청이 취소되었습니다.");
         currentDocId = null;
         checkResult.classList.add("hidden");
@@ -421,6 +391,6 @@ btnDelete.addEventListener("click", async () => {
         formCheck.reset();
     } catch (error) {
         console.error("Delete error:", error);
-        alert("취소 중 오류가 발생했습니다.\n\n오류: " + error.message);
+        alert("취소 중 오류가 발생했습니다.");
     }
 });

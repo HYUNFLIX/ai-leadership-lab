@@ -1001,40 +1001,23 @@
         }
     </script>
 
-    <!-- Firebase SDK for Lectures -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, query, orderBy, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
-        // Firebase Configuration (same as lectures.html)
-        const firebaseConfig = {
-            apiKey: "AIzaSyDwcyLezAW4nTlfmv6FYzjEe8RgDUgJXuY",
-            authDomain: "ai-leadership-lectures-d509b.firebaseapp.com",
-            projectId: "ai-leadership-lectures-d509b",
-            storageBucket: "ai-leadership-lectures-d509b.firebasestorage.app",
-            messagingSenderId: "132724154110",
-            appId: "1:132724154110:web:ab5f507a6aee2f583d8faf"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
+    <!-- Lectures API -->
+    <script>
         // Fetch and display lectures grouped by year
         async function loadLecturesByYear() {
             const containerEl = document.getElementById('lecturesByYear');
 
             try {
-                const lecturesRef = collection(db, 'lectures');
-                const q = query(lecturesRef, orderBy('date', 'desc'));
-                const snapshot = await getDocs(q);
+                const res = await fetch('/api/lectures');
+                const lectures = await res.json();
 
-                if (snapshot.empty) {
+                if (!lectures || lectures.length === 0) {
                     containerEl.innerHTML = '<p class="lectures-empty">등록된 강의가 없습니다.</p>';
                     return;
                 }
 
-                const lectures = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                // Sort by date descending
+                lectures.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
                 // Group lectures by year
                 const lecturesByYear = {};
@@ -1054,7 +1037,7 @@
                 Object.keys(lecturesByYear).forEach(year => {
                     const merged = {};
                     lecturesByYear[year].forEach(lecture => {
-                        const key = `${lecture.client || ''}_${lecture.name || ''}`;
+                        const key = `${lecture.client || ''}_${lecture.title || ''}`;
                         if (merged[key]) {
                             merged[key].count++;
                         } else {
@@ -1103,7 +1086,7 @@
                                     ${lecturesByYear[year].map(lecture => `
                                         <div class="lecture-item">
                                             <span class="lecture-client">${escapeHtml(lecture.client || '')}</span>
-                                            <span class="lecture-title">${escapeHtml(lecture.name || '')}${lecture.count > 1 ? `, ${lecture.count}차수` : ''}</span>
+                                            <span class="lecture-title">${escapeHtml(lecture.title || '')}${lecture.count > 1 ? `, ${lecture.count}차수` : ''}</span>
                                         </div>
                                     `).join('')}
                                 </div>
@@ -1124,7 +1107,7 @@
                                     ${lecturesByYear[year].map(lecture => `
                                         <div class="lecture-item">
                                             <span class="lecture-client">${escapeHtml(lecture.client || '')}</span>
-                                            <span class="lecture-title">${escapeHtml(lecture.name || '')}${lecture.count > 1 ? `, ${lecture.count}차수` : ''}</span>
+                                            <span class="lecture-title">${escapeHtml(lecture.title || '')}${lecture.count > 1 ? `, ${lecture.count}차수` : ''}</span>
                                         </div>
                                     `).join('')}
                                 </div>

@@ -130,7 +130,7 @@ function renderNameList() {
     });
 
     // 정렬 (최신순)
-    filteredNames.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    filteredNames.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
 
     // 빈 상태 처리
     if (names.length === 0) {
@@ -308,26 +308,26 @@ function renderRequests(requests) {
     requestCount.textContent = requests.length;
 
     // 최신순 정렬
-    requests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    requests.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
 
-    requestsList.innerHTML = requests.map((req, index) => `
+    requestsList.innerHTML = requests.map((req) => `
         <div class="flex items-center justify-between bg-white/5 rounded-xl p-4 border border-white/10">
             <div class="flex items-center gap-4">
                 <span class="text-orange-400 text-lg">👤</span>
                 <div>
                     <div class="font-medium">${escapeHtml(req.name)}</div>
-                    <div class="text-xs text-gray-500">${new Date(req.createdAt).toLocaleString('ko-KR')}</div>
+                    <div class="text-xs text-gray-500">${new Date(req.created_at || req.createdAt).toLocaleString('ko-KR')}</div>
                 </div>
             </div>
             <div class="flex gap-2">
                 <button
-                    onclick="approveRequest('${escapeHtml(req.name)}', ${index}, '${req.key || ''}')"
+                    onclick="approveRequest('${escapeHtml(req.name)}', ${req.id})"
                     class="px-3 py-1 bg-green-600/20 hover:bg-green-600/40 text-green-400 rounded-lg text-sm transition-all"
                 >
                     ✅ 승인
                 </button>
                 <button
-                    onclick="rejectRequest(${index}, '${req.key || ''}')"
+                    onclick="rejectRequest(${req.id})"
                     class="px-3 py-1 bg-red-600/20 hover:bg-red-600/40 text-red-400 rounded-lg text-sm transition-all"
                 >
                     ❌ 거절
@@ -338,40 +338,26 @@ function renderRequests(requests) {
 }
 
 // 요청 승인 (이름 추가)
-async function approveRequest(name, index, key) {
-    await DataManager.addName({ name, category: 'other' });
-
-    // Firebase 요청 삭제
-    if (key) {
-        await DataManager.deleteRequest(key);
+async function approveRequest(name, id) {
+    try {
+        await fetch(`/api/thanks/requests/${id}/approve`, { method: 'POST' });
+        showToast(`"${name}"님이 추가되었습니다!`);
+        await loadRequests();
+    } catch (error) {
+        console.error('승인 실패:', error);
+        showToast('승인에 실패했습니다.', 'error');
     }
-
-    // LocalStorage 요청 삭제
-    removeLocalRequest(index);
-
-    showToast(`"${name}"님이 추가되었습니다!`);
-    await loadRequests();
 }
 
 // 요청 거절
-async function rejectRequest(index, key) {
-    // Firebase 요청 삭제
-    if (key) {
-        await DataManager.deleteRequest(key);
+async function rejectRequest(id) {
+    try {
+        await DataManager.deleteRequest(id);
+        showToast('요청이 거절되었습니다.', 'warning');
+        await loadRequests();
+    } catch (error) {
+        console.error('거절 실패:', error);
     }
-
-    // LocalStorage 요청 삭제
-    removeLocalRequest(index);
-
-    showToast('요청이 거절되었습니다.', 'warning');
-    await loadRequests();
-}
-
-// LocalStorage 요청 삭제
-function removeLocalRequest(index) {
-    const requests = JSON.parse(localStorage.getItem('thanks2025_requests') || '[]');
-    requests.splice(index, 1);
-    localStorage.setItem('thanks2025_requests', JSON.stringify(requests));
 }
 
 // 요청 새로고침 버튼

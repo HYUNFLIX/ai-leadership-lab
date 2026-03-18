@@ -87,23 +87,23 @@
             max-width: 400px;
             text-align: center;
         }
-        .google-btn {
+        .login-btn {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
             width: 100%;
             padding: 0.875rem 1.5rem;
-            background: white;
-            color: #1f2937;
+            background: #6366f1;
+            color: white;
             border-radius: 0.75rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             border: none;
         }
-        .google-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .google-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #4f46e5; }
+        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
     </style>
 </head>
 <body class="text-white">
@@ -116,15 +116,14 @@
             </div>
             <h1 class="text-2xl font-bold mb-2">CRM 고객사 관리</h1>
             <p class="text-gray-400 mb-8">관리자 로그인이 필요합니다</p>
-            <button id="googleLoginBtn" onclick="signInWithGoogle()" class="google-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                Google로 로그인
-            </button>
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+                <input type="email" id="loginEmail" placeholder="이메일" required class="w-full px-4 py-2.5 rounded-lg">
+                <input type="password" id="loginPassword" placeholder="비밀번호" required class="w-full px-4 py-2.5 rounded-lg">
+                <button id="loginBtn" type="submit" class="login-btn">
+                    <i class="ri-login-box-line"></i>
+                    로그인
+                </button>
+            </form>
             <p id="loginError" class="mt-4 text-red-400 text-sm hidden"></p>
         </div>
     </div>
@@ -620,56 +619,8 @@
         <span id="toast-message"></span>
     </div>
 
-    <!-- Firebase SDK (ES Module) -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import {
-            getFirestore,
-            collection,
-            addDoc,
-            updateDoc,
-            deleteDoc,
-            doc,
-            onSnapshot,
-            query,
-            orderBy,
-            where,
-            Timestamp
-        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import {
-            getAuth,
-            signInWithPopup,
-            signOut,
-            onAuthStateChanged,
-            GoogleAuthProvider
-        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-
-        // Firebase Configuration (same as lectures.html)
-        const firebaseConfig = {
-            apiKey: "AIzaSyDwcyLezAW4nTlfmv6FYzjEe8RgDUgJXuY",
-            authDomain: "ai-leadership-lectures-d509b.firebaseapp.com",
-            projectId: "ai-leadership-lectures-d509b",
-            storageBucket: "ai-leadership-lectures-d509b.firebasestorage.app",
-            messagingSenderId: "132724154110",
-            appId: "1:132724154110:web:ab5f507a6aee2f583d8faf"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        const googleProvider = new GoogleAuthProvider();
-
-        // Collections
-        const clientsCollection = collection(db, 'clients');
-        const historyCollection = collection(db, 'clientHistory');
-        const lecturesCollection = collection(db, 'lectures');
-
-        // Allowed admin emails
-        const ALLOWED_ADMINS = [
-            'hyunkim.ceo@gmail.com',
-            'hyunnet@gmail.com'
-        ];
+    <!-- API-based CRM (Firebase 제거 버전) -->
+    <script>
 
         // ==================== Constants ====================
         const STATUS_CONFIG = {
@@ -701,8 +652,6 @@
         let lectures = [];
         let currentClientId = null;
         let currentView = 'kanban';
-        let unsubscribeClients = null;
-        let unsubscribeLectures = null;
         let currentUser = null;
 
         // ==================== DOM Elements ====================
@@ -720,36 +669,54 @@
         const clientForm = document.getElementById('client-form');
 
         // ==================== Authentication ====================
-        window.signInWithGoogle = async function() {
-            try {
-                document.getElementById('googleLoginBtn').disabled = true;
-                const result = await signInWithPopup(auth, googleProvider);
-                const user = result.user;
+        window.handleLogin = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const loginBtn = document.getElementById('loginBtn');
 
-                if (!ALLOWED_ADMINS.includes(user.email)) {
-                    await signOut(auth);
-                    showLoginError('접근 권한이 없습니다. 관리자에게 문의하세요.');
+            loginBtn.disabled = true;
+            loginBtn.textContent = '로그인 중...';
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    showLoginError(data.error || '로그인 실패');
                     return;
                 }
+
+                currentUser = data.user;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+                const userPhotoEl = document.getElementById('userPhoto');
+                if (userPhotoEl) userPhotoEl.src = '';
+                startDataSync();
             } catch (error) {
-                console.error('Login error:', error);
-                if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
-                    showLoginError('로그인 실패: ' + error.message);
-                }
+                showLoginError('로그인 오류: ' + error.message);
             } finally {
-                document.getElementById('googleLoginBtn').disabled = false;
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="ri-login-box-line"></i> 로그인';
             }
         };
 
         window.signOutUser = async function() {
             try {
-                if (unsubscribeClients) unsubscribeClients();
-                if (unsubscribeLectures) unsubscribeLectures();
-                await signOut(auth);
+                if (pollInterval) clearInterval(pollInterval);
+                await fetch('/api/auth/logout', { method: 'POST' });
+                clients = [];
+                lectures = [];
+                currentUser = null;
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('mainContent').classList.add('hidden');
                 showToast('로그아웃되었습니다.');
             } catch (error) {
                 console.error('Logout error:', error);
-                showToast('로그아웃 실패', 'error');
             }
         };
 
@@ -759,45 +726,58 @@
             errorEl.classList.remove('hidden');
         }
 
-        onAuthStateChanged(auth, (user) => {
-            if (user && ALLOWED_ADMINS.includes(user.email)) {
-                currentUser = user;
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainContent').classList.remove('hidden');
-                document.getElementById('userPhoto').src = user.photoURL || '';
-                startRealtimeSync();
-            } else {
-                currentUser = null;
-                if (unsubscribeClients) unsubscribeClients();
-                if (unsubscribeLectures) unsubscribeLectures();
-                clients = [];
-                lectures = [];
-                document.getElementById('loginScreen').classList.remove('hidden');
-                document.getElementById('mainContent').classList.add('hidden');
-            }
-        });
+        // Auto-login check
+        (async function checkAuth() {
+            try {
+                const res = await fetch('/api/auth/me');
+                if (res.ok) {
+                    const data = await res.json();
+                    currentUser = data.user;
+                    document.getElementById('loginScreen').classList.add('hidden');
+                    document.getElementById('mainContent').classList.remove('hidden');
+                    startDataSync();
+                }
+            } catch (e) {}
+        })();
 
-        // ==================== Real-time Sync ====================
-        function startRealtimeSync() {
-            // Clients
-            const clientsQuery = query(clientsCollection, orderBy('updatedAt', 'desc'));
-            unsubscribeClients = onSnapshot(clientsQuery, (snapshot) => {
-                clients = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // ==================== Data Sync (Polling) ====================
+        let pollInterval = null;
+
+        async function startDataSync() {
+            await loadAllData();
+            updateSyncStatus('connected');
+            // Poll every 10 seconds
+            pollInterval = setInterval(loadAllData, 10000);
+        }
+
+        async function loadAllData() {
+            try {
+                const [clientsRes, lecturesRes] = await Promise.all([
+                    fetch('/api/clients'),
+                    fetch('/api/lectures')
+                ]);
+                if (clientsRes.ok) {
+                    clients = await clientsRes.json();
+                    // Map API field names to CRM field names
+                    clients = clients.map(c => ({
+                        ...c,
+                        companyName: c.company || c.companyName,
+                        contactName: c.contact_name || c.contactName,
+                        interests: c.interest || c.interests || [],
+                        contractAmount: c.contract_amount || c.contractAmount || 0,
+                        lastContactDate: c.updated_at || c.lastContactDate
+                    }));
+                }
+                if (lecturesRes.ok) {
+                    lectures = await lecturesRes.json();
+                }
                 updateSyncStatus('connected');
                 renderCurrentView();
                 updateStats();
-            }, (error) => {
-                console.error('Clients sync error:', error);
+            } catch (error) {
+                console.error('Data sync error:', error);
                 updateSyncStatus('error');
-            });
-
-            // Lectures (for linking)
-            const lecturesQuery = query(lecturesCollection, orderBy('date', 'desc'));
-            unsubscribeLectures = onSnapshot(lecturesQuery, (snapshot) => {
-                lectures = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            }, (error) => {
-                console.error('Lectures sync error:', error);
-            });
+            }
         }
 
         function updateSyncStatus(status) {
@@ -1032,11 +1012,13 @@
 
                     if (client && client.status !== newStatus) {
                         try {
-                            await updateDoc(doc(db, 'clients', clientId), {
-                                status: newStatus,
-                                updatedAt: Timestamp.now()
+                            await fetch(`/api/clients/${clientId}/status`, {
+                                method: 'PATCH',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ status: newStatus })
                             });
                             showToast(`${client.companyName}이(가) "${STATUS_CONFIG[newStatus].label}"로 이동되었습니다.`);
+                            await loadAllData();
                         } catch (error) {
                             console.error('Status update error:', error);
                             showToast('상태 변경 실패', 'error');
@@ -1089,29 +1071,34 @@
             const interests = Array.from(document.querySelectorAll('input[name="interests"]:checked')).map(cb => cb.value);
 
             const clientData = {
-                companyName: document.getElementById('company-name').value.trim(),
+                company: document.getElementById('company-name').value.trim(),
                 status: document.getElementById('client-status').value,
-                contactName: document.getElementById('contact-name').value.trim(),
-                contactTitle: document.getElementById('contact-title').value.trim(),
+                contact_name: document.getElementById('contact-name').value.trim(),
                 phone: document.getElementById('contact-phone').value.trim(),
                 email: document.getElementById('contact-email').value.trim(),
-                contractAmount: parseInt(document.getElementById('contract-amount').value) || 0,
-                lastContactDate: document.getElementById('last-contact').value,
+                contract_amount: parseInt(document.getElementById('contract-amount').value) || 0,
                 notes: document.getElementById('client-notes').value.trim(),
-                interests: interests,
-                updatedAt: Timestamp.now()
+                interest: interests
             };
 
             try {
                 if (clientId) {
-                    await updateDoc(doc(db, 'clients', clientId), clientData);
-                    showToast(`${clientData.companyName} 정보가 수정되었습니다.`);
+                    await fetch(`/api/clients/${clientId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(clientData)
+                    });
+                    showToast(`${clientData.company} 정보가 수정되었습니다.`);
                 } else {
-                    clientData.createdAt = Timestamp.now();
-                    await addDoc(clientsCollection, clientData);
-                    showToast(`${clientData.companyName}이(가) 추가되었습니다.`);
+                    await fetch('/api/clients', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(clientData)
+                    });
+                    showToast(`${clientData.company}이(가) 추가되었습니다.`);
                 }
                 closeModal();
+                await loadAllData();
             } catch (error) {
                 console.error('Save error:', error);
                 showToast('저장 실패: ' + error.message, 'error');
@@ -1186,9 +1173,10 @@
 
             if (confirm(`"${client.companyName}"을(를) 정말 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) {
                 try {
-                    await deleteDoc(doc(db, 'clients', id));
+                    await fetch(`/api/clients/${id}`, { method: 'DELETE' });
                     showToast(`${client.companyName}이(가) 삭제되었습니다.`, 'warning');
                     closeDetailModal();
+                    await loadAllData();
                 } catch (error) {
                     console.error('Delete error:', error);
                     showToast('삭제 실패', 'error');
@@ -1246,28 +1234,26 @@
             const historyEmpty = document.getElementById('history-empty');
 
             try {
-                const q = query(historyCollection, where('clientId', '==', clientId), orderBy('date', 'desc'));
-                const unsubHistory = onSnapshot(q, (snapshot) => {
-                    const history = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const res = await fetch(`/api/clients/${clientId}/history`);
+                const history = await res.json();
 
-                    if (history.length === 0) {
-                        historyList.innerHTML = '';
-                        historyEmpty.classList.remove('hidden');
-                        return;
-                    }
+                if (history.length === 0) {
+                    historyList.innerHTML = '';
+                    historyEmpty.classList.remove('hidden');
+                    return;
+                }
 
-                    historyEmpty.classList.add('hidden');
-                    historyList.innerHTML = history.map(h => `
-                        <div class="glass rounded-xl p-4">
-                            <div class="flex items-center gap-2 mb-2">
-                                <i class="${HISTORY_TYPE_ICONS[h.type] || 'ri-chat-3-line'} text-indigo-400"></i>
-                                <span class="text-sm font-medium">${getHistoryTypeLabel(h.type)}</span>
-                                <span class="text-xs text-gray-500 ml-auto">${formatDate(h.date)}</span>
-                            </div>
-                            <p class="text-sm text-gray-300">${escapeHtml(h.content)}</p>
+                historyEmpty.classList.add('hidden');
+                historyList.innerHTML = history.map(h => `
+                    <div class="glass rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="${HISTORY_TYPE_ICONS[h.type] || 'ri-chat-3-line'} text-indigo-400"></i>
+                            <span class="text-sm font-medium">${getHistoryTypeLabel(h.type)}</span>
+                            <span class="text-xs text-gray-500 ml-auto">${formatDate(h.date)}</span>
                         </div>
-                    `).join('');
-                });
+                        <p class="text-sm text-gray-300">${escapeHtml(h.content)}</p>
+                    </div>
+                `).join('');
             } catch (error) {
                 console.error('History load error:', error);
             }
@@ -1299,22 +1285,15 @@
             }
 
             try {
-                await addDoc(historyCollection, {
-                    clientId: currentClientId,
-                    type,
-                    date,
-                    content,
-                    createdAt: Timestamp.now()
-                });
-
-                // Update last contact date
-                await updateDoc(doc(db, 'clients', currentClientId), {
-                    lastContactDate: date,
-                    updatedAt: Timestamp.now()
+                await fetch(`/api/clients/${currentClientId}/history`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type, date, content })
                 });
 
                 showToast('상담 이력이 추가되었습니다.');
                 closeHistoryForm();
+                loadHistory(currentClientId);
             } catch (error) {
                 console.error('Save history error:', error);
                 showToast('저장 실패', 'error');
