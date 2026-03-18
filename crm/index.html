@@ -758,14 +758,15 @@
                 ]);
                 if (clientsRes.ok) {
                     clients = await clientsRes.json();
-                    // Map API field names to CRM field names
+                    // Map API field names (snake_case) to CRM field names (camelCase)
                     clients = clients.map(c => ({
                         ...c,
-                        companyName: c.company || c.companyName,
-                        contactName: c.contact_name || c.contactName,
+                        companyName: c.company || c.companyName || '',
+                        contactName: c.contact_name || c.contactName || '',
+                        contactTitle: c.contact_title || c.contactTitle || '',
                         interests: c.interest || c.interests || [],
-                        contractAmount: c.contract_amount || c.contractAmount || 0,
-                        lastContactDate: c.updated_at || c.lastContactDate
+                        contractAmount: c.contract_amount != null ? c.contract_amount : (c.contractAmount || 0),
+                        lastContactDate: c.last_contact_date || c.lastContactDate || ''
                     }));
                 }
                 if (lecturesRes.ok) {
@@ -1074,9 +1075,11 @@
                 company: document.getElementById('company-name').value.trim(),
                 status: document.getElementById('client-status').value,
                 contact_name: document.getElementById('contact-name').value.trim(),
+                contact_title: document.getElementById('contact-title').value.trim(),
                 phone: document.getElementById('contact-phone').value.trim(),
                 email: document.getElementById('contact-email').value.trim(),
                 contract_amount: parseInt(document.getElementById('contract-amount').value) || 0,
+                last_contact_date: document.getElementById('last-contact').value,
                 notes: document.getElementById('client-notes').value.trim(),
                 interest: interests
             };
