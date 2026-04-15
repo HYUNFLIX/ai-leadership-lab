@@ -1435,6 +1435,17 @@ html.dark-mode .theme-toggle .moon-icon {
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   opacity: 0;
   transform: translateY(16px);
+  animation: directorCardIn 0.5s ease forwards;
+}
+
+.director-card:nth-child(1) { animation-delay: 0.15s; }
+.director-card:nth-child(2) { animation-delay: 0.25s; }
+.director-card:nth-child(3) { animation-delay: 0.35s; }
+.director-card:nth-child(4) { animation-delay: 0.45s; }
+
+@keyframes directorCardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .director-card.director-card--visible {
@@ -1567,26 +1578,25 @@ html.dark-mode .theme-toggle .moon-icon {
   to   { opacity: 1; transform: scale(1); }
 }
 
-.director-headline[data-director-text] { opacity: 0; }
-
-.director-headline.director-text--visible {
-  animation: directorSlideUp 0.6s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+.director-headline[data-director-text] {
+  opacity: 0;
+  animation: directorSlideUp 0.6s cubic-bezier(0.25,0.46,0.45,0.94) 0.2s forwards;
 }
 
-.director-photo-wrap[data-director-parallax] { opacity: 0; }
-
-.director-photo-wrap.director-photo--visible {
-  animation: directorFadeIn 0.7s ease forwards;
+.director-photo-wrap[data-director-parallax] {
+  opacity: 0;
+  animation: directorFadeIn 0.7s ease 0.1s forwards;
 }
 
 .director-divider {
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94) 0.25s;
+  animation: directorDividerIn 0.5s cubic-bezier(0.25,0.46,0.45,0.94) 0.5s forwards;
 }
 
-.director-text--visible .director-divider {
-  transform: scaleX(1);
+@keyframes directorDividerIn {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
 /* ================ Quotes Section ================ */
