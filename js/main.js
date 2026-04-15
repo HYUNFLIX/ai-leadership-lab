@@ -720,6 +720,25 @@
     };
   }
 
+  // ================ Scroll Reveal – all sections ================
+  function initScrollReveal() {
+    const targets = document.querySelectorAll(
+      '.section-header, .books-grid, .media-grid, .testimonials-grid, .contact-centered, .lectures-by-year'
+    );
+    if (!targets.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    targets.forEach((el) => observer.observe(el));
+  }
+
   // ================ About Section – Counter Animation ================
   function initAboutCounters() {
     const statNums = document.querySelectorAll('.about-stat-num[data-count]');
@@ -852,6 +871,7 @@
     initKeyboardNav();
     initDarkModeToggle();
     initInteractiveCube();
+    initScrollReveal();
     initAboutCounters();
     initDirectorAnimations();
     

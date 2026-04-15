@@ -3607,3 +3607,154 @@ html.dark-mode .theme-toggle .moon-icon {
     color: #fff !important;
   }
 }
+
+/* =====================================
+   POLISH PASS ? visual refinements
+   ===================================== */
+
+/* --- Book cards: brighter glass, visible buttons --- */
+.book-card {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+.book-cover {
+  background: rgba(255,255,255,0.03) !important;
+}
+
+.book-content .btn-outline {
+  background: rgba(99,102,241,0.1);
+  border-color: rgba(99,102,241,0.4);
+  color: #a5b4fc;
+}
+
+.book-content .btn-outline:hover {
+  background: rgba(99,102,241,0.2);
+  border-color: #818cf8;
+  color: #fff;
+}
+
+/* --- Media cards: brighter article icons --- */
+.media-card {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+.media-content {
+  background: transparent;
+}
+
+.media-link {
+  color: #818cf8 !important;
+}
+
+.media-link-video {
+  color: #f87171 !important;
+}
+
+/* --- Testimonial cards: more visible border --- */
+.testimonial-card {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+}
+
+.testimonial-card:hover {
+  border-color: rgba(99,102,241,0.25) !important;
+}
+
+/* --- Lecture year headers: sleeker --- */
+.year-header {
+  border-bottom-color: rgba(99,102,241,0.15) !important;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.year-header:hover {
+  background: rgba(99,102,241,0.06) !important;
+}
+
+.year-badge {
+  box-shadow: 0 2px 12px rgba(99,102,241,0.2);
+}
+
+.lecture-item {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: rgba(255,255,255,0.06) !important;
+}
+
+.lecture-item:hover {
+  background: rgba(99,102,241,0.06) !important;
+  border-color: rgba(99,102,241,0.15) !important;
+}
+
+/* --- Contact cards: brighter glass --- */
+.contact-card-item {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+}
+
+.contact-card-item:hover {
+  background: rgba(99,102,241,0.1) !important;
+  border-color: rgba(99,102,241,0.3) !important;
+}
+
+.contact-card-icon {
+  background: rgba(99,102,241,0.15) !important;
+}
+
+/* --- Contact CTA button --- */
+.section-contact .btn-primary,
+.section-contact .nav-cta {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  box-shadow: 0 4px 20px rgba(99,102,241,0.3);
+}
+
+/* --- Footer links: subtle on dark --- */
+.footer-column a {
+  color: rgba(255,255,255,0.5);
+}
+
+.footer-column a:hover {
+  color: #818cf8;
+}
+
+.footer-column h4 {
+  color: rgba(255,255,255,0.8);
+}
+
+.footer-bottom {
+  border-top-color: rgba(255,255,255,0.06);
+}
+
+.footer-bottom p {
+  color: rgba(255,255,255,0.35);
+}
+
+.footer-social a {
+  color: rgba(255,255,255,0.4);
+}
+
+.footer-social a:hover {
+  color: #818cf8;
+}
+
+/* --- Scroll-triggered reveal for all sections --- */
+.section-header,
+.books-grid,
+.media-grid,
+.testimonials-grid,
+.contact-centered,
+.lectures-by-year {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.section-header.revealed,
+.books-grid.revealed,
+.media-grid.revealed,
+.testimonials-grid.revealed,
+.contact-centered.revealed,
+.lectures-by-year.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
