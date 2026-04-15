@@ -1259,120 +1259,253 @@ html.dark-mode .theme-toggle .moon-icon {
 }
 
 /* ================ Director Section ================ */
+/* ================ Director / Profile Section ================ */
 .section-director {
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
+  padding-bottom: var(--spacing-3xl);
 }
 
-.director-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-3xl);
+/* --- Banner (dark cinematic hero) --- */
+.director-banner {
+  position: relative;
+  overflow: hidden;
+  padding: var(--spacing-3xl) 0 calc(var(--spacing-3xl) + 40px);
+}
+
+.director-banner-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+  z-index: 0;
+}
+
+.director-banner-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 50%, rgba(99,102,241,0.15), transparent),
+    radial-gradient(ellipse 500px 350px at 80% 30%, rgba(168,85,247,0.1), transparent);
+}
+
+.director-profile {
+  position: relative;
+  z-index: 1;
+  display: flex;
   align-items: center;
+  gap: var(--spacing-2xl);
 }
 
-.director-image {
+/* --- Photo with animated ring --- */
+.director-photo-wrap {
   position: relative;
+  flex-shrink: 0;
+  width: 240px;
+  height: 240px;
 }
 
-.image-frame {
+.director-photo-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--primary), var(--secondary), var(--primary));
+  animation: ring-spin 6s linear infinite;
+}
+
+@keyframes ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+.director-photo {
   position: relative;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.image-frame img {
   width: 100%;
-  border-radius: var(--radius-2xl);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid #0f172a;
+  z-index: 1;
 }
 
-.image-decoration {
-  position: absolute;
-  top: -20px;
-  left: -20px;
-  right: 20px;
-  bottom: 20px;
-  border: 3px solid;
-  border-image: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) 1;
-  border-radius: var(--radius-2xl);
-  z-index: -1;
+/* --- Headline text --- */
+.director-headline {
+  flex: 1;
+  color: #f1f5f9;
 }
 
-.badge-floating {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+.director-label {
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  background: rgba(168, 85, 247, 0.15);
+  padding: 0.3em 1em;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--spacing-sm);
 }
 
 .director-name {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.5rem, 5.5vw, 4rem);
   font-weight: 900;
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-xs);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: #ffffff;
+  margin-bottom: 0.15em;
 }
 
-.director-title {
-  font-size: var(--font-size-lg);
-  color: var(--secondary);
+.director-role {
+  font-size: var(--font-size-xl);
   font-weight: 600;
-  margin-bottom: var(--spacing-lg);
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.25em;
+}
+
+.director-edu {
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: var(--spacing-md);
 }
 
 .director-quote {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
+  font-style: italic;
   line-height: 1.8;
-  color: var(--text-secondary);
-  border-left: 4px solid;
-  border-image: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%) 1;
-  padding-left: var(--spacing-lg);
-  margin: var(--spacing-xl) 0;
+  color: rgba(255, 255, 255, 0.55);
+  border-left: 3px solid var(--secondary);
+  padding-left: var(--spacing-md);
+  margin: 0;
+  max-width: 540px;
 }
 
-.director-credentials {
+/* --- Cards --- */
+.director-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: -40px;
+  position: relative;
+  z-index: 2;
+}
+
+.director-card {
+  background: var(--bg-primary);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-xl) var(--spacing-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  transition: var(--transition-base);
+}
+
+.director-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(99, 102, 241, 0.14);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.director-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.director-card-num {
+  font-size: var(--font-size-3xl);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.director-card-title {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.director-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
+  gap: 0.6rem;
 }
 
-.credential-item {
+.director-card-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.director-card-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+/* highlight row */
+.list-highlight {
+  font-weight: 700;
+  color: var(--text-primary) !important;
+}
+
+.list-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  padding: 0.15em 0.6em;
+  border-radius: var(--radius-full);
+  margin-left: 0.5em;
+  vertical-align: middle;
+}
+
+/* books variant */
+.director-card-list--books li {
+  padding-left: 0;
   display: flex;
-  gap: var(--spacing-md);
+  flex-direction: column;
+  gap: 0.15rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.credential-label {
+.director-card-list--books li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.director-card-list--books li::before {
+  display: none;
+}
+
+.book-name {
   font-weight: 700;
   color: var(--text-primary);
-  min-width: 100px;
-}
-
-.credential-value {
-  color: var(--text-secondary);
-}
-
-.director-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
-}
-
-.director-badges .badge {
-  padding: var(--spacing-xs) var(--spacing-md);
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-  color: var(--primary);
-  border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
-  font-weight: 600;
+}
+
+.book-meta {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
 }
 
 /* ================ Quotes Section ================ */
@@ -2556,11 +2689,37 @@ html.dark-mode .theme-toggle .moon-icon {
   }
 
   .about-grid,
-  .director-wrapper,
   .contact-wrapper,
   .footer-content {
     grid-template-columns: 1fr;
     gap: var(--spacing-xl);
+  }
+
+  .director-profile {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .director-photo-wrap {
+    width: 180px;
+    height: 180px;
+  }
+
+  .director-name {
+    font-size: 2.2rem;
+  }
+
+  .director-quote {
+    border-left: none;
+    border-top: 2px solid var(--secondary);
+    padding-left: 0;
+    padding-top: var(--spacing-sm);
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .director-cards {
+    grid-template-columns: 1fr;
   }
 
   .about-content {
