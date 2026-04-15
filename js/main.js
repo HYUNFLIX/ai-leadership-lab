@@ -720,6 +720,115 @@
     };
   }
 
+  // ================ About Section – Counter Animation ================
+  function initAboutCounters() {
+    const statNums = document.querySelectorAll('.about-stat-num[data-count]');
+    if (!statNums.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.getAttribute('data-count'), 10);
+          if (!target) return;
+          const duration = 1200; // ms
+          const start = performance.now();
+
+          function tick(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            // ease-out quad
+            const eased = 1 - (1 - progress) * (1 - progress);
+            el.textContent = Math.round(eased * target).toLocaleString();
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    statNums.forEach((el) => observer.observe(el));
+  }
+
+  // ================ Director Section Animations ================
+  function initDirectorAnimations() {
+    // 1. Staggered card fade-in
+    const cards = document.querySelectorAll('[data-director-card]');
+    if (cards.length) {
+      const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const card = entry.target;
+            const index = Array.from(cards).indexOf(card);
+            setTimeout(() => {
+              card.classList.add('director-card--visible');
+            }, index * 120);
+            cardObserver.unobserve(card);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
+
+      cards.forEach(card => cardObserver.observe(card));
+    }
+
+    // 2. Text slide-up animation
+    const textBlock = document.querySelector('[data-director-text]');
+    if (textBlock) {
+      const textObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            textBlock.classList.add('director-text--visible');
+            textObserver.unobserve(textBlock);
+          }
+        });
+      }, { threshold: 0.2 });
+
+      textObserver.observe(textBlock);
+    }
+
+    // 3. Photo fade-in
+    const photoWrap = document.querySelector('[data-director-parallax]');
+    if (photoWrap) {
+      const photoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            photoWrap.classList.add('director-photo--visible');
+            photoObserver.unobserve(photoWrap);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      photoObserver.observe(photoWrap);
+    }
+
+    // 4. Subtle parallax on scroll for the photo
+    if (photoWrap) {
+      let directorTicking = false;
+      const directorSection = document.querySelector('.section-director');
+
+      function updateDirectorParallax() {
+        if (!directorSection) return;
+        const rect = directorSection.getBoundingClientRect();
+        const windowH = window.innerHeight;
+
+        if (rect.top < windowH && rect.bottom > 0) {
+          const progress = (windowH - rect.top) / (windowH + rect.height);
+          const yShift = (progress - 0.5) * -20;
+          photoWrap.style.transform = 'translateY(' + yShift + 'px)';
+        }
+        directorTicking = false;
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!directorTicking) {
+          window.requestAnimationFrame(updateDirectorParallax);
+          directorTicking = true;
+        }
+      }, { passive: true });
+    }
+  }
+
   // ================ Initialize Everything ================
   function init() {
     // Check for critical features
@@ -727,10 +836,10 @@
       console.error('Browser does not support required features');
       return;
     }
-    
+
     // Initialize animations
     initAnimations();
-    
+
     // Initialize all components
     initNavigation();
     initBackToTop();
@@ -743,6 +852,8 @@
     initKeyboardNav();
     initDarkModeToggle();
     initInteractiveCube();
+    initAboutCounters();
+    initDirectorAnimations();
     
     // Performance monitoring (development only)
     if (window.location.hostname === 'localhost') {

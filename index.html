@@ -256,90 +256,83 @@
 
         <!-- About Section -->
         <section id="about" class="section section-about" aria-labelledby="about-title">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-label">About Us</span>
-                    <h2 id="about-title" class="section-title">
-                        우리는 <span class="text-gradient">미래의 리더십</span>을
-                        <br>오늘, 여기에서 정의합니다
-                    </h2>
+            <div class="about-dark-bg"></div>
+
+            <!-- Marquee strip -->
+            <div class="about-marquee" aria-hidden="true">
+                <div class="about-marquee-track">
+                    <span>AI Leadership</span><span>·</span>
+                    <span>DX 전환</span><span>·</span>
+                    <span>HRD 컨설팅</span><span>·</span>
+                    <span>리더십 코칭</span><span>·</span>
+                    <span>조직문화 혁신</span><span>·</span>
+                    <span>AI 교육</span><span>·</span>
+                    <span>AI Leadership</span><span>·</span>
+                    <span>DX 전환</span><span>·</span>
+                    <span>HRD 컨설팅</span><span>·</span>
+                    <span>리더십 코칭</span><span>·</span>
+                    <span>조직문화 혁신</span><span>·</span>
+                    <span>AI 교육</span><span>·</span>
                 </div>
-                
-                <div class="about-grid">
-                    <div class="about-content">
-                        <p class="lead-text">
-                            AI Leadership Lab은 단순한 기술 교육 기관이 아닙니다. 
-                            우리는 인공지능이라는 거대한 패러다임의 전환 속에서 
-                            조직의 운명을 결정할 리더들을 위한 전략적 파트너입니다.
-                        </p>
-                        <p>
-                            기술의 홍수 속에서 길을 잃지 않고, 오히려 그 파도를 타고 
-                            더 높은 곳으로 나아갈 수 있는 통찰과 방법론을 제공합니다.
-                        </p>
-                        
-                        <div class="feature-list">
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                        <path d="M9 11l3 3L22 4"/>
-                                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4>실무 중심 교육</h4>
-                                    <p>현장에서 바로 적용 가능한 실용적 커리큘럼</p>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <path d="M12 6v6l4 2"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4>맞춤형 컨설팅</h4>
-                                    <p>조직의 특성에 맞는 AI 전략 수립</p>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4>검증된 전문성</h4>
-                                    <p>20년 이상의 현장 경험과 노하우</p>
-                                </div>
-                            </div>
+            </div>
+
+            <div class="about-inner">
+                <!-- Header -->
+                <div class="about-header" data-about-animate>
+                    <span class="about-label">About Us</span>
+                    <h2 id="about-title" class="about-title">
+                        우리는 <span class="about-title-accent">미래의 리더십</span>을<br>
+                        오늘, 여기에서 정의합니다
+                    </h2>
+                    <p class="about-subtitle">
+                        AI Leadership Lab은 단순한 기술 교육 기관이 아닙니다.
+                        인공지능이라는 거대한 패러다임의 전환 속에서
+                        조직의 운명을 결정할 리더들을 위한 <strong>전략적 파트너</strong>입니다.
+                    </p>
+                </div>
+
+                <!-- Feature cards (3 columns) -->
+                <div class="about-features">
+                    <div class="about-feature-card" data-about-card>
+                        <div class="about-feature-icon">
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
                         </div>
+                        <h4>실무 중심 교육</h4>
+                        <p>현장에서 바로 적용 가능한 실용적 커리큘럼</p>
                     </div>
-                    
-                    <div class="about-visual">
-                        <div class="image-card">
-                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop" 
-                                 alt="팀 협업 모습" 
-                                 loading="lazy"
-                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'600\' fill=\'%23e5e7eb\'%3E%3Crect width=\'800\' height=\'600\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'sans-serif\' font-size=\'24\'%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E'">
-                            <div class="image-overlay"></div>
+                    <div class="about-feature-card" data-about-card>
+                        <div class="about-feature-icon">
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                         </div>
-                        <div class="floating-card">
-                            <div class="floating-card-icon">
-                                <svg width="32" height="32" fill="none" stroke="url(#gradient2)" stroke-width="2" aria-hidden="true">
-                                    <path d="M16 8c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8z"/>
-                                    <path d="M16 12v4l3 3"/>
-                                    <defs>
-                                        <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#6366f1"/>
-                                            <stop offset="100%" style="stop-color:#a855f7"/>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                            </div>
-                            <h4>2,000+</h4>
-                            <p>교육 수료생</p>
+                        <h4>맞춤형 컨설팅</h4>
+                        <p>조직의 특성에 맞는 AI 전략 수립</p>
+                    </div>
+                    <div class="about-feature-card" data-about-card>
+                        <div class="about-feature-icon">
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                         </div>
+                        <h4>검증된 전문성</h4>
+                        <p>20년 이상의 현장 경험과 노하우</p>
+                    </div>
+                </div>
+
+                <!-- Stats row -->
+                <div class="about-stats" data-about-animate>
+                    <div class="about-stat">
+                        <span class="about-stat-num" data-count="2000">0</span><span class="about-stat-plus">+</span>
+                        <span class="about-stat-label">교육 수료생</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="about-stat-num" data-count="20">0</span><span class="about-stat-plus">년+</span>
+                        <span class="about-stat-label">현장 경험</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="about-stat-num" data-count="50">0</span><span class="about-stat-plus">+</span>
+                        <span class="about-stat-label">기업 컨설팅</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="about-stat-num" data-count="3">0</span><span class="about-stat-plus">권</span>
+                        <span class="about-stat-label">출간 저서</span>
                     </div>
                 </div>
             </div>
