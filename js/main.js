@@ -546,20 +546,17 @@
       // If no stored preference, CSS media query handles it automatically
     }
 
-    // Toggle between light and dark
+    // Toggle between light and dark (default = dark)
     function toggleTheme() {
-      const storedTheme = getStoredTheme();
-      const currentlyDark = html.classList.contains('dark-mode') ||
-                            (!html.classList.contains('light-mode') && systemPrefersDark());
-
-      if (currentlyDark) {
+      const isLight = html.classList.contains('light-mode');
+      if (isLight) {
+        // Switch to dark (default)
+        localStorage.setItem(STORAGE_KEY, 'dark');
+        applyTheme('dark');
+      } else {
         // Switch to light
         localStorage.setItem(STORAGE_KEY, 'light');
         applyTheme('light');
-      } else {
-        // Switch to dark
-        localStorage.setItem(STORAGE_KEY, 'dark');
-        applyTheme('dark');
       }
     }
 
