@@ -537,13 +537,16 @@
       }
     }
 
-    // Initialize theme on page load
+    // Initialize theme on page load (default = dark)
     function initTheme() {
       const storedTheme = getStoredTheme();
-      if (storedTheme) {
-        applyTheme(storedTheme);
+      if (storedTheme === 'light') {
+        applyTheme('light');
+      } else {
+        // Default: always dark. Remove any stale light-mode class.
+        html.classList.remove('light-mode');
+        html.classList.add('dark-mode');
       }
-      // If no stored preference, CSS media query handles it automatically
     }
 
     // Toggle between light and dark (default = dark)

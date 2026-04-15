@@ -77,8 +77,24 @@ html.light-mode {
   --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Light mode is ONLY activated via manual toggle (html.light-mode class) */
-/* System preference ignored — dark is always default */
+/* Explicit dark-mode class (JS adds this on load) */
+html.dark-mode {
+  --primary: #818cf8;
+  --primary-dark: #6366f1;
+  --secondary: #c084fc;
+  --secondary-dark: #a855f7;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1e293b;
+
+  --border-color: rgba(255,255,255,0.08);
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
 
 /* ================ Reset & Base ================ */
 *,
