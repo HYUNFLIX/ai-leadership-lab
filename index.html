@@ -83,7 +83,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css?v=20260415h">
+    <link rel="stylesheet" href="css/styles.css?v=20260416b">
     
     <!-- Preload critical resources -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style">
@@ -168,77 +168,43 @@
                         </div>
                     </div>
 
-                    <!-- Interactive 3D Cube -->
+                    <!-- Authority Montage: Director + Books + Credentials -->
                     <div class="hero-visual animate-fade-in-up">
-                        <div class="cube-scene" id="cubeScene">
-                            <!-- 3D Cube -->
-                            <div class="cube-container">
-                                <div class="cube" id="interactiveCube">
-                                    <div class="cube-face cube-front">
-                                        <div class="face-content">
-                                            <span class="face-icon">🤖</span>
-                                            <span class="face-text">AI</span>
-                                        </div>
-                                    </div>
-                                    <div class="cube-face cube-back">
-                                        <div class="face-content">
-                                            <span class="face-icon">📊</span>
-                                            <span class="face-text">Data</span>
-                                        </div>
-                                    </div>
-                                    <div class="cube-face cube-right">
-                                        <div class="face-content">
-                                            <span class="face-icon">💡</span>
-                                            <span class="face-text">혁신</span>
-                                        </div>
-                                    </div>
-                                    <div class="cube-face cube-left">
-                                        <div class="face-content">
-                                            <span class="face-icon">🎯</span>
-                                            <span class="face-text">전략</span>
-                                        </div>
-                                    </div>
-                                    <div class="cube-face cube-top">
-                                        <div class="face-content">
-                                            <span class="face-icon">👥</span>
-                                            <span class="face-text">리더십</span>
-                                        </div>
-                                    </div>
-                                    <div class="cube-face cube-bottom">
-                                        <div class="face-content">
-                                            <span class="face-icon">🚀</span>
-                                            <span class="face-text">성장</span>
-                                        </div>
-                                    </div>
+                        <div class="hero-montage">
+                            <div class="hero-portrait">
+                                <picture>
+                                    <source srcset="images/director.webp" type="image/webp">
+                                    <img src="images/director.jpg" alt="김현 소장" loading="eager" fetchpriority="high">
+                                </picture>
+                                <div class="hero-portrait-ring" aria-hidden="true"></div>
+                                <div class="hero-portrait-glow" aria-hidden="true"></div>
+                            </div>
+
+                            <div class="hero-books" aria-hidden="true">
+                                <div class="hero-book-card hero-book-1">
+                                    <img src="images/Book3.jpg" alt="" loading="lazy">
+                                </div>
+                                <div class="hero-book-card hero-book-2">
+                                    <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791199224612.jpg" alt="" loading="lazy">
+                                </div>
+                                <div class="hero-book-card hero-book-3">
+                                    <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791198345370.jpg" alt="" loading="lazy">
                                 </div>
                             </div>
 
-                            <!-- Floating Particles -->
-                            <div class="floating-particles">
-                                <div class="particle" style="--delay: 0s; --x: 20%; --y: 30%;"></div>
-                                <div class="particle" style="--delay: 1s; --x: 80%; --y: 20%;"></div>
-                                <div class="particle" style="--delay: 2s; --x: 70%; --y: 70%;"></div>
-                                <div class="particle" style="--delay: 0.5s; --x: 30%; --y: 80%;"></div>
-                                <div class="particle" style="--delay: 1.5s; --x: 50%; --y: 10%;"></div>
-                                <div class="particle" style="--delay: 2.5s; --x: 10%; --y: 50%;"></div>
-                                <div class="particle" style="--delay: 3s; --x: 90%; --y: 60%;"></div>
-                                <div class="particle" style="--delay: 0.8s; --x: 40%; --y: 90%;"></div>
-                            </div>
-
-                            <!-- Floating Labels -->
-                            <div class="floating-labels">
-                                <span class="float-label" style="--pos-x: 5%; --pos-y: 20%;">DX</span>
-                                <span class="float-label" style="--pos-x: 85%; --pos-y: 15%;">HRD</span>
-                                <span class="float-label" style="--pos-x: 10%; --pos-y: 75%;">코칭</span>
-                                <span class="float-label" style="--pos-x: 80%; --pos-y: 80%;">컨설팅</span>
-                                <span class="float-label" style="--pos-x: 50%; --pos-y: 5%;">교육</span>
-                            </div>
-
-                            <!-- Orbit Rings -->
-                            <div class="orbit-rings">
-                                <div class="orbit-ring orbit-1"></div>
-                                <div class="orbit-ring orbit-2"></div>
-                                <div class="orbit-ring orbit-3"></div>
+                            <div class="hero-credentials" aria-label="핵심 실적">
+                                <div class="hero-credential-chip hero-chip-1">
+                                    <strong>20<span class="chip-unit">년+</span></strong>
+                                    <span class="chip-label">HRD 현장 경험</span>
+                                </div>
+                                <div class="hero-credential-chip hero-chip-2">
+                                    <strong>2,000<span class="chip-unit">+</span></strong>
+                                    <span class="chip-label">교육 수료생</span>
+                                </div>
+                                <div class="hero-credential-chip hero-chip-3">
+                                    <strong>3<span class="chip-unit">권</span></strong>
+                                    <span class="chip-label">AI 리더십 저서</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -458,43 +424,56 @@
                     </p>
                 </div>
                 
-                <div class="books-minimal">
-                    <article class="book-row">
-                        <div class="book-row-cover">
+                <div class="books-gallery">
+                    <article class="book-tile">
+                        <a href="https://product.kyobobook.co.kr/detail/S000219080456" target="_blank" rel="noopener noreferrer" class="book-tile-cover" aria-label="AI 시대의 팀장은 다르게 일합니다 - 교보문고에서 보기">
                             <img src="images/Book3.jpg" alt="AI 시대의 팀장은 다르게 일합니다 책 표지" loading="lazy">
-                            <span class="book-badge book-badge-new">NEW</span>
-                        </div>
-                        <div class="book-row-body">
-                            <h3 class="book-row-title">AI 시대의 팀장은 다르게 일합니다</h3>
-                            <p class="book-row-desc">"AI를 쓰는 팀장 vs AI와 일하는 팀장, 당신은 어느 쪽인가?" 이제 성과를 만드는 팀장의 기준이 달라진다!</p>
-                            <a href="https://product.kyobobook.co.kr/detail/S000219080456" target="_blank" rel="noopener noreferrer" class="book-row-link">
-                                교보문고에서 보기 →
+                        </a>
+                        <div class="book-tile-body">
+                            <div class="book-tile-meta">
+                                <span class="book-tile-year">2026</span>
+                                <span class="book-tile-dot">·</span>
+                                <span class="book-tile-publisher">중앙북스</span>
+                            </div>
+                            <h3 class="book-tile-title">AI 시대의 팀장은 다르게 일합니다</h3>
+                            <p class="book-tile-desc">"AI를 쓰는 팀장 vs AI와 일하는 팀장, 당신은 어느 쪽인가?" 이제 성과를 만드는 팀장의 기준이 달라진다.</p>
+                            <a href="https://product.kyobobook.co.kr/detail/S000219080456" target="_blank" rel="noopener noreferrer" class="book-tile-link">
+                                교보문고에서 보기
+                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                             </a>
                         </div>
                     </article>
 
-                    <article class="book-row">
-                        <div class="book-row-cover">
+                    <article class="book-tile">
+                        <a href="https://product.kyobobook.co.kr/detail/S000216754567" target="_blank" rel="noopener noreferrer" class="book-tile-cover" aria-label="AI 대전환 시대, 조직은 문화다 - 교보문고에서 보기">
                             <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791199224612.jpg" alt="AI 대전환 시대, 조직은 문화다 책 표지" loading="lazy">
-                        </div>
-                        <div class="book-row-body">
-                            <h3 class="book-row-title">AI 대전환 시대, 조직은 문화다</h3>
-                            <p class="book-row-desc">AI 시대, 기술보다 중요한 것은 사람과 문화입니다. 성공적인 디지털 전환을 위해 조직 문화를 어떻게 혁신해야 하는지에 대한 통찰을 제공합니다.</p>
-                            <a href="https://product.kyobobook.co.kr/detail/S000216754567" target="_blank" rel="noopener noreferrer" class="book-row-link">
-                                교보문고에서 보기 →
+                        </a>
+                        <div class="book-tile-body">
+                            <div class="book-tile-meta">
+                                <span class="book-tile-year">2025</span>
+                            </div>
+                            <h3 class="book-tile-title">AI 대전환 시대, 조직은 문화다</h3>
+                            <p class="book-tile-desc">AI 시대, 기술보다 중요한 것은 사람과 문화. 성공적인 디지털 전환을 위한 조직 문화 혁신 통찰을 담았습니다.</p>
+                            <a href="https://product.kyobobook.co.kr/detail/S000216754567" target="_blank" rel="noopener noreferrer" class="book-tile-link">
+                                교보문고에서 보기
+                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                             </a>
                         </div>
                     </article>
 
-                    <article class="book-row">
-                        <div class="book-row-cover">
+                    <article class="book-tile">
+                        <a href="https://product.kyobobook.co.kr/detail/S000214511968" target="_blank" rel="noopener noreferrer" class="book-tile-cover" aria-label="코칭 레볼루션 - 교보문고에서 보기">
                             <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791198345370.jpg" alt="코칭 레볼루션 책 표지" loading="lazy">
-                        </div>
-                        <div class="book-row-body">
-                            <h3 class="book-row-title">코칭 레볼루션: AI 시대, 코치형 리더의 탄생</h3>
-                            <p class="book-row-desc">AI 시대에 더욱 중요해진 인간 고유의 역량, 코칭. 기술과 공존하며 팀원의 잠재력을 이끌어내는 코치형 리더의 모든 것을 담았습니다.</p>
-                            <a href="https://product.kyobobook.co.kr/detail/S000214511968" target="_blank" rel="noopener noreferrer" class="book-row-link">
-                                교보문고에서 보기 →
+                        </a>
+                        <div class="book-tile-body">
+                            <div class="book-tile-meta">
+                                <span class="book-tile-year">2024</span>
+                            </div>
+                            <h3 class="book-tile-title">코칭 레볼루션: AI 시대, 코치형 리더의 탄생</h3>
+                            <p class="book-tile-desc">AI 시대 더욱 중요해진 인간 고유의 역량, 코칭. 팀원의 잠재력을 이끌어내는 코치형 리더의 모든 것.</p>
+                            <a href="https://product.kyobobook.co.kr/detail/S000214511968" target="_blank" rel="noopener noreferrer" class="book-tile-link">
+                                교보문고에서 보기
+                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                             </a>
                         </div>
                     </article>
@@ -643,18 +622,25 @@
             </div>
         </section>
 
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="section section-testimonials" aria-labelledby="testimonials-title">
+        <!-- Clients Section -->
+        <section id="clients" class="section section-clients" aria-labelledby="clients-title">
             <div class="container">
                 <div class="section-header text-center">
-                    <span class="section-label">Testimonials</span>
-                    <h2 id="testimonials-title" class="section-title">교육 후기</h2>
+                    <span class="section-label">Clients</span>
+                    <h2 id="clients-title" class="section-title">함께한 파트너</h2>
                     <p class="section-description">
-                        AI Leadership Lab과 함께한 분들의 생생한 이야기를 들어보세요.
+                        산업·공공·교육 분야의 리더들과 협력하며<br>AI 리더십의 가치를 현장에서 증명해왔습니다.
                     </p>
                 </div>
 
-                <div class="testimonials-grid">
+                <div class="clients-wall" id="clientsWall" aria-label="파트너 기관 목록">
+                    <div class="clients-loading">
+                        <div class="loading-spinner-small"></div>
+                        <span>파트너 정보를 불러오는 중...</span>
+                    </div>
+                </div>
+
+                <div class="clients-hidden-legacy" hidden>
                     <!-- Testimonial 1 -->
                     <article class="testimonial-card">
                         <div class="testimonial-content">
@@ -861,7 +847,7 @@
     </button>
 
     <!-- Scripts -->
-    <script src="js/main.js?v=20260415h" defer></script>
+    <script src="js/main.js?v=20260416b" defer></script>
 
     <!-- Programs Loader -->
     <script>
@@ -1120,8 +1106,12 @@
                     }
                 }).join('');
 
+                // Render clients wall from unique client names across all years
+                renderClientsWall(lectures);
+
             } catch (error) {
                 console.error('Failed to load lectures:', error);
+                renderClientsWall([]); // fallback
                 containerEl.innerHTML = `
                     <p class="lectures-empty">
                         강의 정보를 불러올 수 없습니다.<br>
@@ -1129,6 +1119,35 @@
                     </p>
                 `;
             }
+        }
+
+        // Curated fallback + render the "Clients" wall from lectures data
+        function renderClientsWall(lectures) {
+            const wall = document.getElementById('clientsWall');
+            if (!wall) return;
+
+            const fallback = [
+                '삼성전자', '현대자동차', 'LG CNS', 'KT', 'SK텔레콤',
+                '한국산업인력공단', '한국능률협회', '세종텔레콤',
+                '한국중견기업협회', '고려대학교', 'HRinsight', '알라딘'
+            ];
+
+            let clients = [];
+            if (Array.isArray(lectures) && lectures.length > 0) {
+                clients = [...new Set(
+                    lectures.map(l => (l.client || '').trim()).filter(Boolean)
+                )];
+            }
+            if (clients.length < 6) clients = fallback;
+
+            // Sort alphabetically (Korean-aware)
+            clients.sort((a, b) => a.localeCompare(b, 'ko'));
+
+            wall.innerHTML = clients.map(name => `
+                <div class="client-cell" title="${escapeHtml(name)}">
+                    <span class="client-name">${escapeHtml(name)}</span>
+                </div>
+            `).join('');
         }
 
         function escapeHtml(str) {
