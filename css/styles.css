@@ -1082,7 +1082,8 @@ html.dark-mode .theme-toggle .moon-icon {
 .about-dark-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(170deg, #0a0e1a 0%, #0f172a 35%, #151334 70%, #1a1744 100%);
+  /* Top matches hero's bottom (#201c4a) for seamless continuation, then deepens */
+  background: linear-gradient(180deg, #201c4a 0%, #1a1744 25%, #151334 55%, #0f172a 85%, #0a0e1a 100%);
   z-index: 0;
 }
 
