@@ -3900,31 +3900,29 @@ html.dark-mode .theme-toggle .moon-icon {
 }
 
 /* ============================================================
-   Hero Authority Montage — director + books + credential chips
-   (replaces the 3D emoji cube)
+   Hero Visual — Nova-style: clean portrait + minimal social proof
    ============================================================ */
 .hero-montage {
   position: relative;
   width: 100%;
-  max-width: 520px;
+  max-width: 460px;
   margin-left: auto;
-  aspect-ratio: 1 / 1;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.5rem;
 }
 
 .hero-portrait {
-  position: absolute;
-  top: 6%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 62%;
+  position: relative;
+  width: 100%;
   aspect-ratio: 4 / 5;
-  border-radius: 28px;
+  border-radius: 24px;
   overflow: hidden;
+  background: #1e1b3a;
   box-shadow:
-    0 30px 70px -20px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(255, 255, 255, 0.08);
-  z-index: 2;
+    0 24px 60px -20px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
   isolation: isolate;
 }
 .hero-portrait picture,
@@ -3935,132 +3933,147 @@ html.dark-mode .theme-toggle .moon-icon {
   object-fit: cover;
   object-position: center 20%;
 }
-.hero-portrait-ring {
-  position: absolute;
-  inset: -1px;
-  border-radius: 28px;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  opacity: 0.35;
-  z-index: -1;
-  filter: blur(1px);
-}
-.hero-portrait-glow {
-  position: absolute;
-  inset: -40%;
-  background: radial-gradient(closest-side, rgba(129, 140, 248, 0.35), transparent 70%);
-  z-index: -2;
-  pointer-events: none;
-  animation: heroGlowPulse 6s ease-in-out infinite;
-}
-@keyframes heroGlowPulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50%      { opacity: 1;   transform: scale(1.05); }
-}
 
-/* Book fan — three angled covers behind/under the portrait */
-.hero-books {
+/* "Available" badge — top-left of portrait */
+.hero-availability {
   position: absolute;
-  bottom: 4%;
-  left: 0;
-  right: 0;
-  height: 38%;
-  pointer-events: none;
-  z-index: 3;
-}
-.hero-book-card {
-  position: absolute;
-  width: 26%;
-  aspect-ratio: 2 / 3;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow:
-    0 20px 40px -10px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.08);
-  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-  background: #111;
-}
-.hero-book-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.hero-book-1 { left: 6%;  bottom: 0;   transform: rotate(-10deg); }
-.hero-book-2 { left: 50%; bottom: 8%;  transform: translateX(-50%) rotate(0deg); z-index: 2; }
-.hero-book-3 { right: 6%; bottom: 0;   transform: rotate(10deg); }
-.hero-montage:hover .hero-book-1 { transform: rotate(-14deg) translateY(-6px); }
-.hero-montage:hover .hero-book-2 { transform: translateX(-50%) translateY(-10px); }
-.hero-montage:hover .hero-book-3 { transform: rotate(14deg) translateY(-6px); }
-
-/* Floating credential chips */
-.hero-credentials {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 4;
-}
-.hero-credential-chip {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 12px 16px;
-  background: rgba(15, 23, 42, 0.78);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
-  box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.5);
-  animation: chipFloat 5s ease-in-out infinite;
-  pointer-events: auto;
-}
-.hero-credential-chip strong {
+  top: 16px;
+  left: 16px;
   display: inline-flex;
-  align-items: baseline;
-  gap: 2px;
-  font-size: 1.5rem;
-  font-weight: 800;
-  line-height: 1;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  letter-spacing: -0.02em;
-}
-.hero-credential-chip .chip-unit {
-  font-size: 0.875rem;
-  font-weight: 700;
-}
-.hero-credential-chip .chip-label {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 12px;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: -0.005em;
   white-space: nowrap;
-  letter-spacing: 0.02em;
+  z-index: 2;
 }
-.hero-chip-1 { top: 12%;  left: -4%;  animation-delay: 0s; }
-.hero-chip-2 { top: 42%;  right: -6%; animation-delay: 1.2s; }
-.hero-chip-3 { bottom: 36%; left: -8%; animation-delay: 2.4s; }
-@keyframes chipFloat {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-8px); }
+.hero-availability-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  animation: availabilityPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes availabilityPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+  50%      { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
 }
 
-html.light-mode .hero-credential-chip {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(15, 23, 42, 0.08);
-  box-shadow: 0 14px 30px -10px rgba(15, 23, 42, 0.2);
+/* Social proof row — avatar stack + caption */
+.hero-proof {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 4px;
 }
-html.light-mode .hero-credential-chip .chip-label {
+.hero-proof-avatars {
+  display: flex;
+  align-items: center;
+}
+.proof-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  border: 2px solid var(--bg-primary, #0a0e1a);
+  margin-left: -10px;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  flex-shrink: 0;
+}
+.proof-avatar:first-child { margin-left: 0; }
+.proof-avatar:nth-child(2) { background: linear-gradient(135deg, #0ea5e9, #6366f1); }
+.proof-avatar:nth-child(3) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.proof-avatar:nth-child(4) { background: linear-gradient(135deg, #10b981, #14b8a6); }
+.proof-avatar-more {
+  background: rgba(255, 255, 255, 0.08) !important;
   color: var(--text-secondary);
+  border-color: var(--bg-primary, #0a0e1a);
 }
 
-/* Mobile: stack simpler, hide side chips */
+.hero-proof-text {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+}
+.hero-proof-text strong {
+  color: var(--text-primary);
+  font-weight: 700;
+  margin-right: 2px;
+}
+
+/* Social icons */
+.hero-socials {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px;
+}
+.hero-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  transition: var(--transition-base);
+}
+.hero-socials a:hover {
+  background: rgba(129, 140, 248, 0.15);
+  border-color: rgba(129, 140, 248, 0.4);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+/* Light mode */
+html.light-mode .hero-portrait {
+  background: #f1f5f9;
+  box-shadow:
+    0 24px 60px -20px rgba(15, 23, 42, 0.25),
+    0 0 0 1px rgba(15, 23, 42, 0.06);
+}
+html.light-mode .hero-availability {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(15, 23, 42, 0.06);
+  color: #1e293b;
+}
+html.light-mode .proof-avatar {
+  border-color: #fff;
+}
+html.light-mode .proof-avatar-more {
+  background: #e2e8f0 !important;
+  color: #64748b;
+}
+html.light-mode .hero-socials a {
+  background: #fff;
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+
+/* Mobile */
 @media (max-width: 768px) {
-  .hero-montage { max-width: 360px; margin: 0 auto; }
-  .hero-credential-chip { padding: 10px 12px; }
-  .hero-credential-chip strong { font-size: 1.2rem; }
-  .hero-chip-1, .hero-chip-3 { display: none; }
-  .hero-chip-2 { right: -4%; top: 20%; }
+  .hero-montage { max-width: 340px; margin: 0 auto; gap: 1.25rem; }
+  .hero-availability { font-size: 0.72rem; padding: 7px 12px 7px 10px; }
+  .proof-avatar { width: 30px; height: 30px; font-size: 0.7rem; }
+  .hero-proof-text { font-size: 0.82rem; }
 }
 
 /* ============================================================
