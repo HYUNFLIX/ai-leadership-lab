@@ -1262,163 +1262,210 @@ html.dark-mode .theme-toggle .moon-icon {
 /* ================ Director / Profile Section ================ */
 .section-director {
   background: var(--bg-primary);
-  padding-bottom: 1.5rem;
+  padding: 0;
+  overflow: hidden;
 }
 
-/* --- Banner (dark cinematic hero) --- */
+/* --- Full-bleed dark banner --- */
 .director-banner {
   position: relative;
   overflow: hidden;
-  padding: 2rem 0 calc(1.5rem + 36px);
 }
 
 .director-banner-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #0f172a 0%, #1a1744 50%, #272362 100%);
+  background: linear-gradient(155deg, #080b14 0%, #0f172a 30%, #1a1744 65%, #201c4a 100%);
   z-index: 0;
 }
 
-.director-banner-bg::after {
+.director-banner-bg::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 500px 350px at 15% 50%, rgba(99,102,241,0.08), transparent),
-    radial-gradient(ellipse 400px 300px at 85% 30%, rgba(168,85,247,0.06), transparent);
+    radial-gradient(ellipse 500px 400px at 8% 70%, rgba(99,102,241,0.07), transparent),
+    radial-gradient(ellipse 400px 300px at 75% 15%, rgba(168,85,247,0.06), transparent);
 }
 
-.director-profile {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: stretch;
-  gap: 2rem;
-}
-
-/* --- Photo (rectangle with subtle rounded corners) --- */
-.director-photo-wrap {
-  position: relative;
-  flex-shrink: 0;
-  width: 260px;
-  height: 320px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
-  border: 2px solid rgba(255, 255, 255, 0.08);
-}
-
-.director-photo-ring {
+/* no bottom fade — cards sit inside the dark banner */
+.director-banner-bg::after {
   display: none;
 }
 
-.director-photo {
+.director-banner-inner {
   position: relative;
+  z-index: 2;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 3rem 2rem 1.2rem;
+}
+
+.director-profile {
+  display: flex;
+  align-items: center;
+  gap: 2.2rem;
+}
+
+/* --- Photo (portrait rectangle) --- */
+.director-photo-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 240px;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  will-change: transform;
+}
+
+.director-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(8, 11, 20, 0.4) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.director-photo-ring { display: none; }
+
+.director-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 0;
   border: none;
+  border-radius: 0;
   z-index: 1;
-  filter: contrast(1.03) brightness(1.02);
+  filter: contrast(1.04) brightness(1.01) saturate(1.05);
+  transition: transform 0.5s ease;
 }
 
-/* --- Headline text (compact) --- */
+.director-photo-wrap:hover .director-photo {
+  transform: scale(1.04);
+}
+
+/* --- Text block --- */
 .director-headline {
   flex: 1;
   color: #f1f5f9;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0;
 }
 
 .director-label {
   display: inline-block;
   width: fit-content;
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(168, 85, 247, 0.9);
   background: rgba(168, 85, 247, 0.1);
-  padding: 0.2em 0.75em;
+  padding: 0.2em 0.7em;
   border-radius: var(--radius-full);
   margin-bottom: 0.4rem;
+  border: 1px solid rgba(168, 85, 247, 0.12);
 }
 
 .director-name {
-  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
   font-weight: 900;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  color: #ffffff;
-  margin-bottom: 0.2rem;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: #fff;
+  margin-bottom: 0.15rem;
 }
 
 .director-role {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 0.1rem;
-  line-height: 1.4;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 0.05rem;
+  line-height: 1.35;
 }
 
 .director-edu {
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 0.7rem;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 0;
+}
+
+.director-divider {
+  width: 36px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(168,85,247,0.55), rgba(99,102,241,0.25));
+  margin: 0.55rem 0;
+  border-radius: 1px;
 }
 
 .director-quote {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-style: italic;
   line-height: 1.65;
-  color: rgba(255, 255, 255, 0.5);
-  border-left: 2px solid rgba(168, 85, 247, 0.5);
-  padding-left: 0.75rem;
+  color: rgba(255,255,255,0.4);
   margin: 0;
-  max-width: 440px;
+  max-width: 400px;
 }
 
-/* --- Cards (tight grid) --- */
+/* --- Cards live inside the dark banner --- */
+.director-cards-wrap {
+  position: relative;
+  z-index: 3;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0.8rem 2rem 2.5rem;
+}
+
 .director-cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.7rem;
-  margin-top: -36px;
-  position: relative;
-  z-index: 2;
+  gap: 0.55rem;
 }
 
+/* --- Card: semi-transparent glass on dark bg --- */
 .director-card {
-  background: var(--bg-primary);
-  border-radius: 12px;
-  padding: 0.9rem 1rem;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
-  transition: var(--transition-base);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.director-card.director-card--visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .director-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.1);
-  border-color: rgba(99, 102, 241, 0.25);
+  box-shadow: 0 8px 28px rgba(99,102,241,0.12);
+  border-color: rgba(99,102,241,0.2);
+}
+
+/* card text is light on dark */
+.director-card .director-card-header {
+  border-bottom-color: rgba(255,255,255,0.08);
 }
 
 .director-card-header {
   display: flex;
   align-items: baseline;
   gap: 0.35rem;
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.35rem;
-  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .director-card-num {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: 900;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, #818cf8, #c084fc);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1426,11 +1473,11 @@ html.dark-mode .theme-toggle .moon-icon {
 }
 
 .director-card-title {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.4);
 }
 
 .director-card-list {
@@ -1439,14 +1486,14 @@ html.dark-mode .theme-toggle .moon-icon {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
 .director-card-list li {
   position: relative;
-  padding-left: 0.8rem;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
+  padding-left: 0.7rem;
+  font-size: 0.73rem;
+  color: rgba(255,255,255,0.55);
   line-height: 1.5;
 }
 
@@ -1458,26 +1505,26 @@ html.dark-mode .theme-toggle .moon-icon {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, #818cf8, #c084fc);
 }
 
 /* highlight row */
 .list-highlight {
   font-weight: 700;
-  color: var(--text-primary) !important;
+  color: rgba(255,255,255,0.85) !important;
 }
 
 .list-tag {
   display: inline-block;
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #fff;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, #6366f1, #a855f7);
   padding: 0.1em 0.45em;
   border-radius: var(--radius-full);
-  margin-left: 0.35em;
+  margin-left: 0.3em;
   vertical-align: middle;
 }
 
@@ -1486,9 +1533,9 @@ html.dark-mode .theme-toggle .moon-icon {
   padding-left: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.05rem;
-  padding-bottom: 0.3rem;
-  border-bottom: 1px solid var(--border-color);
+  gap: 0.02rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .director-card-list--books li:last-child {
@@ -1496,19 +1543,50 @@ html.dark-mode .theme-toggle .moon-icon {
   padding-bottom: 0;
 }
 
-.director-card-list--books li::before {
-  display: none;
-}
+.director-card-list--books li::before { display: none; }
 
 .book-name {
   font-weight: 700;
-  color: var(--text-primary);
-  font-size: 0.78rem;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.73rem;
 }
 
 .book-meta {
-  font-size: 0.65rem;
-  color: var(--text-muted);
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.35);
+}
+
+/* --- Animations --- */
+@keyframes directorSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes directorFadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.director-headline[data-director-text] { opacity: 0; }
+
+.director-headline.director-text--visible {
+  animation: directorSlideUp 0.6s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+}
+
+.director-photo-wrap[data-director-parallax] { opacity: 0; }
+
+.director-photo-wrap.director-photo--visible {
+  animation: directorFadeIn 0.7s ease forwards;
+}
+
+.director-divider {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94) 0.25s;
+}
+
+.director-text--visible .director-divider {
+  transform: scaleX(1);
 }
 
 /* ================ Quotes Section ================ */
@@ -2643,6 +2721,20 @@ html.dark-mode .theme-toggle .moon-icon {
 }
 
 /* ================ Responsive Design ================ */
+/* Director tablet breakpoint */
+@media (max-width: 1024px) {
+  .director-banner-inner {
+    padding: 2.5rem 1.5rem 1rem;
+  }
+  .director-cards-wrap {
+    padding: 0.6rem 1.5rem 2rem;
+  }
+  .director-photo-wrap {
+    width: 210px;
+    height: 260px;
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 0 var(--spacing-md);
@@ -2701,7 +2793,7 @@ html.dark-mode .theme-toggle .moon-icon {
   .director-profile {
     flex-direction: column;
     text-align: center;
-    gap: 1.2rem;
+    gap: 1rem;
   }
 
   .director-photo-wrap {
@@ -2714,31 +2806,35 @@ html.dark-mode .theme-toggle .moon-icon {
     align-items: center;
   }
 
+  .director-divider {
+    margin: 0.4rem auto;
+  }
+
   .director-name {
     font-size: 1.8rem;
   }
 
   .director-quote {
-    border-left: none;
-    border-top: 2px solid rgba(168, 85, 247, 0.4);
-    padding-left: 0;
-    padding-top: 0.5rem;
-    text-align: left;
+    text-align: center;
     max-width: 100%;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
   }
 
   .director-cards {
     grid-template-columns: 1fr;
-    gap: 0.6rem;
-  }
-  
-  .director-card {
-    padding: 0.8rem 0.9rem;
+    gap: 0.45rem;
   }
 
-  .director-banner {
-    padding: 1.5rem 0 calc(1.2rem + 30px);
+  .director-card {
+    padding: 0.7rem 0.85rem;
+  }
+
+  .director-banner-inner {
+    padding: 2rem 1rem 0.8rem;
+  }
+
+  .director-cards-wrap {
+    padding: 0 1rem 2rem;
   }
 
   .about-content {

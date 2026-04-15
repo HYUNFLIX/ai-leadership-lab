@@ -350,10 +350,9 @@
             <!-- 풀 와이드 히어로 배너 -->
             <div class="director-banner">
                 <div class="director-banner-bg"></div>
-                <div class="container">
+                <div class="director-banner-inner">
                     <div class="director-profile">
-                        <div class="director-photo-wrap">
-                            <div class="director-photo-ring"></div>
+                        <div class="director-photo-wrap" data-director-parallax>
                             <picture>
                                 <source srcset="images/director.webp" type="image/webp">
                                 <img src="images/director.jpg"
@@ -362,12 +361,14 @@
                                      loading="lazy"
                                      onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'500\' fill=\'%23e5e7eb\'%3E%3Crect width=\'500\' height=\'500\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'sans-serif\' font-size=\'24\'%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E'">
                             </picture>
+                            <div class="director-photo-overlay"></div>
                         </div>
-                        <div class="director-headline">
+                        <div class="director-headline" data-director-text>
                             <span class="director-label">AI Expert & Educator</span>
                             <h2 id="director-title" class="director-name">김 현</h2>
                             <p class="director-role">AI 리더십연구소 소장</p>
                             <p class="director-edu">고려대학교 교육대학원 교육학 석사</p>
+                            <div class="director-divider"></div>
                             <blockquote class="director-quote">
                                 "AI 시대, 기술의 발전보다 중요한 것은 그 기술을 어떻게 활용하느냐입니다.
                                 리더는 단순히 AI를 사용하는 것이 아니라, AI와 함께 새로운 가치를 창조하고
@@ -376,13 +377,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 카드 섹션 -->
-            <div class="container">
+            <!-- 카드 섹션 (배너 내부) -->
+            <div class="director-cards-wrap">
                 <div class="director-cards">
                     <!-- 경력 -->
-                    <div class="director-card">
+                    <div class="director-card" data-director-card>
                         <div class="director-card-header">
                             <span class="director-card-num">01</span>
                             <h4 class="director-card-title">Career</h4>
@@ -397,7 +397,7 @@
                     </div>
 
                     <!-- 자격 & 전문분야 -->
-                    <div class="director-card">
+                    <div class="director-card" data-director-card>
                         <div class="director-card-header">
                             <span class="director-card-num">02</span>
                             <h4 class="director-card-title">Credentials</h4>
@@ -414,7 +414,7 @@
                     </div>
 
                     <!-- 저서 -->
-                    <div class="director-card">
+                    <div class="director-card" data-director-card>
                         <div class="director-card-header">
                             <span class="director-card-num">03</span>
                             <h4 class="director-card-title">Publications</h4>
@@ -436,7 +436,7 @@
                     </div>
 
                     <!-- 활동 -->
-                    <div class="director-card">
+                    <div class="director-card" data-director-card>
                         <div class="director-card-header">
                             <span class="director-card-num">04</span>
                             <h4 class="director-card-title">Activities</h4>
@@ -451,6 +451,7 @@
                     </div>
                 </div>
             </div>
+            </div> <!-- /.director-banner -->
         </section>
 
         <!-- Publications Section -->
