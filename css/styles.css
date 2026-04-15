@@ -286,7 +286,7 @@ ul {
   max-width: 200px;
   /* Make white bg transparent on dark nav */
   mix-blend-mode: screen;
-  filter: brightness(1.8);
+  filter: brightness(1.6) contrast(1.1);
 }
 
 .logo-icon {
@@ -3435,39 +3435,7 @@ html.dark-mode .theme-toggle .moon-icon {
   border: none;
 }
 
-/* --- Dark-to-light smooth gradient transition --- */
-.section-publications {
-  position: relative;
-}
-
-.section-publications::before {
-  content: '';
-  position: absolute;
-  top: -80px;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: linear-gradient(to bottom, #0a0e1a, #ffffff);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* --- Light-to-dark transition before Contact --- */
-.section-contact {
-  position: relative;
-}
-
-.section-contact::before {
-  content: '';
-  position: absolute;
-  top: -80px;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: linear-gradient(to bottom, #ffffff, #0d1225);
-  pointer-events: none;
-  z-index: 1;
-}
+/* --- Transitions between dark/light handled by section padding --- */
 
 /* --- Interactive: scroll-triggered card flip/unfold --- */
 @keyframes cardUnfold {
