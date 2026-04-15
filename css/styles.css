@@ -1262,20 +1262,20 @@ html.dark-mode .theme-toggle .moon-icon {
 /* ================ Director / Profile Section ================ */
 .section-director {
   background: var(--bg-primary);
-  padding-bottom: var(--spacing-3xl);
+  padding-bottom: 1.5rem;
 }
 
 /* --- Banner (dark cinematic hero) --- */
 .director-banner {
   position: relative;
   overflow: hidden;
-  padding: var(--spacing-3xl) 0 calc(var(--spacing-3xl) + 40px);
+  padding: 2rem 0 calc(1.5rem + 36px);
 }
 
 .director-banner-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1a1744 50%, #272362 100%);
   z-index: 0;
 }
 
@@ -1284,36 +1284,32 @@ html.dark-mode .theme-toggle .moon-icon {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 600px 400px at 20% 50%, rgba(99,102,241,0.15), transparent),
-    radial-gradient(ellipse 500px 350px at 80% 30%, rgba(168,85,247,0.1), transparent);
+    radial-gradient(ellipse 500px 350px at 15% 50%, rgba(99,102,241,0.08), transparent),
+    radial-gradient(ellipse 400px 300px at 85% 30%, rgba(168,85,247,0.06), transparent);
 }
 
 .director-profile {
   position: relative;
   z-index: 1;
   display: flex;
-  align-items: center;
-  gap: var(--spacing-2xl);
+  align-items: stretch;
+  gap: 2rem;
 }
 
-/* --- Photo with animated ring --- */
+/* --- Photo (rectangle with subtle rounded corners) --- */
 .director-photo-wrap {
   position: relative;
   flex-shrink: 0;
-  width: 240px;
-  height: 240px;
+  width: 260px;
+  height: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.08);
 }
 
 .director-photo-ring {
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, var(--primary), var(--secondary), var(--primary));
-  animation: ring-spin 6s linear infinite;
-}
-
-@keyframes ring-spin {
-  to { transform: rotate(360deg); }
+  display: none;
 }
 
 .director-photo {
@@ -1321,99 +1317,106 @@ html.dark-mode .theme-toggle .moon-icon {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
-  border: 5px solid #0f172a;
+  border-radius: 0;
+  border: none;
   z-index: 1;
+  filter: contrast(1.03) brightness(1.02);
 }
 
-/* --- Headline text --- */
+/* --- Headline text (compact) --- */
 .director-headline {
   flex: 1;
   color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
 }
 
 .director-label {
   display: inline-block;
-  font-size: var(--font-size-xs);
+  width: fit-content;
+  font-size: 0.6rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--secondary);
-  background: rgba(168, 85, 247, 0.15);
-  padding: 0.3em 1em;
+  color: rgba(168, 85, 247, 0.9);
+  background: rgba(168, 85, 247, 0.1);
+  padding: 0.2em 0.75em;
   border-radius: var(--radius-full);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 0.4rem;
 }
 
 .director-name {
-  font-size: clamp(2.5rem, 5.5vw, 4rem);
+  font-size: clamp(2rem, 4.5vw, 3rem);
   font-weight: 900;
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 1.15;
   color: #ffffff;
-  margin-bottom: 0.15em;
+  margin-bottom: 0.2rem;
 }
 
 .director-role {
-  font-size: var(--font-size-xl);
+  font-size: 1rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 0.25em;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.1rem;
+  line-height: 1.4;
 }
 
 .director-edu {
-  font-size: var(--font-size-sm);
-  color: rgba(255, 255, 255, 0.45);
-  margin-bottom: var(--spacing-md);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.7rem;
 }
 
 .director-quote {
-  font-size: var(--font-size-base);
+  font-size: 0.82rem;
   font-style: italic;
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.55);
-  border-left: 3px solid var(--secondary);
-  padding-left: var(--spacing-md);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.5);
+  border-left: 2px solid rgba(168, 85, 247, 0.5);
+  padding-left: 0.75rem;
   margin: 0;
-  max-width: 540px;
+  max-width: 440px;
 }
 
-/* --- Cards --- */
+/* --- Cards (tight grid) --- */
 .director-cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-lg);
-  margin-top: -40px;
+  gap: 0.7rem;
+  margin-top: -36px;
   position: relative;
   z-index: 2;
 }
 
 .director-card {
   background: var(--bg-primary);
-  border-radius: var(--radius-2xl);
-  padding: var(--spacing-xl) var(--spacing-lg);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
   transition: var(--transition-base);
 }
 
 .director-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 50px rgba(99, 102, 241, 0.14);
-  border-color: rgba(99, 102, 241, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.25);
 }
 
 .director-card-header {
   display: flex;
   align-items: baseline;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
-  padding-bottom: var(--spacing-sm);
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
   border-bottom: 1px solid var(--border-color);
 }
 
 .director-card-num {
-  font-size: var(--font-size-3xl);
+  font-size: 1.3rem;
   font-weight: 900;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   -webkit-background-clip: text;
@@ -1423,7 +1426,7 @@ html.dark-mode .theme-toggle .moon-icon {
 }
 
 .director-card-title {
-  font-size: var(--font-size-sm);
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1436,24 +1439,24 @@ html.dark-mode .theme-toggle .moon-icon {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.25rem;
 }
 
 .director-card-list li {
   position: relative;
-  padding-left: 1.1rem;
-  font-size: var(--font-size-sm);
+  padding-left: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
-  line-height: 1.65;
+  line-height: 1.5;
 }
 
 .director-card-list li::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 0.55em;
-  width: 5px;
-  height: 5px;
+  top: 0.48em;
+  width: 3px;
+  height: 3px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
 }
@@ -1466,15 +1469,15 @@ html.dark-mode .theme-toggle .moon-icon {
 
 .list-tag {
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #fff;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
-  padding: 0.15em 0.6em;
+  padding: 0.1em 0.45em;
   border-radius: var(--radius-full);
-  margin-left: 0.5em;
+  margin-left: 0.35em;
   vertical-align: middle;
 }
 
@@ -1483,8 +1486,8 @@ html.dark-mode .theme-toggle .moon-icon {
   padding-left: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
-  padding-bottom: 0.6rem;
+  gap: 0.05rem;
+  padding-bottom: 0.3rem;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -1500,11 +1503,11 @@ html.dark-mode .theme-toggle .moon-icon {
 .book-name {
   font-weight: 700;
   color: var(--text-primary);
-  font-size: var(--font-size-sm);
+  font-size: 0.78rem;
 }
 
 .book-meta {
-  font-size: var(--font-size-xs);
+  font-size: 0.65rem;
   color: var(--text-muted);
 }
 
@@ -2698,28 +2701,44 @@ html.dark-mode .theme-toggle .moon-icon {
   .director-profile {
     flex-direction: column;
     text-align: center;
+    gap: 1.2rem;
   }
 
   .director-photo-wrap {
     width: 180px;
-    height: 180px;
+    height: 220px;
+    margin: 0 auto;
+  }
+
+  .director-headline {
+    align-items: center;
   }
 
   .director-name {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
   }
 
   .director-quote {
     border-left: none;
-    border-top: 2px solid var(--secondary);
+    border-top: 2px solid rgba(168, 85, 247, 0.4);
     padding-left: 0;
-    padding-top: var(--spacing-sm);
+    padding-top: 0.5rem;
     text-align: left;
     max-width: 100%;
+    font-size: 0.78rem;
   }
 
   .director-cards {
     grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  
+  .director-card {
+    padding: 0.8rem 0.9rem;
+  }
+
+  .director-banner {
+    padding: 1.5rem 0 calc(1.2rem + 30px);
   }
 
   .about-content {
