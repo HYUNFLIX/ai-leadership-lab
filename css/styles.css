@@ -284,6 +284,9 @@ ul {
   height: 40px;
   width: auto;
   max-width: 200px;
+  /* Make white bg transparent on dark nav */
+  mix-blend-mode: screen;
+  filter: brightness(1.8);
 }
 
 .logo-icon {
@@ -1887,7 +1890,7 @@ html.dark-mode .theme-toggle .moon-icon {
 .year-toggle-icon {
   margin-left: auto;
   transition: transform 0.3s ease;
-  color: var(--text-muted);
+  color: #94a3b8;
 }
 
 .year-group.expanded .year-toggle-icon {
@@ -1908,7 +1911,7 @@ html.dark-mode .theme-toggle .moon-icon {
 
 .year-count {
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: #94a3b8;
   font-weight: 500;
 }
 
@@ -1958,7 +1961,7 @@ html.dark-mode .theme-toggle .moon-icon {
 .lectures-empty {
   text-align: center;
   padding: var(--spacing-xl);
-  color: var(--text-muted);
+  color: #94a3b8;
 }
 
 /* 2025년 업체명 태그 스타일 */
@@ -1967,8 +1970,9 @@ html.dark-mode .theme-toggle .moon-icon {
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-md);
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  color: #fff;
 }
 
 .year-header-static .year-badge {
@@ -1990,25 +1994,25 @@ html.dark-mode .theme-toggle .moon-icon {
   flex-wrap: wrap;
   gap: 0.5rem;
   padding: var(--spacing-md);
-  background: var(--bg-primary);
-  border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
+  background: #ffffff;
+  border-left: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
 }
 
 .client-tag {
   display: inline-block;
   padding: 0.4rem 0.85rem;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(168, 85, 247, 0.06));
+  border: 1px solid rgba(99, 102, 241, 0.15);
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--primary);
+  color: #6366f1;
   transition: all 0.2s ease;
 }
 
 .client-tag:hover {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.12));
   transform: translateY(-1px);
 }
 
@@ -2019,19 +2023,19 @@ html.dark-mode .theme-toggle .moon-icon {
   gap: 0.5rem;
   width: 100%;
   padding: var(--spacing-sm);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-top: none;
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   cursor: pointer;
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: #64748b;
   transition: all 0.2s ease;
 }
 
 .show-details-btn:hover {
-  background: var(--bg-tertiary);
-  color: var(--primary);
+  background: #f1f5f9;
+  color: #6366f1;
 }
 
 .show-details-btn svg {
@@ -2057,8 +2061,8 @@ html.dark-mode .theme-toggle .moon-icon {
 .year-lectures-detail {
   display: none;
   padding: var(--spacing-md);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-top: none;
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   margin-top: -1px;
@@ -3431,14 +3435,38 @@ html.dark-mode .theme-toggle .moon-icon {
   border: none;
 }
 
-/* --- Dark-to-light transition divider --- */
+/* --- Dark-to-light smooth gradient transition --- */
+.section-publications {
+  position: relative;
+}
+
 .section-publications::before {
   content: '';
-  display: block;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2) 50%, transparent);
-  margin: 0 auto 3rem;
-  max-width: 600px;
+  position: absolute;
+  top: -80px;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, #0a0e1a, #ffffff);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* --- Light-to-dark transition before Contact --- */
+.section-contact {
+  position: relative;
+}
+
+.section-contact::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, #ffffff, #0d1225);
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* --- Interactive: scroll-triggered card flip/unfold --- */
