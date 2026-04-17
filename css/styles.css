@@ -1610,8 +1610,13 @@ html.dark-mode .theme-toggle .moon-icon {
 
 .director-cards {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.55rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.7rem;
+}
+
+@media (max-width: 900px) {
+  .director-cards { grid-template-columns: repeat(2, 1fr); }
+  .director-cards > .director-card:last-child { grid-column: 1 / -1; }
 }
 
 /* --- Card: semi-transparent glass on dark bg --- */
