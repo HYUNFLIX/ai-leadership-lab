@@ -110,6 +110,8 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Solid dark fallback — prevents ANY flash of white during scroll subpixel gaps */
+  background-color: #0a0e1a;
 }
 
 body {
@@ -120,6 +122,13 @@ body {
   background-color: var(--bg-primary);
   overflow-x: hidden;
 }
+
+html.light-mode { background-color: #f8fafc; }
+
+/* Eliminate subpixel gaps between dark sections that share edges */
+.hero { margin-bottom: -1px; }
+.section-about { margin-top: -1px; margin-bottom: -1px; }
+.section-director { margin-top: -1px; }
 
 /* Fix for mobile menu scroll lock */
 body.menu-open {
