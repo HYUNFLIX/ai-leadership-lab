@@ -83,7 +83,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css?v=20260416g">
+    <link rel="stylesheet" href="css/styles.css?v=20260417a">
     
     <!-- Preload critical resources -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style">
@@ -136,63 +136,94 @@
 
     <!-- Main Content -->
     <main id="main">
-        <!-- Hero Section -->
+        <!-- Hero Section (Dovetail-inspired: minimal, bold, structured) -->
         <section id="hero" class="hero hero-split" aria-labelledby="hero-title">
             <div class="hero-bg">
-                <div class="hero-gradient"></div>
-                <div class="hero-pattern"></div>
+                <div class="hero-grid-lines" aria-hidden="true"></div>
             </div>
             <div class="container">
                 <div class="hero-grid">
                     <div class="hero-content">
-                        <span class="hero-badge animate-fade-in">AI Leadership Innovation</span>
+                        <!-- Announcement pill -->
+                        <a href="#publications" class="hero-announcement animate-fade-in">
+                            <span class="hero-announcement-marker" aria-hidden="true"></span>
+                            <span>신간 『AI 시대의 팀장은 다르게 일합니다』 출간</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M7 17L17 7M9 7h8v8"/>
+                            </svg>
+                        </a>
+
                         <h1 id="hero-title" class="hero-title animate-slide-up">
                             AI가 아니라<br>
                             <span class="text-highlight">AI를 쓰는 리더</span>가<br>
                             당신을 대체합니다
                         </h1>
                         <p class="hero-description animate-slide-up-delay">
-                            AI Leadership Lab은 새로운 시대에 맞는 리더십 철학과
-                            실질적인 협업 전략을 제시합니다.
+                            새로운 시대의 리더십을 정의합니다.
                         </p>
                         <div class="hero-actions animate-fade-in-delay">
-                            <button class="btn btn-primary" onclick="openProgramsModal()">
-                                <span>AI 도구 체험하기</span>
-                                <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                                    <path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                            <a href="#contact" class="btn btn-secondary">
-                                <span>문의하기</span>
+                            <a href="#contact" class="btn btn-primary">
+                                <span>강의·컨설팅 문의</span>
                             </a>
+                            <button class="btn btn-secondary" onclick="openProgramsModal()">
+                                <span>AI 도구 체험</span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- AI Chat Interface — curiosity-driven hero visual -->
+                    <!-- Category Mindmap: 4 service categories connected by faint lines -->
                     <div class="hero-visual animate-fade-in-up">
-                        <div class="hero-chat" aria-label="AI 리더십 대화 시뮬레이션">
-                            <div class="chat-header">
-                                <div class="chat-header-dots" aria-hidden="true">
-                                    <span></span><span></span><span></span>
-                                </div>
-                                <span class="chat-header-title">AI Leadership Coach</span>
-                                <div class="chat-header-status">
-                                    <span class="chat-status-dot"></span>
-                                    <span>Online</span>
+                        <div class="hero-categories" aria-label="제공 서비스">
+                            <!-- Connecting lines SVG (behind cards) -->
+                            <svg class="categories-connector" viewBox="0 0 400 400" aria-hidden="true" preserveAspectRatio="none">
+                                <path d="M 100 100 L 200 200 L 300 100 M 200 200 L 100 300 M 200 200 L 300 300"
+                                      stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="3 4" opacity="0.25"/>
+                            </svg>
+
+                            <div class="category-card" data-cat="lecture">
+                                <span class="category-label">강의</span>
+                                <div class="category-chips">
+                                    <span class="cat-chip">기업 특강</span>
+                                    <span class="cat-chip">CEO 과정</span>
+                                    <span class="cat-chip">공공·교육기관</span>
                                 </div>
                             </div>
-                            <div class="chat-body" id="heroChatBody">
-                                <!-- Messages injected by JS -->
-                            </div>
-                            <div class="chat-footer" aria-hidden="true">
-                                <div class="chat-input-fake">
-                                    <span>리더십에 대해 무엇이든 물어보세요...</span>
+
+                            <div class="category-card" data-cat="consulting">
+                                <span class="category-label">컨설팅</span>
+                                <div class="category-chips">
+                                    <span class="cat-chip">AI 도입 전략</span>
+                                    <span class="cat-chip">조직·문화</span>
+                                    <span class="cat-chip">HRD</span>
                                 </div>
-                                <div class="chat-send-btn">
-                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4z"/></svg>
+                            </div>
+
+                            <div class="category-card" data-cat="coaching">
+                                <span class="category-label">코칭</span>
+                                <div class="category-chips">
+                                    <span class="cat-chip">1:1 리더 코칭</span>
+                                    <span class="cat-chip">팀 코칭</span>
+                                    <span class="cat-chip">KAC 인증</span>
+                                </div>
+                            </div>
+
+                            <div class="category-card" data-cat="books">
+                                <span class="category-label">저서</span>
+                                <div class="category-chips">
+                                    <span class="cat-chip">AI 시대의 팀장</span>
+                                    <span class="cat-chip">조직은 문화다</span>
+                                    <span class="cat-chip">코칭 레볼루션</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Client logo strip at hero bottom -->
+                <div class="hero-clients">
+                    <p class="hero-clients-label">산업·공공·교육 현장의 리더들과 함께합니다</p>
+                    <div class="hero-clients-row" id="heroClientsStrip" aria-label="대표 고객 기관">
+                        <span class="hero-clients-loading">Loading partners…</span>
                     </div>
                 </div>
             </div>
@@ -817,114 +848,21 @@
     </button>
 
     <!-- Scripts -->
-    <script src="js/main.js?v=20260416g" defer></script>
+    <script src="js/main.js?v=20260417a" defer></script>
 
-    <!-- Hero Chat Animation -->
+
+    <!-- Hero client strip preload (shows fallback instantly; Firebase overrides later) -->
     <script>
     (function() {
-        const conversations = [
-            {
-                q: "AI 시대, 팀장이 가장 먼저 바꿔야 할 것은?",
-                a: "답을 주는 사람에서, 더 좋은 질문을 하는 사람으로. AI가 정보를 줄 수 있지만, 방향을 설정하는 건 여전히 리더의 몫입니다."
-            },
-            {
-                q: "AI가 리더를 대체할 수 있을까요?",
-                a: "AI가 아니라, AI를 쓰는 리더가 당신을 대체합니다. 기술이 아닌 관점의 전환이 핵심입니다."
-            },
-            {
-                q: "조직에 AI를 도입했는데 왜 변화가 없죠?",
-                a: "도구가 아니라 문화를 바꿔야 합니다. AI 전환은 기술 도입이 아니라 일하는 방식의 재설계입니다."
-            },
-            {
-                q: "코칭과 AI, 무슨 관계가 있나요?",
-                a: "AI가 지식을 민주화할수록, 사람의 잠재력을 끌어내는 코칭 역량이 리더의 최후 경쟁력이 됩니다."
-            }
+        const strip = document.getElementById('heroClientsStrip');
+        if (!strip) return;
+        const fallback = [
+            '삼성전자', '현대자동차', 'LG CNS', 'KT', 'SK텔레콤',
+            '한국산업인력공단', '한국능률협회', '세종텔레콤'
         ];
-
-        const chatBody = document.getElementById('heroChatBody');
-        if (!chatBody) return;
-
-        let convIdx = 0;
-        let isRunning = false;
-
-        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-        function createBubble(type) {
-            const row = document.createElement('div');
-            row.className = 'chat-row chat-row-' + type;
-            const bubble = document.createElement('div');
-            bubble.className = 'chat-bubble chat-bubble-' + type;
-            row.appendChild(bubble);
-            chatBody.appendChild(row);
-            chatBody.scrollTop = chatBody.scrollHeight;
-            return bubble;
-        }
-
-        function showTypingIndicator() {
-            const row = document.createElement('div');
-            row.className = 'chat-row chat-row-ai';
-            row.id = 'chatTyping';
-            row.innerHTML = '<div class="chat-bubble chat-bubble-ai chat-typing"><span></span><span></span><span></span></div>';
-            chatBody.appendChild(row);
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const el = document.getElementById('chatTyping');
-            if (el) el.remove();
-        }
-
-        async function typeText(bubble, text, speed) {
-            for (let i = 0; i < text.length; i++) {
-                bubble.textContent += text[i];
-                chatBody.scrollTop = chatBody.scrollHeight;
-                // Variable speed: faster for spaces/punctuation
-                const ch = text[i];
-                const delay = (ch === ' ' || ch === ',' || ch === '.') ? speed * 0.4 : speed;
-                await sleep(delay);
-            }
-        }
-
-        async function runConversation() {
-            if (isRunning) return;
-            isRunning = true;
-
-            const conv = conversations[convIdx];
-
-            // User message (type it)
-            const userBubble = createBubble('user');
-            await typeText(userBubble, conv.q, 35);
-            await sleep(800);
-
-            // AI typing indicator
-            showTypingIndicator();
-            await sleep(1200);
-            removeTypingIndicator();
-
-            // AI message (type it)
-            const aiBubble = createBubble('ai');
-            await typeText(aiBubble, conv.a, 25);
-
-            // Pause to let user read
-            await sleep(4000);
-
-            // Fade out all messages
-            chatBody.classList.add('chat-fade-out');
-            await sleep(600);
-            chatBody.innerHTML = '';
-            chatBody.classList.remove('chat-fade-out');
-
-            convIdx = (convIdx + 1) % conversations.length;
-            isRunning = false;
-            runConversation();
-        }
-
-        // Start after a short delay
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => setTimeout(runConversation, 1200));
-        } else {
-            setTimeout(runConversation, 1200);
-        }
+        strip.innerHTML = fallback.map(n =>
+            `<span class="hero-client-item">${n}</span>`
+        ).join('');
     })();
     </script>
 
@@ -1200,15 +1138,16 @@
             }
         }
 
-        // Curated fallback + render the "Clients" wall from lectures data
+        // Curated fallback + render the "Clients" data (hero strip + legacy wall)
         function renderClientsWall(lectures) {
+            const strip = document.getElementById('heroClientsStrip');
             const wall = document.getElementById('clientsWall');
-            if (!wall) return;
+            if (!strip && !wall) return;
 
             const fallback = [
                 '삼성전자', '현대자동차', 'LG CNS', 'KT', 'SK텔레콤',
                 '한국산업인력공단', '한국능률협회', '세종텔레콤',
-                '한국중견기업협회', '고려대학교', 'HRinsight', '알라딘'
+                '한국중견기업협회', '고려대학교'
             ];
 
             let clients = [];
@@ -1218,15 +1157,26 @@
                 )];
             }
             if (clients.length < 6) clients = fallback;
-
-            // Sort alphabetically (Korean-aware)
             clients.sort((a, b) => a.localeCompare(b, 'ko'));
 
-            wall.innerHTML = clients.map(name => `
-                <div class="client-cell" title="${escapeHtml(name)}">
-                    <span class="client-name">${escapeHtml(name)}</span>
-                </div>
-            `).join('');
+            // Hero strip: limit to top 8, render as inline logo-style text
+            if (strip) {
+                const stripClients = clients.slice(0, 8);
+                strip.innerHTML = stripClients.map(name => `
+                    <span class="hero-client-item">${escapeHtml(name)}</span>
+                `).join('');
+                if (clients.length > 8) {
+                    strip.innerHTML += `<span class="hero-client-more">+${clients.length - 8}</span>`;
+                }
+            }
+
+            if (wall) {
+                wall.innerHTML = clients.map(name => `
+                    <div class="client-cell" title="${escapeHtml(name)}">
+                        <span class="client-name">${escapeHtml(name)}</span>
+                    </div>
+                `).join('');
+            }
         }
 
         function escapeHtml(str) {
