@@ -461,7 +461,8 @@ html.dark-mode .theme-toggle .moon-icon {
 .hero-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(155deg, #080b14 0%, #0f172a 30%, #1a1744 65%, #201c4a 100%);
+  /* Vertical gradient so the bottom edge is uniform (#201c4a) — matches About top */
+  background: linear-gradient(180deg, #080b14 0%, #0f172a 30%, #1a1744 65%, #201c4a 100%);
   opacity: 1;
 }
 
@@ -1448,9 +1449,10 @@ html.dark-mode .theme-toggle .moon-icon {
 /* ================ Director Section ================ */
 /* ================ Director / Profile Section ================ */
 .section-director {
-  background: var(--bg-primary);
+  background-color: #0a0e1a; /* Fallback matches About end to prevent white/mismatch flash */
   padding: 0;
   overflow: hidden;
+  isolation: isolate;
 }
 
 /* --- Full-bleed dark banner --- */
@@ -1462,7 +1464,8 @@ html.dark-mode .theme-toggle .moon-icon {
 .director-banner-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(155deg, #080b14 0%, #0f172a 30%, #1a1744 65%, #201c4a 100%);
+  /* Vertical gradient; starts at #0a0e1a (matches About end) so there's no seam */
+  background: linear-gradient(180deg, #0a0e1a 0%, #0f172a 25%, #1a1744 60%, #201c4a 100%);
   z-index: 0;
 }
 
