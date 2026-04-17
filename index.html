@@ -83,7 +83,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css?v=20260417a">
+    <link rel="stylesheet" href="css/styles.css?v=20260418a">
     
     <!-- Preload critical resources -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style">
@@ -136,94 +136,111 @@
 
     <!-- Main Content -->
     <main id="main">
-        <!-- Hero Section (Dovetail-inspired: minimal, bold, structured) -->
+        <!-- Hero Section -->
         <section id="hero" class="hero hero-split" aria-labelledby="hero-title">
             <div class="hero-bg">
-                <div class="hero-grid-lines" aria-hidden="true"></div>
+                <div class="hero-gradient"></div>
+                <div class="hero-pattern"></div>
             </div>
             <div class="container">
                 <div class="hero-grid">
                     <div class="hero-content">
-                        <!-- Announcement pill -->
-                        <a href="#publications" class="hero-announcement animate-fade-in">
-                            <span class="hero-announcement-marker" aria-hidden="true"></span>
-                            <span>신간 『AI 시대의 팀장은 다르게 일합니다』 출간</span>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <path d="M7 17L17 7M9 7h8v8"/>
-                            </svg>
-                        </a>
-
+                        <span class="hero-badge animate-fade-in">AI Leadership Innovation</span>
                         <h1 id="hero-title" class="hero-title animate-slide-up">
                             AI가 아니라<br>
                             <span class="text-highlight">AI를 쓰는 리더</span>가<br>
                             당신을 대체합니다
                         </h1>
                         <p class="hero-description animate-slide-up-delay">
-                            새로운 시대의 리더십을 정의합니다.
+                            AI Leadership Lab은 새로운 시대에 맞는 리더십 철학과
+                            실질적인 협업 전략을 제시합니다.
                         </p>
                         <div class="hero-actions animate-fade-in-delay">
-                            <a href="#contact" class="btn btn-primary">
-                                <span>강의·컨설팅 문의</span>
-                            </a>
-                            <button class="btn btn-secondary" onclick="openProgramsModal()">
-                                <span>AI 도구 체험</span>
+                            <button class="btn btn-primary" onclick="openProgramsModal()">
+                                <span>AI 도구 체험하기</span>
+                                <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                    <path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
                             </button>
+                            <a href="#contact" class="btn btn-secondary">
+                                <span>문의하기</span>
+                            </a>
                         </div>
                     </div>
 
-                    <!-- Category Mindmap: 4 service categories connected by faint lines -->
+                    <!-- Interactive 3D Cube -->
                     <div class="hero-visual animate-fade-in-up">
-                        <div class="hero-categories" aria-label="제공 서비스">
-                            <!-- Connecting lines SVG (behind cards) -->
-                            <svg class="categories-connector" viewBox="0 0 400 400" aria-hidden="true" preserveAspectRatio="none">
-                                <path d="M 100 100 L 200 200 L 300 100 M 200 200 L 100 300 M 200 200 L 300 300"
-                                      stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="3 4" opacity="0.25"/>
-                            </svg>
-
-                            <div class="category-card" data-cat="lecture">
-                                <span class="category-label">강의</span>
-                                <div class="category-chips">
-                                    <span class="cat-chip">기업 특강</span>
-                                    <span class="cat-chip">CEO 과정</span>
-                                    <span class="cat-chip">공공·교육기관</span>
+                        <div class="cube-scene" id="cubeScene">
+                            <!-- 3D Cube -->
+                            <div class="cube-container">
+                                <div class="cube" id="interactiveCube">
+                                    <div class="cube-face cube-front">
+                                        <div class="face-content">
+                                            <span class="face-icon">🤖</span>
+                                            <span class="face-text">AI</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-back">
+                                        <div class="face-content">
+                                            <span class="face-icon">📊</span>
+                                            <span class="face-text">Data</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-right">
+                                        <div class="face-content">
+                                            <span class="face-icon">💡</span>
+                                            <span class="face-text">혁신</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-left">
+                                        <div class="face-content">
+                                            <span class="face-icon">🎯</span>
+                                            <span class="face-text">전략</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-top">
+                                        <div class="face-content">
+                                            <span class="face-icon">👥</span>
+                                            <span class="face-text">리더십</span>
+                                        </div>
+                                    </div>
+                                    <div class="cube-face cube-bottom">
+                                        <div class="face-content">
+                                            <span class="face-icon">🚀</span>
+                                            <span class="face-text">성장</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="category-card" data-cat="consulting">
-                                <span class="category-label">컨설팅</span>
-                                <div class="category-chips">
-                                    <span class="cat-chip">AI 도입 전략</span>
-                                    <span class="cat-chip">조직·문화</span>
-                                    <span class="cat-chip">HRD</span>
-                                </div>
+                            <!-- Floating Particles -->
+                            <div class="floating-particles">
+                                <div class="particle" style="--delay: 0s; --x: 20%; --y: 30%;"></div>
+                                <div class="particle" style="--delay: 1s; --x: 80%; --y: 20%;"></div>
+                                <div class="particle" style="--delay: 2s; --x: 70%; --y: 70%;"></div>
+                                <div class="particle" style="--delay: 0.5s; --x: 30%; --y: 80%;"></div>
+                                <div class="particle" style="--delay: 1.5s; --x: 50%; --y: 10%;"></div>
+                                <div class="particle" style="--delay: 2.5s; --x: 10%; --y: 50%;"></div>
+                                <div class="particle" style="--delay: 3s; --x: 90%; --y: 60%;"></div>
+                                <div class="particle" style="--delay: 0.8s; --x: 40%; --y: 90%;"></div>
                             </div>
 
-                            <div class="category-card" data-cat="coaching">
-                                <span class="category-label">코칭</span>
-                                <div class="category-chips">
-                                    <span class="cat-chip">1:1 리더 코칭</span>
-                                    <span class="cat-chip">팀 코칭</span>
-                                    <span class="cat-chip">KAC 인증</span>
-                                </div>
+                            <!-- Floating Labels -->
+                            <div class="floating-labels">
+                                <span class="float-label" style="--pos-x: 5%; --pos-y: 20%;">DX</span>
+                                <span class="float-label" style="--pos-x: 85%; --pos-y: 15%;">HRD</span>
+                                <span class="float-label" style="--pos-x: 10%; --pos-y: 75%;">코칭</span>
+                                <span class="float-label" style="--pos-x: 80%; --pos-y: 80%;">컨설팅</span>
+                                <span class="float-label" style="--pos-x: 50%; --pos-y: 5%;">교육</span>
                             </div>
 
-                            <div class="category-card" data-cat="books">
-                                <span class="category-label">저서</span>
-                                <div class="category-chips">
-                                    <span class="cat-chip">AI 시대의 팀장</span>
-                                    <span class="cat-chip">조직은 문화다</span>
-                                    <span class="cat-chip">코칭 레볼루션</span>
-                                </div>
+                            <!-- Orbit Rings -->
+                            <div class="orbit-rings">
+                                <div class="orbit-ring orbit-1"></div>
+                                <div class="orbit-ring orbit-2"></div>
+                                <div class="orbit-ring orbit-3"></div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Client logo strip at hero bottom -->
-                <div class="hero-clients">
-                    <p class="hero-clients-label">산업·공공·교육 현장의 리더들과 함께합니다</p>
-                    <div class="hero-clients-row" id="heroClientsStrip" aria-label="대표 고객 기관">
-                        <span class="hero-clients-loading">Loading partners…</span>
                     </div>
                 </div>
             </div>
@@ -848,23 +865,8 @@
     </button>
 
     <!-- Scripts -->
-    <script src="js/main.js?v=20260417a" defer></script>
+    <script src="js/main.js?v=20260418a" defer></script>
 
-
-    <!-- Hero client strip preload (shows fallback instantly; Firebase overrides later) -->
-    <script>
-    (function() {
-        const strip = document.getElementById('heroClientsStrip');
-        if (!strip) return;
-        const fallback = [
-            '삼성전자', '현대자동차', 'LG CNS', 'KT', 'SK텔레콤',
-            '한국산업인력공단', '한국능률협회', '세종텔레콤'
-        ];
-        strip.innerHTML = fallback.map(n =>
-            `<span class="hero-client-item">${n}</span>`
-        ).join('');
-    })();
-    </script>
 
     <!-- Programs Loader -->
     <script>
@@ -1160,16 +1162,6 @@
             clients.sort((a, b) => a.localeCompare(b, 'ko'));
 
             // Hero strip: limit to top 8, render as inline logo-style text
-            if (strip) {
-                const stripClients = clients.slice(0, 8);
-                strip.innerHTML = stripClients.map(name => `
-                    <span class="hero-client-item">${escapeHtml(name)}</span>
-                `).join('');
-                if (clients.length > 8) {
-                    strip.innerHTML += `<span class="hero-client-more">+${clients.length - 8}</span>`;
-                }
-            }
-
             if (wall) {
                 wall.innerHTML = clients.map(name => `
                     <div class="client-cell" title="${escapeHtml(name)}">
