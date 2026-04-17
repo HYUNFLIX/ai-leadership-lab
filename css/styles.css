@@ -442,12 +442,20 @@ html.dark-mode .theme-toggle .moon-icon {
   padding: var(--spacing-3xl) 0 0;
   margin-bottom: 0;
   overflow: hidden;
+  /* Fallback solid color matches hero-gradient start so no white flash */
+  background-color: #080b14;
+  isolation: isolate;
+}
+
+.hero > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-bg {
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
 }
 
 .hero-gradient {
@@ -1077,6 +1085,9 @@ html.dark-mode .theme-toggle .moon-icon {
   overflow: hidden;
   padding: 0;
   margin-top: 0;
+  /* Fallback solid color matches about-dark-bg start so no white flash */
+  background-color: #201c4a;
+  isolation: isolate;
 }
 
 .about-dark-bg {
