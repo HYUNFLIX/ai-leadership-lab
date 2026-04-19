@@ -498,9 +498,9 @@ html.dark-mode .theme-toggle .moon-icon {
 }
 
 .hero-title {
-  font-size: clamp(2.6rem, 5.5vw + 1rem, 5.2rem);
+  font-size: clamp(2.2rem, 4vw + 0.5rem, 4.0rem);
   font-weight: 900;
-  line-height: 1.08;
+  line-height: 1.12;
   margin-bottom: var(--spacing-lg);
   color: #ffffff;
   text-shadow: none;
