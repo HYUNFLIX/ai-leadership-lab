@@ -505,6 +505,8 @@ html.dark-mode .theme-toggle .moon-icon {
   color: #ffffff;
   text-shadow: none;
   letter-spacing: -0.02em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .hero-description {
@@ -515,6 +517,8 @@ html.dark-mode .theme-toggle .moon-icon {
   color: #b0b8c8;
   text-shadow: none;
   font-weight: 400;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .hero-actions {
