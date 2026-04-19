@@ -4327,6 +4327,69 @@ html.light-mode .client-cell:hover {
   padding-bottom: 3rem;
 }
 
+/* ── Laser Line (세로 레이저 스캔) ── */
+.hero-laser {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  z-index: 2;
+  pointer-events: none;
+
+  /* 베이스 라인: 희미한 블루 세로선 */
+  background: linear-gradient(
+    to bottom,
+    transparent        0%,
+    rgba(91,139,255,0) 8%,
+    rgba(91,139,255,0.35) 25%,
+    rgba(91,139,255,0.45) 50%,
+    rgba(91,139,255,0.35) 75%,
+    rgba(91,139,255,0) 92%,
+    transparent        100%
+  );
+  box-shadow:
+    0 0 6px rgba(91,139,255,0.25),
+    0 0 18px rgba(91,139,255,0.1);
+}
+
+/* 위→아래로 흘러내리는 레이저 펄스 */
+.hero-laser::after {
+  content: '';
+  position: absolute;
+  left: -1px;
+  width: 3px;
+  height: 140px;
+  background: linear-gradient(
+    to bottom,
+    transparent                   0%,
+    rgba(91, 139, 255, 0.4)      15%,
+    rgba(150, 190, 255, 0.95)    45%,
+    rgba(255, 255, 255, 1)       50%,
+    rgba(150, 190, 255, 0.95)    55%,
+    rgba(91, 139, 255, 0.4)      85%,
+    transparent                   100%
+  );
+  box-shadow:
+    0 0 8px  rgba(255,255,255,0.9),
+    0 0 20px rgba(91,139,255,0.8),
+    0 0 40px rgba(91,139,255,0.4);
+  border-radius: 2px;
+  animation: laser-drop 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes laser-drop {
+  0%   { top: -140px; opacity: 0; }
+  6%   { opacity: 1; }
+  94%  { opacity: 1; }
+  100% { top: 100%;  opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .hero-laser { display: none; }
+}
+
 /* ── Video Section ── */
 .section-video {
   background: #0a0c1e;
