@@ -204,8 +204,11 @@ ul {
 }
 
 .text-highlight {
-  color: #5b8bff;
   font-weight: 900;
+  background: linear-gradient(120deg, #5b8bff 0%, #a78bfa 55%, #60d4f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .gradient-text {
