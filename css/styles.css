@@ -4486,6 +4486,368 @@ html.light-mode .client-cell:hover {
 
 /* Secondary button on white bg needs darker outline — REMOVED (now dark) */
 
+/* ============================================================
+   ★ 소장 풀쿼트 섹션 (강의 현장 사진)
+   ============================================================ */
+.section-quote {
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: #04050f;
+}
+
+.quote-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.quote-stage-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+  opacity: 0.45;
+}
+
+/* 사진 없을 때 fallback 그라디언트 */
+.quote-bg.no-photo {
+  background:
+    radial-gradient(ellipse 120% 80% at 70% 50%, rgba(30,40,100,0.6), transparent 70%),
+    linear-gradient(135deg, #04050f 0%, #0a0c2a 100%);
+}
+.quote-bg.no-photo .quote-stage-img { display: none; }
+
+.quote-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(4, 5, 15, 0.92) 0%,
+    rgba(4, 5, 15, 0.75) 50%,
+    rgba(4, 5, 15, 0.3) 100%
+  );
+}
+
+.quote-inner {
+  position: relative;
+  z-index: 1;
+  padding: 6rem 0;
+  max-width: 760px;
+}
+
+.quote-mark {
+  font-size: 8rem;
+  line-height: 0.5;
+  color: #5b8bff;
+  font-family: Georgia, serif;
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+}
+
+.quote-text {
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  margin-bottom: 2.5rem;
+}
+
+.quote-accent {
+  color: #5b8bff;
+}
+
+.quote-author {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.quote-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(91,139,255,0.4);
+}
+
+.quote-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #b0b8c8;
+}
+
+/* ============================================================
+   ★ 서비스 카드 섹션
+   ============================================================ */
+.section-services {
+  background: #070919;
+  padding: 6rem 0;
+}
+
+.services-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.services-label {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  background: rgba(91,139,255,0.12);
+  color: #5b8bff;
+  border: 1px solid rgba(91,139,255,0.25);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.25rem;
+}
+
+.services-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+.services-desc {
+  font-size: 1.05rem;
+  color: #94a3b8;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.service-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 2rem 1.75rem;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+  position: relative;
+}
+
+.service-card:hover {
+  background: rgba(91,139,255,0.07);
+  border-color: rgba(91,139,255,0.3);
+  transform: translateY(-4px);
+}
+
+.service-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(91,139,255,0.12);
+  border: 1px solid rgba(91,139,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5b8bff;
+  margin-bottom: 1.25rem;
+}
+
+.service-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(91,139,255,0.5);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.service-title {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.875rem;
+  letter-spacing: -0.01em;
+}
+
+.service-desc {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.service-link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #5b8bff;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+}
+
+.service-link:hover { color: #7ba8ff; }
+
+@media (max-width: 1024px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .services-grid { grid-template-columns: 1fr; }
+  .section-services { padding: 4rem 0; }
+}
+
+/* ============================================================
+   ★ FAQ 섹션
+   ============================================================ */
+.section-faq {
+  background: #08091a;
+  padding: 6rem 0;
+}
+
+.faq-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.faq-label {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  background: rgba(91,139,255,0.12);
+  color: #5b8bff;
+  border: 1px solid rgba(91,139,255,0.25);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.faq-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.faq-list {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  font-family: inherit;
+  transition: color 0.2s ease;
+}
+
+.faq-question:hover { color: #ffffff; }
+
+.faq-icon {
+  flex-shrink: 0;
+  color: #5b8bff;
+  transition: transform 0.3s ease;
+}
+
+.faq-item.open .faq-icon {
+  transform: rotate(180deg);
+}
+
+.faq-item.open .faq-question {
+  color: #5b8bff;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 300px;
+}
+
+.faq-answer p {
+  padding-bottom: 1.5rem;
+  color: #94a3b8;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+
+/* ============================================================
+   ★ 클로징 CTA 섹션
+   ============================================================ */
+.section-closing {
+  background: linear-gradient(135deg, #0d1035 0%, #08091a 100%);
+  padding: 7rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-closing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 700px 400px at 50% 50%, rgba(91,139,255,0.12), transparent 65%);
+  pointer-events: none;
+}
+
+.closing-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.closing-title {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.25rem;
+}
+
+.closing-accent {
+  color: #5b8bff;
+}
+
+.closing-desc {
+  font-size: 1.05rem;
+  color: #94a3b8;
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+}
+
+.closing-btn {
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .section-quote { min-height: 380px; }
+  .quote-inner { padding: 4rem 0; }
+  .quote-mark { font-size: 5rem; }
+  .section-faq { padding: 4rem 0; }
+  .section-closing { padding: 5rem 0; }
+}
+
 @media (max-width: 768px) {
   .hero-metrics {
     border-left: none;

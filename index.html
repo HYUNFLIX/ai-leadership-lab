@@ -83,7 +83,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css?v=20260419f">
+    <link rel="stylesheet" href="css/styles.css?v=20260419g">
     
     <!-- Preload critical resources -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style">
@@ -250,6 +250,79 @@
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen>
                         </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ★ 소장 풀쿼트 섹션 (강의 현장 사진) -->
+        <section id="quote" class="section-quote">
+            <div class="quote-bg" id="quoteBg">
+                <!-- 강의 현장 사진: images/lecture-stage.jpg 업로드 후 자동 적용 -->
+                <img src="images/lecture-stage.jpg"
+                     alt="김현 소장 강의 현장"
+                     class="quote-stage-img"
+                     onerror="this.closest('.quote-bg').classList.add('no-photo')">
+            </div>
+            <div class="quote-overlay"></div>
+            <div class="container quote-inner">
+                <div class="quote-mark">"</div>
+                <blockquote class="quote-text">
+                    AI 시대에 살아남는 건 AI가 아닙니다.<br>
+                    <span class="quote-accent">AI를 제대로 쓰는 리더</span>가<br>
+                    당신의 조직을 바꿉니다.
+                </blockquote>
+                <div class="quote-author">
+                    <img src="images/director.webp" alt="김현 소장" class="quote-avatar">
+                    <span class="quote-name">김현 &nbsp;·&nbsp; AI Leadership Lab 소장</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ★ 서비스 카드 섹션 -->
+        <section id="services" class="section-services">
+            <div class="container">
+                <div class="services-header">
+                    <span class="services-label">Services</span>
+                    <h2 class="services-title">AI 리더십, 어떻게 도와드릴까요</h2>
+                    <p class="services-desc">조직의 규모와 목적에 맞게 설계된 4가지 전문 서비스</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                        </div>
+                        <div class="service-num">01</div>
+                        <h3 class="service-title">강의 · 특강</h3>
+                        <p class="service-desc">5명의 임원부터 500명 전 직원까지, 조직에 맞게 설계하는 AI 리더십 강의. 이론이 아닌 현장에서 바로 쓰는 실전 커리큘럼.</p>
+                        <a href="#contact" class="service-link">문의하기 →</a>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+                        </div>
+                        <div class="service-num">02</div>
+                        <h3 class="service-title">조직 컨설팅</h3>
+                        <p class="service-desc">AI 도입 전략 수립부터 조직 변화 관리까지. 우리 회사에 맞는 AI 전략을 함께 만들어 실행 가능한 로드맵을 제시합니다.</p>
+                        <a href="#contact" class="service-link">문의하기 →</a>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                        </div>
+                        <div class="service-num">03</div>
+                        <h3 class="service-title">리더십 코칭</h3>
+                        <p class="service-desc">1:1 또는 소그룹 코칭으로 AI 시대 리더의 사고방식과 의사결정 역량을 집중적으로 개발합니다.</p>
+                        <a href="#contact" class="service-link">문의하기 →</a>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                        </div>
+                        <div class="service-num">04</div>
+                        <h3 class="service-title">저서 · 출판</h3>
+                        <p class="service-desc">AI 리더십에 관한 5권의 저서. 개념부터 실전까지 체계적으로 정리된 현장 전문가의 인사이트를 책으로 만나보세요.</p>
+                        <a href="#publications" class="service-link">저서 보기 →</a>
                     </div>
                 </div>
             </div>
@@ -701,6 +774,86 @@
             </div>
         </section>
 
+        <!-- ★ FAQ 섹션 -->
+        <section id="faq" class="section-faq">
+            <div class="container">
+                <div class="faq-header">
+                    <span class="faq-label">FAQ</span>
+                    <h2 class="faq-title">자주 묻는 질문</h2>
+                </div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>강의료는 어떻게 되나요?</span>
+                            <svg class="faq-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>강의 규모, 시간, 주제에 따라 맞춤 견적을 드립니다. 아래 문의하기를 통해 요청 사항을 보내주시면 1영업일 이내 회신드립니다.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>출강 지역은 어디까지 가능한가요?</span>
+                            <svg class="faq-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>전국 어디든 출강 가능합니다. 온라인(Zoom·Teams) 강의도 동일한 품질로 진행됩니다.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>우리 회사에 맞게 강의 내용을 커스텀할 수 있나요?</span>
+                            <svg class="faq-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>가능합니다. 업종, 직급, 수강 인원, 조직의 AI 수준에 따라 100% 맞춤 설계합니다. 사전 인터뷰를 통해 최적의 커리큘럼을 제안해 드립니다.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>최소 수강 인원이나 시간 제한이 있나요?</span>
+                            <svg class="faq-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>임원 소수 대상 1시간 특강부터 전 직원 대상 반일·전일 워크숍까지 모두 가능합니다. 인원 제한 없이 진행합니다.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>강의 후 사후 지원도 받을 수 있나요?</span>
+                            <svg class="faq-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>네. 강의 후 실습 자료, AI 툴 가이드, 팔로업 Q&A 세션을 제공합니다. 지속적인 조직 변화를 위한 컨설팅 연계도 가능합니다.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>저서는 어디서 구입할 수 있나요?</span>
+                            <svg class="faq-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p>교보문고, 예스24, 알라딘 등 주요 온·오프라인 서점에서 구입 가능합니다. 단체 구매 및 저자 서명본은 별도 문의 바랍니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ★ 클로징 CTA 섹션 -->
+        <section class="section-closing">
+            <div class="container closing-inner">
+                <h2 class="closing-title">
+                    AI 리더십,<br>
+                    <span class="closing-accent">지금 시작하세요.</span>
+                </h2>
+                <p class="closing-desc">강의·컨설팅·코칭 문의는 아래 버튼을 눌러주세요.<br>1영업일 이내 답변드립니다.</p>
+                <div class="closing-actions">
+                    <a href="#contact" class="btn btn-primary closing-btn">강의 문의하기 »</a>
+                </div>
+            </div>
+        </section>
+
         <!-- Contact Section -->
         <section id="contact" class="section section-contact" aria-labelledby="contact-title">
             <div class="container">
@@ -933,6 +1086,22 @@
             modal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
         }
+
+        /* ── FAQ 아코디언 ── */
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const item = this.closest('.faq-item');
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(el) {
+                    el.classList.remove('open');
+                    el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    this.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
 
         /* ── YouTube Video 로드 ── */
         function loadYouTube() {
