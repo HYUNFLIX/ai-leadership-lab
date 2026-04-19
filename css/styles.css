@@ -458,8 +458,8 @@ html.dark-mode .theme-toggle .moon-icon {
   padding: var(--spacing-3xl) 0 0;
   margin-bottom: 0;
   overflow: hidden;
-  /* Fallback solid color matches hero-gradient start so no white flash */
-  background-color: #080b14;
+  /* Unified solid dark — same as About & Director so boundaries are invisible */
+  background-color: #0a0e1a;
   isolation: isolate;
 }
 
@@ -477,18 +477,15 @@ html.dark-mode .theme-toggle .moon-icon {
 .hero-gradient {
   position: absolute;
   inset: 0;
-  /* Vertical gradient so the bottom edge is uniform (#201c4a) — matches About top */
-  background: linear-gradient(180deg, #080b14 0%, #0f172a 30%, #1a1744 65%, #201c4a 100%);
+  /* Radial accents ONLY — no vertical gradient, so bottom edge is #0a0e1a (matches About) */
+  background:
+    radial-gradient(ellipse 700px 500px at 20% 80%, rgba(99,102,241,0.10), transparent 70%),
+    radial-gradient(ellipse 600px 400px at 80% 20%, rgba(168,85,247,0.08), transparent 70%);
   opacity: 1;
 }
 
 .hero-gradient::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 600px 400px at 20% 80%, rgba(99,102,241,0.08), transparent),
-    radial-gradient(ellipse 500px 350px at 75% 20%, rgba(168,85,247,0.06), transparent);
+  content: none;
 }
 
 .hero-pattern {
@@ -1102,26 +1099,23 @@ html.dark-mode .theme-toggle .moon-icon {
   overflow: hidden;
   padding: 0;
   margin-top: 0;
-  /* Fallback solid color matches about-dark-bg start so no white flash */
-  background-color: #201c4a;
+  /* Unified solid dark — same as Hero & Director */
+  background-color: #0a0e1a;
   isolation: isolate;
 }
 
 .about-dark-bg {
   position: absolute;
   inset: 0;
-  /* Top matches hero's bottom (#201c4a) for seamless continuation, then deepens */
-  background: linear-gradient(180deg, #201c4a 0%, #1a1744 25%, #151334 55%, #0f172a 85%, #0a0e1a 100%);
+  /* Radial accents ONLY over the unified base — no linear gradient at edges */
+  background:
+    radial-gradient(ellipse 600px 450px at 80% 25%, rgba(99,102,241,0.09), transparent 70%),
+    radial-gradient(ellipse 500px 500px at 15% 75%, rgba(168,85,247,0.07), transparent 70%);
   z-index: 0;
 }
 
 .about-dark-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 500px 350px at 80% 20%, rgba(99,102,241,0.06), transparent),
-    radial-gradient(ellipse 400px 400px at 15% 75%, rgba(168,85,247,0.05), transparent);
+  content: none;
 }
 
 /* Marquee */
@@ -1465,7 +1459,7 @@ html.dark-mode .theme-toggle .moon-icon {
 /* ================ Director Section ================ */
 /* ================ Director / Profile Section ================ */
 .section-director {
-  background-color: #0a0e1a; /* Fallback matches About end to prevent white/mismatch flash */
+  background-color: #0a0e1a; /* Unified solid dark — same as Hero & About */
   padding: 0;
   overflow: hidden;
   isolation: isolate;
@@ -1480,18 +1474,15 @@ html.dark-mode .theme-toggle .moon-icon {
 .director-banner-bg {
   position: absolute;
   inset: 0;
-  /* Vertical gradient; starts at #0a0e1a (matches About end) so there's no seam */
-  background: linear-gradient(180deg, #0a0e1a 0%, #0f172a 25%, #1a1744 60%, #201c4a 100%);
+  /* Radial accents ONLY over the unified base — no vertical gradient */
+  background:
+    radial-gradient(ellipse 600px 450px at 10% 65%, rgba(99,102,241,0.09), transparent 70%),
+    radial-gradient(ellipse 500px 350px at 80% 20%, rgba(168,85,247,0.07), transparent 70%);
   z-index: 0;
 }
 
 .director-banner-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 500px 400px at 8% 70%, rgba(99,102,241,0.07), transparent),
-    radial-gradient(ellipse 400px 300px at 75% 15%, rgba(168,85,247,0.06), transparent);
+  content: none;
 }
 
 /* no bottom fade — cards sit inside the dark banner */
