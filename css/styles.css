@@ -110,7 +110,6 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Solid dark fallback — prevents ANY flash of white during scroll subpixel gaps */
   background-color: #0a0e1a;
 }
 
@@ -119,16 +118,24 @@ body {
   font-size: var(--font-size-base);
   line-height: 1.6;
   color: var(--text-primary);
-  background-color: var(--bg-primary);
+  background-color: #0a0e1a;
   overflow-x: hidden;
 }
 
-html.light-mode { background-color: #f8fafc; }
+/* Main element carries a solid dark bg so ANY gap between sections
+   reveals this dark color instead of body/html white */
+main#main {
+  background-color: #0a0e1a;
+}
 
-/* Eliminate subpixel gaps between dark sections that share edges */
-.hero { margin-bottom: -1px; }
-.section-about { margin-top: -1px; margin-bottom: -1px; }
-.section-director { margin-top: -1px; }
+html.light-mode,
+html.light-mode body { background-color: #f8fafc; }
+html.light-mode main#main { background-color: #0a0e1a; }
+
+/* Overlap dark sections to fully eliminate any subpixel seam */
+.hero { margin-bottom: -2px; }
+.section-about { margin-top: -2px; margin-bottom: -2px; }
+.section-director { margin-top: -2px; }
 
 /* Fix for mobile menu scroll lock */
 body.menu-open {
@@ -3897,11 +3904,10 @@ html.dark-mode .theme-toggle .moon-icon {
 .testimonials-grid,
 .contact-centered,
 .lectures-by-year {
-  opacity: 0;
-  transform: translateY(25px);
+  /* Removed opacity:0 start to prevent flash-of-empty-content causing white flicker */
+  opacity: 1;
+  transform: none;
   transition: opacity 0.6s ease, transform 0.6s ease;
-  /* Fallback: auto-reveal after staggered delay even without JS */
-  animation: revealFallback 0.6s ease forwards;
 }
 
 /* Stagger the fallback so sections cascade */
