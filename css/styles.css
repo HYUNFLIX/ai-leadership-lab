@@ -204,27 +204,8 @@ ul {
 }
 
 .text-highlight {
-  color: #FFD700;
-  text-shadow: 0 0 30px rgba(255, 215, 0, 0.5),
-               0 0 60px rgba(255, 215, 0, 0.3),
-               0 4px 20px rgba(0, 0, 0, 0.4);
+  color: #6366f1;
   font-weight: 900;
-  display: inline-block;
-  position: relative;
-  animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-  from {
-    text-shadow: 0 0 30px rgba(255, 215, 0, 0.5),
-                 0 0 60px rgba(255, 215, 0, 0.3),
-                 0 4px 20px rgba(0, 0, 0, 0.4);
-  }
-  to {
-    text-shadow: 0 0 35px rgba(255, 215, 0, 0.7),
-                 0 0 65px rgba(255, 215, 0, 0.5),
-                 0 4px 25px rgba(0, 0, 0, 0.5);
-  }
 }
 
 .gradient-text {
@@ -3473,9 +3454,6 @@ html.dark-mode .theme-toggle .moon-icon {
     animation: none !important;
   }
 
-  .text-highlight {
-    animation: none !important;
-  }
 }
 
 /* ============================================
@@ -4222,51 +4200,8 @@ html.light-mode .client-cell:hover {
 }
 
 /* ============================================================
-   White Hero — scoped overrides for decorative elements
-   Adjust cube, particles, labels, orbit rings, scroll indicator
-   to be visible/legible on white bg
+   White Hero — scoped overrides for light background
    ============================================================ */
-
-/* Cube faces — darker borders and richer gradient so they pop on white */
-.hero .cube-face {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.18) 0%, rgba(168, 85, 247, 0.18) 100%);
-  border: 2px solid rgba(99, 102, 241, 0.35);
-  box-shadow: 0 8px 24px -6px rgba(99, 102, 241, 0.15);
-}
-.hero .cube-face:hover {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(168, 85, 247, 0.3) 100%);
-  border-color: rgba(99, 102, 241, 0.55);
-  box-shadow: 0 0 30px rgba(99, 102, 241, 0.35);
-}
-.hero .face-content { color: #1e293b; }
-.hero .face-icon { filter: drop-shadow(0 2px 6px rgba(99, 102, 241, 0.25)); }
-.hero .face-text { text-shadow: none; color: #0f172a; }
-
-/* Particles — visible dots on white */
-.hero .particle {
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.9) 0%, rgba(99, 102, 241, 0.5) 100%);
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.5), 0 0 24px rgba(99, 102, 241, 0.25);
-}
-
-/* Floating labels — dark-on-light chips */
-.hero .float-label {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(99, 102, 241, 0.25);
-  color: #4f46e5;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
-  backdrop-filter: blur(6px);
-}
-.hero .float-label:hover {
-  background: rgba(255, 255, 255, 1);
-  border-color: rgba(99, 102, 241, 0.5);
-  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.25);
-  color: #4338ca;
-}
-
-/* Orbit rings — subtle purple on white */
-.hero .orbit-ring {
-  border-color: rgba(99, 102, 241, 0.12);
-}
 
 /* Scroll indicator — dark outlines for light bg */
 .hero .scroll-indicator .scroll-text {
@@ -4277,6 +4212,65 @@ html.light-mode .client-cell:hover {
 }
 .hero .scroll-indicator .scroll-dot {
   background: #6366f1;
+}
+
+/* ── McKinsey-style Hero Metrics Panel ── */
+.hero-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  padding: 0.5rem 0 0.5rem 2rem;
+  border-left: 2px solid #e2e8f0;
+}
+
+.metric-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-card:hover {
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 4px 16px -4px rgba(99, 102, 241, 0.12);
+}
+
+.metric-number {
+  font-size: 2.75rem;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.metric-plus {
+  color: #6366f1;
+  font-size: 1.75rem;
+}
+
+.metric-label {
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .hero-metrics {
+    border-left: none;
+    border-top: 2px solid #e2e8f0;
+    padding: 2rem 0 0 0;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .metric-number { font-size: 2rem; }
+  .metric-card { padding: 1.25rem 1rem; }
 }
 
 /* Secondary button on white bg needs darker outline */
