@@ -83,7 +83,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css?v=20260420c">
+    <link rel="stylesheet" href="css/styles.css?v=20260420d">
     
     <!-- Preload critical resources -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style">
@@ -236,41 +236,6 @@
             </div>
         </section>
 
-        <!-- Video Section -->
-        <section id="video" class="section-video">
-            <div class="container">
-                <div class="video-header">
-                    <span class="video-label">강의 현장</span>
-                    <h2 class="video-title">직접 확인하세요</h2>
-                    <p class="video-desc">AI 리더십 연구소의 강의와 컨설팅 현장을 영상으로 만나보세요</p>
-                </div>
-                <div class="video-wrap" id="videoWrap">
-                    <!-- YouTube thumbnail overlay (클릭 전) -->
-                    <div class="video-overlay" id="videoOverlay" onclick="loadYouTube()" role="button" tabindex="0" aria-label="강의 영상 재생하기">
-                        <img src="https://img.youtube.com/vi/dNCr2Imqj8Y/maxresdefault.jpg"
-                             alt="AI Leadership Lab 강의 소개 영상 썸네일"
-                             class="video-thumb"
-                             onerror="this.src='https://img.youtube.com/vi/dNCr2Imqj8Y/hqdefault.jpg'">
-                        <div class="video-play-btn" aria-hidden="true">
-                            <svg width="34" height="34" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </div>
-                        <span class="video-play-text">강의 영상 재생하기</span>
-                    </div>
-                    <!-- YouTube iframe (클릭 후 표시) -->
-                    <div id="youtubeContainer" class="youtube-container" style="display:none" aria-live="polite">
-                        <iframe id="youtubeFrame"
-                                src=""
-                                title="AI Leadership Lab 강의 소개 영상"
-                                frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen>
-                        </iframe>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- ★ 소장 풀쿼트 섹션 (강의 현장 사진) -->
         <section id="quote" class="section-quote">
@@ -677,6 +642,33 @@
                                rel="noopener noreferrer"
                                class="media-link media-link-video"
                                aria-label="유튜브 영상 2부 보기">
+                                영상 보기
+                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- 북콘서트 YouTube -->
+                    <article class="media-card">
+                        <div class="media-thumb media-thumb-video">
+                            <img src="https://img.youtube.com/vi/dNCr2Imqj8Y/hqdefault.jpg"
+                                 alt="AI 리더십 북콘서트 썸네일"
+                                 loading="lazy">
+                            <div class="video-play-btn" aria-hidden="true">
+                                <svg width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                            <span class="media-badge media-badge-video">YouTube</span>
+                        </div>
+                        <div class="media-content">
+                            <p class="media-source">AI Leadership Lab · 북콘서트</p>
+                            <h3 class="media-title-text">AI 리더십 북콘서트 현장</h3>
+                            <a href="https://youtu.be/dNCr2Imqj8Y"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="media-link media-link-video"
+                               aria-label="북콘서트 영상 보기">
                                 영상 보기
                                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                                     <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
