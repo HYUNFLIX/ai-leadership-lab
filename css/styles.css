@@ -458,8 +458,8 @@ html.dark-mode .theme-toggle .moon-icon {
   padding: var(--spacing-3xl) 0 0;
   margin-bottom: 0;
   overflow: hidden;
-  /* Unified solid dark — same as About & Director so boundaries are invisible */
-  background-color: #0a0e1a;
+  /* White hero — clean, contrasts against dark About below */
+  background-color: #ffffff;
   isolation: isolate;
 }
 
@@ -477,10 +477,10 @@ html.dark-mode .theme-toggle .moon-icon {
 .hero-gradient {
   position: absolute;
   inset: 0;
-  /* Radial accents ONLY — no vertical gradient, so bottom edge is #0a0e1a (matches About) */
+  /* Soft colored pools on white — gentle, decorative */
   background:
-    radial-gradient(ellipse 700px 500px at 20% 80%, rgba(99,102,241,0.10), transparent 70%),
-    radial-gradient(ellipse 600px 400px at 80% 20%, rgba(168,85,247,0.08), transparent 70%);
+    radial-gradient(ellipse 800px 600px at 15% 80%, rgba(99,102,241,0.08), transparent 70%),
+    radial-gradient(ellipse 700px 500px at 85% 20%, rgba(168,85,247,0.07), transparent 70%);
   opacity: 1;
 }
 
@@ -491,14 +491,15 @@ html.dark-mode .theme-toggle .moon-icon {
 .hero-pattern {
   position: absolute;
   inset: 0;
-  background-image: 
-    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  /* Subtle dot grid — dark dots on white */
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.06) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
 .hero-content {
   text-align: center;
-  color: white;
+  color: #1e293b; /* dark text on white */
   max-width: 900px;
   margin: 0 auto;
 }
@@ -506,8 +507,9 @@ html.dark-mode .theme-toggle .moon-icon {
 .hero-badge {
   display: inline-block;
   padding: var(--spacing-xs) var(--spacing-md);
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+  border: 1px solid rgba(99, 102, 241, 0.2);
   border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
   font-weight: 600;
@@ -521,8 +523,8 @@ html.dark-mode .theme-toggle .moon-icon {
   font-weight: 900;
   line-height: 1.1;
   margin-bottom: var(--spacing-lg);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4),
-               0 4px 20px rgba(0, 0, 0, 0.3);
+  color: #0f172a;
+  text-shadow: none;
 }
 
 .hero-description {
@@ -530,7 +532,8 @@ html.dark-mode .theme-toggle .moon-icon {
   line-height: 1.7;
   opacity: 1;
   margin-bottom: var(--spacing-xl);
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  color: #475569;
+  text-shadow: none;
   font-weight: 500;
 }
 
@@ -4216,4 +4219,74 @@ html.light-mode .client-cell:hover {
   }
   .client-cell { min-height: 60px; padding: 12px 14px; }
   .client-name { font-size: 0.85rem; }
+}
+
+/* ============================================================
+   White Hero — scoped overrides for decorative elements
+   Adjust cube, particles, labels, orbit rings, scroll indicator
+   to be visible/legible on white bg
+   ============================================================ */
+
+/* Cube faces — darker borders and richer gradient so they pop on white */
+.hero .cube-face {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.18) 0%, rgba(168, 85, 247, 0.18) 100%);
+  border: 2px solid rgba(99, 102, 241, 0.35);
+  box-shadow: 0 8px 24px -6px rgba(99, 102, 241, 0.15);
+}
+.hero .cube-face:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(168, 85, 247, 0.3) 100%);
+  border-color: rgba(99, 102, 241, 0.55);
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.35);
+}
+.hero .face-content { color: #1e293b; }
+.hero .face-icon { filter: drop-shadow(0 2px 6px rgba(99, 102, 241, 0.25)); }
+.hero .face-text { text-shadow: none; color: #0f172a; }
+
+/* Particles — visible dots on white */
+.hero .particle {
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.9) 0%, rgba(99, 102, 241, 0.5) 100%);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.5), 0 0 24px rgba(99, 102, 241, 0.25);
+}
+
+/* Floating labels — dark-on-light chips */
+.hero .float-label {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  color: #4f46e5;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  backdrop-filter: blur(6px);
+}
+.hero .float-label:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.25);
+  color: #4338ca;
+}
+
+/* Orbit rings — subtle purple on white */
+.hero .orbit-ring {
+  border-color: rgba(99, 102, 241, 0.12);
+}
+
+/* Scroll indicator — dark outlines for light bg */
+.hero .scroll-indicator .scroll-text {
+  color: #64748b;
+}
+.hero .scroll-indicator .scroll-icon {
+  border-color: rgba(15, 23, 42, 0.25);
+}
+.hero .scroll-indicator .scroll-dot {
+  background: #6366f1;
+}
+
+/* Secondary button on white bg needs darker outline */
+.hero .btn-secondary {
+  background: transparent;
+  color: #1e293b;
+  border: 2px solid #cbd5e1;
+}
+.hero .btn-secondary:hover {
+  background: #f1f5f9;
+  border-color: #6366f1;
+  color: #4338ca;
 }
