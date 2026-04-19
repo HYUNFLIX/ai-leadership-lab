@@ -4224,13 +4224,9 @@ html.light-mode .client-cell:hover {
   width: 100%;
   max-width: 460px;
   height: auto;
-  object-fit: cover;
-  object-position: top center;
-  border-radius: 16px;
-  filter: brightness(0.95) contrast(1.04);
-  /* Fade bottom into dark bg */
-  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  display: block;
+  /* 배경 제거 PNG — 마스크·라운드 불필요 */
+  filter: brightness(1.0) contrast(1.02) drop-shadow(0 8px 32px rgba(91,139,255,0.18));
 }
 
 /* Floating testimonial card over photo */
