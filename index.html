@@ -83,7 +83,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css?v=20260420e">
+    <link rel="stylesheet" href="css/styles.css?v=20260420f">
     
     <!-- Preload critical resources -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style">
@@ -138,9 +138,13 @@
     <main id="main">
         <!-- Hero Section -->
         <section id="hero" class="hero hero-split" aria-labelledby="hero-title">
+            <!-- Fiber Canvas Layers -->
+            <canvas id="fiberCanvas" aria-hidden="true"></canvas>
+            <div class="glow-band" aria-hidden="true"></div>
+            <div class="hero-noise" aria-hidden="true"></div>
+            <div class="hero-vignette" aria-hidden="true"></div>
             <div class="hero-bg">
                 <div class="hero-gradient"></div>
-                <div class="hero-pattern"></div>
             </div>
             <div class="container">
                 <div class="hero-grid">
@@ -209,23 +213,6 @@
                 </div>
             </div>
 
-            <!-- Rain Drop Effect -->
-            <div class="hero-laser" aria-hidden="true">
-              <span style="left:4%;  --h:78px; --dur:2.8s; --delay:0.0s;  --op:0.70"></span>
-              <span style="left:10%; --h:52px; --dur:3.7s; --delay:1.3s;  --op:0.38"></span>
-              <span style="left:17%; --h:96px; --dur:2.3s; --delay:2.7s;  --op:0.82"></span>
-              <span style="left:24%; --h:63px; --dur:4.2s; --delay:0.6s;  --op:0.48"></span>
-              <span style="left:31%; --h:84px; --dur:3.0s; --delay:3.4s;  --op:0.72"></span>
-              <span style="left:38%; --h:48px; --dur:2.6s; --delay:1.8s;  --op:0.52"></span>
-              <span style="left:45%; --h:108px;--dur:3.9s; --delay:0.3s;  --op:0.90"></span>
-              <span style="left:52%; --h:68px; --dur:2.9s; --delay:2.1s;  --op:0.48"></span>
-              <span style="left:59%; --h:90px; --dur:3.4s; --delay:0.9s;  --op:0.68"></span>
-              <span style="left:66%; --h:58px; --dur:2.7s; --delay:3.8s;  --op:0.42"></span>
-              <span style="left:73%; --h:100px;--dur:4.4s; --delay:1.5s;  --op:0.78"></span>
-              <span style="left:80%; --h:54px; --dur:2.5s; --delay:0.7s;  --op:0.52"></span>
-              <span style="left:87%; --h:82px; --dur:3.6s; --delay:2.9s;  --op:0.62"></span>
-              <span style="left:94%; --h:70px; --dur:3.1s; --delay:1.2s;  --op:0.46"></span>
-            </div>
 
             <!-- Scroll Indicator -->
             <div class="scroll-indicator" aria-hidden="true">
@@ -1347,5 +1334,227 @@
         }
     </script>
 
+    <!-- Fiber Canvas Animation -->
+    <script>
+    (() => {
+      const canvas = document.getElementById('fiberCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+      let beams = [], pulses = [], stars = [], t = 0;
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = canvas.width  = Math.floor(innerWidth  * dpr);
+        h = canvas.height = Math.floor(innerHeight * dpr);
+        canvas.style.width  = innerWidth  + 'px';
+        canvas.style.height = innerHeight + 'px';
+        createScene();
+      }
+
+      function createScene() {
+        const iw = innerWidth, ih = innerHeight;
+        const originX = -iw * 0.04;
+        const originY = ih * 0.50;
+        beams = [];
+        const count = Math.max(18, Math.floor(iw / 72));
+        for (let i = 0; i < count; i++) {
+          const spread = (i / (count - 1) - 0.5);
+          const endX = iw * (0.72 + Math.random() * 0.42);
+          const endY = ih * (0.50 + spread * 1.10 + (Math.random() - 0.5) * 0.08);
+          const c1x = iw * (0.18 + Math.random() * 0.18);
+          const c1y = originY + spread * ih * 0.07;
+          const c2x = iw * (0.58 + Math.random() * 0.18);
+          const c2y = ih * (0.50 + spread * 0.52 + (Math.random() - 0.5) * 0.04);
+          const hue = i % 5 === 0 ? 300 : (i % 4 === 0 ? 255 : 215);
+          beams.push({ originX, originY, c1x, c1y, c2x, c2y, endX, endY, spread,
+            amp: 0.6 + Math.random() * 1.2, hue,
+            width: 0.6 + Math.random() * 1.25 });
+        }
+        pulses = [];
+        for (let i = 0; i < 30; i++) pulses.push(makePulse(true));
+        stars = Array.from({ length: Math.floor(iw / 9) }, () => ({
+          x: Math.random() * iw, y: Math.random() * ih,
+          a: Math.random() * 0.4,  r: Math.random() * 1.6 + 0.2
+        }));
+      }
+
+      function makePulse(seed = false) {
+        return {
+          beamIndex: Math.floor(Math.random() * beams.length),
+          p:    seed ? Math.random() * 1.05 : -Math.random() * 0.3,
+          speed: 0.005 + Math.random() * 0.0065,
+          len:   0.04  + Math.random() * 0.09,
+          size:  1.4   + Math.random() * 3.2,
+          hueShift: Math.random() < 0.25 ? 58 : 0,
+          alpha: 0.75  + Math.random() * 0.25
+        };
+      }
+
+      function bezierPoint(b, p) {
+        const mt = 1 - p;
+        return {
+          x: mt*mt*mt*b.originX + 3*mt*mt*p*b.c1x + 3*mt*p*p*b.c2x + p*p*p*b.endX,
+          y: mt*mt*mt*b.originY + 3*mt*mt*p*b.c1y + 3*mt*p*p*b.c2y + p*p*p*b.endY
+        };
+      }
+
+      function bezierTangent(b, p) {
+        const mt = 1 - p;
+        return {
+          x: 3*mt*mt*(b.c1x - b.originX) + 6*mt*p*(b.c2x - b.c1x) + 3*p*p*(b.endX - b.c2x),
+          y: 3*mt*mt*(b.c1y - b.originY) + 6*mt*p*(b.c2y - b.c1y) + 3*p*p*(b.endY - b.c2y)
+        };
+      }
+
+      function drawBezier(b, alphaMul = 1) {
+        const g = ctx.createLinearGradient(b.originX*dpr, b.originY*dpr, b.endX*dpr, b.endY*dpr);
+        g.addColorStop(0,    `hsla(${b.hue},100%,72%,0)`);
+        g.addColorStop(0.12, `hsla(${b.hue},100%,72%,${0.15*alphaMul})`);
+        g.addColorStop(0.58, `hsla(${b.hue},100%,68%,${0.34*alphaMul})`);
+        g.addColorStop(1,    `hsla(${b.hue+18},100%,80%,${0.55*alphaMul})`);
+        ctx.beginPath();
+        ctx.moveTo(b.originX*dpr, b.originY*dpr);
+        ctx.bezierCurveTo(b.c1x*dpr, b.c1y*dpr, b.c2x*dpr, b.c2y*dpr, b.endX*dpr, b.endY*dpr);
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = g;
+        ctx.lineWidth = b.width * dpr;
+        ctx.shadowBlur  = 8 * dpr;
+        ctx.shadowColor = `hsla(${b.hue},100%,65%,${0.3*alphaMul})`;
+        ctx.stroke();
+      }
+
+      function drawPulse(pl) {
+        const b  = beams[pl.beamIndex];
+        const p1 = Math.max(0, pl.p - pl.len);
+        const p2 = Math.min(1, pl.p);
+        const a  = bezierPoint(b, p1);
+        const m  = bezierPoint(b, (p1 + p2) / 2);
+        const z  = bezierPoint(b, p2);
+        const hue = b.hue + pl.hueShift;
+
+        const grad = ctx.createLinearGradient(a.x*dpr, a.y*dpr, z.x*dpr, z.y*dpr);
+        grad.addColorStop(0,    `hsla(${hue},100%,70%,0)`);
+        grad.addColorStop(0.35, `hsla(${hue},100%,72%,${0.45*pl.alpha})`);
+        grad.addColorStop(0.72, `hsla(${hue},100%,82%,${0.92*pl.alpha})`);
+        grad.addColorStop(1,    `hsla(${hue+10},100%,90%,0)`);
+
+        ctx.beginPath();
+        ctx.moveTo(a.x*dpr, a.y*dpr);
+        ctx.quadraticCurveTo(m.x*dpr, m.y*dpr, z.x*dpr, z.y*dpr);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth   = pl.size * dpr;
+        ctx.lineCap     = 'round';
+        ctx.shadowBlur  = 24 * dpr;
+        ctx.shadowColor = `hsla(${hue},100%,75%,${0.95*pl.alpha})`;
+        ctx.stroke();
+
+        const head = bezierPoint(b, Math.min(1, pl.p));
+        const tan  = bezierTangent(b, Math.min(1, pl.p));
+        const angle = Math.atan2(tan.y, tan.x);
+        const r = 12 * pl.size;
+        const rg = ctx.createRadialGradient(head.x*dpr, head.y*dpr, 0, head.x*dpr, head.y*dpr, r);
+        rg.addColorStop(0,   `hsla(${hue+12},100%,92%,${0.95*pl.alpha})`);
+        rg.addColorStop(0.3, `hsla(${hue},100%,80%,${0.7*pl.alpha})`);
+        rg.addColorStop(1,   `hsla(${hue},100%,60%,0)`);
+        ctx.fillStyle = rg;
+        ctx.beginPath();
+        ctx.arc(head.x*dpr, head.y*dpr, r, 0, Math.PI*2);
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(head.x*dpr, head.y*dpr);
+        ctx.rotate(angle);
+        ctx.fillStyle = `hsla(${hue+10},100%,92%,${0.6*pl.alpha})`;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, pl.size*7*dpr, pl.size*1.1*dpr, 0, 0, Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function render() {
+        t += 0.016;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#020b22';
+        ctx.fillRect(0, 0, w, h);
+
+        const bg = ctx.createLinearGradient(0, 0, w, 0);
+        bg.addColorStop(0,    'rgba(0,28,78,.28)');
+        bg.addColorStop(0.18, 'rgba(0,28,78,.02)');
+        bg.addColorStop(1,    'rgba(7,17,44,.18)');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, w, h);
+
+        for (const s of stars) {
+          ctx.fillStyle = `rgba(255,255,255,${s.a})`;
+          ctx.beginPath();
+          ctx.arc(s.x*dpr, s.y*dpr, s.r*dpr, 0, Math.PI*2);
+          ctx.fill();
+        }
+
+        const band = 22 * dpr;
+        for (let x = 0; x < w; x += band) {
+          const alpha = 0.018 + Math.sin((x / dpr) * 0.05 + t * 0.3) * 0.007;
+          ctx.fillStyle = `rgba(74,118,255,${alpha})`;
+          ctx.fillRect(x, 0, band * 0.55, h);
+        }
+
+        ctx.globalCompositeOperation = 'screen';
+
+        for (const b of beams) drawBezier(b, 0.9);
+
+        const origin = beams[0];
+        const flare = ctx.createRadialGradient(
+          origin.originX*dpr + 55*dpr, origin.originY*dpr, 0,
+          origin.originX*dpr + 55*dpr, origin.originY*dpr, 180*dpr);
+        flare.addColorStop(0,    'rgba(255,255,255,.98)');
+        flare.addColorStop(0.06, 'rgba(255,211,248,.94)');
+        flare.addColorStop(0.14, 'rgba(105,216,255,.92)');
+        flare.addColorStop(0.26, 'rgba(67,120,255,.45)');
+        flare.addColorStop(1,    'rgba(67,120,255,0)');
+        ctx.fillStyle = flare;
+        ctx.beginPath();
+        ctx.arc(origin.originX*dpr + 55*dpr, origin.originY*dpr, 180*dpr, 0, Math.PI*2);
+        ctx.fill();
+
+        for (let i = 0; i < pulses.length; i++) {
+          pulses[i].p += pulses[i].speed;
+          drawPulse(pulses[i]);
+          if (pulses[i].p > 1.05) pulses[i] = makePulse(false);
+        }
+
+        const lane = ctx.createLinearGradient(0, 0, w, 0);
+        lane.addColorStop(0,    'rgba(120,240,255,0)');
+        lane.addColorStop(0.12, 'rgba(120,240,255,.9)');
+        lane.addColorStop(0.52, 'rgba(116,192,255,.85)');
+        lane.addColorStop(1,    'rgba(120,240,255,0)');
+        ctx.strokeStyle  = lane;
+        ctx.lineWidth    = 1.8 * dpr;
+        ctx.shadowBlur   = 18 * dpr;
+        ctx.shadowColor  = 'rgba(92,227,255,.95)';
+        ctx.beginPath();
+        ctx.moveTo(0,  h * 0.498);
+        ctx.lineTo(w,  h * 0.498);
+        ctx.stroke();
+
+        const bloom = ctx.createRadialGradient(w*0.96, h*0.46, 0, w*0.96, h*0.46, 260*dpr);
+        bloom.addColorStop(0,    'rgba(255,188,241,.42)');
+        bloom.addColorStop(0.25, 'rgba(147,141,255,.20)');
+        bloom.addColorStop(1,    'rgba(147,141,255,0)');
+        ctx.fillStyle = bloom;
+        ctx.beginPath();
+        ctx.arc(w*0.96, h*0.46, 260*dpr, 0, Math.PI*2);
+        ctx.fill();
+
+        ctx.globalCompositeOperation = 'source-over';
+        requestAnimationFrame(render);
+      }
+
+      addEventListener('resize', resize);
+      resize();
+      render();
+    })();
+    </script>
 </body>
 </html>
