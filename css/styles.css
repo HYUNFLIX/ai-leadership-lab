@@ -3549,26 +3549,30 @@ html.dark-mode .theme-toggle .moon-icon {
     transform: scale(1.05);
 }
 
-.video-play-btn {
+.media-thumb-video .video-play-btn {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 52px;
-    height: 52px;
-    background: rgba(0, 0, 0, 0.6);
+    width: 46px;
+    height: 46px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(4px);
-    transition: background 0.2s ease, transform 0.2s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    animation: none;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
     padding-left: 3px;
 }
 
 .media-card:hover .video-play-btn {
-    background: rgba(99, 102, 241, 0.9);
-    transform: translate(-50%, -50%) scale(1.1);
+    background: rgba(91, 139, 255, 0.28);
+    border-color: rgba(91, 139, 255, 0.85);
+    transform: translate(-50%, -50%) scale(1.08);
 }
 
 .media-badge {
