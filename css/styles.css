@@ -4120,6 +4120,9 @@ html.light-mode .client-cell:hover {
   z-index: 0;
   pointer-events: none;
   display: block;
+  /* 독립 compositor layer — scroll 중 리페인트 방지 */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .glow-band {

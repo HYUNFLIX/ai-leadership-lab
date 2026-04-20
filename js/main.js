@@ -111,23 +111,19 @@
   }
 
   // ================ Smooth Scrolling ================
+  // window.scrollTo 제거 → CSS scroll-behavior: smooth 사용 (GPU 가속)
   function handleSmoothScroll(e) {
     const href = e.currentTarget.getAttribute('href');
-    
+
     if (href && href.startsWith('#')) {
       e.preventDefault();
       const targetId = href.substring(1);
       const targetSection = document.getElementById(targetId);
-      
-      if (targetSection) {
-        const offsetTop = targetSection.offsetTop - config.scrollOffset;
-        
-        window.scrollTo({
-          top: offsetTop,
-          behavior: 'smooth'
-        });
 
-        // Update URL without jumping
+      if (targetSection) {
+        // CSS scroll-behavior:smooth가 처리, JS는 offset 보정만 담당
+        const offsetTop = targetSection.getBoundingClientRect().top + window.pageYOffset - config.scrollOffset;
+        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
         history.pushState(null, null, href);
       }
     }
@@ -208,13 +204,10 @@
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('animated');
-          
-          // Animate child elements with delay
-          const animatedElements = entry.target.querySelectorAll('.animate-on-scroll');
-          animatedElements.forEach((el, index) => {
-            setTimeout(() => {
-              el.classList.add('animated');
-            }, index * config.animationDelay);
+          // setTimeout 제거 — CSS animation-delay 인라인으로 처리
+          entry.target.querySelectorAll('.animate-on-scroll').forEach((el, index) => {
+            el.style.animationDelay = `${index * (config.animationDelay / 1000)}s`;
+            el.classList.add('animated');
           });
         }
       });
@@ -230,40 +223,31 @@
   }
 
   // ================ Parallax Effect ================
+  // hero 전체 transform 제거 — canvas 리페인트 원인
+  // heroContent opacity만 CSS transition으로 처리
   function initParallax() {
-    const hero = document.querySelector('.hero');
     const heroContent = document.querySelector('.hero-content');
-    
-    if (!hero || !heroContent) return;
+    if (!heroContent) return;
 
     let ticking = false;
+    const hero = document.querySelector('.hero');
 
     function updateParallax() {
       const scrolled = window.pageYOffset;
-      const windowHeight = window.innerHeight;
-      const heroHeight = hero.offsetHeight;
-
+      const heroHeight = hero ? hero.offsetHeight : window.innerHeight;
       if (scrolled < heroHeight) {
-        const speed = 0.5;
-        const yPos = -(scrolled * speed);
-        const opacity = Math.max(0.5, 1 - (scrolled / windowHeight * 0.5));
-        
-        hero.style.transform = `translateY(${yPos}px)`;
+        const opacity = Math.max(0.4, 1 - (scrolled / window.innerHeight * 0.7));
         heroContent.style.opacity = opacity;
-        heroContent.style.transform = `translateY(${-yPos * 0.3}px)`;
       }
-      
       ticking = false;
     }
 
-    function requestTick() {
+    window.addEventListener('scroll', () => {
       if (!ticking) {
         window.requestAnimationFrame(updateParallax);
         ticking = true;
       }
-    }
-
-    window.addEventListener('scroll', requestTick);
+    }, { passive: true });
   }
 
   // ================ Form Validation & Security ================
@@ -843,7 +827,7 @@
         if (rect.top < windowH && rect.bottom > 0) {
           const progress = (windowH - rect.top) / (windowH + rect.height);
           const yShift = (progress - 0.5) * -20;
-          photoWrap.style.transform = 'translateY(' + yShift + 'px)';
+          photoWrap.style.transform = `translate3d(0,${yShift}px,0)`;
         }
         directorTicking = false;
       }
