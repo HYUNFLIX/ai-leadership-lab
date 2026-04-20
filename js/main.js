@@ -137,13 +137,16 @@
   function initBackToTop() {
     if (!elements.backToTop) return;
 
+    let _bttTicking = false;
     window.addEventListener('scroll', () => {
-      if (window.pageYOffset > config.scrollThreshold) {
-        elements.backToTop.classList.add('visible');
-      } else {
-        elements.backToTop.classList.remove('visible');
+      if (!_bttTicking) {
+        window.requestAnimationFrame(() => {
+          elements.backToTop.classList.toggle('visible', window.pageYOffset > config.scrollThreshold);
+          _bttTicking = false;
+        });
+        _bttTicking = true;
       }
-    });
+    }, { passive: true });
 
     elements.backToTop.addEventListener('click', () => {
       window.scrollTo({
@@ -415,20 +418,26 @@
 
   function animateCounter(counter, target, speed) {
     const originalText = counter.getAttribute('data-original');
-    const increment = target / speed;
-    let current = 0;
-    
-    const timer = setInterval(() => {
-      current += increment;
-      
-      if (current >= target) {
-        counter.innerText = originalText;
-        clearInterval(timer);
+    const suffix = originalText.replace(/[\d,]+/, '').trim();
+    const duration = speed; // speed를 ms 단위 duration으로 재사용
+    let startTime = null;
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // easeOutQuart
+      const ease = 1 - Math.pow(1 - progress, 4);
+      const current = Math.ceil(ease * target);
+
+      if (progress < 1) {
+        counter.innerText = current.toLocaleString() + (suffix ? ' ' + suffix : '');
+        requestAnimationFrame(step);
       } else {
-        const suffix = originalText.replace(/[\d,]+/, '').trim();
-        counter.innerText = Math.ceil(current).toLocaleString() + (suffix ? ' ' + suffix : '');
+        counter.innerText = originalText;
       }
-    }, 1);
+    }
+    requestAnimationFrame(step);
   }
 
   // ================ Enhanced Image Lazy Loading with Error Handling ================

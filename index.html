@@ -33,8 +33,10 @@
     
     <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-    
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://img.youtube.com" crossorigin>
+    <link rel="preconnect" href="https://contents.kyobobook.co.kr" crossorigin>
+
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
@@ -79,15 +81,18 @@
     }
     </script>
     
-    <!-- External CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css?v=20260420g">
-    
     <!-- Preload critical resources -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style">
     <link rel="preload" href="images/director-nobg.png" as="image" type="image/png">
+
+    <!-- Custom CSS (blocking — critical) -->
+    <link rel="stylesheet" href="css/styles.css?v=20260420h">
+
+    <!-- Pretendard font — async (non-blocking) -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style"
+          onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+    </noscript>
 </head>
 <body>
     <!-- Skip to main content for accessibility -->
@@ -194,6 +199,7 @@
                         <img src="images/director-nobg.png"
                              alt="김현 AI Leadership Lab 소장"
                              class="hero-director-photo"
+                             width="460" height="580"
                              loading="eager">
                         <div class="hero-float-card">
                             <p class="hero-float-quote">"이 강의 하나로 우리 조직의 AI 활용 수준이 완전히 달라졌습니다."</p>
@@ -1548,8 +1554,13 @@
         ctx.fill();
 
         ctx.globalCompositeOperation = 'source-over';
-        requestAnimationFrame(render);
+        if (!document.hidden) requestAnimationFrame(render);
       }
+
+      // 탭 숨김 시 rAF 중단, 복귀 시 재시작
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) requestAnimationFrame(render);
+      });
 
       addEventListener('resize', resize);
       resize();
