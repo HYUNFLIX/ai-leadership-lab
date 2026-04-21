@@ -472,6 +472,77 @@ html.dark-mode .theme-toggle .moon-icon {
 /* hero-bg, hero-gradient, hero-pattern — 구조 유지 (하위 호환) */
 .hero-bg, .hero-gradient, .hero-pattern { display: none; }
 
+/* ── Glow Orbs — transform only (GPU composited), CPU 0% ── */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-orb-1 {
+  width: 600px;
+  height: 600px;
+  top: -10%;
+  left: -8%;
+  background: radial-gradient(circle at 40% 40%,
+    rgba(91, 139, 255, 0.22) 0%,
+    rgba(91, 139, 255, 0.06) 45%,
+    transparent 70%);
+  animation: orbDrift1 22s ease-in-out infinite alternate;
+}
+
+.hero-orb-2 {
+  width: 500px;
+  height: 500px;
+  top: 30%;
+  right: -5%;
+  background: radial-gradient(circle at 55% 50%,
+    rgba(124, 58, 237, 0.20) 0%,
+    rgba(124, 58, 237, 0.05) 45%,
+    transparent 70%);
+  animation: orbDrift2 28s ease-in-out infinite alternate;
+}
+
+.hero-orb-3 {
+  width: 380px;
+  height: 380px;
+  bottom: 5%;
+  left: 30%;
+  background: radial-gradient(circle at 50% 45%,
+    rgba(96, 212, 247, 0.13) 0%,
+    rgba(96, 212, 247, 0.03) 45%,
+    transparent 70%);
+  animation: orbDrift3 34s ease-in-out infinite alternate;
+}
+
+@keyframes orbDrift1 {
+  0%   { transform: translate(0px,   0px); }
+  33%  { transform: translate(30px, -40px); }
+  66%  { transform: translate(-20px,  30px); }
+  100% { transform: translate(40px,  20px); }
+}
+
+@keyframes orbDrift2 {
+  0%   { transform: translate(0px,    0px); }
+  40%  { transform: translate(-35px,  25px); }
+  70%  { transform: translate(20px,  -30px); }
+  100% { transform: translate(-25px, -15px); }
+}
+
+@keyframes orbDrift3 {
+  0%   { transform: translate(0px,   0px); }
+  30%  { transform: translate(25px, -20px); }
+  65%  { transform: translate(-30px, 15px); }
+  100% { transform: translate(15px,  30px); }
+}
+
+/* 저전력 모드 선호 시 오브 애니메이션 정지 */
+@media (prefers-reduced-motion: reduce) {
+  .hero-orb { animation: none !important; }
+}
+
 .hero-content {
   text-align: center;
   color: #ffffff;
