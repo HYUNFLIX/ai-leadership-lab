@@ -474,42 +474,58 @@ html.dark-mode .theme-toggle .moon-icon {
   z-index: 0;
 }
 
+/* ── 6개 오브 — 크기·위치·색상 다양화 ── */
+/* 큰 ambient 오브 (배경 분위기) */
 .hero-orb-1 {
-  width: 700px;
-  height: 700px;
-  top: -15%;
-  left: -10%;
+  width: 480px; height: 480px;
+  top: -5%; left: -5%;
   background: radial-gradient(circle at 40% 40%,
-    rgba(91, 139, 255, 0.45) 0%,
-    rgba(91, 139, 255, 0.15) 40%,
+    rgba(91, 139, 255, 0.38) 0%,
+    rgba(91, 139, 255, 0.10) 45%,
     transparent 70%);
-  /* motion handled by JS */
 }
-
 .hero-orb-2 {
-  width: 600px;
-  height: 600px;
-  top: 20%;
-  right: -8%;
+  width: 380px; height: 380px;
+  top: 15%; right: -4%;
   background: radial-gradient(circle at 55% 50%,
-    rgba(124, 58, 237, 0.40) 0%,
-    rgba(124, 58, 237, 0.12) 40%,
+    rgba(124, 58, 237, 0.36) 0%,
+    rgba(124, 58, 237, 0.10) 45%,
     transparent 70%);
-  /* motion handled by JS */
 }
-
+/* 중간 오브 (입체감) */
 .hero-orb-3 {
-  width: 450px;
-  height: 450px;
-  bottom: 0%;
-  left: 25%;
+  width: 260px; height: 260px;
+  bottom: 10%; left: 20%;
   background: radial-gradient(circle at 50% 45%,
-    rgba(96, 212, 247, 0.28) 0%,
-    rgba(96, 212, 247, 0.07) 40%,
+    rgba(96, 212, 247, 0.32) 0%,
+    rgba(96, 212, 247, 0.08) 45%,
     transparent 70%);
-  /* motion handled by JS */
 }
-
+.hero-orb-4 {
+  width: 220px; height: 220px;
+  top: 45%; left: 42%;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(167, 139, 250, 0.30) 0%,
+    rgba(167, 139, 250, 0.07) 45%,
+    transparent 70%);
+}
+/* 작은 포인트 오브 (생동감) */
+.hero-orb-5 {
+  width: 150px; height: 150px;
+  top: 10%; left: 38%;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(96, 212, 247, 0.45) 0%,
+    rgba(96, 212, 247, 0.12) 45%,
+    transparent 70%);
+}
+.hero-orb-6 {
+  width: 130px; height: 130px;
+  bottom: 20%; right: 15%;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(91, 139, 255, 0.50) 0%,
+    rgba(91, 139, 255, 0.14) 45%,
+    transparent 70%);
+}
 /* 저전력 모드: JS가 orb 움직임을 건너뜀 (main.js에서 체크) */
 
 .hero-content {

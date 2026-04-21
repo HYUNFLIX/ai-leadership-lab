@@ -919,15 +919,21 @@
   if (!hero) return;
 
   const orbs = [
-    { el: hero.querySelector('.hero-orb-1'), mouse: 0.04,  drift: { amp: 40, sx: 0.28, sy: 0.20, phase: 0   } },
-    { el: hero.querySelector('.hero-orb-2'), mouse: -0.06, drift: { amp: 30, sx: 0.22, sy: 0.16, phase: 2.1 } },
-    { el: hero.querySelector('.hero-orb-3'), mouse: 0.09,  drift: { amp: 22, sx: 0.18, sy: 0.24, phase: 4.2 } },
+    // 큰 ambient 오브 — 느리고 묵직하게
+    { el: hero.querySelector('.hero-orb-1'), mouse:  0.03,  drift: { amp: 35, sx: 0.20, sy: 0.15, phase: 0.0 } },
+    { el: hero.querySelector('.hero-orb-2'), mouse: -0.04,  drift: { amp: 28, sx: 0.17, sy: 0.13, phase: 2.1 } },
+    // 중간 오브 — 적당한 반응
+    { el: hero.querySelector('.hero-orb-3'), mouse:  0.07,  drift: { amp: 22, sx: 0.26, sy: 0.22, phase: 1.3 } },
+    { el: hero.querySelector('.hero-orb-4'), mouse: -0.08,  drift: { amp: 18, sx: 0.30, sy: 0.25, phase: 3.7 } },
+    // 작은 포인트 오브 — 빠르고 민감하게
+    { el: hero.querySelector('.hero-orb-5'), mouse:  0.13,  drift: { amp: 14, sx: 0.38, sy: 0.32, phase: 5.1 } },
+    { el: hero.querySelector('.hero-orb-6'), mouse: -0.11,  drift: { amp: 12, sx: 0.42, sy: 0.35, phase: 0.8 } },
   ].filter(o => o.el);
 
   if (!orbs.length) return;
 
-  let mx = 0, my = 0;          // 마우스 위치 (hero 중심 기준)
-  let cx = [0,0,0], cy = [0,0,0]; // 현재 lerp 위치
+  let mx = 0, my = 0;                        // 마우스 위치 (hero 중심 기준)
+  let cx = [0,0,0,0,0,0], cy = [0,0,0,0,0,0]; // 현재 lerp 위치
   const LERP = 0.055;          // 부드러움 (낮을수록 느리게 따라옴)
   const t0 = performance.now();
 
