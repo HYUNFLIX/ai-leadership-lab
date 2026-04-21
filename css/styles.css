@@ -4564,3 +4564,207 @@ html.light-mode .client-cell:hover {
 }
 
 /* (white-hero secondary override removed — dark hero uses base styles) */
+
+/* ============================================================
+   ① Scroll Spy — rootMargin 개선은 JS에서 처리
+   ============================================================ */
+
+/* ============================================================
+   ③ 미디어 탭 필터
+   ============================================================ */
+.media-filter {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.media-filter-btn {
+  padding: 0.5rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-primary);
+}
+
+.media-filter-btn:hover {
+  border-color: rgba(91,139,255,0.5);
+  color: #fff;
+}
+
+.media-filter-btn.active {
+  background: linear-gradient(135deg, #5b6bf4, #7c3aed);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(91,107,244,0.4);
+}
+
+.media-card {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.media-card.hidden {
+  display: none;
+}
+
+/* ============================================================
+   ④ 스켈레톤 로딩 UI
+   ============================================================ */
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.skeleton-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 1.5rem;
+  overflow: hidden;
+}
+
+.skeleton-line {
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.05) 25%,
+    rgba(255,255,255,0.12) 50%,
+    rgba(255,255,255,0.05) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-line.short  { width: 40%; }
+.skeleton-line.medium { width: 70%; }
+.skeleton-line.long   { width: 90%; }
+.skeleton-line.full   { width: 100%; }
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================================
+   ⑤ 서비스 카드 hover 개선
+   ============================================================ */
+.service-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(91,139,255,0.06), rgba(124,58,237,0.04));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.service-card:hover::after { opacity: 1; }
+
+.service-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 600;
+  transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.service-card:hover .service-link {
+  gap: 0.6rem;
+  color: #5b8bff;
+}
+
+/* ============================================================
+   ⑥ Closing CTA — 전화 링크
+   ============================================================ */
+.closing-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.closing-tel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.closing-tel:hover { color: #fff; }
+
+/* ============================================================
+   ⑦ 섹션 Dot Indicator
+   ============================================================ */
+.section-dots {
+  position: fixed;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  z-index: 900;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.section-dots.visible { opacity: 1; }
+
+.section-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  border: 1.5px solid rgba(255,255,255,0.35);
+  transition: background 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+  cursor: pointer;
+}
+
+.section-dot:hover,
+.section-dot.active {
+  background: #5b8bff;
+  border-color: #5b8bff;
+  transform: scale(1.4);
+}
+
+/* tooltip */
+.section-dot::after {
+  content: attr(data-label);
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(15,20,40,0.9);
+  color: #fff;
+  font-size: 0.72rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.section-dot:hover::after { opacity: 1; }
+
+@media (max-width: 768px) {
+  .section-dots { display: none; }
+  .media-filter-btn { padding: 0.4rem 1rem; font-size: 0.8rem; }
+}

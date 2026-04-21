@@ -326,35 +326,36 @@
   }
 
   // ================ Active Section Detection ================
+  // ① Scroll Spy — nav 링크 + dot indicator 동기화
   function initActiveSectionDetection() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
-    
-    const observerOptions = {
-      rootMargin: '-50% 0% -50% 0%',
-      threshold: 0
-    };
-    
+    const dots     = document.querySelectorAll('.section-dot');
+    const dotsNav  = document.getElementById('sectionDots');
+
+    // dot indicator: 스크롤 300px 이상이면 표시
+    window.addEventListener('scroll', () => {
+      if (dotsNav) dotsNav.classList.toggle('visible', window.pageYOffset > 300);
+    }, { passive: true });
+
     const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          
-          navLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href === `#${id}`) {
-              link.classList.add('active');
-            } else {
-              link.classList.remove('active');
-            }
-          });
-        }
+        if (!entry.isIntersecting) return;
+        const id = entry.target.getAttribute('id');
+
+        // 네비게이션 active
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+
+        // dot indicator active
+        dots.forEach(dot => {
+          dot.classList.toggle('active', dot.getAttribute('href') === `#${id}`);
+        });
       });
-    }, observerOptions);
-    
-    sections.forEach(section => {
-      sectionObserver.observe(section);
-    });
+    }, { rootMargin: '-40% 0% -40% 0%', threshold: 0 });
+
+    sections.forEach(s => sectionObserver.observe(s));
   }
 
   // ================ Typing Effect for Messages ================
@@ -907,6 +908,49 @@
   };
 
 })();
+
+/* ── ③ 미디어 탭 필터 ──────────────────────────────────────────── */
+(function () {
+  const btns  = document.querySelectorAll('.media-filter-btn');
+  const cards = document.querySelectorAll('.media-card[data-type]');
+  if (!btns.length) return;
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+
+      // 버튼 active
+      btns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected','true');
+
+      // 카드 표시/숨김
+      cards.forEach(card => {
+        const match = filter === 'all' || card.dataset.type === filter;
+        card.classList.toggle('hidden', !match);
+      });
+    });
+  });
+}());
+
+/* ── ④ 강의 실적 스켈레톤 로딩 UI ──────────────────────────────── */
+(function () {
+  const container = document.getElementById('lecturesByYear');
+  if (!container) return;
+
+  // 텍스트 스피너 대신 스켈레톤 카드 3개로 교체
+  container.innerHTML = `
+    <div class="skeleton-grid">
+      ${[1,2,3].map(() => `
+        <div class="skeleton-card">
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line long"></div>
+          <div class="skeleton-line medium"></div>
+          <div class="skeleton-line full"></div>
+          <div class="skeleton-line medium"></div>
+        </div>`).join('')}
+    </div>`;
+}());
 
 /* ── Hero Orb Parallax ──────────────────────────────────────────
    마우스 위치에 따라 오브가 부드럽게 반응.
