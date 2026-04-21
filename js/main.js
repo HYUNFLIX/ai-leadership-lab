@@ -907,3 +907,67 @@
   };
 
 })();
+
+/* ── Hero Orb Parallax ──────────────────────────────────────────
+   마우스 위치에 따라 오브가 부드럽게 반응.
+   transform3d만 사용 → GPU compositor 처리, CPU 부담 없음.
+   ─────────────────────────────────────────────────────────────── */
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const hero = document.getElementById('hero');
+  if (!hero) return;
+
+  const orbs = [
+    { el: hero.querySelector('.hero-orb-1'), mouse: 0.04,  drift: { amp: 40, sx: 0.28, sy: 0.20, phase: 0   } },
+    { el: hero.querySelector('.hero-orb-2'), mouse: -0.06, drift: { amp: 30, sx: 0.22, sy: 0.16, phase: 2.1 } },
+    { el: hero.querySelector('.hero-orb-3'), mouse: 0.09,  drift: { amp: 22, sx: 0.18, sy: 0.24, phase: 4.2 } },
+  ].filter(o => o.el);
+
+  if (!orbs.length) return;
+
+  let mx = 0, my = 0;          // 마우스 위치 (hero 중심 기준)
+  let cx = [0,0,0], cy = [0,0,0]; // 현재 lerp 위치
+  const LERP = 0.055;          // 부드러움 (낮을수록 느리게 따라옴)
+  const t0 = performance.now();
+
+  // 히어로에서 마우스 좌표 수집 (passive)
+  hero.addEventListener('mousemove', e => {
+    const r = hero.getBoundingClientRect();
+    mx = e.clientX - r.left - r.width  / 2;
+    my = e.clientY - r.top  - r.height / 2;
+  }, { passive: true });
+
+  hero.addEventListener('mouseleave', () => { mx = 0; my = 0; });
+
+  // 히어로가 화면에 없으면 rAF 중단 (배터리 절약)
+  let heroVisible = true;
+  const io = new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; }, { threshold: 0 });
+  io.observe(hero);
+
+  function tick(now) {
+    requestAnimationFrame(tick);
+    if (!heroVisible) return;
+
+    const t = (now - t0) / 1000; // 초
+
+    orbs.forEach((orb, i) => {
+      const d = orb.drift;
+      // 사인파 idle drift (마우스 없을 때도 살아있는 느낌)
+      const driftX = Math.sin(t * d.sx + d.phase) * d.amp;
+      const driftY = Math.cos(t * d.sy + d.phase) * d.amp;
+
+      // 마우스 패럴랙스 더하기
+      const tX = driftX + mx * orb.mouse;
+      const tY = driftY + my * orb.mouse;
+
+      // Lerp (smooth follow)
+      cx[i] += (tX - cx[i]) * LERP;
+      cy[i] += (tY - cy[i]) * LERP;
+
+      orb.el.style.transform = `translate3d(${cx[i].toFixed(1)}px,${cy[i].toFixed(1)}px,0)`;
+    });
+  }
+
+  requestAnimationFrame(tick);
+}());
