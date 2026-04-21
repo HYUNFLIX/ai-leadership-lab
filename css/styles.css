@@ -432,6 +432,7 @@ html.dark-mode .theme-toggle .moon-icon {
 }
 
 /* ================ Hero Section ================ */
+/* 순수 CSS 배경 — JS/Canvas 없음, CPU 0% */
 .hero {
   position: relative;
   min-height: 100vh;
@@ -440,9 +441,27 @@ html.dark-mode .theme-toggle .moon-icon {
   padding: var(--spacing-3xl) 0 0;
   margin-bottom: 0;
   overflow: hidden;
-  /* Deep navy dark hero — seamless with site theme */
-  background-color: #08091a;
   isolation: isolate;
+  background:
+    /* 좌측 블루 글로우 */
+    radial-gradient(ellipse 70% 60% at 8% 55%, rgba(91,139,255,0.18) 0%, transparent 60%),
+    /* 우측 퍼플 글로우 */
+    radial-gradient(ellipse 55% 55% at 92% 75%, rgba(124,58,237,0.12) 0%, transparent 55%),
+    /* 상단 미세 하이라이트 */
+    radial-gradient(ellipse 40% 30% at 50% 0%, rgba(91,139,255,0.06) 0%, transparent 50%),
+    /* 베이스 */
+    #08091a;
+}
+
+/* 미세 도트 그리드 — CSS only, paint cost 없음 */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
 }
 
 .hero > .container {
@@ -450,34 +469,8 @@ html.dark-mode .theme-toggle .moon-icon {
   z-index: 1;
 }
 
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.hero-gradient {
-  position: absolute;
-  inset: 0;
-  /* Atmospheric glow on dark — electric blue + purple */
-  background:
-    radial-gradient(ellipse 900px 700px at 15% 55%, rgba(91,139,255,0.13), transparent 65%),
-    radial-gradient(ellipse 600px 600px at 85% 80%, rgba(124,58,237,0.09), transparent 60%);
-  opacity: 1;
-}
-
-.hero-gradient::after {
-  content: none;
-}
-
-.hero-pattern {
-  position: absolute;
-  inset: 0;
-  /* Very subtle dot grid on dark */
-  background-image:
-    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 48px 48px;
-}
+/* hero-bg, hero-gradient, hero-pattern — 구조 유지 (하위 호환) */
+.hero-bg, .hero-gradient, .hero-pattern { display: none; }
 
 .hero-content {
   text-align: center;
@@ -4113,66 +4106,7 @@ html.light-mode .client-cell:hover {
   padding-bottom: 3rem;
 }
 
-/* ── Fiber Canvas Background ── */
-#fiberCanvas {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  display: block;
-  /* 독립 compositor layer — scroll 중 리페인트 방지 */
-  will-change: transform;
-  transform: translateZ(0);
-}
 
-.glow-band {
-  position: absolute;
-  z-index: 1;
-  top: 49.8%;
-  left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg,
-    rgba(119,242,255,0),
-    rgba(119,242,255,.9) 16%,
-    rgba(119,242,255,.9) 84%,
-    rgba(119,242,255,0));
-  box-shadow:
-    0 0 18px rgba(77,214,255,.9),
-    0 0 46px rgba(70,132,255,.8),
-    0 0 90px rgba(93,93,255,.45);
-  pointer-events: none;
-}
-
-.hero-noise {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  opacity: .055;
-  background-image: radial-gradient(rgba(255,255,255,.7) .4px, transparent .5px);
-  background-size: 9px 9px;
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-
-.hero-vignette {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 70% 50%, transparent 0%, transparent 50%, rgba(0,0,0,.14) 72%, rgba(0,0,0,.36) 100%),
-    linear-gradient(90deg, rgba(2,8,21,.16), rgba(2,8,21,0) 14%, rgba(2,8,21,0) 72%, rgba(2,8,21,.16));
-}
-
-/* 히어로 컨텐츠가 캔버스 레이어 위에 위치하도록 */
-.hero .container {
-  position: relative;
-  z-index: 5;
-}
-
-@media (max-width: 768px) {
-  .glow-band { display: none; }
-}
 
 /* ============================================================
    ★ 소장 풀쿼트 섹션 (강의 현장 사진)
