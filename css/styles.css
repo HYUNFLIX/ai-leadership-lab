@@ -446,15 +446,41 @@ html.dark-mode .theme-toggle .moon-icon {
   background: #08091a;
 }
 
-/* 미세 도트 그리드 — CSS only, paint cost 없음 */
+/* AI 그리드 라인 — opacity pulse, GPU composited, CPU 0% */
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
+  background-image:
+    linear-gradient(rgba(91,139,255,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,139,255,0.12) 1px, transparent 1px);
+  background-size: 64px 64px;
   pointer-events: none;
+  transform: translateZ(0);
+  animation: gridPulse 5s ease-in-out infinite alternate;
+}
+
+/* 그리드 교차점 노드 — ::after로 dot 강조 */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(circle, rgba(91,139,255,0.35) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  transform: translateZ(0);
+  animation: gridPulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes gridPulse {
+  from { opacity: 0.25; }
+  to   { opacity: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before, .hero::after { animation: none; opacity: 0.5; }
 }
 
 .hero > .container {
