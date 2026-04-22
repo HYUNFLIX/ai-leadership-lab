@@ -2571,55 +2571,162 @@ html.dark-mode .theme-toggle .moon-icon {
   margin-bottom: var(--spacing-2xl);
 }
 
-.contact-cards {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-xl);
-}
-
-.contact-card-item {
+/* ---- Contact Form ---- */
+.contact-form {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto var(--spacing-xl);
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: var(--spacing-md);
-  padding: var(--spacing-xl);
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-xl);
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-  color: white;
 }
 
-.contact-card-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-5px);
-  border-color: rgba(99,102,241,0.3);
-  box-shadow: 0 20px 40px rgba(99,102,241, 0.1);
+.cf-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
 }
 
-.contact-card-icon {
-  width: 72px;
-  height: 72px;
+.cf-field {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-xl);
+  flex-direction: column;
+  gap: 6px;
 }
 
-.contact-card-item h4 {
+.cf-field label {
   font-size: var(--font-size-sm);
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  opacity: 0.8;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.02em;
 }
 
-.contact-card-item p {
-  font-size: var(--font-size-xl);
+.cf-required {
+  color: #f87171;
+  margin-left: 2px;
+}
+
+.cf-field input,
+.cf-field textarea {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  padding: 12px 16px;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+
+.cf-field input::placeholder,
+.cf-field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.cf-field input:focus,
+.cf-field textarea:focus {
+  outline: none;
+  border-color: var(--color-accent, #5b8bff);
+  background: rgba(91, 139, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(91, 139, 255, 0.18);
+}
+
+.cf-field input.cf-error,
+.cf-field textarea.cf-error {
+  border-color: #f87171;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.18);
+}
+
+.cf-field textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.cf-submit {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--color-accent, #5b8bff), #7c5bff);
+  border: none;
+  border-radius: var(--radius-full);
+  color: #fff;
+  font-family: inherit;
+  font-size: var(--font-size-base);
   font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  align-self: flex-start;
+  letter-spacing: 0.02em;
+}
+
+.cf-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(91, 139, 255, 0.4);
+}
+
+.cf-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.cf-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cf-submit.loading .cf-btn-text,
+.cf-submit.loading .cf-btn-icon {
+  opacity: 0;
+}
+
+.cf-spinner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  display: none;
+}
+
+.cf-submit.loading .cf-spinner {
+  display: block;
+  animation: cfSpin 0.7s linear infinite;
+}
+
+@keyframes cfSpin {
+  to { transform: rotate(360deg); }
+}
+
+.cf-status {
+  font-size: var(--font-size-sm);
+  min-height: 1.4em;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+.cf-status.success {
+  color: #4ade80;
+}
+
+.cf-status.error {
+  color: #f87171;
+}
+
+@media (max-width: 640px) {
+  .cf-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cf-submit {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .contact-hours-centered {
@@ -2632,26 +2739,6 @@ html.dark-mode .theme-toggle .moon-icon {
   font-size: var(--font-size-base);
   color: rgba(255, 255, 255, 0.9);
 }
-
-@media (max-width: 640px) {
-  .contact-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .contact-card-item {
-    padding: var(--spacing-lg);
-  }
-
-  .contact-card-icon {
-    width: 60px;
-    height: 60px;
-  }
-
-  .contact-card-item p {
-    font-size: var(--font-size-lg);
-  }
-}
-
 
 @keyframes fadeInUp {
   from {
@@ -3528,11 +3615,6 @@ html.dark-mode .theme-toggle .moon-icon {
   color: #6366f1;
 }
 
-/* --- Dark sections: Contact glass --- */
-.contact-card-icon svg {
-  stroke: #818cf8;
-}
-
 /* --- Footer: seamless dark --- */
 .footer {
   background: #060810;
@@ -3575,8 +3657,7 @@ html.dark-mode .theme-toggle .moon-icon {
 /* Apply unfold animation to key cards */
 .book-card,
 .media-card,
-.testimonial-card,
-.contact-card-item {
+.testimonial-card {
   opacity: 0;
   animation: cardUnfold 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
@@ -3592,9 +3673,6 @@ html.dark-mode .theme-toggle .moon-icon {
 .testimonial-card:nth-child(3) { animation-delay: 0.3s; }
 .book-card:nth-child(4),
 .media-card:nth-child(4) { animation-delay: 0.4s; }
-
-.contact-card-item:nth-child(1) { animation-delay: 0.15s; }
-.contact-card-item:nth-child(2) { animation-delay: 0.25s; }
 
 /* --- Hover tilt effect on cards --- */
 .book-card,
@@ -3692,21 +3770,6 @@ html.dark-mode .theme-toggle .moon-icon {
 /* --- Year header polish --- */
 .year-badge {
   box-shadow: 0 2px 12px rgba(99,102,241,0.2);
-}
-
-/* --- Contact cards: glass on dark bg --- */
-.contact-card-item {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.1);
-}
-
-.contact-card-item:hover {
-  background: rgba(99,102,241,0.1);
-  border-color: rgba(99,102,241,0.3);
-}
-
-.contact-card-icon {
-  background: rgba(99,102,241,0.15);
 }
 
 /* --- Footer links --- */

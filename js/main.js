@@ -1021,3 +1021,105 @@
 
   requestAnimationFrame(tick);
 }());
+
+/* ================ EmailJS Contact Form ================
+   설정값은 EmailJS 대시보드(https://www.emailjs.com)에서 확인하세요.
+   - PUBLIC_KEY  : Account → API Keys → Public Key
+   - SERVICE_ID  : Email Services → 서비스 ID
+   - TEMPLATE_ID : Email Templates → 템플릿 ID
+   템플릿 변수: {{from_name}}, {{reply_to}}, {{organization}}, {{message}}
+   ======================================================= */
+(function () {
+  // ▼▼▼ 여기에 본인의 EmailJS 키를 입력하세요 ▼▼▼
+  const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+  const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+  const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+  // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+  const form       = document.getElementById('contactForm');
+  const submitBtn  = document.getElementById('cfSubmitBtn');
+  const statusEl   = document.getElementById('cfStatus');
+
+  if (!form) return; // 폼이 없으면 종료
+
+  // EmailJS 초기화 (defer 로드 후 실행되므로 안전)
+  function initEmailJS() {
+    if (typeof emailjs !== 'undefined') {
+      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    }
+  }
+  // defer 스크립트가 이미 로드됐을 수도, 아직일 수도 있으므로 두 경우 모두 처리
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEmailJS);
+  } else {
+    initEmailJS();
+  }
+
+  // 유효성 검사
+  function validate() {
+    let ok = true;
+    ['cf-name', 'cf-email', 'cf-message'].forEach(function (id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const empty = !el.value.trim();
+      const badEmail = id === 'cf-email' && el.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);
+      if (empty || badEmail) {
+        el.classList.add('cf-error');
+        ok = false;
+      } else {
+        el.classList.remove('cf-error');
+      }
+    });
+    return ok;
+  }
+
+  // 실시간 오류 해제
+  form.querySelectorAll('input, textarea').forEach(function (el) {
+    el.addEventListener('input', function () {
+      el.classList.remove('cf-error');
+      setStatus('', '');
+    });
+  });
+
+  // 상태 메시지 헬퍼
+  function setStatus(msg, type) {
+    statusEl.textContent = msg;
+    statusEl.className   = 'cf-status' + (type ? ' ' + type : '');
+  }
+
+  // 로딩 상태 헬퍼
+  function setLoading(on) {
+    submitBtn.disabled = on;
+    submitBtn.classList.toggle('loading', on);
+  }
+
+  // 폼 제출
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validate()) {
+      setStatus('필수 항목을 모두 입력해주세요.', 'error');
+      return;
+    }
+
+    if (typeof emailjs === 'undefined') {
+      setStatus('이메일 서비스를 불러오는 중입니다. 잠시 후 다시 시도해주세요.', 'error');
+      return;
+    }
+
+    setLoading(true);
+    setStatus('', '');
+
+    emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form)
+      .then(function () {
+        setStatus('✅ 문의가 성공적으로 전송되었습니다. 1영업일 이내 답변드리겠습니다.', 'success');
+        form.reset();
+      })
+      .catch(function (err) {
+        console.error('EmailJS error:', err);
+        setStatus('❌ 전송에 실패했습니다. 잠시 후 다시 시도하거나 hyunnet@gmail.com으로 직접 연락해주세요.', 'error');
+      })
+      .finally(function () {
+        setLoading(false);
+      });
+  });
+}());
