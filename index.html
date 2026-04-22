@@ -84,8 +84,9 @@
     <!-- Preload critical resources -->
     <link rel="preload" href="images/director-nobg.webp" as="image" type="image/webp">
 
-    <!-- EmailJS -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+    <!-- EmailJS (동기 로드 — defer 제거하여 타이밍 문제 방지) -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>emailjs.init('_Q9n12E8k-YEgQ2J0');</script>
 
     <!-- Custom CSS (blocking — critical) -->
     <link rel="stylesheet" href="css/styles.css?v=20260422d">
@@ -1016,7 +1017,84 @@
     </button>
 
     <!-- Scripts -->
-    <script src="js/main.js?v=20260422d" defer></script>
+    <script src="js/main.js?v=20260422e" defer></script>
+
+    <!-- Contact Form (독립 스크립트 — DOM 준비 후 즉시 실행) -->
+    <script>
+    (function () {
+      var form        = document.getElementById('contactForm');
+      var successCard = document.getElementById('cfSuccess');
+      var submitBtn   = document.getElementById('cfSubmitBtn');
+      var statusEl    = document.getElementById('cfStatus');
+      var retryBtn    = document.getElementById('cfRetryBtn');
+
+      if (!form) return;
+
+      /* 실시간 오류 테두리 해제 */
+      form.addEventListener('input', function (e) {
+        e.target.classList.remove('cf-error');
+        statusEl.textContent = '';
+        statusEl.className = 'cf-status';
+      });
+
+      /* 다시 문의하기 */
+      retryBtn && retryBtn.addEventListener('click', function () {
+        form.reset();
+        form.querySelectorAll('.cf-error').forEach(function (el) { el.classList.remove('cf-error'); });
+        statusEl.textContent = '';
+        statusEl.className = 'cf-status';
+        successCard.style.display = 'none';
+        form.style.display = '';
+        form.querySelector('input').focus();
+      });
+
+      /* 제출 */
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var nameEl    = document.getElementById('cf-name');
+        var emailEl   = document.getElementById('cf-email');
+        var messageEl = document.getElementById('cf-message');
+        var valid = true;
+
+        [nameEl, emailEl, messageEl].forEach(function (el) { el.classList.remove('cf-error'); });
+
+        if (!nameEl.value.trim()) {
+          nameEl.classList.add('cf-error'); valid = false;
+        }
+        if (!emailEl.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
+          emailEl.classList.add('cf-error'); valid = false;
+        }
+        if (!messageEl.value.trim()) {
+          messageEl.classList.add('cf-error'); valid = false;
+        }
+
+        if (!valid) {
+          statusEl.textContent = '필수 항목을 모두 올바르게 입력해주세요.';
+          statusEl.className = 'cf-status error';
+          return;
+        }
+
+        /* 로딩 시작 */
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        statusEl.textContent = '';
+        statusEl.className = 'cf-status';
+
+        emailjs.sendForm('service_hem88yp', 'template_v9y6bsq', form)
+          .then(function () {
+            form.style.display = 'none';
+            successCard.style.display = 'flex';
+          }, function (err) {
+            console.error('EmailJS error:', err);
+            statusEl.textContent = '전송에 실패했습니다. hyunnet@gmail.com으로 직접 연락해주세요.';
+            statusEl.className = 'cf-status error';
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+          });
+      });
+    }());
+    </script>
 
 
     <!-- Programs Loader -->
