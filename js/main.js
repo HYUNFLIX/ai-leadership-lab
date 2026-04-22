@@ -1031,9 +1031,9 @@
    ======================================================= */
 (function () {
   // ▼▼▼ 여기에 본인의 EmailJS 키를 입력하세요 ▼▼▼
-  const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
-  const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
-  const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+  const EMAILJS_PUBLIC_KEY  = '_Q9n12E8k-YEgQ2J0';
+  const EMAILJS_SERVICE_ID  = 'service_hem88yp';
+  const EMAILJS_TEMPLATE_ID = 'template_v9y6bsq';
   // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
   const form       = document.getElementById('contactForm');
