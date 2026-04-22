@@ -59,42 +59,7 @@
 
 /* ================ Light Mode Support ================ */
 /* Manual light mode toggle (dark is default) */
-html.light-mode {
-  --primary: #6366f1;
-  --primary-dark: #4f46e5;
-  --secondary: #a855f7;
-  --secondary-dark: #9333ea;
-
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --text-muted: #94a3b8;
-
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-
-  --border-color: #e2e8f0;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-}
-
-/* Explicit dark-mode class (JS adds this on load) */
-html.dark-mode {
-  --primary: #818cf8;
-  --primary-dark: #6366f1;
-  --secondary: #c084fc;
-  --secondary-dark: #a855f7;
-
-  --text-primary: #f1f5f9;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #111827;
-  --bg-tertiary: #1e293b;
-
-  --border-color: rgba(255,255,255,0.08);
-  --shadow-color: rgba(0, 0, 0, 0.3);
-}
+/* 다크 테마 고정 — 테마 토글 제거 */
 
 /* ================ Reset & Base ================ */
 *,
@@ -128,9 +93,6 @@ main#main {
   background-color: #0a0e1a;
 }
 
-html.light-mode,
-html.light-mode body { background-color: #f8fafc; }
-html.light-mode main#main { background-color: #0a0e1a; }
 
 /* Overlap dark sections to fully eliminate any subpixel seam */
 .hero { margin-bottom: -2px; }
@@ -376,43 +338,6 @@ ul {
 
 /* Dark mode adjustments */
 /* Theme Toggle Button */
-.theme-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: var(--radius-full);
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: var(--transition-base);
-  margin-left: var(--spacing-sm);
-}
-
-.theme-toggle:hover {
-  background: var(--bg-secondary);
-  color: var(--primary);
-  transform: rotate(15deg);
-}
-
-.theme-toggle .sun-icon {
-  display: block;
-}
-
-.theme-toggle .moon-icon {
-  display: none;
-}
-
-/* Dark mode active state */
-html.dark-mode .theme-toggle .sun-icon {
-  display: none;
-}
-
-html.dark-mode .theme-toggle .moon-icon {
-  display: block;
-}
 
 .nav-toggle {
   display: none;
@@ -4177,37 +4102,6 @@ html.dark-mode .theme-toggle .moon-icon {
   opacity: 0.7;
 }
 
-/* Light mode */
-html.light-mode .hero-chat {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: #e2e8f0;
-  box-shadow:
-    0 30px 80px -20px rgba(15, 23, 42, 0.18),
-    0 0 0 1px rgba(15, 23, 42, 0.04);
-}
-html.light-mode .chat-header {
-  border-bottom-color: #e2e8f0;
-  background: rgba(248, 250, 252, 0.6);
-}
-html.light-mode .chat-header-dots span { opacity: 1; }
-html.light-mode .chat-header-dots span:first-child { background: #ef4444; }
-html.light-mode .chat-header-dots span:nth-child(2) { background: #f59e0b; }
-html.light-mode .chat-header-dots span:nth-child(3) { background: #22c55e; }
-html.light-mode .chat-header-title { color: #1e293b; }
-html.light-mode .chat-bubble-ai {
-  background: #f1f5f9;
-  border-color: #e2e8f0;
-  color: #1e293b;
-}
-html.light-mode .chat-footer {
-  border-top-color: #e2e8f0;
-  background: rgba(248, 250, 252, 0.6);
-}
-html.light-mode .chat-input-fake {
-  background: #fff;
-  border-color: #e2e8f0;
-}
-html.light-mode .chat-input-fake span { color: #94a3b8; }
 
 /* Mobile */
 @media (max-width: 768px) {
@@ -4275,14 +4169,6 @@ html.light-mode .chat-input-fake span { color: #94a3b8; }
   font-size: 0.9rem;
 }
 
-html.light-mode .client-cell {
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-}
-html.light-mode .client-cell:hover {
-  border-color: var(--primary);
-  box-shadow: 0 10px 24px -12px rgba(99, 102, 241, 0.3);
-}
 
 @media (max-width: 640px) {
   .clients-wall {

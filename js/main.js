@@ -505,80 +505,6 @@
     });
   }
 
-  // ================ Dark Mode Toggle ================
-  function initDarkModeToggle() {
-    const themeToggle = document.getElementById('themeToggle');
-    const html = document.documentElement;
-    const STORAGE_KEY = 'ai-leadership-theme';
-
-    // Get stored preference or null
-    function getStoredTheme() {
-      return localStorage.getItem(STORAGE_KEY);
-    }
-
-    // Check if system prefers dark mode
-    function systemPrefersDark() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-
-    // Apply theme based on preference
-    function applyTheme(theme) {
-      if (theme === 'dark') {
-        html.classList.add('dark-mode');
-        html.classList.remove('light-mode');
-      } else if (theme === 'light') {
-        html.classList.add('light-mode');
-        html.classList.remove('dark-mode');
-      } else {
-        // Auto - remove manual classes, let system preference work
-        html.classList.remove('dark-mode', 'light-mode');
-      }
-    }
-
-    // Initialize theme on page load (default = dark)
-    function initTheme() {
-      const storedTheme = getStoredTheme();
-      if (storedTheme === 'light') {
-        applyTheme('light');
-      } else {
-        // Default: always dark. Remove any stale light-mode class.
-        html.classList.remove('light-mode');
-        html.classList.add('dark-mode');
-      }
-    }
-
-    // Toggle between light and dark (default = dark)
-    function toggleTheme() {
-      const isLight = html.classList.contains('light-mode');
-      if (isLight) {
-        // Switch to dark (default)
-        localStorage.setItem(STORAGE_KEY, 'dark');
-        applyTheme('dark');
-      } else {
-        // Switch to light
-        localStorage.setItem(STORAGE_KEY, 'light');
-        applyTheme('light');
-      }
-    }
-
-    // Event listener for toggle button
-    if (themeToggle) {
-      themeToggle.addEventListener('click', toggleTheme);
-    }
-
-    // Listen for system preference changes (only if no manual preference set)
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!getStoredTheme()) {
-        // No manual preference, CSS handles it automatically
-        // Just ensure no conflicting classes
-        html.classList.remove('dark-mode', 'light-mode');
-      }
-    });
-
-    // Initialize on load
-    initTheme();
-  }
-
   // ================ Performance Monitoring ================
   function initPerformanceMonitoring() {
     if ('PerformanceObserver' in window) {
@@ -867,7 +793,6 @@
     initNumberCounters();
     initLazyLoading();
     initKeyboardNav();
-    initDarkModeToggle();
     initInteractiveCube();
     initScrollReveal();
     initAboutCounters();
