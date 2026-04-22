@@ -349,14 +349,18 @@ ul {
 .nav-cta {
   display: inline-flex;
   align-items: center;
-  padding: 0.6rem 1.25rem;
-  font-size: 0.9rem;
+  justify-content: center;
+  height: 36px;
+  padding: 0 1.2rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: #fff;
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   border-radius: 999px;
   box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+  line-height: 1;
 }
 
 .nav-cta:hover {

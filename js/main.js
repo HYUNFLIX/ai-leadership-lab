@@ -70,15 +70,22 @@
       elements.navToggle.addEventListener('click', toggleMobileMenu);
     }
 
-    // Close mobile menu on link click
+    // Close mobile menu on link click + smooth scroll
     elements.navLinks.forEach(link => {
       link.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768) {
-          closeMobileMenu();
-        }
+        if (window.innerWidth <= 768) closeMobileMenu();
         handleSmoothScroll(e);
       });
     });
+
+    // Contact CTA 버튼도 smooth scroll 적용
+    const navCta = document.querySelector('.nav-cta');
+    if (navCta) {
+      navCta.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768) closeMobileMenu();
+        handleSmoothScroll(e);
+      });
+    }
 
     // Navbar scroll effect
     window.addEventListener('scroll', optimizedScroll);
