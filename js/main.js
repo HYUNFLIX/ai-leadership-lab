@@ -122,16 +122,12 @@
   function handleSmoothScroll(e) {
     const href = e.currentTarget.getAttribute('href');
 
-    if (href && href.startsWith('#')) {
+    if (href && href.startsWith('#') && href.length > 1) {
       e.preventDefault();
-      const targetId = href.substring(1);
-      const targetSection = document.getElementById(targetId);
-
+      const targetSection = document.getElementById(href.substring(1));
       if (targetSection) {
-        // CSS scroll-behavior:smooth가 처리, JS는 offset 보정만 담당
-        const offsetTop = targetSection.getBoundingClientRect().top + window.pageYOffset - config.scrollOffset;
-        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-        history.pushState(null, null, href);
+        // scroll-margin-top(CSS)이 navbar 오프셋을 처리, scrollIntoView가 가장 안정적
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
   }
@@ -899,12 +895,7 @@
     reinit: init,
     scrollTo: (target) => {
       const element = document.querySelector(target);
-      if (element) {
-        window.scrollTo({
-          top: element.offsetTop - config.scrollOffset,
-          behavior: 'smooth'
-        });
-      }
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     },
     // Expose utility functions for external use if needed
     utils: {

@@ -910,6 +910,7 @@ html.dark-mode .theme-toggle .moon-icon {
 /* ================ Sections ================ */
 .section {
   padding: var(--spacing-3xl) 0;
+  scroll-margin-top: 80px; /* 고정 navbar 높이 보정 */
 }
 
 /* ================ About Section (dark immersive) ================ */
