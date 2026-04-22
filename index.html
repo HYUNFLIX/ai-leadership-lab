@@ -88,7 +88,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
 
     <!-- Custom CSS (blocking — critical) -->
-    <link rel="stylesheet" href="css/styles.css?v=20260422c">
+    <link rel="stylesheet" href="css/styles.css?v=20260422d">
 
     <!-- Pretendard font — async (non-blocking) -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style"
@@ -888,14 +888,18 @@
                             <label for="cf-message">문의내용 <span class="cf-required" aria-label="필수">*</span></label>
                             <textarea id="cf-message" name="message" rows="5" placeholder="강의·컨설팅·코칭 관련 문의 내용을 자유롭게 적어주세요." required></textarea>
                         </div>
-                        <button type="submit" class="cf-submit" id="cfSubmitBtn">
-                            <span class="cf-btn-text">문의 보내기</span>
-                            <svg class="cf-btn-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" viewBox="0 0 24 24">
-                                <line x1="22" y1="2" x2="11" y2="13"/>
-                                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                            </svg>
-                            <span class="cf-spinner" aria-hidden="true"></span>
-                        </button>
+                        <div class="cf-divider" aria-hidden="true"></div>
+                        <div class="cf-footer">
+                            <p class="cf-note">* 필수 입력 항목<br>1영업일 이내 답변드립니다.</p>
+                            <button type="submit" class="cf-submit" id="cfSubmitBtn">
+                                <span class="cf-btn-text">문의 보내기</span>
+                                <svg class="cf-btn-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" viewBox="0 0 24 24">
+                                    <line x1="22" y1="2" x2="11" y2="13"/>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                                </svg>
+                                <span class="cf-spinner" aria-hidden="true"></span>
+                            </button>
+                        </div>
                         <p class="cf-status" id="cfStatus" role="status" aria-live="polite"></p>
                     </form>
 
@@ -1007,7 +1011,7 @@
     </button>
 
     <!-- Scripts -->
-    <script src="js/main.js?v=20260422c" defer></script>
+    <script src="js/main.js?v=20260422d" defer></script>
 
 
     <!-- Programs Loader -->

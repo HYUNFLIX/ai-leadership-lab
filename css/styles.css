@@ -2574,47 +2574,55 @@ html.dark-mode .theme-toggle .moon-icon {
 /* ---- Contact Form ---- */
 .contact-form {
   width: 100%;
-  max-width: 640px;
+  max-width: 580px;
   margin: 0 auto var(--spacing-xl);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  padding: 40px 36px 32px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
 }
 
 .cf-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-md);
+  gap: 16px;
 }
 
 .cf-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .cf-field label {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.75);
-  letter-spacing: 0.02em;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
 }
 
 .cf-required {
-  color: #f87171;
+  color: #5b8bff;
   margin-left: 2px;
 }
 
 .cf-field input,
 .cf-field textarea {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
   color: #fff;
   font-family: inherit;
-  font-size: var(--font-size-base);
-  padding: 12px 16px;
-  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  font-size: 15px;
+  padding: 13px 16px;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
   box-sizing: border-box;
   -webkit-appearance: none;
@@ -2622,27 +2630,49 @@ html.dark-mode .theme-toggle .moon-icon {
 
 .cf-field input::placeholder,
 .cf-field textarea::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.22);
+  font-size: 14px;
 }
 
 .cf-field input:focus,
 .cf-field textarea:focus {
   outline: none;
-  border-color: var(--color-accent, #5b8bff);
-  background: rgba(91, 139, 255, 0.08);
-  box-shadow: 0 0 0 3px rgba(91, 139, 255, 0.18);
+  border-color: #5b8bff;
+  background: rgba(91, 139, 255, 0.07);
+  box-shadow: 0 0 0 3px rgba(91, 139, 255, 0.15), inset 0 0 0 1px rgba(91, 139, 255, 0.3);
 }
 
 .cf-field input.cf-error,
 .cf-field textarea.cf-error {
   border-color: #f87171;
-  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.18);
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.15);
 }
 
 .cf-field textarea {
-  resize: vertical;
-  min-height: 120px;
-  line-height: 1.6;
+  resize: none;
+  min-height: 130px;
+  line-height: 1.65;
+}
+
+/* 구분선 */
+.cf-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  margin: 4px 0;
+}
+
+/* 제출 버튼 영역 */
+.cf-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cf-note {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  line-height: 1.5;
 }
 
 .cf-submit {
@@ -2651,31 +2681,33 @@ html.dark-mode .theme-toggle .moon-icon {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px 32px;
-  background: linear-gradient(135deg, var(--color-accent, #5b8bff), #7c5bff);
+  padding: 13px 28px;
+  background: linear-gradient(135deg, #5b8bff 0%, #7c5bff 100%);
   border: none;
-  border-radius: var(--radius-full);
+  border-radius: 50px;
   color: #fff;
   font-family: inherit;
-  font-size: var(--font-size-base);
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  align-self: flex-start;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
 .cf-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(91, 139, 255, 0.4);
+  box-shadow: 0 10px 28px rgba(91, 139, 255, 0.45);
 }
 
 .cf-submit:active:not(:disabled) {
   transform: translateY(0);
+  box-shadow: none;
 }
 
 .cf-submit:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
@@ -2686,8 +2718,8 @@ html.dark-mode .theme-toggle .moon-icon {
 
 .cf-spinner {
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: #fff;
   border-radius: 50%;
@@ -2704,23 +2736,32 @@ html.dark-mode .theme-toggle .moon-icon {
 }
 
 .cf-status {
-  font-size: var(--font-size-sm);
+  font-size: 13px;
   min-height: 1.4em;
   text-align: center;
+  line-height: 1.5;
   transition: color 0.2s ease;
 }
 
-.cf-status.success {
-  color: #4ade80;
-}
-
-.cf-status.error {
-  color: #f87171;
-}
+.cf-status.success { color: #4ade80; }
+.cf-status.error   { color: #f87171; }
 
 @media (max-width: 640px) {
+  .contact-form {
+    padding: 28px 20px 24px;
+  }
+
   .cf-row {
     grid-template-columns: 1fr;
+  }
+
+  .cf-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cf-note {
+    text-align: center;
   }
 
   .cf-submit {
