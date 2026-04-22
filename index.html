@@ -1043,6 +1043,8 @@
         form.querySelectorAll('.cf-error').forEach(function (el) { el.classList.remove('cf-error'); });
         statusEl.textContent = '';
         statusEl.className = 'cf-status';
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
         successCard.style.display = 'none';
         form.style.display = '';
         form.querySelector('input').focus();
@@ -1059,18 +1061,30 @@
 
         [nameEl, emailEl, messageEl].forEach(function (el) { el.classList.remove('cf-error'); });
 
+        var errorMsg = '';
+
         if (!nameEl.value.trim()) {
-          nameEl.classList.add('cf-error'); valid = false;
+          nameEl.classList.add('cf-error');
+          errorMsg = errorMsg || '이름을 입력해주세요.';
+          valid = false;
         }
-        if (!emailEl.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
-          emailEl.classList.add('cf-error'); valid = false;
+        if (!emailEl.value.trim()) {
+          emailEl.classList.add('cf-error');
+          errorMsg = errorMsg || '이메일을 입력해주세요.';
+          valid = false;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
+          emailEl.classList.add('cf-error');
+          errorMsg = errorMsg || '올바른 이메일 형식으로 입력해주세요. (예: name@company.com)';
+          valid = false;
         }
         if (!messageEl.value.trim()) {
-          messageEl.classList.add('cf-error'); valid = false;
+          messageEl.classList.add('cf-error');
+          errorMsg = errorMsg || '문의내용을 입력해주세요.';
+          valid = false;
         }
 
         if (!valid) {
-          statusEl.textContent = '필수 항목을 모두 올바르게 입력해주세요.';
+          statusEl.textContent = errorMsg;
           statusEl.className = 'cf-status error';
           return;
         }

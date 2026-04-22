@@ -252,8 +252,9 @@
 
   // ================ Form Validation & Security ================
   function initForms() {
-    const forms = document.querySelectorAll('form');
-    
+    // #contactForm 은 별도 인라인 스크립트로 처리 — 여기서 제외
+    const forms = document.querySelectorAll('form:not(#contactForm)');
+
     forms.forEach(form => {
       form.addEventListener('submit', handleFormSubmit);
     });
