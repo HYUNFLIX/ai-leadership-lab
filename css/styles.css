@@ -2743,8 +2743,80 @@ html.dark-mode .theme-toggle .moon-icon {
   transition: color 0.2s ease;
 }
 
-.cf-status.success { color: #4ade80; }
-.cf-status.error   { color: #f87171; }
+.cf-status.error { color: #f87171; }
+
+/* ---- 전송 완료 카드 ---- */
+.cf-success-card {
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto var(--spacing-xl);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(91, 139, 255, 0.25);
+  border-radius: 20px;
+  padding: 52px 36px 44px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  animation: cfFadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cfFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cf-success-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(91,139,255,0.2), rgba(124,91,255,0.2));
+  border: 1px solid rgba(91, 139, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5b8bff;
+  margin-bottom: 4px;
+}
+
+.cf-success-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.cf-success-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.65;
+}
+
+.cf-success-desc strong {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+.cf-retry {
+  margin-top: 8px;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 9px 22px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.cf-retry:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.8);
+}
 
 @media (max-width: 640px) {
   .contact-form {

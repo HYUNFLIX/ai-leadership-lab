@@ -868,6 +868,18 @@
                         1영업일 이내 신속하게 답변드립니다.
                     </p>
 
+                    <!-- 전송 완료 카드 (hidden until success) -->
+                    <div id="cfSuccess" class="cf-success-card" hidden aria-live="polite">
+                        <div class="cf-success-icon" aria-hidden="true">
+                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <h3 class="cf-success-title">문의가 접수되었습니다</h3>
+                        <p class="cf-success-desc">1영업일 이내에 <strong>hyunnet@gmail.com</strong>으로 답변드리겠습니다.</p>
+                        <button type="button" class="cf-retry" id="cfRetryBtn">다시 문의하기</button>
+                    </div>
+
                     <!-- Contact Form -->
                     <form id="contactForm" class="contact-form" novalidate aria-label="문의 폼">
                         <div class="cf-row">
