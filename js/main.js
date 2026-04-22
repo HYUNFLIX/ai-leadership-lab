@@ -1088,8 +1088,8 @@
 
   // 성공 카드 표시
   function showSuccess() {
-    form.hidden = true;
-    successCard.hidden = false;
+    form.style.display = 'none';
+    successCard.style.display = 'flex';
   }
 
   // 다시 문의하기 — 폼 초기화 후 복원
@@ -1098,8 +1098,8 @@
       form.reset();
       form.querySelectorAll('.cf-error').forEach(function (el) { el.classList.remove('cf-error'); });
       setStatus('', '');
-      successCard.hidden = true;
-      form.hidden = false;
+      successCard.style.display = 'none';
+      form.style.display = '';
       form.querySelector('input, textarea').focus();
     });
   }

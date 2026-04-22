@@ -2747,6 +2747,7 @@ html.dark-mode .theme-toggle .moon-icon {
 
 /* ---- 전송 완료 카드 ---- */
 .cf-success-card {
+  display: none;
   width: 100%;
   max-width: 580px;
   margin: 0 auto var(--spacing-xl);
@@ -2756,7 +2757,6 @@ html.dark-mode .theme-toggle .moon-icon {
   padding: 52px 36px 44px;
   backdrop-filter: blur(20px);
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
-  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 16px;
