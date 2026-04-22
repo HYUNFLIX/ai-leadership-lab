@@ -877,7 +877,7 @@
                             </svg>
                         </div>
                         <h3 class="cf-success-title">문의가 접수되었습니다</h3>
-                        <p class="cf-success-desc">1영업일 이내에 <strong>hyunnet@gmail.com</strong>으로 답변드리겠습니다.</p>
+                        <p class="cf-success-desc">1영업일 이내에 <strong id="cfSuccessEmail"></strong>으로 답변드리겠습니다.</p>
                         <button type="button" class="cf-retry" id="cfRetryBtn">다시 문의하기</button>
                     </div>
 
@@ -1097,6 +1097,8 @@
 
         emailjs.sendForm('service_hem88yp', 'template_v9y6bsq', form)
           .then(function () {
+            var emailDisplay = document.getElementById('cfSuccessEmail');
+            if (emailDisplay) emailDisplay.textContent = emailEl.value.trim();
             form.style.display = 'none';
             successCard.style.display = 'flex';
           }, function (err) {
