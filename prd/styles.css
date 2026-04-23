@@ -132,36 +132,69 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* ===== Progress ===== */
+/* ===== Progress / Flow ribbon ===== */
 .progress {
-  display: flex;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 0;
   margin-bottom: 32px;
+  padding-top: 18px;
+  position: relative;
 }
 .progress-step {
-  flex: 1;
-  height: 4px;
-  background: var(--line);
-  border-radius: 2px;
-  overflow: hidden;
   position: relative;
   cursor: pointer;
+  padding: 10px 4px 6px;
+  text-align: center;
+  transition: color 0.2s ease;
 }
-.progress-step.done { background: var(--ink); }
-.progress-step.active {
-  background: var(--line);
-}
-.progress-step.active::after {
+.progress-step::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: var(--accent);
-  border-radius: 2px;
-  animation: fillProg 0.4s ease-out;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--line);
+  transition: background 0.3s ease;
 }
+.progress-step-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  margin-bottom: 3px;
+  transition: color 0.2s ease;
+}
+.progress-step-label {
+  font-family: 'Gowun Batang', serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color 0.2s ease, font-weight 0.2s ease;
+}
+.progress-step:hover .progress-step-num,
+.progress-step:hover .progress-step-label { color: var(--ink); }
+.progress-step.done::before { background: var(--ink); }
+.progress-step.done .progress-step-num,
+.progress-step.done .progress-step-label { color: var(--ink); }
+.progress-step.active::before {
+  background: var(--accent);
+  animation: fillProg 0.4s ease-out;
+  transform-origin: left;
+}
+.progress-step.active .progress-step-num { color: var(--accent); font-weight: 700; }
+.progress-step.active .progress-step-label { color: var(--ink); font-weight: 700; }
 @keyframes fillProg {
   from { transform: scaleX(0); transform-origin: left; }
   to { transform: scaleX(1); transform-origin: left; }
+}
+@media (max-width: 640px) {
+  .progress-step { padding: 8px 2px 4px; }
+  .progress-step-label { font-size: 10px; }
 }
 
 /* ===== Card ===== */
@@ -1032,84 +1065,3 @@ body {
 }
 
 /* ===== Flow guide (step 0) ===== */
-.flow {
-  margin-bottom: 28px;
-  padding: 24px 20px 22px;
-  background: var(--bg);
-  border-radius: 8px;
-  border: 1.5px solid var(--ink);
-  position: relative;
-}
-.flow-title {
-  font-family: 'Gowun Batang', serif;
-  font-size: 16px;
-  letter-spacing: 0.04em;
-  color: var(--ink);
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-.flow-title::before, .flow-title::after {
-  content: '';
-  flex: 0 0 24px;
-  height: 1px;
-  background: var(--ink);
-}
-.flow-steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-.flow-step {
-  text-align: center;
-  position: relative;
-  padding: 0 6px;
-}
-.flow-step-num {
-  width: 40px;
-  height: 40px;
-  margin: 0 auto 10px;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--bg);
-  font-family: 'Gowun Batang', serif;
-  font-size: 18px;
-  font-weight: 700;
-  display: grid;
-  place-items: center;
-  position: relative;
-  z-index: 2;
-}
-.flow-step:nth-child(2) .flow-step-num { background: var(--accent); }
-.flow-step:nth-child(3) .flow-step-num { background: var(--mint); color: var(--ink); }
-.flow-step:nth-child(4) .flow-step-num { background: var(--ink); }
-.flow-step-label {
-  font-family: 'Gowun Batang', serif;
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 6px;
-  color: var(--ink);
-  letter-spacing: 0.01em;
-}
-.flow-step-desc {
-  font-size: 11px;
-  color: var(--ink-soft);
-  line-height: 1.5;
-}
-.flow-step:not(:last-child)::after {
-  content: '→';
-  position: absolute;
-  right: -6px;
-  top: 12px;
-  color: var(--ink-faint);
-  font-size: 16px;
-  font-weight: 700;
-}
-@media (max-width: 640px) {
-  .flow-steps { grid-template-columns: 1fr 1fr; gap: 20px 8px; }
-  .flow-step:not(:last-child)::after { display: none; }
-}

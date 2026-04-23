@@ -675,15 +675,15 @@ function generateFromKeyword(keyword) {
 // Step definitions
 // ============================================================
 const steps = [
-  { id: 'start', title: '시작하기', render: renderStart },
-  { id: 'intro', title: '프로젝트 소개', render: renderIntro },
-  { id: 'user', title: '누구를 위한 건가요', render: renderUser },
-  { id: 'features', title: '핵심 기능', render: renderFeatures },
-  { id: 'screens', title: '주요 화면', render: renderScreens },
-  { id: 'design', title: '디자인 무드', render: renderDesign },
-  { id: 'tech', title: '기술 선택', render: renderTech },
-  { id: 'scope', title: 'MVP 범위', render: renderScope },
-  { id: 'result', title: '완성된 PRD', render: renderResult }
+  { id: 'start', title: '시작하기', short: '시작', render: renderStart },
+  { id: 'intro', title: '프로젝트 소개', short: '소개', render: renderIntro },
+  { id: 'user', title: '누구를 위한 건가요', short: '타겟', render: renderUser },
+  { id: 'features', title: '핵심 기능', short: '기능', render: renderFeatures },
+  { id: 'screens', title: '주요 화면', short: '화면', render: renderScreens },
+  { id: 'design', title: '디자인 무드', short: '디자인', render: renderDesign },
+  { id: 'tech', title: '기술 선택', short: '기술', render: renderTech },
+  { id: 'scope', title: 'MVP 범위', short: '범위', render: renderScope },
+  { id: 'result', title: '완성된 PRD', short: '완성', render: renderResult }
 ];
 
 // ============================================================
@@ -705,6 +705,8 @@ function renderProgress() {
     const el = document.createElement('div');
     el.className = 'progress-step' + (i === state.step ? ' active' : '') + (i < state.step ? ' done' : '');
     el.title = `${i+1}. ${s.title}`;
+    const num = String(i + 1).padStart(2, '0');
+    el.innerHTML = `<div class="progress-step-num">${num}</div><div class="progress-step-label">${s.short}</div>`;
     el.addEventListener('click', () => {
       if (i <= state.step || canAdvanceTo(i)) {
         state.step = i;
@@ -778,56 +780,26 @@ function renderStart(card) {
   card.appendChild(titleBlock(
     'STEP 01 / 09',
     '업무에서 쓸 도구, 무엇부터 만들까요?',
-    '아래 4단계를 따라가면 누구나 PRD를 완성할 수 있어요. 키워드 하나만 있으면 시작 가능합니다.'
+    '위 9단계를 차례로 채우면 PRD가 완성됩니다. 직접 쓰거나 키워드 한 줄로 시작해 보세요.'
   ));
 
   const content = document.createElement('div');
   content.className = 'step-content';
 
-  // ===== Numbered flow guide =====
-  const flow = document.createElement('div');
-  flow.className = 'flow';
-  flow.innerHTML = `
-    <div class="flow-title">사용 플로우</div>
-    <div class="flow-steps">
-      <div class="flow-step">
-        <div class="flow-step-num">1</div>
-        <div class="flow-step-label">키워드 입력</div>
-        <div class="flow-step-desc">만들고 싶은<br>업무 도구 한 줄</div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-step-num">2</div>
-        <div class="flow-step-label">AI 자동 생성</div>
-        <div class="flow-step-desc">전체 PRD 초안이<br>즉시 완성</div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-step-num">3</div>
-        <div class="flow-step-label">단계별 수정</div>
-        <div class="flow-step-desc">9단계를 넘기며<br>내 아이디어로 편집</div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-step-num">4</div>
-        <div class="flow-step-label">AI 도구에 전달</div>
-        <div class="flow-step-desc">Claude·Gemini Canvas<br>등에 붙여넣기</div>
-      </div>
-    </div>
-  `;
-  content.appendChild(flow);
-
-  // ===== Step 1: Mode toggle panel =====
+  // ===== Mode toggle panel =====
   const magic = document.createElement('div');
   magic.className = 'magic';
   magic.innerHTML = `
-    <div class="magic-badge"><span class="magic-badge-dot"></span>STEP 1 · 작성 방식 선택</div>
+    <div class="magic-badge"><span class="magic-badge-dot"></span>작성 방식 선택</div>
     <div class="mode-toggle" role="tablist">
-      <button type="button" class="mode-tab active" data-mode="auto"><span class="mode-tab-num">01</span>자동 생성</button>
-      <button type="button" class="mode-tab" data-mode="manual"><span class="mode-tab-num">02</span>직접 작성</button>
+      <button type="button" class="mode-tab active" data-mode="manual"><span class="mode-tab-num">01</span>직접 작성</button>
+      <button type="button" class="mode-tab" data-mode="auto"><span class="mode-tab-num">02</span>자동 생성</button>
     </div>
   `;
 
   // --- Auto panel ---
   const autoPanel = document.createElement('div');
-  autoPanel.className = 'mode-panel active';
+  autoPanel.className = 'mode-panel';
   autoPanel.dataset.panel = 'auto';
   autoPanel.innerHTML = `
     <h3>어떤 업무 도구를 만들어 볼까요?</h3>
@@ -884,9 +856,9 @@ function renderStart(card) {
 
   magic.appendChild(autoPanel);
 
-  // --- Manual panel ---
+  // --- Manual panel (default) ---
   const manualPanel = document.createElement('div');
-  manualPanel.className = 'mode-panel';
+  manualPanel.className = 'mode-panel active';
   manualPanel.dataset.panel = 'manual';
   manualPanel.innerHTML = `
     <div class="manual-box">
@@ -914,7 +886,7 @@ function renderStart(card) {
 
   content.appendChild(magic);
 
-  content.appendChild(tipBox('<strong>강사 Tip:</strong> 위 <strong>1번 단계</strong>에서 학생들이 "내 업무 중 가장 번거로운 일"을 키워드로 떠올리도록 유도하세요. 생성 후 <strong>3번 단계(9단계 위저드)</strong>에서 본인 맥락에 맞게 수정하는 것이 핵심 학습 포인트입니다.'));
+  content.appendChild(tipBox('<strong>강사 Tip:</strong> 학생들에게 "내 업무 중 가장 번거로운 일"을 키워드로 먼저 떠올리게 한 뒤, <strong>9단계를 하나씩 넘기며</strong> 본인 맥락에 맞게 수정하도록 유도하세요. 그 수정 과정이 핵심 학습 포인트입니다.'));
   card.appendChild(content);
 }
 
