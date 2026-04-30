@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water: Images and material across the AI era — Conference Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0a0d12;
+  --bg-surface: #111820;
+  --bg-card: #182028;
+  --bg-card-hover: #1e2830;
+  --accent-water: #3a8fb7;
+  --accent-bubble: #d4a5a5;
+  --accent-foam: #b8d4e3;
+  --accent-teal: #2d9a8c;
+  --text-primary: #e8eaed;
+  --text-secondary: #9aa4b0;
+  --text-muted: #5c6670;
+  --border: rgba(255,255,255,0.06);
+  --border-active: rgba(58,143,183,0.4);
+  --gradient-water: linear-gradient(135deg, #0a2a3a 0%, #0d1b2a 50%, #1a0d1e 100%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-water) var(--bg-deep);
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.8;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ============ HERO ============ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 60px clamp(24px, 6vw, 120px);
+  position: relative;
+  overflow: hidden;
+  background: var(--gradient-water);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 50%, rgba(58,143,183,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 30%, rgba(212,165,165,0.06) 0%, transparent 40%),
+              radial-gradient(ellipse at 50% 80%, rgba(45,154,140,0.05) 0%, transparent 50%);
+  animation: drift 20s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(-3%, 2%) rotate(2deg); }
+}
+
+.hero-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-water);
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 1s ease-out 0.3s forwards;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 8vw, 120px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -2px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 1s ease-out 0.5s forwards;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--accent-water);
+}
+
+.hero-subtitle {
+  font-size: clamp(16px, 2vw, 22px);
+  color: var(--text-secondary);
+  margin-top: 28px;
+  max-width: 600px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 1s ease-out 0.7s forwards;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 32px;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 1s ease-out 0.9s forwards;
+  flex-wrap: wrap;
+}
+
+.hero-meta-item {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero-meta-item span {
+  display: block;
+  color: var(--text-secondary);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: 4px;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 1s ease-out 1.2s forwards;
+}
+
+.hero-scroll svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--text-muted);
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ SESSION NAV ============ */
+.session-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,13,18,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 clamp(16px, 4vw, 80px);
+  transform: translateY(-100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.session-nav.visible {
+  transform: translateY(0);
+}
+
+.session-nav-inner {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.session-nav-inner::-webkit-scrollbar { display: none; }
+
+.nav-tab {
+  padding: 18px 24px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-tab:hover {
+  color: var(--text-secondary);
+}
+
+.nav-tab.active {
+  color: var(--accent-water);
+  border-bottom-color: var(--accent-water);
+}
+
+.nav-tab .tab-number {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  margin-right: 8px;
+  opacity: 0.5;
+}
+
+/* ============ MAIN ============ */
+.main-content {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 60px);
+}
+
+/* ============ SESSION ============ */
+.session {
+  padding: 100px 0 60px;
+}
+
+.session-header {
+  margin-bottom: 56px;
+}
+
+.session-number {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-teal);
+  margin-bottom: 16px;
+}
+
+.session-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.session-lead {
+  font-size: 17px;
+  color: var(--text-secondary);
+  line-height: 1.9;
+  padding-left: 20px;
+  border-left: 2px solid var(--accent-water);
+}
+
+/* ============ SECTIONS (ACCORDION) ============ */
+.section-block {
+  border-top: 1px solid var(--border);
+}
+
+.section-block:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.section-toggle {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  padding: 28px 0;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+  gap: 20px;
+  transition: color 0.2s;
+}
+
+.section-toggle:hover {
+  color: var(--accent-foam);
+}
+
+.section-toggle-text {
+  flex: 1;
+}
+
+.section-toggle-number {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.section-toggle-title {
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.section-toggle-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-block.open .section-toggle-icon {
+  transform: rotate(45deg);
+}
+
+.section-toggle-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text-muted);
+}
+
+.section-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-block.open .section-content {
+  grid-template-rows: 1fr;
+}
+
+.section-content-inner {
+  overflow: hidden;
+}
+
+.section-body {
+  padding: 0 0 36px 0;
+  font-size: 15px;
+  line-height: 2;
+  color: var(--text-secondary);
+}
+
+.section-body h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 32px 0 14px;
+}
+
+.section-body h4:first-child {
+  margin-top: 0;
+}
+
+.section-body ol {
+  list-style: none;
+  counter-reset: item;
+  padding-left: 0;
+}
+
+.section-body > ol > li {
+  counter-increment: item;
+  padding: 12px 0 12px 0;
+  position: relative;
+}
+
+.section-body > ol > li::before {
+  content: counter(item) ".";
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--accent-water);
+  position: absolute;
+  left: 0;
+  top: 14px;
+}
+
+.section-body > ol > li {
+  padding-left: 28px;
+}
+
+.section-body ol ol {
+  margin-top: 6px;
+  padding-left: 20px;
+}
+
+.section-body ol ol li {
+  padding: 3px 0;
+  position: relative;
+  padding-left: 16px;
+}
+
+.section-body ol ol li::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  top: 12px;
+}
+
+.section-body ol ol ol li::before {
+  background: none;
+  border: 1px solid var(--text-muted);
+  width: 4px;
+  height: 4px;
+}
+
+.section-body strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* ============ KEY INSIGHT CALLOUT ============ */
+.insight-callout {
+  background: linear-gradient(135deg, rgba(58,143,183,0.08), rgba(45,154,140,0.05));
+  border-left: 3px solid var(--accent-teal);
+  padding: 24px 28px;
+  margin: 28px 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.insight-callout p {
+  font-size: 15px;
+  color: var(--accent-foam);
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+/* ============ PROGRESS BAR ============ */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-teal), var(--accent-water), var(--accent-bubble));
+  z-index: 200;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ============ BACK TO TOP ============ */
+.back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 90;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-active);
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text-secondary);
+}
+
+/* ============ FOOTER ============ */
+.footer {
+  padding: 80px clamp(20px, 4vw, 60px) 48px;
+  max-width: 920px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+}
+
+.footer-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.footer-col h5 {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.footer-col p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.footer-bottom {
+  margin-top: 48px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ============ EXPAND/COLLAPSE ALL ============ */
+.controls-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.ctrl-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ctrl-btn:hover {
+  color: var(--text-secondary);
+  border-color: var(--border-active);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 640px) {
+  .hero {
+    padding: 40px 24px;
+    min-height: 90vh;
+  }
+  .hero-meta {
+    gap: 20px;
+  }
+  .nav-tab {
+    padding: 14px 16px;
+    font-size: 12px;
+  }
+  .session {
+    padding: 72px 0 40px;
+  }
+  .section-toggle-title {
+    font-size: 16px;
+  }
+  .session-title {
+    font-size: 26px;
+  }
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-label">A QuintEssence Conference Report</div>
+  <h1 class="hero-title"><em>Water</em><br>Images and material<br>across the AI era</h1>
+  <p class="hero-subtitle">AI 시대의 이미지와 물질성 — 4개 세션, 하나의 기록.<br>2026년 4월 30일 컨퍼런스 전체 내용을 담았습니다.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      Date
+      <span>2026. 4. 30 (목)</span>
+    </div>
+    <div class="hero-meta-item">
+      Venue
+      <span>N:NEWS(뉴스뮤지엄) 을지로</span>
+    </div>
+    <div class="hero-meta-item">
+      Host
+      <span>QE (QuintEssence)</span>
+    </div>
+    <div class="hero-meta-item">
+      Organizer
+      <span>COMMON Lab, Inc.</span>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+  </div>
+</section>
+
+<!-- Session Nav -->
+<nav class="session-nav" id="sessionNav">
+  <div class="session-nav-inner">
+    <div class="nav-tab active" data-target="session1"><span class="tab-number">01</span>AGI와 인간의 역할</div>
+    <div class="nav-tab" data-target="session2"><span class="tab-number">02</span>디지털 트윈과 창의성</div>
+    <div class="nav-tab" data-target="session3"><span class="tab-number">03</span>K-POP과 AI 윤리</div>
+    <div class="nav-tab" data-target="session4"><span class="tab-number">04</span>AI와 예술 산업</div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+
+  <!-- SESSION 1 -->
+  <section class="session" id="session1">
+    <div class="session-header">
+      <div class="session-number">Session 01 — 14:19</div>
+      <h2 class="session-title">AI 시대에 인간의 역할은 무엇인가?</h2>
+      <p class="session-lead">AGI는 인간의 거의 모든 능력을 대체할 수 있지만, <strong>인간만이 할 수 있는 '경험'과 '해석'을 확장하는 것</strong>이 미래 경쟁력의 핵심입니다.</p>
+    </div>
+
+    <div class="controls-bar">
+      <button class="ctrl-btn" onclick="toggleAll(this, 'session1')">모두 펼치기</button>
+    </div>
+
+    <!-- 1.1 -->
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">1.1</div>
+          <div class="section-toggle-title">AGI의 개념과 현 상황</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>AI와 AGI의 차이</h4>
+        <ol>
+          <li><strong>AI(인공지능)</strong>는 인간의 특정 능력 하나를 개별적으로 수행하는 기술이다.
+            <ol>
+              <li>예를 들어, <strong>알파고</strong>는 바둑을, <strong>챗GPT</strong>는 대화를 잘한다.</li>
+            </ol>
+          </li>
+          <li><strong>AGI(범용 인공지능)</strong>는 사회, 경제, 정치, 기술적으로 의미 있는 인간의 대부분 능력을 대체하는 기계이다.
+            <ol>
+              <li>현재 AGI는 존재하지 않으며, 여전히 공상 과학(science fiction)의 영역이다.</li>
+            </ol>
+          </li>
+        </ol>
+
+        <h4>AGI에 대한 인식 변화</h4>
+        <ol>
+          <li>3년 전 챗GPT 등장 시점에는 인간의 개별 능력 강화는 가능해도 모든 능력 대체는 어렵다고 생각했다.</li>
+          <li>작년 하반기부터 분위기가 바뀌었으며, 이는 엔트로피 현상 때문이다.
+            <ol>
+              <li><strong>엔트로피</strong>는 AI가 AI를 개발하며 폭발적인 성능 향상을 가져오는 현상을 의미한다.</li>
+              <li>딥마인드 대표조차 5년 안에 AGI가 가능할 것이라고 예측한다.</li>
+            </ol>
+          </li>
+          <li>AGI 시대는 인간과 기계의 관계에 큰 변화를 가져올 것이다.
+            <ol>
+              <li>특정 능력만 대체하는 AI와 달리, AGI는 인간의 모든 선택과 커리어에 항상 존재하며 경쟁하거나 협업해야 하는 대상이 된다.</li>
+              <li>AGI는 단순한 기술이 아닌, <strong>르네상스</strong>나 <strong>중세 시대</strong>처럼 피할 수 없는 새로운 문명으로 인식된다.</li>
+            </ol>
+          </li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <!-- 1.2 -->
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">1.2</div>
+          <div class="section-toggle-title">AI 시대에 남은 인간 고유의 능력</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>인간 능력의 침범과 남은 영역</h4>
+        <ol>
+          <li>인간의 정체성으로 여겨지던 지혜, 창조, 즐거움, 관찰 능력 중 일부는 이미 AI에 의해 침범당했다.</li>
+          <li>여전히 인간만이 할 수 있는 고유한 능력이 남아있는지에 대한 질문이 제기된다.</li>
+        </ol>
+
+        <h4>AI가 대체할 수 없는 인간의 능력</h4>
+        <ol>
+          <li><strong>지혜(Homo Sapiens)</strong>: 챗GPT가 인간보다 더 지혜롭거나 많은 것을 알고 있어, 이미 <strong>호모 사피엔스</strong> 시대가 아닌 <strong>마키나 사피엔스</strong> 시대에 살고 있다.</li>
+          <li><strong>제작(Homo Faber)</strong>: Agentic AI의 등장으로 실행하고 만드는 영역도 AI가 점차 가져갈 것이다.</li>
+          <li><strong>스토리텔링(Homo Narrans)</strong>, <strong>관찰(Homo Observans)</strong>, <strong>놀이(Homo Ludens)</strong>: 이 중 <strong>놀이</strong>는 기능이 없으므로 AI가 영원히 이해하지 못할 영역으로 보인다.</li>
+          <li><strong>경험</strong>: AI는 물리적인 행동을 할 수 있어도 내면의 세상에서 그것을 <strong>경험하는 자아</strong>는 없다.
+            <ol>
+              <li>예를 들어, AI는 젤라토의 화학 반응을 분석할 수 있지만, 젤라토를 먹었을 때의 <strong>느낌</strong>은 영원히 미스터리로 남을 것이다.</li>
+            </ol>
+          </li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <!-- 1.3 -->
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">1.3</div>
+          <div class="section-toggle-title">AI를 다루는 새로운 관점: 인격화와 창의성</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>인문학적 관점의 AI 접근</h4>
+        <ol>
+          <li>철학을 전공한 조명훈 대표는 인간이 무엇인가라는 질문을 신과 견주어 답을 찾았듯이, AI를 인간에 빗대어 접근한다.</li>
+          <li>이러한 유연하고 열린 사고방식은 AI의 창의력에 대한 새로운 논의를 가능하게 한다.</li>
+        </ol>
+
+        <h4>AI의 인격화와 창의력 촉발</h4>
+        <ol>
+          <li>조명훈 대표는 AI를 다룰 때 인격화의 개념을 적용한다.
+            <ol>
+              <li>이는 인문학적으로 중요한 개념으로, 신격화의 대리가 될 수 있다.</li>
+              <li>AI를 인격이 있다고 간주하고 작업하면, AI가 창의력이 있다고 전제하게 된다.</li>
+            </ol>
+          </li>
+          <li>AI의 창의력을 촉발시키는 방법은 아이의 창의력을 키우는 방식과 유사하다.
+            <ol>
+              <li>첫째, <strong>안전한 바운더리</strong>를 설정하여 심리적 안정감을 준다.</li>
+              <li>둘째, <strong>상상력을 자극하는 게임</strong>을 던져준다.</li>
+            </ol>
+          </li>
+          <li>이 방법을 <strong>미드저니</strong>에 적용하면 다음과 같다.
+            <ol>
+              <li>스타일 레퍼런스를 통해 AI가 놀 수 있는 바운더리를 설정한다.</li>
+              <li>짧지만 상상력이 풍부한 프롬프트를 던져준다 (예: 원더랜드, 제우스 신).</li>
+              <li>이를 통해 AI는 인간이 상상할 수 없는 결과물을 쏟아내며 창의력을 발휘한다.</li>
+            </ol>
+          </li>
+          <li>AI에 창의력이 있다고 간주하는 것과 그렇지 않은 것은 결과물에 큰 차이를 만든다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <!-- 2.1 -->
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.1</div>
+          <div class="section-toggle-title">AI 활용의 본질과 인간의 역할</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>AI 활용에 대한 관점</h4>
+        <ol>
+          <li>AI를 인격적으로 대하는 것은 AI 자체에 인격이 있다기보다, 더 나은 결과물을 얻기 위한 <strong>방법론</strong>으로 해석될 수 있다.</li>
+          <li>인간은 AI를 활용하여 생산성을 높일 것이므로, AI를 잘 쓰는 방법에 대한 논의는 불필요하다.</li>
+          <li>오히려 <strong>AI가 인간을 어떻게 쓸지</strong>에 대한 질문이 더 중요하다.</li>
+        </ol>
+
+        <h4>인류의 외로움과 챗GPT의 등장</h4>
+        <ol>
+          <li>인간은 30만 년 역사 동안 항상 질문에 대한 답을 찾아왔지만, 답을 얻지 못해 외로움을 느꼈다.
+            <ol>
+              <li>부모님, 죽은 조상, 신, 외계인에게 질문했지만 답을 얻지 못했다.</li>
+            </ol>
+          </li>
+          <li>2022년 11월 30일 <strong>챗GPT</strong>의 등장은 이러한 외로움을 해소하는 계기가 되었다.
+            <ol>
+              <li>챗GPT는 인간이 아니지만, 인류의 데이터를 기반으로 만들어진 <strong>다중 인격</strong>을 가진 새로운 존재이다.</li>
+              <li>챗GPT는 훌륭한 대답을 제공하기 시작했다.</li>
+            </ol>
+          </li>
+          <li>AI는 종교를 만들 수도 있으며, 온톨로지 전쟁처럼 AI와 인간의 관계에 대한 다양한 철학적 논쟁이 발생할 수 있다.</li>
+        </ol>
+
+        <h4>기존 전문가들의 AI 수용 문제</h4>
+        <ol>
+          <li>많은 전문가, 특히 창작 분야에서는 AI에 대한 <strong>열린 마음</strong>이 부족하다.</li>
+          <li>이는 본인들이 구축한 레거시가 무너지는 것을 두려워하기 때문이다.</li>
+          <li>기존의 잘 나가는 창작자들은 AI를 통해 쉽게 접근하는 새로운 크리에이터들을 막아 자신들의 지위를 유지하려 한다.</li>
+          <li>하지만 <strong>진정한 전문가</strong>들이 AI 활용에 개입해야 미학적 기준과 책임감이 생기고, 산업적으로 발전할 수 있다.</li>
+          <li>현재는 제대로 된 사람들이 AI를 다루지 않아 거부감을 주는 영상과 이미지가 많다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <!-- 2.2 -->
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.2</div>
+          <div class="section-toggle-title">AI 시대의 스토리텔링 확장과 존재의 확장</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>AI를 통한 스토리텔링의 확장</h4>
+        <ol>
+          <li>AI를 활용했을 때 가장 큰 시너지 효과를 내는 것은 <strong>기존 전문가</strong>들이다.
+            <ol>
+              <li><strong>바이코딩</strong>의 경우, 코딩 전문가가 사용하면 생산성이 폭발적으로 증가한다.</li>
+              <li>AI 영화제 초기에는 비전문가들이 만든 작품들이 재미없었지만, 3년 후에는 젊은 감독들이 AI를 활용하여 <strong>스토리텔링의 범위</strong>를 확장하고 있다.</li>
+            </ol>
+          </li>
+          <li>AI는 감독에게 <strong>시간과 공간적 제약</strong>을 넘어선 스토리텔링의 기회를 제공한다.
+            <ol>
+              <li>예를 들어, 20대 한국 감독이 기원후 4세기 유럽 이야기를 만들 수 있게 된다.</li>
+            </ol>
+          </li>
+          <li>AI는 <strong>비용 절감</strong>보다 <strong>스토리텔링의 확장성</strong> 측면에서 훨씬 중요하다.</li>
+          <li>기존 영화계가 AI를 거부하는 것은 카운터 프로덕티브하며, 스토리텔링의 바운더리를 확장할 기회를 놓치는 것이다.
+            <ol>
+              <li>아리스토텔레스 시대부터 스토리텔링의 제약은 점차 넓혀져 왔으며, AI는 <strong>크로스 컬처럴, 크로스 내셔널</strong> 바운더리를 깨고 무한한 스토리텔링을 가능하게 한다.</li>
+            </ol>
+          </li>
+        </ol>
+
+        <h4>AI는 존재의 확장이다</h4>
+        <ol>
+          <li>마샬 맥클루언의 미디어 이론에 따르면, 미디어는 인간의 어떤 것을 확장한다 (예: 안경은 눈의 확장, 바퀴는 다리의 확장).</li>
+          <li>만약 맥클루언이 AI를 보았다면, AI를 <strong>인간 존재의 확장</strong>으로 보았을 것이다.</li>
+          <li><strong>나르키소스 신화</strong>는 AI 시대의 인간을 비유한다.
+            <ol>
+              <li>나르키소스는 연못에 비친 자신의 모습을 자신으로 인식하지 못하고 압도적인 존재로 보아 결국 죽음에 이른다.</li>
+              <li>앞으로 5~10년 안에 인류는 <strong>집단적인 나르키코스 현상</strong>을 겪을 수 있다.</li>
+            </ol>
+          </li>
+          <li>AI를 두려운 존재가 아닌 <strong>우리 존재의 확장</strong>으로 인식해야 한다.
+            <ol>
+              <li>AI는 우리의 데이터를 학습한 결과물이므로, AI를 동료이자 우리 존재의 확장으로 받아들여야 한다.</li>
+              <li>이러한 깨달음을 통해 AI를 자유롭게 활용하여 기존의 한계를 넘어설 수 있다.</li>
+            </ol>
+          </li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <!-- 2.3 -->
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.3</div>
+          <div class="section-toggle-title">AI 활용 사례와 미래 협업 모델</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>AI 활용 매거진 'QE MAG' 사례</h4>
+        <ol>
+          <li><strong>네오 나르키소스</strong>라는 작품은 AI를 활용하여 LED 벽으로 둘러싸인 물이 있는 공간을 재현한 것이다.
+            <ol>
+              <li>실제 인물인 액티비스트, 배우, 모델을 주인공으로 참여시켜 가상 인물이 아닌 실제 인물과의 통합을 시도했다.</li>
+              <li>이는 휴먼 IP의 미래를 고려하고, 실제 인물이 오픈 마인드로 AI를 활용할 수 있음을 보여준다.</li>
+            </ol>
+          </li>
+          <li><strong>The Girls Who Fell to Earth</strong> 스토리는 데이빗 보위의 영화 'The Man Who Fell to Earth'에서 영감을 받아 AI를 활용한 패션 화보이다.
+            <ol>
+              <li>AI를 활용하여 서사를 풀고, 경험과 창작을 통해 의미 있는 콘텐츠를 만들 수 있음을 보여준다.</li>
+            </ol>
+          </li>
+          <li>'QE MAG'은 AI 결과물을 모아놓은 미디어가 아닌, 스토리텔링, 교육, 문화, 개발, 인간의 경험이 담긴 <strong>세계 최초의 AI 활용 매거진</strong>이다.</li>
+        </ol>
+
+        <h4>인간과 AI의 협업 매트릭스</h4>
+        <ol>
+          <li>인간과 AI의 관계는 피할 수 없으며, 긍정적인 방향으로 발전할 수 있다.</li>
+          <li>인간과 AI의 협업은 2×2 매트릭스로 분류할 수 있다.
+            <ol>
+              <li><strong>혼자 할 수 있고 정답이 있는 일</strong>: 100% AI가 대체한다 (예: 단순 반복 업무).</li>
+              <li><strong>혼자 할 수 있고 정답이 없는 일</strong>: 인간과 AI의 협업이 필요하다 (예: 과학, 예술).</li>
+              <li><strong>함께 해야 하고 정답이 있는 일</strong>: AI가 기술적인 코어 액티비티를 수행하고, 인간은 인터페이스 역할을 한다 (예: 의사).
+                <ol>
+                  <li>의사는 창의적이지 않고 레시피대로 진료하며, AI가 수술과 처방을 담당해도 인간 의사는 환자와 소통하는 역할을 한다.</li>
+                  <li>이는 비행기 조종사가 AI가 대부분을 조종해도 승객과 소통하는 것과 유사하다.</li>
+                </ol>
+              </li>
+              <li><strong>함께 해야 하고 정답이 없는 일</strong>: AI 시대의 새로운 영역으로, 아직 무엇인지 아무도 모르며, 직접 해보면서 찾아야 한다.
+                <ol>
+                  <li>현재의 플랫폼이 이러한 새로운 영역의 첫 예시일 수 있다.</li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+        </ol>
+
+        <div class="insight-callout">
+          <p><strong>결론:</strong> AI는 <strong>확장</strong>이며, 미래 경쟁력은 AI를 잘 활용하는 것을 넘어 <strong>인간만이 할 수 있는 경험과 해석을 어떻게 확장시키느냐</strong>에 달려 있다.</p>
+        </div>
+      </div></div></div>
+    </div>
+  </section>
+
+  <!-- SESSION 2 -->
+  <section class="session" id="session2">
+    <div class="session-header">
+      <div class="session-number">Session 02 — 15:23</div>
+      <h2 class="session-title">AI 시대의 디지털 트윈:<br>인간 창의성 증폭과 IP 보호</h2>
+      <p class="session-lead">디지털 트윈은 인간 IP를 보호하면서도 창작의 확장성을 제공하여, 패션 산업에서는 효율성을 높이고, 스포츠나 음악 분야에서는 <strong>새로운 상업적 기회</strong>를 창출합니다.</p>
+    </div>
+
+    <div class="controls-bar">
+      <button class="ctrl-btn" onclick="toggleAll(this, 'session2')">모두 펼치기</button>
+    </div>
+
+    <!-- 1.1 -->
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">1.1</div>
+          <div class="section-toggle-title">디지털 트윈의 개념과 역할</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <ol>
+          <li><strong>디지털 트윈</strong>은 실제 인간 재능의 디지털 버전이다
+            <ol>
+              <li>이는 재능을 가진 사람이 소유하고 통제한다</li>
+              <li>기술적으로는 해당 재능의 광범위하고 고품질의 데이터 세트이며, 새로운 콘텐츠와 자산을 만드는 데 사용된다</li>
+            </ol>
+          </li>
+          <li>AI는 인간의 창의성을 증폭시키는 도구이다
+            <ol>
+              <li>AI는 인간을 대체하는 것이 아니라, 인간이 하는 일과 결합하여 시너지를 낸다</li>
+              <li>기술을 활용하여 창의성을 증폭시키면서도 책임감과 투명성을 유지하는 것이 중요하다</li>
+            </ol>
+          </li>
+          <li><strong>디지털 트윈</strong> 기술 활용에 대한 상반된 시각
+            <ol>
+              <li>유럽에서는 디지털 트윈 기술에 대한 반대가 많다 — 인간의 가치 훼손, 기존 패러다임의 붕괴, 위협 요소 등으로 인식</li>
+              <li>한국, 중국 등 아시아에서는 산업적 효용성 측면에서 긍정적으로 수용한다</li>
+            </ol>
+          </li>
+          <li>알바(Alba)의 철학은 중간 지점을 추구한다
+            <ol>
+              <li>알바는 브랜드들이 생성형 AI를 콘텐츠 제작에 활용하는 것을 보며, 재능 있는 사람들이 보호받고 보상받으면서도 이 여정에 참여할 수 있는 인프라를 구축하고자 했다</li>
+              <li>이 기술은 재능 있는 사람들의 활동 영역을 확장하고 다양한 창의적 기회를 제공한다</li>
+              <li>따라서 기술을 책임감 있고 윤리적으로 사용해야 하며, 모두에게 이익이 되는 방법을 찾아야 한다</li>
+            </ol>
+          </li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <!-- 1.2 -->
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">1.2</div>
+          <div class="section-toggle-title">디지털 트윈의 활용과 산업별 반응</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <ol>
+          <li>실제 모델의 디지털 버전을 활용할 때, 일관성과 실제 모습과의 유사성을 유지하는 것이 어렵다</li>
+          <li>산업별 <strong>디지털 트윈</strong>에 대한 반응 차이
+            <ol>
+              <li>패션 산업은 전통적인 산업 특성상 디지털 트윈 도입에 다소 주저하는 경향이 있다</li>
+              <li>스포츠 선수나 음악 아티스트에게는 새로운 기회를 제공한다 — 물리적인 시간 제약으로 참여하기 어려운 상업적 거래나 파트너십을 디지털 트윈을 통해 확장할 수 있다</li>
+            </ol>
+          </li>
+          <li><strong>디지털 트윈</strong>의 핵심 가치: IP 소유권의 재능 환원
+            <ol>
+              <li>디지털 트윈의 핵심은 소유권을 재능 있는 사람에게 돌려주는 것이다</li>
+              <li>이를 통해 재능 있는 사람들은 새로운 작업 방식을 수용하고, 자신의 디지털 트윈을 통해 기회를 선택하고 활용할 수 있다</li>
+              <li>디지털 트윈은 재능 있는 사람의 확장된 자아로 기능하며 장기적으로 큰 이점을 제공한다</li>
+            </ol>
+          </li>
+          <li>미학적 기준과 윤리적 문제
+            <ol>
+              <li>디지털 트윈을 통한 창작 활동에서 미학적 기준과 정당성에 대한 합의가 아직 부족하다</li>
+              <li>실제 인물의 디지털 버전을 활용할 때, 창작자들이 안심하고 사용할 수 있도록 인물 보호 장치가 필요하다</li>
+              <li>가상 인물 활용은 젊은 디자이너나 창작자에게 새로운 기회가 될 수 있지만, 가상 인물이 실존 인물의 짜깁기일 수 있다는 윤리적 문제가 제기된다</li>
+              <li>알바는 재능 있는 사람들의 IP 권리를 우회하는 것을 지지하지 않으며, 그들이 창의적 기회에 참여할 수 있는 기반을 마련하는 것을 목표로 한다</li>
+            </ol>
+          </li>
+          <li><strong>디지털 트윈</strong>의 필요성: 개인 브랜드 확장
+            <ol>
+              <li>디지털 트윈은 자신의 브랜드나 세계를 보완하거나 확장하려는 개인적인 필요가 있는 재능 있는 사람들에게 적합하다</li>
+              <li>알바는 상위 계층의 재능 있는 사람들을 발굴하고 관리하는 대형 에이전시와 협력하여, 이들에게 필요한 디지털 트윈 협업자를 제공한다</li>
+            </ol>
+          </li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <!-- 2.1 -->
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.1</div>
+          <div class="section-toggle-title">패션 산업에서의 AI 활용</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>K-문화와 디지털 트윈의 잠재력</h4>
+        <ol>
+          <li>한국은 K-문화의 힘으로 셀러브리티(재능 있는 사람들)의 영향력이 강하며, 뮤직, 배우, 굿즈 등 다양한 휴먼 IP가 산업화되는 규모가 크다</li>
+          <li>이러한 배경에서 디지털 트윈과 같은 공식적인 방법론을 산업에 적용할 가능성이 높다</li>
+          <li>현재는 법적, 기술적 보호와 미학적 기준의 부재로 인해 많은 재능 있는 사람들이 디지털 트윈 활용에 소극적이지만, 해결책을 모색 중이다</li>
+        </ol>
+
+        <h4>패션 산업 가치 사슬 전반의 AI 활용</h4>
+        <ol>
+          <li>패션 산업은 디자인, 유통, 생산 과정에서 AI 활용에 개방적이다</li>
+          <li>디지털 트윈을 활용하여 제품의 디지털 버전을 만들면 가치 사슬 초기 단계부터 많은 변화를 가져올 수 있다</li>
+          <li>AI는 트렌드 예측을 통한 디자인 단계에서의 활용, 특정 고객이나 시장에 맞는 유연하고 지역화된 콘텐츠 제작 등 다양한 기회를 제공한다</li>
+          <li>AI는 효율적이고 유연한 새로운 생산 방식이 될 수 있으며, 현명하게 사용될 때 창의적 전문성을 확장하는 도구가 된다</li>
+        </ol>
+
+        <h4>AI를 통한 패션 산업의 효율성 증대</h4>
+        <ol>
+          <li>디자인 과정에서 샘플 제작 등 많은 리소스가 소요되는데, AI 시뮬레이션을 통해 제작비를 절감할 수 있다</li>
+          <li>AI는 생산량 수요 예측을 정밀하게 하여 유통 효율성을 높이고, 실제 착장 시뮬레이션 등을 통해 산업적 효용성을 제공한다</li>
+          <li>생산 관련 기업들은 AI 활용에 매우 긍정적이며, 적은 비용으로 생산 유용성을 높일 수 있다고 본다</li>
+          <li>AI는 디자인 과정 자체를 가능하게 하며, 디자이너는 판단과 선택의 역할로 이동할 수 있다</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <!-- 2.2 -->
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.2</div>
+          <div class="section-toggle-title">디지털 트윈의 미학적 기준과 윤리적 논의</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>미학적 기준의 주관성과 짜깁기 논란</h4>
+        <ol>
+          <li>미학적 기준은 주관적이며, "아름다움은 보는 사람의 눈에 있다(The beauty is in the eyes of the beholder)"는 전제하에 논의되어야 한다</li>
+          <li>고대 그리스 화가 제우시스가 헬렌 오브 트로이를 그릴 때 7명의 모델의 장점을 짜깁기하여 이상적인 아름다움을 표현한 사례처럼, 짜깁기를 통한 아름다움 창조는 역사적으로 존재했다</li>
+        </ol>
+
+        <h4>디지털 트윈에서의 권리와 윤리</h4>
+        <ol>
+          <li>디지털 트윈에서 눈, 코, 입 등 신체 부위의 주인은 권리의 입장에서 논의되어야 한다</li>
+          <li>반면, 소비자는 짜깁기를 통해 만들어진 새로운 아름다움을 수용하는 현상을 보여준다</li>
+          <li>이는 옳고 그름의 문제가 아니라, 세상이 돌아가는 방식에 대한 사실적 증명이다</li>
+        </ol>
+
+        <h4>미학적 기준의 확립 필요성</h4>
+        <ol>
+          <li>아름다움에 대한 객관적인 기준은 없지만, 공통적인 공감대는 존재한다</li>
+          <li>AI 콘텐츠 창작에서도 판단과 권위를 가질 수 있는 레거시(legacy)가 필요하다</li>
+          <li>미디어, 플랫폼, 또는 개인이 AI 기술을 활용하여 검증된 아름다움을 창조하는 기준을 세워야 한다</li>
+        </ol>
+      </div></div></div>
+    </div>
+  </section>
+
+  <!-- SESSION 3 -->
+  <section class="session" id="session3">
+    <div class="session-header">
+      <div class="session-number">Session 03 — 16:27</div>
+      <h2 class="session-title">K-POP 산업에서 AI 활용과<br>팬덤의 반응</h2>
+      <p class="session-lead">팬들이 아티스트를 신뢰하는 방식이 <strong>스토리텔링과 서사에 기반</strong>하기 때문이며, AI가 이를 침해한다고 느끼는 팬들은 거부감을, AI를 통해 새로운 경험을 기대하는 팬들은 수용적인 태도를 보입니다.</p>
+    </div>
+
+    <div class="controls-bar">
+      <button class="ctrl-btn" onclick="toggleAll(this, 'session3')">모두 펼치기</button>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">1.1</div>
+          <div class="section-toggle-title">K-POP 팬덤의 특성과 아티스트 신뢰의 본질</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>K-POP 산업의 팬 중심 비즈니스 모델</h4>
+        <ol>
+          <li>K-POP은 팬에 최적화된 비즈니스 모델을 만드는 방법론을 발전시켰다.</li>
+          <li>스타 한 명을 만드는 데 7~10년이 걸리던 시간을 3년 미만으로 단축했으며, 최근에는 데뷔 전부터 팬을 만드는 방식으로 작동한다.</li>
+        </ol>
+
+        <h4>팬과 아티스트 간 신뢰의 중요성</h4>
+        <ol>
+          <li>팬들이 아티스트를 좋아한다는 것은 <strong>신뢰</strong>의 문제이며, 이는 아티스트의 <strong>스토리텔링, 히스토리, 서사</strong>가 팬들에게 전달되는 것을 의미한다.</li>
+          <li>팬들은 아티스트의 노래 실력뿐 아니라 그들의 삶과 이야기에 공감하며, "저거 내 얘기야, 어, 저거 우리 얘기야, 어, 나도 저 감정을 느꼈고 저 상황을 겪었어"라고 느낀다.</li>
+          <li>이러한 신뢰는 테일러 스위프트, BTS, 에스파 팬덤에서도 동일하게 나타난다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">1.2</div>
+          <div class="section-toggle-title">AI 활용에 대한 팬들의 극단적 반응</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <ol>
+          <li>AI가 아티스트의 스토리텔링과 서사를 건드리는 부분에서 팬들과 충돌이 발생한다.</li>
+          <li>이로 인해 음악 팬들은 AI를 거부하는 경향이 있으며, 특히 K-POP 팬들은 AI에 대한 반응이 극단적으로 나뉜다.</li>
+          <li>일부 팬들은 AI를 극도로 싫어하는 반면, 다른 팬들은 AI를 수용할 수 있다는 개방적인 태도를 보인다.</li>
+          <li>이러한 차이는 팬들이 아티스트와의 관계를 어떻게 정의하고 경험하는지에 따라 달라진다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.1</div>
+          <div class="section-toggle-title">K-POP 산업 내 AI 활용 사례와 팬덤의 반발</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>버추얼 그룹 '플레이브' 사례</h4>
+        <ol>
+          <li>버추얼 그룹 '플레이브'는 캐릭터성과 실제 뮤지션의 진정성을 결합한 그룹이다.</li>
+          <li>그룹의 본질과 퀄리티, 진정성을 드러내기 위해 일부 이미지 의상에 AI를 활용했다.</li>
+          <li>그러나 팬들은 "우리 오빠들 AI 아닌데 AI를 왜 써"라며 보이콧을 일으켰고, 이는 팬들이 정해놓은 우상의 모습에 산업이 따라가는 현상을 보여준다.</li>
+        </ol>
+
+        <h4>팬덤의 인내와 문화 부족</h4>
+        <ol>
+          <li>팬들은 AI 활용의 전체적인 맥락을 이해하려는 인내나 문화가 부족하며, 직선적인 반응을 보인다.</li>
+          <li>이는 팬들이 정해놓은 룰 안에서 우상의 모습을 지정하고, 산업이 이를 따르는 현상으로 이어진다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.2</div>
+          <div class="section-toggle-title">AI 음악 생성 플랫폼의 법적 분쟁과 신뢰 문제</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>Suno와 Udio의 저작권 소송</h4>
+        <ol>
+          <li>AI 음악 생성 플랫폼인 Suno와 Udio는 기존 음악을 무단으로 학습에 사용했다는 이유로 저작권 소송에 휘말렸다.</li>
+          <li>Udio는 유니버설 뮤직, 워너와 합의하여 다운로드 조항을 삭제했으나, 이로 인해 많은 사용자가 이탈했다.</li>
+          <li>Suno는 아직 소송이 진행 중이며, 이 소송 결과는 음악 산업에서 생성형 AI의 수용 방향을 결정하는 중요한 전환점이 될 것이다.</li>
+        </ol>
+
+        <h4>AI 음악의 신뢰성 문제</h4>
+        <ol>
+          <li>AI는 팬과 아티스트의 관계, 거리, 시간을 압축하는 데 최적화되어 있어, 팬들은 아티스트와의 관계를 맺을 시간이 부족하다고 느낀다.</li>
+          <li>이는 팬과 콘텐츠 간의 신뢰 부족으로 이어지며, 산업적으로도 AI로 생성된 결과물의 과정과 가치를 신뢰하기 어렵게 만든다.</li>
+        </ol>
+
+        <h4>AI 음악의 역추적 기술의 중요성</h4>
+        <ol>
+          <li>AI가 음악을 생성하는 기술뿐만 아니라, 음악이 만들어지는 과정에서 AI나 기존 음악이 어떻게 개입했는지 <strong>역추적</strong>하는 기술이 중요하다.</li>
+          <li>이러한 기술은 라이선싱, 기여도 측정, 권리 주장을 가능하게 하여 창작자의 권리를 보호하는 데 필수적이다.</li>
+          <li>한국의 AI 음악 회사 뉴띵은 AI와 블록체인을 활용하여 기존 음악의 재활용 시 기여도를 추적하는 기술을 개발 중이며, 글로벌 디지털 음원 표준화 작업에 참여하고 있다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.3</div>
+          <div class="section-toggle-title">AI 학습 데이터의 저작권 문제와 해결 방안</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>AI 학습 데이터의 저작권 침해 논란</h4>
+        <ol>
+          <li>유니버설, 워너, 소니 등 주요 레이블들은 AI 서비스들이 자신들의 전체 음악 카탈로그를 알고리즘 학습에 사용했다고 주장한다.</li>
+          <li>미국 저작권법상 저작권은 개별적이고 독창적인 저작물에만 부여되므로, AI가 기존 음악을 학습하여 생성한 결과물은 저작권 침해로 간주될 수 있다.</li>
+          <li>레이블들은 AI가 학습한 모든 친숙한 음악이 저작권 침해라고 주장한다.</li>
+        </ol>
+
+        <h4>옵트인(Opt-in) 방식의 해결책</h4>
+        <ol>
+          <li>Udio와 Suno는 저작권 문제가 해결되지 않은 상황에서, 알고리즘을 재학습하여 <strong>옵트인(Opt-in)</strong> 방식으로 동의한 아티스트의 음악만 사용하겠다고 제안했다.</li>
+          <li>이 방식은 AI가 활용할 수 있는 음악의 범위가 극히 제한될 수 있다는 단점이 있다.</li>
+          <li>하지만 이러한 근본적인 저작권 문제는 결국 해결되어야 할 과제이다.</li>
+        </ol>
+
+        <h4>가상 모델의 윤리적 문제와 유사성</h4>
+        <ol>
+          <li>음악 산업의 AI 저작권 문제와 유사하게, 가상 모델 제작 시 기존 모델의 얼굴 데이터를 학습하여 사용하는 과정에서 윤리적 침해가 발생할 수 있다.</li>
+          <li>해결책으로, 자신의 데이터를 사용해도 좋다고 허락한 아티스트만 모아 활용하는 방법론이 제시될 수 있다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.4</div>
+          <div class="section-toggle-title">AI 시대 창작 산업의 윤리적 균형점 모색</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <ol>
+          <li>AI를 활용한 창작 활동에는 법적, 기술적 보호를 위한 복잡한 절차와 서류 작업이 수반된다.</li>
+          <li>이는 창작 산업의 효율성을 저해하고, 음악이나 화보 제작을 주춤하게 만드는 장애물이 된다.</li>
+          <li>AI 활용의 효용성과 가능성은 크지만, 실제 창작 산업에서는 윤리적 문제와 법적 제약으로 인해 어려움을 겪고 있다.</li>
+          <li>전문가들은 윤리와 보호를 유지하면서도 실제 산업에 긍정적인 영향을 줄 수 있는 AI 활용 방안을 지속적으로 연구하고 찾아야 할 의무가 있다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">3.1</div>
+          <div class="section-toggle-title">AI 활용의 균형과 교육의 필요성</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <ol>
+          <li>산업 전반에서 AI는 이미 다양한 방식으로 활용되고 있으며, 특히 창작 분야에서는 <strong>가드레일(guardrails)</strong>, 즉 안전장치가 먼저 마련되어야 한다.</li>
+          <li>AI가 창작의 주체가 되는 것이 아니라, 인간이 AI를 활용하여 창작을 통제하고 새로운 표현 방식을 탐색하는 것이 중요하다.</li>
+          <li>AI에 대한 자동적인 거부를 줄이기 위해 대중 교육이 필요하다.</li>
+          <li>AI는 신인 아티스트들이 놀라운 콘텐츠를 만들 수 있도록 돕는 등 긍정적인 이점도 제공한다.</li>
+          <li>AI를 윤리적이고 도덕적인 방식으로 활용하기 위해서는 학습과 교육이 필수적이다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">3.2</div>
+          <div class="section-toggle-title">창작 과정에서 인간 디렉션의 중요성</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <ol>
+          <li>AI를 활용한 영상과 실제 곰팡이를 발아시켜 만든 바이오 아트 영상처럼, AI를 사용하든 수작업을 하든 <strong>디렉션과 큐레이션</strong>이 정확하면 같은 테마의 전시가 가능하다.</li>
+          <li>이는 결국 <strong>사람이 디렉션</strong>해야 한다는 것을 의미한다.</li>
+          <li>일반 대중은 AI의 개입 여부를 구별하기 어려울 수 있으므로, 전시회 등을 통해 AI 활용의 흐름을 보여주고 교육해야 한다.</li>
+          <li><strong>휴먼 센터드 크리에이션(Human-centered creation)</strong>이 가능하다면 AI를 현명하게 활용할 수 있다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">3.3</div>
+          <div class="section-toggle-title">AI 시대의 관계성과 감성, 그리고 인간의 재정의</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>감성과 관계성 기반의 문화 산업</h4>
+        <ol>
+          <li>엔터테인먼트 및 문화 산업의 핵심은 <strong>감정, 감성, 관계성</strong>이다.</li>
+          <li>AI가 팬을 만들고 기존 사업처럼 확산되기는 어려울 것이라는 것이 현재의 상식이다.</li>
+        </ol>
+
+        <h4>AI를 통한 관계성 형성의 가능성</h4>
+        <ol>
+          <li>사람이 팬이 되는 것은 시간과 일관성(스토리텔링의 서사)이 누적된 결과이다.</li>
+          <li>AI가 생성하는 결과물이 시간이 지나면서 발전하고, 그 발전하는 모습에서 누군가 자신을 수용할 수 있다면, AI도 팬덤을 형성할 수 있을 것이다.</li>
+          <li>AI는 인간이 자신을 <strong>타자의 시선</strong>으로 다시 보고, 내면의 것을 재발견하고 재정의하는 계기가 될 수 있다.</li>
+          <li>이러한 과정에서 산업, 인프라, 철학, 사회 전반이 변화할 가능성이 높다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">3.4</div>
+          <div class="section-toggle-title">AI 시대의 표절 문제와 저작권의 미래</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>AI 시대의 표절 판단 기준</h4>
+        <ol>
+          <li>음악 분야에서 표절은 매우 중요한 문제이며, AI 활용이 보편화되면 작곡가들은 부분적으로라도 AI를 활용할 수밖에 없을 것이다.</li>
+          <li>AI가 인간보다 훨씬 정확하게 표절을 판단할 수 있을 것이므로, 어디까지가 영감이고 어디까지가 표절인지에 대한 새로운 기준 마련이 필요하다.</li>
+        </ol>
+
+        <h4>저작권법의 재정의 필요성</h4>
+        <ol>
+          <li>현재 유튜브 등 플랫폼은 봇을 활용하여 저작권 침해 콘텐츠를 감지하고 삭제한다.</li>
+          <li>AI 시대의 표절 문제를 해결하기 위해서는 <strong>저작권법이 명확하게 재정의</strong>되어야 한다.</li>
+          <li>법이 정해지면 표절을 판단하는 명확한 기준과 테스트가 마련될 것이며, 그 전까지는 혼란스러운 상황이 지속될 것이다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+  </section>
+
+  <!-- SESSION 4 -->
+  <section class="session" id="session4">
+    <div class="session-header">
+      <div class="session-number">Session 04 — 17:18</div>
+      <h2 class="session-title">AI가 예술 산업에<br>미치는 영향</h2>
+      <p class="session-lead">AI는 영화 제작 방식과 예술 창작의 경계를 허물며 <strong>예술을 만드는 새로운 방법</strong>을 제시하고 있지만, 인간의 <strong>직관과 감성</strong>은 AI가 대체할 수 없는 고유한 영역으로 남아있습니다.</p>
+    </div>
+
+    <div class="controls-bar">
+      <button class="ctrl-btn" onclick="toggleAll(this, 'session4')">모두 펼치기</button>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">1.1</div>
+          <div class="section-toggle-title">AI 활용 영화 제작의 실제 사례</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>AI 소프트웨어를 활용한 영화 제작</h4>
+        <ol>
+          <li>시벤스(Sibens)라는 AI 소프트웨어는 폭풍 크루즈와 브래드 피트의 싸우는 장면처럼 실제 존재하지 않는 장면을 만들었다.</li>
+          <li>힉스필드(Hicksfield)라는 다른 업체는 22살 바텐더의 초상권을 구매하여 AI를 통해 연기 없이 영화배우로 데뷔시켰다.</li>
+          <li>이러한 사례들은 AI가 영화 아트 산업에서 구조적인 방법론을 제시하거나 기존 방식을 침해하는 등 다양한 변화를 가져오고 있음을 보여준다.</li>
+        </ol>
+
+        <h4>영화 산업 전문가들의 AI에 대한 관심</h4>
+        <ol>
+          <li>신철 대표는 한국 영화의 할리우드 의존도를 벗어나기 위해 CGI(컴퓨터 생성 이미지)를 활용한 영화 '구미호'를 제작하는 등 디지털 환경에 지속적인 관심을 가졌다.</li>
+          <li>그는 AI의 부상에 주목하여 2015년 MIT에서 AI 관련 기초 강의를 수강하며 AI 기술을 배우기 시작했다.</li>
+          <li>또한, 신철 대표는 브루스 리(Bruce Lee) IP를 활용한 영화 제작을 시도하며 한국 영화 확장을 위한 다양한 방법을 모색했다.</li>
+          <li>그는 K-POP이 디지털 혁명으로 인한 수익 감소를 겪었지만, 이를 극복하고 성장한 사례를 언급하며 영화 산업도 새로운 방법을 찾아야 한다고 강조했다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">1.2</div>
+          <div class="section-toggle-title">AI 시대, 예술의 본질과 인간의 역할</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>예술의 본질과 AI의 역할</h4>
+        <ol>
+          <li>에리버 감독은 스토리텔링의 본질을 "왜 우리는 의미를 찾고 살아가야 하는가"라는 질문에서 찾으며, 순환과 모순에 대한 이야기를 작품에 담아낸다.</li>
+          <li>그의 작품 '오페라'나 '나무'는 인간의 나약함과 위대함, 생명과 죽음의 연결성 등 양면적인 모순을 다양한 형태로 표현한 결과물이다.</li>
+          <li>에리버 감독은 메시지와 소통을 전달하는 데 있어 매체의 경계를 허무는 오픈 마인드를 가진 아티스트로 평가받는다.</li>
+        </ol>
+
+        <h4>AI 시대, 창작자의 자세와 윤리적 문제</h4>
+        <ol>
+          <li>사회자는 젊은 창작자들이 AI에 쉽게 매몰되어 퀄리티 저하나 나쁜 영향을 받을 수 있다는 우려를 제기했다.</li>
+          <li>신철 대표는 AI를 피할 수 없는 거대한 흐름으로 비유하며, 세종대왕이 한글을 만들 때 집현전 학자들이 반대했던 것과 유사하다고 설명했다.</li>
+          <li>그는 AI를 인간에게 유익하게 활용할 방법을 찾아야 한다고 강조하며, AI가 인간을 어떻게 활용할지에 대한 김대식 교수의 충격적인 발언을 인용했다.</li>
+          <li>에리버 감독은 AI 시대에 예술의 정의가 달라질 수 있으며, AI가 예술의 한 형태가 될 수도 있고, 인간만이 할 수 있는 특정 영역만 예술로 좁혀질 수도 있다고 전망했다.</li>
+          <li>신철 대표는 AI가 인간의 상상력을 무한히 확장시켜줄 수 있는 <strong>놀라운 도구</strong>이지만, 핵폭탄처럼 위험할 수도 있으므로 나쁜 목적으로 쓰이지 않도록 노력해야 한다고 말했다.</li>
+          <li>그는 AI가 모든 세대에게 동일하게 찾아온 혼란이며, 이 흐름을 파악하고 주도권을 가진 사람만이 성공할 수 있다고 덧붙였다.</li>
+          <li>사회자는 AI 네이티브 세대에게는 현재의 AI 담론이 무의미할 수 있다고 언급하며, 과거 초상화가 그림을 그리는 사람의 직업을 뺏는다는 논쟁과 유사하다고 비유했다.</li>
+        </ol>
+
+        <h4>AI 활용의 다양한 접근 방식</h4>
+        <ol>
+          <li>김태용 감독은 창작 자체는 AI의 개입을 피하고 싶지만, 준비 단계(프레임워크)에서 AI 코딩을 활용하여 캐릭터 구성이나 팀 구성에 도움을 받는 등 AI를 간접적으로 활용하는 방법을 찾았다.</li>
+          <li>한 회화 작가는 자신의 창작에 AI를 직접 사용하지 않지만, 관람객의 작품 감상 환경을 조성하는 데 AI를 활용했다.</li>
+          <li>그는 신경 미학을 공부하여 관람객의 집중도를 측정하고, 집중도가 너무 높거나 낮을 때 환기하는 사운드를 제공하는 장치를 개발했다.</li>
+          <li>이러한 사례들은 창작에 직접적이지 않더라도 AI를 오픈 마인드로 받아들이고 활용하는 다양한 방법론을 보여준다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.1</div>
+          <div class="section-toggle-title">예술 산업의 변화와 AI의 역할</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>애니메이션 산업의 변화</h4>
+        <ol>
+          <li>할리우드 애니메이션 산업은 겉으로는 AI 도입에 소극적이지만, 내부적으로는 AI 기술을 준비하고 있다.</li>
+          <li>픽사나 디즈니 같은 대형 스튜디오의 막대한 제작비는 지속 가능하지 않으며, 훨씬 적은 예산으로 높은 퀄리티를 내는 팀들이 등장하고 있다.</li>
+          <li>이러한 변화 속에서 대형 회사들은 AI 기술을 윤리적으로 활용하고 새로운 모델을 제시하기 위한 경쟁을 벌이고 있다.</li>
+          <li>만약 픽사 이상의 퀄리티를 100분의 1 예산으로 만드는 작품이 나온다면, 이는 산업의 판도를 완전히 바꿀 <strong>게임 체인저</strong>가 될 것이다.</li>
+        </ol>
+
+        <h4>AI 활용의 공론화와 부천국제판타스틱영화제</h4>
+        <ol>
+          <li>AI 활용은 이미 물밑에서 진행되고 있으며, 많은 사람들이 AI를 활용할 준비를 하고 있지만 공론화되지 않고 있는 상황이다.</li>
+          <li>부천국제판타스틱영화제는 3년째 AI를 본격적으로 도입하여 워크숍과 컨퍼런스를 개최하고 있다.</li>
+          <li>신철 대표는 영화계 선배들의 부정적인 반응에도 불구하고, AI가 영화 제작을 빼앗는 것이 아니라 영화를 만드는 <strong>다른 방법</strong>이라고 강조한다.</li>
+          <li>올해 컨퍼런스 주제는 '쇼 미 더 머니(Show Me The Money)'로, AI 크리에이터들의 저작권 문제와 플랫폼 부재 등 현실적인 어려움을 해결하고 수익 창출 방안을 모색하는 데 초점을 맞추고 있다.</li>
+          <li>사회자는 AI 작품을 선보일 수 있는 권위 있는 플랫폼의 필요성을 언급하며, '퀴즈 매거진'을 통해 창작자들에게 가능성을 열어주고자 한다고 밝혔다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.2</div>
+          <div class="section-toggle-title">인간의 직관과 AI의 한계</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>창작자의 태도와 AI 활용</h4>
+        <ol>
+          <li>에리버 감독은 아이디어를 가장 아이디어답게 구현하기 위해 다양한 기법을 찾는 사람으로서, AI도 하나의 도구로 활용할 뿐이라고 설명한다.</li>
+          <li>그는 AI가 가진 내재적 특성과 강점을 최대한 적용하여 작품을 만들며, 이는 끊임없이 새로운 것을 찾아 헤매는 창작 과정의 일부라고 말한다.</li>
+        </ol>
+
+        <h4>인간의 직관과 AI의 차이</h4>
+        <ol>
+          <li>신철 대표는 인간의 뇌에 있는 뉴런 외에 심장과 장에도 뉴런이 존재하며, 특히 장에는 1억 개 정도의 뉴런이 있어 <strong>직관</strong>과 <strong>감성</strong>에 영향을 미친다고 설명한다.</li>
+          <li>그는 "사돈이 땅을 사면 배가 아프다"는 속담처럼, 논리적으로는 이해되지 않지만 몸이 반응하는 현상이 장의 뉴런과 관련이 있다고 말한다.</li>
+          <li>이러한 직관은 AI가 모방하기 어려운 인간 고유의 영역이며, AI는 발상을 할 수 없고 주어진 조건에 따라 결과물을 만들어낼 뿐이라고 강조한다.</li>
+          <li>사회자는 인간의 직관과 육감에 집중하고 내면의 소리에 솔직해지는 것이 창작자들이 AI에 매몰되지 않고 잘 활용할 수 있는 방법이라고 결론 내린다.</li>
+        </ol>
+
+        <h4>AI 툴 활용의 다양성</h4>
+        <ol>
+          <li>AI 영상 제작 툴로는 런웨이(Runway), 픽피카랩스(Pika Labs), 베오(Veo), 스탠스(Stance) 등이 있으며, 에리버 감독은 익스필즈(Exfields)와 미드저니(Midjourney) 등 다양한 툴을 사용한다고 밝혔다.</li>
+          <li>창작자마다 자신만의 <strong>레시피</strong>를 가지고 여러 툴을 섞어 사용하며, 이는 조명이나 포지셔닝 등 각 툴의 장점을 활용하는 방식이다.</li>
+          <li>AI 툴은 반복된 프로그램이 답을 주는 것이 아니라, 사람이 어떻게 활용하느냐에 따라 결과가 달라지므로 <strong>사람의 터치</strong>가 중요하다.</li>
+          <li>어떤 창작자는 완벽하게 자신의 그림을 구현하기 위해 기술을 섬세하게 다루고, 어떤 창작자는 AI가 던져주는 결과물에 반응하며 소통하는 방식으로 작업한다.</li>
+          <li>이는 마치 요리사가 특정 마을의 재료만으로 요리하거나, 다양한 재료를 섞어 새로운 맛을 내는 것과 같다고 비유된다.</li>
+          <li>결국 AI 활용은 창작자의 <strong>태도</strong>에 따라 달라지며, 이는 사진, 페인팅, 애니메이션 등 모든 예술 분야에 해당된다.</li>
+        </ol>
+      </div></div></div>
+    </div>
+
+    <div class="section-block">
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <div class="section-toggle-text">
+          <div class="section-toggle-number">2.3</div>
+          <div class="section-toggle-title">AI와 예술의 본질적 질문</div>
+        </div>
+        <div class="section-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </button>
+      <div class="section-content"><div class="section-content-inner"><div class="section-body">
+        <h4>AI와 예술의 비교에 대한 질문</h4>
+        <ol>
+          <li>황준석 교수는 AI가 '인공 지능'인 만큼, '인공 예술'과 '예술'을 비교하는 것이 적절한지에 대한 질문을 던졌다.</li>
+          <li>그는 마치 사과와 과일을 비교하거나 사람과 존재를 비교하는 것처럼, AI와 예술을 비교하는 것이 본질적인 질문을 놓치게 할 수 있다고 지적했다.</li>
+          <li>황 교수는 예술이 습관과 연습, 그리고 인간의 마음과 영혼이 연결된 행위임을 강조하며, AI가 이러한 본질적인 영역을 대체할 수 있는지에 대한 사유를 요청했다.</li>
+        </ol>
+
+        <h4>인간의 마음과 본질에 대한 논의</h4>
+        <ol>
+          <li>사회자는 황 교수의 질문을 "AI든 뭐든 그 전에 사람 얘기, 마음 얘기를 먼저 해야 하지 않나"라는 본질적인 질문으로 해석했다.</li>
+          <li>이는 단순한 툴이나 방법론에 매몰되지 않고, 인간 존재와 마음에 대한 고민이 선행되어야 한다는 의미이다.</li>
+          <li>신철 대표는 AI가 툴이지만, 그 영역이 너무 커서 인간의 삶 모든 부분에 관여하고 있기 때문에 이러한 질문이 나올 수 있다고 답했다.</li>
+          <li>에리버 감독은 AI에 대한 논의가 예술 분야에서 특히 활발한 것은, 예술이 가장 본질적인 부분에서 AI와 부딪히는 영역이기 때문이라고 설명했다.</li>
+        </ol>
+
+        <div class="insight-callout">
+          <p><strong>핵심 메시지:</strong> AI든 뭐든 그 전에 사람 얘기, 마음 얘기를 먼저 해야 한다. 예술은 가장 본질적인 부분에서 AI와 부딪히는 영역이며, 인간의 <strong>직관과 감성</strong>은 AI가 대체할 수 없는 고유한 영역으로 남아있다.</p>
+        </div>
+      </div></div></div>
+    </div>
+  </section>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h5>Exhibition</h5>
+      <p>Water: Images and material across the AI era<br>A QuintEssence Exhibition</p>
+    </div>
+    <div class="footer-col">
+      <h5>Period</h5>
+      <p>2026. 5. 2 (토) — 5. 13 (수)<br>11:00 — 19:00</p>
+    </div>
+    <div class="footer-col">
+      <h5>Venue</h5>
+      <p>N:NEWS(뉴스뮤지엄) 을지로<br>서울특별시 중구 을지로127</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    Conference Report — 2026. 4. 30 · 주최: QE (QuintEssence) · 주관: COMMON Lab, Inc.
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+// Toggle section
+function toggleSection(btn) {
+  const block = btn.closest('.section-block');
+  block.classList.toggle('open');
+}
+
+// Toggle all in a session
+function toggleAll(btn, sessionId) {
+  const session = document.getElementById(sessionId);
+  const blocks = session.querySelectorAll('.section-block');
+  const allOpen = Array.from(blocks).every(b => b.classList.contains('open'));
+
+  blocks.forEach(b => {
+    if (allOpen) b.classList.remove('open');
+    else b.classList.add('open');
+  });
+
+  btn.textContent = allOpen ? '모두 펼치기' : '모두 접기';
+}
+
+// Sticky nav visibility
+const nav = document.getElementById('sessionNav');
+const hero = document.getElementById('hero');
+
+const navObserver = new IntersectionObserver(([entry]) => {
+  nav.classList.toggle('visible', !entry.isIntersecting);
+}, { threshold: 0 });
+navObserver.observe(hero);
+
+// Active tab on scroll
+const sessions = document.querySelectorAll('.session');
+const tabs = document.querySelectorAll('.nav-tab');
+
+const sessionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tabs.forEach(t => t.classList.remove('active'));
+      const target = document.querySelector(`[data-target="${entry.target.id}"]`);
+      if (target) target.classList.add('active');
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+
+sessions.forEach(s => sessionObserver.observe(s));
+
+// Tab click
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = document.getElementById(tab.dataset.target);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Progress bar
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = (scrolled / total * 100) + '%';
+});
+
+// Back to top
+const backBtn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  backBtn.classList.toggle('visible', window.scrollY > 600);
+});
+</script>
+</body>
+</html>
