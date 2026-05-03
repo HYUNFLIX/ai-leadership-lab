@@ -16,7 +16,7 @@
     <div class="brand" id="brandLink" title="처음 화면으로">
       <div class="brand-mark">P</div>
       <div class="brand-text">
-        <h1>PRD 생성기</h1>
+        <h1>PRD 생성기 <span class="version-badge">v2.0</span></h1>
         <p>직장인을 위한 바이브코딩 제품 기획 도우미</p>
       </div>
     </div>
@@ -40,6 +40,14 @@
   </footer>
 </div>
 <div class="toast" id="toast"></div>
-<script src="app.js"></script>
+
+<!-- 로드 순서: 데이터 → 상태 → 생성기 → 마크다운 → UI → 단계 → 앱 -->
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/generator.js"></script>
+<script src="js/markdown.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/steps.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
