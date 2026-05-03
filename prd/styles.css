@@ -639,6 +639,64 @@ body {
   .header-meta { text-align: left; }
 }
 
+/* API key button (header) */
+.api-key-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: 'Pretendard Variable', Pretendard, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 6px -2px rgba(26,26,46,0.06);
+}
+.api-key-btn:hover { border-color: var(--accent); color: var(--accent-deep); }
+.api-key-btn.connected { border-color: #22c55e; color: #16a34a; }
+.api-key-btn.connected .api-key-icon { filter: none; }
+.api-key-icon { font-size: 13px; }
+
+/* API key dialog overlay */
+.api-key-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200;
+}
+.api-key-dialog {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 28px;
+  width: min(420px, 90vw);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.api-key-dialog h3 {
+  font-size: 18px; font-weight: 700; margin-bottom: 10px;
+}
+.api-key-dialog p {
+  font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 12px;
+}
+.api-key-input { margin: 8px 0 16px; width: 100%; }
+.api-key-actions {
+  display: flex; gap: 8px; justify-content: flex-end;
+}
+
+/* Loading bar AI variant */
+.magic-loading-bar.ai {
+  background: linear-gradient(90deg, var(--accent), #a855f7, var(--accent));
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 /* Reset button (header) + footer */
 .reset-btn {
   display: inline-flex;

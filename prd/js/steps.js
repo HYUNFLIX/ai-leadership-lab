@@ -101,8 +101,14 @@ function renderGeneratedPreview(card, generated, keyword) {
   const nav = document.createElement('div');
   nav.className = 'nav';
 
-  const reroll = button('🎲 다시 생성', 'btn-ghost', () => {
-    const newGenerated = generateFromKeyword(keyword);
+  const reroll = button('🎲 다시 생성', 'btn-ghost', async () => {
+    card.innerHTML = '';
+    card.appendChild(titleBlock('자동 생성 완료', `"${keyword}" PRD를 다시 생성 중...`, ''));
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'step-content';
+    loadingDiv.innerHTML = `<div class="magic-loading"><div class="magic-loading-bar${getGeminiKey() ? ' ai' : ''}"></div></div>`;
+    card.appendChild(loadingDiv);
+    const newGenerated = await autoGenerate(keyword);
     state.data._pendingGenerated = newGenerated;
     renderGeneratedPreview(card, newGenerated, keyword);
   });
@@ -177,22 +183,26 @@ function renderStart(card) {
   genBtn.className = 'magic-btn';
   genBtn.innerHTML = '<span>✨</span> 자동 생성';
 
-  const doGenerate = (kw) => {
+  const doGenerate = async (kw) => {
     if (!kw) { kw = kwInput.value.trim(); }
     if (!kw) { kwInput.focus(); toast('만들고 싶은 걸 적어주세요'); return; }
 
+    const useAI = !!getGeminiKey();
     magic.innerHTML = `
       <div class="magic-loading">
-        <strong>"${kw}"</strong>에 딱 맞는 PRD 초안을 생성 중이에요...
-        <div class="magic-loading-bar"></div>
+        <strong>"${kw}"</strong>에 딱 맞는 PRD 초안을 ${useAI ? 'AI가 ' : ''}생성 중이에요...
+        <div class="magic-loading-bar${useAI ? ' ai' : ''}"></div>
       </div>`;
 
-    setTimeout(() => {
-      const generated = generateFromKeyword(kw);
+    try {
+      const generated = await autoGenerate(kw);
       state.data._pendingGenerated = generated;
       state.data._pendingKeyword = kw;
       renderGeneratedPreview(card, generated, kw);
-    }, 900 + Math.random() * 600);
+    } catch (e) {
+      toast('생성에 실패했어요. 다시 시도해주세요');
+      render();
+    }
   };
 
   genBtn.addEventListener('click', () => doGenerate());

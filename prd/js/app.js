@@ -80,5 +80,8 @@ document.getElementById('brandLink').addEventListener('click', () => {
   render();
 });
 
+document.getElementById('apiKeyBtn').addEventListener('click', showApiKeyDialog);
+
 // ─ 초기 렌더 ────────────────────────────────────────────────
+updateApiKeyUI();
 render();
