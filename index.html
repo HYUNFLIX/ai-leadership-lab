@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" class="dark-mode">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -89,7 +89,7 @@
     <script>emailjs.init('_Q9n12E8k-YEgQ2J0');</script>
 
     <!-- Custom CSS (blocking — critical) -->
-    <link rel="stylesheet" href="css/styles.css?v=20260423a">
+    <link rel="stylesheet" href="css/styles.css?v=20260613">
 
     <!-- Pretendard font — async (non-blocking) -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style"
@@ -968,25 +968,6 @@
         </div>
     </footer>
 
-    <!-- Programs Modal -->
-    <div id="programsModal" class="modal" aria-hidden="true">
-        <div class="modal-backdrop" onclick="closeProgramsModal()"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>AI 도구 모음</h3>
-                <button class="modal-close" onclick="closeProgramsModal()" aria-label="닫기">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body" id="allProgramsList">
-                <!-- All programs loaded here -->
-            </div>
-        </div>
-    </div>
-
-
     <!-- ⑦ Section Dot Indicator -->
     <nav class="section-dots" aria-label="섹션 이동" id="sectionDots">
         <a class="section-dot" href="#hero"     data-label="홈"       aria-label="홈으로 이동"></a>
@@ -1006,7 +987,7 @@
     </button>
 
     <!-- Scripts -->
-    <script src="js/main.js?v=20260423a" defer></script>
+    <script src="js/main.js?v=20260423b" defer></script>
 
     <!-- Contact Form (독립 스크립트 — DOM 준비 후 즉시 실행) -->
     <script>
@@ -1102,112 +1083,8 @@
     </script>
 
 
-    <!-- Programs Loader -->
+    <!-- FAQ 아코디언 -->
     <script>
-        // Load programs from JSON
-        async function loadPrograms() {
-            try {
-                const response = await fetch('data/programs.json');
-                const data = await response.json();
-                renderHeroPrograms(data.programs, data.settings);
-                renderAllPrograms(data.programs);
-            } catch (error) {
-                console.error('Failed to load programs:', error);
-                // Fallback: show static links if JSON fails
-                renderFallbackPrograms();
-            }
-        }
-
-        function renderHeroPrograms(programs, settings) {
-            // Hero programs container was removed, skip this
-            const container = document.getElementById('heroPrograms');
-            if (!container) return;
-
-            const featured = programs.filter(p => p.featured).slice(0, settings.maxFeaturedOnHero);
-
-            let html = featured.map(program => `
-                <a href="${program.url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                    <span>${program.title}</span>
-                    <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                        <path d="M11 7l6 6m0 0l-6 6m6-6H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </a>
-            `).join('');
-
-            // Add "Show All" button if there are more programs
-            if (settings.showAllButton && programs.length > settings.maxFeaturedOnHero) {
-                html += `
-                    <button class="btn btn-outline-light" onclick="openProgramsModal()">
-                        <span>${settings.allButtonText}</span>
-                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                            <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                `;
-            }
-
-            container.innerHTML = html;
-        }
-
-        function renderAllPrograms(programs) {
-            const container = document.getElementById('allProgramsList');
-            container.innerHTML = programs.map(program => `
-                <a href="${program.url}" target="_blank" rel="noopener noreferrer" class="program-card">
-                    <div class="program-info">
-                        <h4>${program.title}</h4>
-                        <p>${program.description || ''}</p>
-                    </div>
-                    <svg class="program-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 10h10M11 6l4 4-4 4"/>
-                    </svg>
-                </a>
-            `).join('');
-        }
-
-        function renderFallbackPrograms() {
-            // Fallback for modal content if JSON fails
-            const modalContainer = document.getElementById('allProgramsList');
-            if (modalContainer) {
-                modalContainer.innerHTML = `
-                    <a href="https://g.co/gemini/share/426fd3f286ef" target="_blank" rel="noopener noreferrer" class="program-card">
-                        <div class="program-info">
-                            <h4>AI 도입 준비도 진단</h4>
-                            <p>조직의 AI 도입 준비 상태를 진단합니다</p>
-                        </div>
-                        <svg class="program-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 10h10M11 6l4 4-4 4"/>
-                        </svg>
-                    </a>
-                    <a href="https://g.co/gemini/share/7c9ebf930982" target="_blank" rel="noopener noreferrer" class="program-card">
-                        <div class="program-info">
-                            <h4>AI 비즈니스 아이디어</h4>
-                            <p>AI 기반 비즈니스 아이디어를 생성합니다</p>
-                        </div>
-                        <svg class="program-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 10h10M11 6l4 4-4 4"/>
-                        </svg>
-                    </a>
-                    <a href="https://g.co/gemini/share/51aaaa0b91b7" target="_blank" rel="noopener noreferrer" class="program-card">
-                        <div class="program-info">
-                            <h4>블로그 포스트 생성기</h4>
-                            <p>AI로 블로그 콘텐츠를 생성합니다</p>
-                        </div>
-                        <svg class="program-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 10h10M11 6l4 4-4 4"/>
-                        </svg>
-                    </a>
-                `;
-            }
-        }
-
-        function openProgramsModal() {
-            const modal = document.getElementById('programsModal');
-            modal.classList.add('active');
-            modal.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-        }
-
-        /* ── FAQ 아코디언 ── */
         document.querySelectorAll('.faq-question').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 const item = this.closest('.faq-item');
@@ -1222,46 +1099,6 @@
                 }
             });
         });
-
-        /* ── YouTube Video 로드 ── */
-        function loadYouTube() {
-            const overlay   = document.getElementById('videoOverlay');
-            const container = document.getElementById('youtubeContainer');
-            const frame     = document.getElementById('youtubeFrame');
-            if (!overlay || !container || !frame) return;
-            frame.src = 'https://www.youtube.com/embed/dNCr2Imqj8Y?autoplay=1&rel=0&modestbranding=1';
-            overlay.style.display   = 'none';
-            container.style.display = 'block';
-        }
-
-        /* 키보드 접근성 */
-        document.addEventListener('DOMContentLoaded', function() {
-            const overlay = document.getElementById('videoOverlay');
-            if (overlay) {
-                overlay.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadYouTube(); }
-                });
-            }
-        });
-
-        function closeProgramsModal() {
-            const modal = document.getElementById('programsModal');
-            modal.classList.remove('active');
-            modal.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-        }
-
-        // Close modal on Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeProgramsModal();
-        });
-
-        // Load programs on page load
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadPrograms);
-        } else {
-            loadPrograms();
-        }
     </script>
 
     <!-- Firebase SDK for Lectures — #projects 섹션 진입 시 지연 로드 -->
