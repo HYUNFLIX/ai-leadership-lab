@@ -3775,44 +3775,6 @@ ul {
   animation: none;
 }
 
-/* ── Hero Photo Panel (Steve Brown style) ── */
-/* ── Hero Credential Badges (Steve Brown 2×2 grid style) ── */
-.hero-creds {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-  margin-bottom: var(--spacing-xl);
-  max-width: 460px;
-}
-
-.hero-cred-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.6rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #c8d0e0;
-  transition: border-color 0.2s ease, background 0.2s ease;
-  word-break: keep-all;
-}
-
-.hero-cred-badge:hover {
-  background: rgba(91, 139, 255, 0.1);
-  border-color: rgba(91, 139, 255, 0.4);
-  color: #e8edf5;
-}
-
-.cred-icon {
-  width: 15px;
-  height: 15px;
-  color: #5b8bff;
-  flex-shrink: 0;
-}
-
 /* ── Hero Grid alignment ── */
 .hero-grid {
   align-items: center;
@@ -3828,10 +3790,6 @@ ul {
   .hero-grid {
     padding-bottom: 0;
     gap: var(--spacing-xl);
-  }
-  .hero-creds {
-    margin-left: auto;
-    margin-right: auto;
   }
 }
 
