@@ -82,14 +82,14 @@
     </script>
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="images/director-nobg.webp" as="image" type="image/webp">
+    <link rel="preload" href="images/hero-poster.jpg" as="image" type="image/jpeg">
 
     <!-- EmailJS (동기 로드 — defer 제거하여 타이밍 문제 방지) -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>emailjs.init('_Q9n12E8k-YEgQ2J0');</script>
 
     <!-- Custom CSS (blocking — critical) -->
-    <link rel="stylesheet" href="css/styles.css?v=20260613">
+    <link rel="stylesheet" href="css/styles.css?v=20260614">
 
     <!-- Pretendard font — async (non-blocking) -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" as="style"
@@ -136,16 +136,15 @@
     <main id="main">
         <!-- Hero Section -->
         <section id="hero" class="hero hero-split" aria-labelledby="hero-title">
-            <div class="hero-bg">
-                <div class="hero-gradient"></div>
+            <!-- 배경 영상 (글로우 오브 애니메이션 대체) -->
+            <div class="hero-video-bg" aria-hidden="true">
+                <video class="hero-bg-video" poster="images/hero-poster.jpg"
+                       muted loop playsinline autoplay preload="auto"
+                       disablepictureinpicture disableremoteplayback>
+                    <source src="videos/hero.mp4" type="video/mp4">
+                </video>
+                <div class="hero-video-overlay"></div>
             </div>
-            <!-- Glow Orbs — 6개, 크기 다양, JS parallax -->
-            <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
-            <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
-            <div class="hero-orb hero-orb-3" aria-hidden="true"></div>
-            <div class="hero-orb hero-orb-4" aria-hidden="true"></div>
-            <div class="hero-orb hero-orb-5" aria-hidden="true"></div>
-            <div class="hero-orb hero-orb-6" aria-hidden="true"></div>
             <div class="container">
                 <div class="hero-grid">
                     <div class="hero-content">
@@ -186,29 +185,6 @@
                             <a href="#director" class="btn btn-secondary">
                                 <span>연구소장 소개</span>
                             </a>
-                        </div>
-                    </div>
-
-                    <!-- 소장 사진 + 플로팅 추천사 -->
-                    <div class="hero-photo-wrap animate-fade-in-up">
-                        <img src="images/director-nobg.webp"
-                             alt="김현 AI Leadership Lab 소장"
-                             class="hero-director-photo"
-                             width="460" height="580"
-                             loading="eager">
-                        <div class="hero-float-card">
-                            <p class="hero-float-quote">"이 강의 하나로 우리 조직의 AI 활용 수준이 완전히 달라졌습니다."</p>
-                            <div class="hero-float-author">
-                                <div class="hero-float-avatar">
-                                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <span class="hero-float-name">HRD 담당자</span>
-                                    <span class="hero-float-title">A기업 인재개발팀장</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1099,6 +1075,32 @@
                 }
             });
         });
+    </script>
+
+    <!-- Hero 배경 영상 재생 제어 (뷰포트 진입 시 재생, 벗어나면 일시정지, 모션 최소화 시 poster만) -->
+    <script>
+    (function () {
+      var v = document.querySelector('.hero-bg-video');
+      if (!v) return;
+      // 모션 최소화 사용자: 자동재생 끄고 poster만 표시
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        v.removeAttribute('autoplay');
+        v.pause();
+        return;
+      }
+      // 배터리 절약: 히어로가 화면 밖이면 일시정지, 다시 보이면 재생
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            var p = v.play();
+            if (p && p.catch) p.catch(function () {});
+          } else {
+            v.pause();
+          }
+        });
+      }, { threshold: 0.1 });
+      io.observe(v);
+    }());
     </script>
 
     <!-- Firebase SDK for Lectures — #projects 섹션 진입 시 지연 로드 -->

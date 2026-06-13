@@ -372,8 +372,9 @@ ul {
   position: relative;
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  padding: var(--spacing-3xl) 0 0;
+  /* safe: 콘텐츠가 100vh보다 길면 중앙정렬 대신 상단부터 배치 → 제목 잘림 방지 */
+  align-items: safe center;
+  padding: var(--spacing-3xl) 0 var(--spacing-2xl);
   margin-bottom: 0;
   overflow: hidden;
   isolation: isolate;
@@ -400,68 +401,7 @@ ul {
 /* hero-bg, hero-gradient, hero-pattern — 구조 유지 (하위 호환) */
 .hero-bg, .hero-gradient, .hero-pattern { display: none; }
 
-/* ── Glow Orbs — transform only (GPU composited), CPU 0% ── */
-.hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  will-change: transform;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ── 6개 오브 — 크기·위치·색상 다양화 ── */
-/* 큰 ambient 오브 (배경 분위기) */
-.hero-orb-1 {
-  width: 480px; height: 480px;
-  top: -5%; left: -5%;
-  background: radial-gradient(circle at 40% 40%,
-    rgba(91, 139, 255, 0.38) 0%,
-    rgba(91, 139, 255, 0.10) 45%,
-    transparent 70%);
-}
-.hero-orb-2 {
-  width: 380px; height: 380px;
-  top: 15%; right: -4%;
-  background: radial-gradient(circle at 55% 50%,
-    rgba(124, 58, 237, 0.36) 0%,
-    rgba(124, 58, 237, 0.10) 45%,
-    transparent 70%);
-}
-/* 중간 오브 (입체감) */
-.hero-orb-3 {
-  width: 260px; height: 260px;
-  bottom: 10%; left: 20%;
-  background: radial-gradient(circle at 50% 45%,
-    rgba(96, 212, 247, 0.32) 0%,
-    rgba(96, 212, 247, 0.08) 45%,
-    transparent 70%);
-}
-.hero-orb-4 {
-  width: 220px; height: 220px;
-  top: 45%; left: 42%;
-  background: radial-gradient(circle at 50% 50%,
-    rgba(167, 139, 250, 0.30) 0%,
-    rgba(167, 139, 250, 0.07) 45%,
-    transparent 70%);
-}
-/* 작은 포인트 오브 (생동감) */
-.hero-orb-5 {
-  width: 150px; height: 150px;
-  top: 10%; left: 38%;
-  background: radial-gradient(circle at 50% 50%,
-    rgba(96, 212, 247, 0.45) 0%,
-    rgba(96, 212, 247, 0.12) 45%,
-    transparent 70%);
-}
-.hero-orb-6 {
-  width: 130px; height: 130px;
-  bottom: 20%; right: 15%;
-  background: radial-gradient(circle at 50% 50%,
-    rgba(91, 139, 255, 0.50) 0%,
-    rgba(91, 139, 255, 0.14) 45%,
-    transparent 70%);
-}
-/* 저전력 모드: JS가 orb 움직임을 건너뜀 (main.js에서 체크) */
+/* 글로우 오브 애니메이션 제거 — 배경은 .hero-video-bg(영상)가 담당 */
 
 .hero-content {
   text-align: center;
@@ -519,12 +459,13 @@ ul {
 .hero-split .hero-content {
   text-align: left;
   margin: 0;
+  /* 좌측 정렬 콘텐츠 폭 제한 → 우측에 배경 영상이 드러남 */
+  max-width: 640px;
 }
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-3xl);
+  grid-template-columns: 1fr;
   align-items: center;
 }
 
@@ -541,6 +482,8 @@ ul {
 
   .hero-split .hero-content {
     text-align: center;
+    max-width: 100%;
+    margin-inline: auto;
   }
 
   .hero-split .hero-actions {
@@ -3833,81 +3776,6 @@ ul {
 }
 
 /* ── Hero Photo Panel (Steve Brown style) ── */
-.hero-photo-wrap {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  min-height: 520px;
-}
-
-.hero-director-photo {
-  width: 100%;
-  max-width: 460px;
-  height: auto;
-  display: block;
-  filter: brightness(1.0) contrast(1.02) drop-shadow(0 8px 32px rgba(91,139,255,0.18));
-  /* 하단 페이드 */
-  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-}
-
-/* Floating testimonial card over photo */
-.hero-float-card {
-  position: absolute;
-  bottom: 1.5rem;
-  left: -1rem;
-  max-width: 300px;
-  background: rgba(16, 20, 54, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(91, 139, 255, 0.18);
-  border-radius: 14px;
-  padding: 1.25rem 1.5rem;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-}
-
-.hero-float-quote {
-  font-size: 0.9rem;
-  color: #e2e8f0;
-  line-height: 1.6;
-  margin-bottom: 1rem;
-  font-style: italic;
-}
-
-.hero-float-author {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-}
-
-.hero-float-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(91, 139, 255, 0.2);
-  border: 1px solid rgba(91, 139, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #5b8bff;
-  flex-shrink: 0;
-}
-
-.hero-float-name {
-  display: block;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.hero-float-title {
-  display: block;
-  font-size: 0.75rem;
-  color: #94a3b8;
-  margin-top: 0.1rem;
-}
-
 /* ── Hero Credential Badges (Steve Brown 2×2 grid style) ── */
 .hero-creds {
   display: grid;
@@ -3965,30 +3833,41 @@ ul {
     margin-left: auto;
     margin-right: auto;
   }
-  .hero-photo-wrap {
-    min-height: auto;
-    margin-top: var(--spacing-md);
-  }
-  .hero-director-photo {
-    max-width: 360px;
-  }
-  /* 1열 전환 시 플로팅 카드는 사진 아래로 흐르지 않도록 중앙 정렬 */
-  .hero-float-card {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    max-width: min(340px, 90%);
-  }
 }
 
+/* 모바일: 콘텐츠가 짧아 스크롤 인디케이터가 CTA와 겹치므로 숨김 */
 @media (max-width: 640px) {
-  .hero-director-photo {
-    max-width: 280px;
-  }
-  /* 모바일에서는 플로팅 추천 카드 숨김 — 사진 가독성 우선 */
-  .hero-float-card {
-    display: none;
-  }
+  .scroll-indicator { display: none; }
+}
+
+/* ── Hero 배경 영상 (글로우 오브 대체) ── */
+.hero-video-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.hero-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* 텍스트 가독성을 위한 어두운 오버레이 — 좌측(텍스트 영역)을 더 진하게 */
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg,
+      rgba(6, 8, 22, 0.94) 0%,
+      rgba(6, 8, 22, 0.80) 42%,
+      rgba(6, 8, 22, 0.55) 100%),
+    linear-gradient(0deg,
+      rgba(6, 8, 22, 0.85) 0%,
+      rgba(6, 8, 22, 0.25) 45%,
+      rgba(6, 8, 22, 0.45) 100%);
 }
 
 
