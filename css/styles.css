@@ -1862,6 +1862,48 @@ ul {
   }
 }
 
+/* ── 고객 후기 자동 가로 슬라이드 (마퀴) ── */
+.testimonials-marquee {
+  margin-top: var(--spacing-xl);
+  overflow: hidden;
+  /* 양끝 페이드 */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.testimonials-track {
+  display: flex;
+  width: max-content;
+  animation: testimonialScroll 70s linear infinite;
+}
+/* hover·포커스 시 일시정지 */
+.testimonials-marquee:hover .testimonials-track,
+.testimonials-track:focus-within {
+  animation-play-state: paused;
+}
+.testimonials-track .testimonial-card {
+  flex: 0 0 360px;
+  width: 360px;
+  margin-right: 1.5rem;
+  /* 마퀴 안에서는 진입 애니메이션 비활성(끊김 방지) */
+  opacity: 1;
+  animation: none;
+}
+@keyframes testimonialScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (max-width: 640px) {
+  .testimonials-track .testimonial-card {
+    flex-basis: 280px;
+    width: 280px;
+    margin-right: 1rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .testimonials-track { animation: none; }
+  .testimonials-marquee { overflow-x: auto; }
+}
+
 /* ================ Publications Section ================ */
 .section-publications {
   background: #ffffff;
