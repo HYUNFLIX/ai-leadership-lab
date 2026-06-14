@@ -1166,11 +1166,11 @@ ul {
 .director-label {
   display: inline-block;
   width: fit-content;
-  font-size: 0.58rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(168, 85, 247, 0.9);
+  color: rgba(190, 130, 255, 1);
   background: rgba(168, 85, 247, 0.1);
   padding: 0.2em 0.7em;
   border-radius: var(--radius-full);
@@ -1188,16 +1188,16 @@ ul {
 }
 
 .director-role {
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: rgba(255,255,255,0.8);
-  margin-bottom: 0.05rem;
+  color: rgba(255,255,255,0.92);
+  margin-bottom: 0.1rem;
   line-height: 1.35;
 }
 
 .director-edu {
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.3);
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.7);
   margin-bottom: 0;
 }
 
@@ -1205,17 +1205,26 @@ ul {
   width: 36px;
   height: 2px;
   background: linear-gradient(90deg, rgba(168,85,247,0.55), rgba(99,102,241,0.25));
-  margin: 0.55rem 0;
+  margin: 0.85rem 0;
   border-radius: 1px;
 }
 
+/* 소개 bio 문단 — 가독성 우선, 텍스트 우측이 카드3 우측과 정렬되도록 폭 제한 없음 */
+.director-bio {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.85);
+  margin: 0 0 1.1rem;
+}
+
 .director-quote {
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-style: italic;
-  line-height: 1.65;
-  color: rgba(255,255,255,0.4);
+  line-height: 1.7;
+  color: rgba(255,255,255,0.72);
   margin: 0;
-  max-width: 400px;
+  padding-left: 0.9rem;
+  border-left: 2px solid rgba(168,85,247,0.5);
 }
 
 /* --- Cards live inside the dark banner --- */
@@ -1245,8 +1254,10 @@ ul {
   -webkit-backdrop-filter: blur(8px);
   border-radius: 10px;
   padding: 0.85rem 1rem;
-  border: 1px solid rgba(255,255,255,0.07);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.09);
+  /* 평상시에도 은은한 입체감 */
+  box-shadow: 0 4px 18px rgba(0,0,0,0.28);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
   opacity: 0;
   transform: translateY(16px);
   animation: directorCardIn 0.5s ease forwards;
@@ -1268,9 +1279,10 @@ ul {
 }
 
 .director-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(99,102,241,0.12);
-  border-color: rgba(99,102,241,0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 18px 42px rgba(99,102,241,0.28), 0 4px 18px rgba(0,0,0,0.3);
+  border-color: rgba(129,140,248,0.5);
+  background: rgba(255,255,255,0.06);
 }
 
 /* card text is light on dark */
@@ -1298,11 +1310,11 @@ ul {
 }
 
 .director-card-title {
-  font-size: 0.6rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
+  color: rgba(190,130,255,0.95);
 }
 
 .director-card-list {
@@ -1316,10 +1328,10 @@ ul {
 
 .director-card-list li {
   position: relative;
-  padding-left: 0.7rem;
-  font-size: 0.73rem;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.5;
+  padding-left: 0.8rem;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.6;
 }
 
 .director-card-list li::before {
@@ -3211,10 +3223,19 @@ ul {
     font-size: 1.8rem;
   }
 
+  .director-bio {
+    text-align: center;
+    max-width: 100%;
+    font-size: 0.95rem;
+  }
+
   .director-quote {
     text-align: center;
     max-width: 100%;
-    font-size: 0.72rem;
+    font-size: 0.92rem;
+    /* 모바일 중앙정렬에선 좌측 보더 제거 */
+    border-left: none;
+    padding-left: 0;
   }
 
   .director-cards {
@@ -4196,44 +4217,8 @@ ul {
 /* ============================================================
    ③ 미디어 탭 필터
    ============================================================ */
-.media-filter {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 2.5rem;
-}
-
-.media-filter-btn {
-  padding: 0.5rem 1.4rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: transparent;
-  color: rgba(255,255,255,0.55);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: var(--font-primary);
-}
-
-.media-filter-btn:hover {
-  border-color: rgba(91,139,255,0.5);
-  color: #fff;
-}
-
-.media-filter-btn.active {
-  background: linear-gradient(135deg, #5b6bf4, #7c3aed);
-  border-color: transparent;
-  color: #fff;
-  box-shadow: 0 2px 12px rgba(91,107,244,0.4);
-}
-
 .media-card {
   transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.media-card.hidden {
-  display: none;
 }
 
 /* ============================================================
@@ -4390,5 +4375,4 @@ ul {
 
 @media (max-width: 768px) {
   .section-dots { display: none; }
-  .media-filter-btn { padding: 0.4rem 1rem; font-size: 0.8rem; }
 }

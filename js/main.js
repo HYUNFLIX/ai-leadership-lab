@@ -833,30 +833,6 @@
 
 })();
 
-/* ── ③ 미디어 탭 필터 ──────────────────────────────────────────── */
-(function () {
-  const btns  = document.querySelectorAll('.media-filter-btn');
-  const cards = document.querySelectorAll('.media-card[data-type]');
-  if (!btns.length) return;
-
-  btns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter;
-
-      // 버튼 active
-      btns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
-      btn.classList.add('active');
-      btn.setAttribute('aria-selected','true');
-
-      // 카드 표시/숨김
-      cards.forEach(card => {
-        const match = filter === 'all' || card.dataset.type === filter;
-        card.classList.toggle('hidden', !match);
-      });
-    });
-  });
-}());
-
 /* ── ④ 강의 실적 스켈레톤 로딩 UI ──────────────────────────────── */
 (function () {
   const container = document.getElementById('lecturesByYear');
