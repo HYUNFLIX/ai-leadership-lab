@@ -246,6 +246,8 @@ ul {
   height: 40px;
   width: auto;
   max-width: 200px;
+  /* 워드마크 좌측(네이비)이 어두운 네비바에 묻히지 않도록 밝기·미세 halo 보정 */
+  filter: brightness(1.5) drop-shadow(0 0 1px rgba(255, 255, 255, 0.5));
 }
 
 .logo-icon {
