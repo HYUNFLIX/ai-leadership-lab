@@ -4439,3 +4439,14 @@ a.sr-only:focus {
 @media (max-width: 768px) {
   .section-dots { display: none; }
 }
+
+/* ============================================================
+   터치 타겟 확대 — 카드 내 텍스트 링크 최소 44px (WCAG 2.5.8)
+   ============================================================ */
+.service-link,
+.book-tile-link,
+.media-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
