@@ -1266,22 +1266,6 @@ a.sr-only:focus {
   margin: 0 0 1.1rem;
 }
 
-.director-quote {
-  font-size: 0.95rem;
-  font-style: italic;
-  line-height: 1.7;
-  color: rgba(255,255,255,0.78);
-  margin: 0;
-  padding: 0.85rem 1.1rem;
-  border-left: 2px solid rgba(168,85,247,0.55);
-  /* 글라스 패널 */
-  background: linear-gradient(160deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 0 12px 12px 0;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-}
-
 /* --- Cards live inside the dark banner --- */
 .director-cards-wrap {
   position: relative;
