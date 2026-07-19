@@ -4219,6 +4219,32 @@ a.sr-only:focus {
   margin: 0;
 }
 
+/* 기업 목록 끝 '더보기 ⌄' — 강의실적으로 유도 */
+.service-clients-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--card-accent) 85%, #fff);
+  white-space: nowrap;
+  /* 시각 크기는 유지하고 터치 영역만 확장 */
+  padding: 0.6rem 0.4rem;
+  margin: -0.6rem -0.4rem;
+}
+
+.service-clients-more:hover {
+  color: #ffffff;
+}
+
+.service-clients-more svg {
+  transition: transform 0.2s ease;
+}
+
+.service-clients-more:hover svg {
+  transform: translateY(2px);
+}
+
 /* CTA — 버튼형, 모든 카드 하단 정렬 */
 .service-link {
   width: 100%;
