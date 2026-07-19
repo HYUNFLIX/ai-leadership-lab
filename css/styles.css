@@ -752,22 +752,26 @@ a.sr-only:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 72%;
+  object-position: center 62%;
   display: block;
   filter: brightness(1.15) contrast(1.02);
+  /* 강연자를 오른쪽 개방 영역으로 이동 (텍스트 열과 분리) */
+  transform: scale(1.12) translateX(6%);
+  transform-origin: center;
 }
 
-/* 스크림: 상단(텍스트 존)만 진하게, 하단 개방 공간은 강연자가 주인공 */
+/* 스크림: 왼쪽(텍스트 열)은 어둡게, 오른쪽은 강연자가 온전히 보이게 */
 .about-photo-overlay {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(180deg,
-    rgba(7,9,25,0.9) 0%,
-    rgba(7,9,25,0.6) 32%,
-    rgba(7,9,25,0.35) 52%,
-    rgba(7,9,25,0.18) 72%,
-    rgba(10,14,26,0.72) 100%);
+  background:
+    linear-gradient(100deg,
+      rgba(7,9,25,0.93) 0%,
+      rgba(7,9,25,0.82) 38%,
+      rgba(7,9,25,0.35) 62%,
+      rgba(7,9,25,0.12) 100%),
+    linear-gradient(180deg, rgba(7,9,25,0.5) 0%, transparent 18%, transparent 88%, rgba(10,14,26,0.6) 100%);
 }
 
 .about-dark-bg {
@@ -818,12 +822,24 @@ a.sr-only:focus {
   z-index: 2;
   max-width: 1060px;
   margin: 0 auto;
-  /* 하단 여백: 강연자 전신이 가려짐 없이 보이는 개방 공간 */
-  padding: 3rem 2rem 22rem;
+  padding: 4rem 2rem 3.5rem;
+  /* 안정 구도: 왼쪽 텍스트 열 + 오른쪽 강연자 (이미지 겹침 없음) */
+  display: grid;
+  grid-template-columns: minmax(0, 560px) 1fr;
+  min-height: 760px;
+  align-content: center;
 }
 
-@media (max-width: 768px) {
-  .about-inner { padding-bottom: 14rem; }
+.about-inner > * {
+  grid-column: 1;
+}
+
+@media (max-width: 900px) {
+  .about-inner {
+    display: block;
+    min-height: 0;
+    padding: 3rem 2rem 13rem; /* 모바일: 하단 개방 공간에 강연자 */
+  }
 }
 
 /* Header */
@@ -874,11 +890,11 @@ a.sr-only:focus {
   color: rgba(255,255,255,0.85);
 }
 
-/* Feature cards */
+/* Feature cards — 왼쪽 열 세로 스택 (오른쪽은 강연자 공간) */
 .about-features {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.65rem;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
   margin-bottom: 2rem;
 }
 
@@ -891,7 +907,11 @@ a.sr-only:focus {
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.16),
     0 10px 30px rgba(0,0,0,0.32);
-  padding: 1.35rem 1.25rem;
+  padding: 1.1rem 1.25rem;
+  /* 아이콘 왼쪽 가로형 — 세로 스택에서 컴팩트하게 */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   opacity: 0;
   transform: translateY(14px);
   animation: directorCardIn 0.45s ease forwards;
@@ -915,15 +935,15 @@ a.sr-only:focus {
 }
 
 .about-feature-icon {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(168,85,247,0.12));
-  border-radius: 8px;
-  margin-bottom: 0.6rem;
+  background: linear-gradient(135deg, rgba(99,102,241,0.14), rgba(168,85,247,0.14));
+  border-radius: 10px;
   color: #818cf8;
+  flex-shrink: 0;
 }
 
 .about-feature-card h4 {
@@ -942,8 +962,8 @@ a.sr-only:focus {
 /* Stats row */
 .about-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem 0.5rem;
   padding-top: 1.2rem;
   border-top: 1px solid rgba(255,255,255,0.06);
   opacity: 0;
@@ -3183,16 +3203,6 @@ a.sr-only:focus {
 /* ================ Responsive Design ================ */
 /* About + Director tablet breakpoint */
 @media (max-width: 1024px) {
-  .about-features {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-  }
-  .about-stats {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .about-inner {
-    padding: 2.5rem 1.5rem 2rem;
-  }
   .director-banner-inner {
     padding: 2.5rem 1.5rem 1rem;
   }
@@ -3208,7 +3218,7 @@ a.sr-only:focus {
 @media (max-width: 768px) {
   /* About mobile */
   .about-inner {
-    padding: 2rem 1rem 1.8rem;
+    padding: 2.5rem 1rem 12rem;
   }
   .about-title {
     font-size: 1.5rem;
@@ -3216,16 +3226,8 @@ a.sr-only:focus {
   .about-subtitle {
     font-size: 0.8rem;
   }
-  .about-features {
-    grid-template-columns: 1fr;
-    gap: 0.45rem;
-  }
   .about-feature-card {
     padding: 0.85rem 0.9rem;
-  }
-  .about-stats {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.8rem;
   }
 
   .container {
