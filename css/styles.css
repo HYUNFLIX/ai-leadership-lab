@@ -333,6 +333,7 @@ a.sr-only:focus {
   align-items: center;
   gap: 0.75rem;
   flex-shrink: 0;
+  margin-left: 0.75rem; /* pill 메뉴와 CTA 사이 간격 */
 }
 
 .nav-cta {
