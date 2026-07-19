@@ -730,6 +730,13 @@ a.sr-only:focus {
   scroll-margin-top: 80px; /* 고정 navbar 높이 보정 */
 }
 
+/* 연구소 소개: 헤더가 10rem 아래에 있어 앵커 이동 시 ABOUT US 라벨이 화면 상단에 오도록 보정 */
+@media (min-width: 769px) {
+  #about {
+    scroll-margin-top: -56px;
+  }
+}
+
 /* ================ About Section (dark immersive) ================ */
 .section-about {
   position: relative;
@@ -815,7 +822,7 @@ a.sr-only:focus {
   z-index: 2;
   max-width: 1060px;
   margin: 0 auto;
-  padding: 7.5rem 2rem 3rem;
+  padding: 10rem 2rem 3rem;
 }
 
 /* Header */
