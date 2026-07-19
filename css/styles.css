@@ -752,16 +752,21 @@ a.sr-only:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 30%;
+  object-position: center 35%;
   display: block;
+  filter: brightness(1.12) contrast(1.02);
 }
 
-/* 스크림: 상하단은 진하게(텍스트 존), 중앙은 사진이 은은히 비침 */
+/* 스크림: 텍스트 존(상·하단)만 진하게, 중앙은 강연 장면이 살아나게 */
 .about-photo-overlay {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(180deg, rgba(7,9,25,0.92) 0%, rgba(7,9,25,0.78) 45%, rgba(10,14,26,0.94) 100%);
+  background: linear-gradient(180deg,
+    rgba(7,9,25,0.9) 0%,
+    rgba(7,9,25,0.55) 35%,
+    rgba(7,9,25,0.42) 62%,
+    rgba(10,14,26,0.88) 100%);
 }
 
 .about-dark-bg {
