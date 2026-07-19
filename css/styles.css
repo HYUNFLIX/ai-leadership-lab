@@ -85,6 +85,9 @@ body {
   color: var(--text-primary);
   background-color: #0a0e1a;
   overflow-x: hidden;
+  /* 한글 조판: 어절 중간 줄바꿈 방지 (긴 URL 등은 overflow-wrap으로 안전 처리) */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* Main element carries a solid dark bg so ANY gap between sections
