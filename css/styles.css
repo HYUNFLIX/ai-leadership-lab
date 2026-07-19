@@ -752,26 +752,22 @@ a.sr-only:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 62%;
+  object-position: center 45%;
   display: block;
-  filter: brightness(1.15) contrast(1.02);
-  /* 강연자를 오른쪽 개방 영역으로 이동 (텍스트 열과 분리) */
-  transform: scale(1.12) translateX(6%);
-  transform-origin: center;
+  filter: brightness(1.12) contrast(1.02);
 }
 
-/* 스크림: 왼쪽(텍스트 열)은 어둡게, 오른쪽은 강연자가 온전히 보이게 */
+/* 스크림: 상단(헤더)만 진하게 — 중간 개방 공간의 강연자는 참고 구도 그대로 */
 .about-photo-overlay {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background:
-    linear-gradient(100deg,
-      rgba(7,9,25,0.93) 0%,
-      rgba(7,9,25,0.82) 38%,
-      rgba(7,9,25,0.35) 62%,
-      rgba(7,9,25,0.12) 100%),
-    linear-gradient(180deg, rgba(7,9,25,0.5) 0%, transparent 18%, transparent 88%, rgba(10,14,26,0.6) 100%);
+  background: linear-gradient(180deg,
+    rgba(7,9,25,0.88) 0%,
+    rgba(7,9,25,0.5) 28%,
+    rgba(7,9,25,0.22) 45%,
+    rgba(7,9,25,0.22) 72%,
+    rgba(10,14,26,0.7) 100%);
 }
 
 .about-dark-bg {
@@ -822,24 +818,7 @@ a.sr-only:focus {
   z-index: 2;
   max-width: 1060px;
   margin: 0 auto;
-  padding: 4rem 2rem 3.5rem;
-  /* 안정 구도: 왼쪽 텍스트 열 + 오른쪽 강연자 (이미지 겹침 없음) */
-  display: grid;
-  grid-template-columns: minmax(0, 560px) 1fr;
-  min-height: 760px;
-  align-content: center;
-}
-
-.about-inner > * {
-  grid-column: 1;
-}
-
-@media (max-width: 900px) {
-  .about-inner {
-    display: block;
-    min-height: 0;
-    padding: 3rem 2rem 13rem; /* 모바일: 하단 개방 공간에 강연자 */
-  }
+  padding: 4rem 2rem 3rem;
 }
 
 /* Header */
@@ -890,12 +869,24 @@ a.sr-only:focus {
   color: rgba(255,255,255,0.85);
 }
 
-/* Feature cards — 왼쪽 열 세로 스택 (오른쪽은 강연자 공간) */
+/* Feature cards — 하단 3열 (중간은 강연자 개방 공간) */
 .about-features {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.8rem;
-  margin-bottom: 2rem;
+  margin-top: 360px; /* 강연자가 온전히 보이는 빈 공간 */
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .about-features {
+    grid-template-columns: 1fr;
+    margin-top: 240px;
+  }
+  /* 모바일 세로 크롭: 강연자 머리·팔이 중간 개방 공간에 오도록 */
+  .about-photo-img {
+    object-position: center 62%;
+  }
 }
 
 .about-feature-card {
@@ -962,7 +953,7 @@ a.sr-only:focus {
 /* Stats row */
 .about-stats {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.9rem 0.5rem;
   padding-top: 1.2rem;
   border-top: 1px solid rgba(255,255,255,0.06);
@@ -3228,6 +3219,9 @@ a.sr-only:focus {
   }
   .about-feature-card {
     padding: 0.85rem 0.9rem;
+  }
+  .about-stats {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .container {
