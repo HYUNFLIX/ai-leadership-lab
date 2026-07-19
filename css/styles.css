@@ -4655,6 +4655,216 @@ a.sr-only:focus {
 }
 
 /* ============================================================
+   ★ 프로젝트 레퍼런스 섹션 (글라스 쇼케이스)
+   ============================================================ */
+.section-works {
+  background: #0a0e1a;
+  padding: 6rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-works::before,
+.section-works::after {
+  content: '';
+  position: absolute;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.section-works::before {
+  background: radial-gradient(circle, rgba(56,189,248,0.26), transparent 70%);
+  top: 8%;
+  left: -6%;
+  animation: glowDriftC 34s ease-in-out infinite;
+}
+
+.section-works::after {
+  background: radial-gradient(circle, rgba(168,85,247,0.24), transparent 70%);
+  bottom: -12%;
+  right: -6%;
+  animation: glowDriftB 28s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-works::before,
+  .section-works::after { animation: none; }
+}
+
+.section-works .container {
+  position: relative;
+  z-index: 1;
+}
+
+.works-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.works-label {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  background: rgba(56,189,248,0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56,189,248,0.25);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.25rem;
+}
+
+.works-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+.works-desc {
+  font-size: 1.05rem;
+  color: #94a3b8;
+}
+
+/* 글라스 쇼케이스 패널 */
+.works-showcase {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  background: linear-gradient(160deg, rgba(255,255,255,0.11), rgba(255,255,255,0.045) 60%, rgba(255,255,255,0.07));
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 24px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    0 16px 40px rgba(0,0,0,0.35);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .works-showcase { background: rgba(20,25,45,0.92); }
+}
+
+/* 폰 프레임 */
+.works-phone {
+  width: 100%;
+  border-radius: 30px;
+  border: 8px solid #151b2e;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 20px 44px rgba(0,0,0,0.5);
+  background: #151b2e;
+}
+
+.works-phone img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 상세 */
+.works-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 0.3rem 0.85rem;
+  background: rgba(192,132,252,0.14);
+  color: #c084fc;
+  border: 1px solid rgba(192,132,252,0.3);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.9rem;
+}
+
+.works-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.6rem;
+}
+
+.works-summary {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+  margin-bottom: 1.1rem;
+}
+
+.works-points {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+}
+
+.works-points li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  line-height: 1.65;
+  margin-bottom: 0.45rem;
+}
+
+.works-points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+}
+
+.works-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.works-tech span {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+}
+
+.works-note {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .works-showcase {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1.75rem;
+  }
+  .works-phone {
+    max-width: 260px;
+    margin: 0 auto;
+  }
+}
+
+/* ============================================================
    터치 타겟 확대 — 카드 내 텍스트 링크 최소 44px (WCAG 2.5.8)
    ============================================================ */
 .service-link,
