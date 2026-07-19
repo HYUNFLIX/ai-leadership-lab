@@ -736,8 +736,8 @@ a.sr-only:focus {
   overflow: hidden;
   padding: 0;
   margin-top: 0;
-  /* Unified solid dark — same as Hero & Director */
-  background-color: #0a0e1a;
+  /* 시네마틱 다크 — 기존 풀쿼트 섹션 톤 */
+  background-color: #04050f;
   isolation: isolate;
 }
 
@@ -752,31 +752,28 @@ a.sr-only:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 45%;
+  object-position: center 25%;
   display: block;
-  filter: brightness(1.12) contrast(1.02);
+  /* 배포본 풀쿼트 섹션과 동일한 은은한 실루엣 톤 */
+  opacity: 0.55;
+  filter: brightness(1.08) contrast(0.95);
 }
 
-/* 스크림: 상단(헤더)만 진하게 — 중간 개방 공간의 강연자는 참고 구도 그대로 */
+/* 스크림: 배포본 풀쿼트 섹션과 동일 — 왼쪽 어둡게, 오른쪽은 사진 살림 */
 .about-photo-overlay {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(180deg,
-    rgba(7,9,25,0.88) 0%,
-    rgba(7,9,25,0.5) 28%,
-    rgba(7,9,25,0.22) 45%,
-    rgba(7,9,25,0.22) 72%,
-    rgba(10,14,26,0.7) 100%);
+  background:
+    linear-gradient(to right, rgba(4,5,15,0.88) 0%, rgba(4,5,15,0.60) 45%, rgba(4,5,15,0.10) 100%),
+    linear-gradient(to top, rgba(4,5,15,0.45) 0%, transparent 40%);
 }
 
 .about-dark-bg {
+  /* 시네마틱 톤에서는 보라 글로우 미사용 — 사진과 무대 조명만 */
+  display: none;
   position: absolute;
   inset: 0;
-  /* Radial accents ONLY over the unified base — no linear gradient at edges */
-  background:
-    radial-gradient(ellipse 600px 450px at 80% 25%, rgba(99,102,241,0.14), transparent 70%),
-    radial-gradient(ellipse 500px 500px at 15% 75%, rgba(168,85,247,0.12), transparent 70%);
   z-index: 0;
 }
 
@@ -883,9 +880,9 @@ a.sr-only:focus {
     grid-template-columns: 1fr;
     margin-top: 240px;
   }
-  /* 모바일 세로 크롭: 강연자 머리·팔이 중간 개방 공간에 오도록 */
+  /* 모바일 세로 크롭: 강연자가 중간 개방 공간에 오도록 */
   .about-photo-img {
-    object-position: center 62%;
+    object-position: center 35%;
   }
 }
 
