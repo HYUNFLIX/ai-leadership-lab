@@ -733,7 +733,7 @@ a.sr-only:focus {
 /* 연구소 소개: 헤더가 10rem 아래에 있어 앵커 이동 시 ABOUT US 라벨이 화면 상단에 오도록 보정 */
 @media (min-width: 769px) {
   #about {
-    scroll-margin-top: -56px;
+    scroll-margin-top: -96px;
   }
 }
 
@@ -822,7 +822,7 @@ a.sr-only:focus {
   z-index: 2;
   max-width: 1060px;
   margin: 0 auto;
-  padding: 10rem 2rem 3rem;
+  padding: 12.5rem 2rem 3rem;
 }
 
 /* Header */
