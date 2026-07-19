@@ -752,21 +752,22 @@ a.sr-only:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 35%;
+  object-position: center 72%;
   display: block;
-  filter: brightness(1.12) contrast(1.02);
+  filter: brightness(1.15) contrast(1.02);
 }
 
-/* 스크림: 텍스트 존(상·하단)만 진하게, 중앙은 강연 장면이 살아나게 */
+/* 스크림: 상단(텍스트 존)만 진하게, 하단 개방 공간은 강연자가 주인공 */
 .about-photo-overlay {
   position: absolute;
   inset: 0;
   z-index: 0;
   background: linear-gradient(180deg,
     rgba(7,9,25,0.9) 0%,
-    rgba(7,9,25,0.55) 35%,
-    rgba(7,9,25,0.42) 62%,
-    rgba(10,14,26,0.88) 100%);
+    rgba(7,9,25,0.6) 32%,
+    rgba(7,9,25,0.35) 52%,
+    rgba(7,9,25,0.18) 72%,
+    rgba(10,14,26,0.72) 100%);
 }
 
 .about-dark-bg {
@@ -817,7 +818,12 @@ a.sr-only:focus {
   z-index: 2;
   max-width: 1060px;
   margin: 0 auto;
-  padding: 3rem 2rem 2.5rem;
+  /* 하단 여백: 강연자 전신이 가려짐 없이 보이는 개방 공간 */
+  padding: 3rem 2rem 22rem;
+}
+
+@media (max-width: 768px) {
+  .about-inner { padding-bottom: 14rem; }
 }
 
 /* Header */
