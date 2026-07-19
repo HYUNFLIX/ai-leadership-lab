@@ -4014,9 +4014,10 @@ a.sr-only:focus {
   overflow: hidden;
 }
 
-/* 글라스 카드 뒤에서 비치는 앰비언트 글로우 */
+/* 글라스 카드 뒤에서 비치는 앰비언트 글로우 (느린 드리프트) */
 .section-services::before,
-.section-services::after {
+.section-services::after,
+.services-grid::before {
   content: '';
   position: absolute;
   width: 480px;
@@ -4024,18 +4025,46 @@ a.sr-only:focus {
   border-radius: 50%;
   filter: blur(90px);
   pointer-events: none;
+  will-change: transform;
 }
 
 .section-services::before {
-  background: radial-gradient(circle, rgba(91,139,255,0.28), transparent 70%);
+  background: radial-gradient(circle, rgba(91,139,255,0.36), transparent 70%);
   top: 10%;
   left: -8%;
+  animation: glowDriftA 26s ease-in-out infinite;
 }
 
 .section-services::after {
-  background: radial-gradient(circle, rgba(168,85,247,0.24), transparent 70%);
+  background: radial-gradient(circle, rgba(168,85,247,0.34), transparent 70%);
   bottom: -10%;
   right: -6%;
+  animation: glowDriftB 32s ease-in-out infinite;
+}
+
+/* 그리드 중앙 뒤 글로우 — 2·3번 카드에서도 유리 너머 빛 번짐 */
+.services-grid {
+  position: relative;
+}
+
+.services-grid::before {
+  background: radial-gradient(circle, rgba(56,189,248,0.30), transparent 70%);
+  top: -20%;
+  left: calc(50% - 240px);
+  z-index: -1;
+  animation: glowDriftC 38s ease-in-out infinite;
+}
+
+@keyframes glowDriftA { 50% { transform: translate(70px, 40px); } }
+@keyframes glowDriftB { 50% { transform: translate(-60px, -50px); } }
+@keyframes glowDriftC { 50% { transform: translate(50px, 30px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .section-services::before,
+  .section-services::after,
+  .services-grid::before {
+    animation: none;
+  }
 }
 
 .section-services .container {
