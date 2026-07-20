@@ -4686,15 +4686,22 @@ a.sr-only:focus {
   color: #94a3b8;
 }
 
+/* 프로젝트 2열 그리드 */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
 /* 글라스 쇼케이스 패널 */
 .works-showcase {
   display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 2.5rem;
+  grid-template-columns: 185px 1fr;
+  gap: 1.5rem;
   align-items: center;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2.5rem;
+  padding: 1.75rem;
   background: linear-gradient(160deg, rgba(255,255,255,0.11), rgba(255,255,255,0.045) 60%, rgba(255,255,255,0.07));
   -webkit-backdrop-filter: blur(24px) saturate(140%);
   backdrop-filter: blur(24px) saturate(140%);
@@ -4806,14 +4813,41 @@ a.sr-only:focus {
   margin: 0;
 }
 
-@media (max-width: 900px) {
+/* 라이브 서비스 방문 링크 */
+.works-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #38bdf8;
+  transition: color 0.2s ease, gap 0.2s ease;
+}
+
+.works-visit:hover {
+  color: #7dd3fc;
+  gap: 0.6rem;
+}
+
+@media (max-width: 1024px) {
+  .works-grid {
+    grid-template-columns: 1fr;
+    max-width: 640px;
+  }
+  .works-showcase {
+    grid-template-columns: 220px 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
   .works-showcase {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 1.75rem;
+    gap: 1.75rem;
   }
   .works-phone {
-    max-width: 260px;
+    max-width: 240px;
     margin: 0 auto;
   }
 }
