@@ -240,15 +240,9 @@
       <div class="checkmark"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       <div class="lbl">REGISTRATION COMPLETE</div>
       <h2>등록이 완료되었습니다</h2>
-      <p>그린웨이브 TF 업무가 정상적으로 접수되었습니다.</p>
+      <p id="doneInfo">—</p>
     </div>
-
-    <div class="card">
-      <h2 style="margin-bottom:16px;">접수 내용</h2>
-      <ul class="summary-list" id="summaryList"></ul>
-      <div class="ticket">접수 번호 &nbsp;<b id="ticketNo">—</b></div>
-      <button class="btn btn-reset" onclick="resetForm()">← 새 등록 시작</button>
-    </div>
+    <button class="btn btn-reset" onclick="resetForm()">← 새 등록 시작</button>
   </section>
 
   <!-- ═══════════ 실습 2 · 회의자료 요약 ═══════════ -->
@@ -293,33 +287,15 @@
     var name     = document.getElementById('fName').value.trim();
     var leader   = document.getElementById('fLeader').value;
     var count    = document.getElementById('fCount').value.trim();
-    var days     = document.getElementById('fDays').value.trim();
-    var priority = document.getElementById('fPriority').value;
-    var goal     = document.getElementById('fGoal').value.trim();
 
-    // 데모용 — 빈 항목은 '미입력'으로 표시하고 그대로 접수 진행
-    var rows = [
-      ['TF 명칭', name],
-      ['TF장', leader ? leader + ' 부장' : ''],
-      ['총 인원', count ? count + '명' : ''],
-      ['목표 기간', days ? days + '일' : ''],
-      ['우선순위', priority],
-      ['핵심 목표', goal]
-    ];
-
-    var list = document.getElementById('summaryList');
-    list.innerHTML = '';
-    rows.forEach(function(r){
-      var li = document.createElement('li');
-      var v = r[1] || '<span style="color:var(--ink-soft)">미입력</span>';
-      li.innerHTML = '<span class="k">'+r[0]+'</span><span class="v">'+v+'</span>';
-      list.appendChild(li);
-    });
-
-    // 접수 번호 생성
-    var chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789', rnd = '';
-    for(var i=0;i<5;i++) rnd += chars[Math.floor(Math.random()*chars.length)];
-    document.getElementById('ticketNo').textContent = 'GW-' + rnd;
+    // 간단 요약 한 줄 — 입력된 항목만 표시
+    var parts = [];
+    if(name)   parts.push(name);
+    if(leader) parts.push(leader + ' 부장');
+    if(count)  parts.push('총 ' + count + '명');
+    document.getElementById('doneInfo').textContent =
+      parts.length ? parts.join(' · ') + ' 업무가 접수되었습니다.'
+                   : '그린웨이브 TF 업무가 접수되었습니다.';
 
     document.getElementById('form').style.display = 'none';
     document.getElementById('done').classList.add('show');
