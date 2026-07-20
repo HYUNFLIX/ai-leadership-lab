@@ -63,6 +63,36 @@
   }
   .howto b{font-weight:800;}
 
+  /* ── 실습 구분 라벨 ── */
+  .demo-label{
+    font-size:13px; font-weight:800; letter-spacing:.1em;
+    color:var(--green-deep); margin:8px 0 12px;
+  }
+  #summary{margin-top:40px; padding-top:36px; border-top:1px solid var(--line);}
+
+  /* ── 회의록 지문 ── */
+  .mtg-doc{font-size:14.5px;}
+  .mtg-doc .doc-head{
+    font-size:13px; font-weight:700; color:var(--ink-soft);
+    letter-spacing:.04em; margin-bottom:14px;
+    padding-bottom:10px; border-bottom:1px dashed var(--line);
+  }
+  .mtg-doc p{margin-bottom:10px;}
+  .mtg-doc p:last-child{margin-bottom:0;}
+
+  /* ── 요약 저장 결과 ── */
+  .saved-box{display:none; margin-top:20px;}
+  .saved-box.show{display:block; animation:rise .45s cubic-bezier(.2,.8,.25,1);}
+  .saved-head{
+    font-weight:800; font-size:15px; color:var(--green-deep);
+    margin-bottom:10px;
+  }
+  .saved-text{
+    background:var(--ok-bg); border:1px solid oklch(80% 0.1 155 / .4);
+    border-radius:var(--radius); padding:16px 18px; font-size:14.5px;
+    color:var(--ink); white-space:pre-wrap; line-height:1.7;
+  }
+
   /* ── 카드/폼 ── */
   .card{
     background:var(--panel); border:1px solid var(--line);
@@ -145,13 +175,13 @@
   </header>
 
   <div class="howto">
-    💡 <b>실습 안내</b> — 이 화면은 직접 입력하지 마세요. 코멧 어시스턴트에게
-    “이 페이지의 TF 등록 양식을 채우고 등록해줘”라고 요청하면, AI가 각 항목을 자동으로
-    입력하고 제출하는 과정을 지켜볼 수 있습니다.
+    💡 <b>실습 안내</b> — 이 화면은 직접 입력하지 마세요. 코멧 어시스턴트에게 요청하면
+    AI가 자동으로 처리하는 과정을 지켜볼 수 있습니다. 아래 <b>두 가지 실습</b>이 준비되어 있습니다.
   </div>
 
-  <!-- ═══════════ 등록 양식 ═══════════ -->
+  <!-- ═══════════ 실습 1 · 등록 양식 ═══════════ -->
   <section id="form">
+    <div class="demo-label">실습 1 · 양식 자동 입력 &amp; 제출</div>
     <div class="card">
       <h2>TF 등록 양식</h2>
       <div class="sub">아래 6개 항목을 입력하십시오.</div>
@@ -221,6 +251,37 @@
     </div>
   </section>
 
+  <!-- ═══════════ 실습 2 · 회의자료 요약 ═══════════ -->
+  <section id="summary">
+    <div class="demo-label">실습 2 · 문서 읽고 요약하기</div>
+    <div class="card mtg-doc">
+      <div class="doc-head">회의록 · 2026-05-14 · 그린웨이브 TF 킥오프</div>
+      <p><b>참석</b> — 박선영 부장(TF장), 설계1팀 2명, 생산기술팀 2명, 영업2팀 1명 (총 6명)</p>
+      <p><b>안건 1.</b> 암모니아 추진선 견적 대응 기간을 기존 3주에서 <b>10일</b>로 단축하는 방안 논의.</p>
+      <p><b>안건 2.</b> 최대 병목은 '설계 변경 승인' 단계로 평균 5일이 소요됨. 이를 줄이기 위해
+         설계 변경 승인 권한을 TF장에게 위임하기로 함.</p>
+      <p><b>안건 3.</b> 견적 템플릿을 표준화하고, 반복 입력 항목은 사내 AI 도구로 자동화하는 방안을 검토.</p>
+      <p><b>결정 사항</b> — ① 설계 승인 권한 TF장 위임, ② 6월 1일까지 표준 견적 템플릿 초안 작성(생산기술팀),
+         ③ 영업2팀은 고객 요구사항 사전 수집 체크리스트 작성.</p>
+      <p><b>다음 회의</b> — 5월 28일.</p>
+    </div>
+
+    <div class="card">
+      <div class="field" style="margin-bottom:0;">
+        <label class="flabel" for="fSummary">AI 요약 결과</label>
+        <textarea id="fSummary" style="min-height:150px;" placeholder="코멧 어시스턴트에게 “위 회의록을 3~4줄로 요약해서 이 칸에 써줘”라고 요청하세요."></textarea>
+        <p class="hint" style="font-size:13px; color:var(--ink-soft); margin-top:8px;">
+          위 회의록을 읽고 핵심만 요약하는 실습입니다. 요약을 작성한 뒤 저장하십시오.</p>
+      </div>
+      <button class="btn btn-submit" style="margin-top:18px;" onclick="saveSummary()">요약 저장</button>
+      <div id="summarySaved" class="saved-box">
+        <div class="saved-head">✓ 요약이 저장되었습니다</div>
+        <div class="saved-text" id="savedText"></div>
+        <button class="btn btn-reset" onclick="clearSummary()">← 다시 요약</button>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <span>HD현대그룹 AI 역량 향상 교육 · 에이전트 브라우저 실습</span>
     <span>본 페이지의 'HD중공업 그린웨이브 TF'는 교육용 가상 설정입니다</span>
@@ -272,6 +333,22 @@
     document.getElementById('done').classList.remove('show');
     document.getElementById('form').style.display='block';
     window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  /* ── 실습 2 · 요약 저장 ── */
+  function saveSummary(){
+    var text = document.getElementById('fSummary').value.trim();
+    if(!text){
+      document.getElementById('fSummary').focus();
+      return;
+    }
+    document.getElementById('savedText').textContent = text;
+    document.getElementById('summarySaved').classList.add('show');
+  }
+  function clearSummary(){
+    document.getElementById('fSummary').value = '';
+    document.getElementById('summarySaved').classList.remove('show');
+    document.getElementById('fSummary').focus();
   }
 </script>
 </body>
