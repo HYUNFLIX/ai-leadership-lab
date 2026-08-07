@@ -70,6 +70,14 @@
   .btn-add{padding:.7rem 1.3rem;border:none;border-radius:10px;background:var(--primary);color:#fff;
     font-weight:700;font-size:.9rem;cursor:pointer;white-space:nowrap;}
   .btn-add:hover{background:#5558e6;}
+  .btn-import{padding:.7rem 1.1rem;border-radius:10px;background:none;border:1px solid var(--panel-line);
+    color:var(--ink-soft);font-weight:600;font-size:.86rem;cursor:pointer;white-space:nowrap;}
+  .btn-import:hover{color:var(--ink);border-color:var(--primary-soft);}
+  .btn-import:disabled{opacity:.5;cursor:default;}
+  .fu-badge{font-size:.7rem;font-weight:700;padding:.15rem .5rem;border-radius:99px;white-space:nowrap;
+    background:rgba(56,189,248,.14);color:#7dd3fc;border:1px solid rgba(56,189,248,.3);}
+  .fu-badge.overdue{background:rgba(239,68,68,.14);color:#fca5a5;border-color:rgba(239,68,68,.35);}
+  .fu-badge.today{background:rgba(245,158,11,.16);color:#fcd34d;border-color:rgba(245,158,11,.35);}
 
   /* ── 고객 카드 그리드 ── */
   .clients{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.9rem;}
@@ -162,6 +170,7 @@
 
     <div class="toolbar">
       <input type="search" class="search" id="searchInput" placeholder="회사명·담당자 검색…">
+      <button class="btn-import" id="importBtn" onclick="importFromLectures()">강의 이력에서 가져오기</button>
       <button class="btn-add" onclick="openModal()">+ 고객사 추가</button>
     </div>
 
@@ -193,6 +202,10 @@
       <div class="f-row">
         <div class="f"><label>전화번호</label><input type="tel" id="fContactPhone"></div>
         <div class="f"><label>이메일</label><input type="email" id="fContactEmail"></div>
+      </div>
+      <div class="f-row">
+        <div class="f"><label>다음 연락일 (팔로업)</label><input type="date" id="fFollowUp"></div>
+        <div class="f"></div>
       </div>
       <div class="f"><label>관심 주제</label>
         <div class="interests" id="fInterests">
@@ -383,9 +396,14 @@
         <div class="n">${n}</div><div class="l">${s.label}</div></div>`;
     }).join('');
 
-    // 목록
+    // 목록 — 팔로업 임박(지난 것 포함) 우선, 그다음 최근 수정순
     const q = document.getElementById('searchInput').value.trim().toLowerCase();
-    let list = clients.slice().sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+    let list = clients.slice().sort((a, b) => {
+      const fa = a.followUpDate || '9999-99-99';
+      const fb = b.followUpDate || '9999-99-99';
+      if (fa !== fb) return fa.localeCompare(fb);
+      return (b.updatedAt || '').localeCompare(a.updatedAt || '');
+    });
     if (statusFilter) list = list.filter(c => c.status === statusFilter);
     if (q) list = list.filter(c =>
       (c.companyName || '').toLowerCase().includes(q) ||
@@ -396,9 +414,17 @@
       el.innerHTML = `<div class="empty">${clients.length ? '조건에 맞는 고객사가 없습니다.' : '아직 등록된 고객사가 없습니다.<br>+ 고객사 추가로 시작하세요.'}</div>`;
       return;
     }
+    const today = new Date().toISOString().slice(0, 10);
     el.innerHTML = list.map(c => {
       const s = STATUS[c.status] || STATUS.lead;
       const cnt = lectureCountFor(c.companyName);
+      let fu = '';
+      if (c.followUpDate) {
+        const days = Math.round((new Date(c.followUpDate) - new Date(today)) / 86400000);
+        if (days < 0) fu = `<span class="fu-badge overdue">팔로업 ${-days}일 지남</span>`;
+        else if (days === 0) fu = `<span class="fu-badge today">오늘 연락</span>`;
+        else fu = `<span class="fu-badge">D-${days}</span>`;
+      }
       return `<div class="client-card" onclick="openModal('${c.id}')">
         <div class="top">
           <h3>${esc(c.companyName)}</h3>
@@ -406,6 +432,7 @@
         </div>
         <div class="contact">${esc(c.contactName || '담당자 미등록')}${c.contactTitle ? ' · ' + esc(c.contactTitle) : ''}</div>
         <div class="meta">
+          ${fu}
           ${cnt ? `<span class="tagchip">강의 ${cnt}건</span>` : ''}
           ${(c.interests || []).slice(0, 3).map(i => `<span class="tagchip">${esc(i)}</span>`).join('')}
         </div>
@@ -431,6 +458,7 @@
     document.getElementById('fContactPhone').value = c.contactPhone || '';
     document.getElementById('fContactEmail').value = c.contactEmail || '';
     document.getElementById('fMemo').value = c.memo || '';
+    document.getElementById('fFollowUp').value = c.followUpDate || '';
     document.querySelectorAll('#fInterests input').forEach(cb => {
       cb.checked = (c.interests || []).includes(cb.value);
     });
@@ -471,6 +499,7 @@
       contactPhone: document.getElementById('fContactPhone').value.trim(),
       contactEmail: document.getElementById('fContactEmail').value.trim(),
       memo: document.getElementById('fMemo').value.trim(),
+      followUpDate: document.getElementById('fFollowUp').value || '',
       interests: [...document.querySelectorAll('#fInterests input:checked')].map(cb => cb.value),
     };
     try {
@@ -497,6 +526,48 @@
       await boot();
     } catch (err) {
       toast('삭제 실패: ' + err.message, true);
+    }
+  };
+
+  // ================ 강의 이력에서 고객사 가져오기 ================
+  window.importFromLectures = async function () {
+    const btn = document.getElementById('importBtn');
+    const existing = new Set(clients.map(c => (c.companyName || '').trim()));
+    const candidates = [...new Set(
+      lectures.map(l => (l.client || '').trim()).filter(Boolean)
+    )].filter(name => !existing.has(name)).sort((a, b) => a.localeCompare(b, 'ko'));
+
+    if (!candidates.length) {
+      toast('가져올 새 고객사가 없습니다. (이미 모두 등록됨)');
+      return;
+    }
+    if (!confirm(`강의 이력에 등장하는 고객사 ${candidates.length}곳을 '계약완료' 상태로 가져올까요?\n(이미 등록된 곳은 제외됩니다)`)) return;
+
+    btn.disabled = true;
+    btn.textContent = '가져오는 중…';
+    let done = 0;
+    try {
+      for (const name of candidates) {
+        await api('/clients', {
+          method: 'POST',
+          body: JSON.stringify({
+            companyName: name,
+            status: 'contract',
+            interests: [],
+            memo: '강의 이력에서 자동 생성',
+          }),
+        });
+        done++;
+        if (done % 10 === 0) btn.textContent = `가져오는 중… ${done}/${candidates.length}`;
+      }
+      toast(`${done}곳을 가져왔습니다.`);
+      await boot();
+    } catch (err) {
+      toast(`가져오기 중단 (${done}곳 완료): ` + err.message, true);
+      await boot();
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '강의 이력에서 가져오기';
     }
   };
 
