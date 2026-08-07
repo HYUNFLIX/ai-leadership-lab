@@ -1,0 +1,197 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AI Leadership Lab - Lectures/Clients API + Auth (Phase 1)
+
+Globals:
+  Function:
+    Runtime: nodejs20.x
+    Timeout: 10
+    MemorySize: 256
+    Architectures:
+      - arm64
+
+Parameters:
+  Stage:
+    Type: String
+    Default: prod
+    AllowedValues: [dev, prod]
+
+Resources:
+  # ===== DynamoDB =====
+  LecturesTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      TableName: !Sub AILab-Lectures-${Stage}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ClientsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      TableName: !Sub AILab-Clients-${Stage}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  # ===== Cognito (관리자 1인 전용) =====
+  AdminUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub AILab-Admin-${Stage}
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: true   # 자가 가입 차단 — 관리자가 만든 계정만
+      AutoVerifiedAttributes: [email]
+      UsernameAttributes: [email]
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 10
+          RequireLowercase: true
+          RequireNumbers: true
+
+  AdminUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref AdminUserPool
+      ClientName: !Sub AILab-Web-${Stage}
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      AccessTokenValidity: 12
+      IdTokenValidity: 12
+      RefreshTokenValidity: 30
+      TokenValidityUnits:
+        AccessToken: hours
+        IdToken: hours
+        RefreshToken: days
+
+  # ===== HTTP API =====
+  Api:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: !Ref Stage
+      CorsConfiguration:
+        AllowOrigins:
+          - https://leadership.ai.kr
+          - http://localhost:3000
+        AllowMethods: [GET, POST, PUT, DELETE, OPTIONS]
+        AllowHeaders: [Content-Type, Authorization]
+        MaxAge: 86400
+      Auth:
+        Authorizers:
+          CognitoJwt:
+            IdentitySource: $request.header.Authorization
+            JwtConfiguration:
+              issuer: !Sub https://cognito-idp.${AWS::Region}.amazonaws.com/${AdminUserPool}
+              audience:
+                - !Ref AdminUserPoolClient
+
+  # ===== API Lambda =====
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub AILab-Api-${Stage}
+      CodeUri: lambda/
+      Handler: index.handler
+      Environment:
+        Variables:
+          LECTURES_TABLE: !Ref LecturesTable
+          CLIENTS_TABLE: !Ref ClientsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref LecturesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ClientsTable
+      Events:
+        # 공개: 홈페이지 강의실적 (금액 등 민감 필드 제거된 응답)
+        PublicLectures:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /public/lectures
+            Method: GET
+        # 인증 필요: 관리용 CRUD
+        LecturesList:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /lectures
+            Method: GET
+            Auth: { Authorizer: CognitoJwt }
+        LecturesCreate:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /lectures
+            Method: POST
+            Auth: { Authorizer: CognitoJwt }
+        LecturesUpdate:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /lectures/{id}
+            Method: PUT
+            Auth: { Authorizer: CognitoJwt }
+        LecturesDelete:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /lectures/{id}
+            Method: DELETE
+            Auth: { Authorizer: CognitoJwt }
+        ClientsList:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /clients
+            Method: GET
+            Auth: { Authorizer: CognitoJwt }
+        ClientsCreate:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /clients
+            Method: POST
+            Auth: { Authorizer: CognitoJwt }
+        ClientsUpdate:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /clients/{id}
+            Method: PUT
+            Auth: { Authorizer: CognitoJwt }
+        ClientsDelete:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /clients/{id}
+            Method: DELETE
+            Auth: { Authorizer: CognitoJwt }
+
+Outputs:
+  ApiUrl:
+    Value: !Sub https://${Api}.execute-api.${AWS::Region}.amazonaws.com/${Stage}
+  UserPoolId:
+    Value: !Ref AdminUserPool
+  UserPoolClientId:
+    Value: !Ref AdminUserPoolClient
+  LecturesTableName:
+    Value: !Ref LecturesTable
+  ClientsTableName:
+    Value: !Ref ClientsTable

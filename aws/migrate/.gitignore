@@ -1,0 +1,4 @@
+# 실데이터(강의료·연락처 포함) — 공개 저장소에 절대 커밋 금지
+*.json
+!package.json
+node_modules/
