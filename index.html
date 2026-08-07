@@ -1129,11 +1129,12 @@
     }());
     </script>
 
-    <!-- Firebase SDK for Lectures — #projects 섹션 진입 시 지연 로드 -->
-    <script type="module">
-        let firebaseLoaded = false;
+    <!-- 강의실적 로더 — AWS 공개 API (#projects 진입 시 지연 로드) -->
+    <script>
+        let lecturesLoaded = false;
+        const LECTURES_API = 'https://tnibst6km5.execute-api.ap-northeast-2.amazonaws.com/prod/public/lectures';
 
-        // Firebase 실패 시에도 보여줄 대표 출강 이력 (정적 fallback)
+        // API 실패 시에도 보여줄 대표 출강 이력 (정적 fallback)
         const FALLBACK_CLIENTS = [
             '삼성전자', '현대자동차', 'LG CNS', 'KT', 'SK텔레콤',
             '한국산업인력공단', '한국능률협회', '세종텔레콤',
@@ -1155,46 +1156,52 @@
                 </div>`;
         }
 
-        async function loadFirebase() {
-            if (firebaseLoaded) return;
-            firebaseLoaded = true;
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
 
-            const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
-            const { getFirestore, collection, query, orderBy, getDocs } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+        // Curated fallback + render the "Clients" data
+        function renderClientsWall(lectures) {
+            const wall = document.getElementById('clientsWall');
+            if (!wall) return;
 
-        // Firebase Configuration (same as lectures.html)
-        const firebaseConfig = {
-            apiKey: "AIzaSyDwcyLezAW4nTlfmv6FYzjEe8RgDUgJXuY",
-            authDomain: "ai-leadership-lectures-d509b.firebaseapp.com",
-            projectId: "ai-leadership-lectures-d509b",
-            storageBucket: "ai-leadership-lectures-d509b.firebasestorage.app",
-            messagingSenderId: "132724154110",
-            appId: "1:132724154110:web:ab5f507a6aee2f583d8faf"
-        };
+            let clients = [];
+            if (Array.isArray(lectures) && lectures.length > 0) {
+                clients = [...new Set(
+                    lectures.map(l => (l.client || '').trim()).filter(Boolean)
+                )];
+            }
+            if (clients.length < 6) clients = FALLBACK_CLIENTS;
+            clients.sort((a, b) => a.localeCompare(b, 'ko'));
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+            wall.innerHTML = clients.map(name => `
+                <div class="client-cell" title="${escapeHtml(name)}">
+                    <span class="client-name">${escapeHtml(name)}</span>
+                </div>
+            `).join('');
+        }
 
-        // Fetch and display lectures grouped by year
+        // AWS 공개 API에서 강의 이력 로드 (민감 필드는 서버에서 제거됨)
         async function loadLecturesByYear() {
             const containerEl = document.getElementById('lecturesByYear');
 
             try {
-                const lecturesRef = collection(db, 'lectures');
-                const q = query(lecturesRef, orderBy('date', 'desc'));
-                const snapshot = await getDocs(q);
+                const res = await fetch(LECTURES_API);
+                if (!res.ok) throw new Error('API ' + res.status);
+                const lectures = ((await res.json()).items || [])
+                    .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
-                if (snapshot.empty) {
+                if (!lectures.length) {
                     containerEl.innerHTML = '<p class="lectures-empty">등록된 강의가 없습니다.</p>';
                     return;
                 }
 
-                const lectures = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
                 // Group lectures by year
                 const lecturesByYear = {};
-                const yearTotalCounts = {}; // Store cumulative counts before merging
+                const yearTotalCounts = {};
                 lectures.forEach(lecture => {
                     const date = lecture.date ? new Date(lecture.date) : null;
                     const year = date ? date.getFullYear() : 'Unknown';
@@ -1220,23 +1227,18 @@
                     lecturesByYear[year] = Object.values(merged);
                 });
 
-                // Get sorted years (descending)
                 const years = Object.keys(lecturesByYear).sort((a, b) => b - a);
-                const recentYears = ['2025', '2026']; // 최근 년도는 태그 형식으로 표시
+                const recentYears = ['2025', '2026'];
 
-                // Get unique clients for summary view
-                function getUniqueClients(lectures) {
-                    const clients = [...new Set(lectures.map(l => l.client).filter(Boolean))];
-                    return clients;
+                function getUniqueClients(list) {
+                    return [...new Set(list.map(l => l.client).filter(Boolean))];
                 }
 
-                // Render lectures grouped by year with toggle (show cumulative count)
-                containerEl.innerHTML = years.map((year, index) => {
+                containerEl.innerHTML = years.map(year => {
                     const isRecentYear = recentYears.includes(year);
                     const uniqueClients = getUniqueClients(lecturesByYear[year]);
 
                     if (isRecentYear) {
-                        // 최근 년도: 업체명 태그로 먼저 표시, 더보기로 상세 내용
                         return `
                             <div class="year-group expanded">
                                 <div class="year-header-static">
@@ -1266,7 +1268,6 @@
                             </div>
                         `;
                     } else {
-                        // 이전 년도: 기존 방식
                         return `
                             <div class="year-group">
                                 <button class="year-header" onclick="this.parentElement.classList.toggle('expanded')" aria-expanded="false">
@@ -1289,63 +1290,24 @@
                     }
                 }).join('');
 
-                // Render clients wall from unique client names across all years
                 renderClientsWall(lectures);
 
             } catch (error) {
                 console.error('Failed to load lectures:', error);
-                renderClientsWall([]); // fallback
+                renderClientsWall([]);
                 renderLecturesFallback();
             }
         }
 
-        // Curated fallback + render the "Clients" data (hero strip + legacy wall)
-        function renderClientsWall(lectures) {
-            const strip = document.getElementById('heroClientsStrip');
-            const wall = document.getElementById('clientsWall');
-            if (!strip && !wall) return;
-
-            const fallback = FALLBACK_CLIENTS;
-
-            let clients = [];
-            if (Array.isArray(lectures) && lectures.length > 0) {
-                clients = [...new Set(
-                    lectures.map(l => (l.client || '').trim()).filter(Boolean)
-                )];
-            }
-            if (clients.length < 6) clients = fallback;
-            clients.sort((a, b) => a.localeCompare(b, 'ko'));
-
-            // Hero strip: limit to top 8, render as inline logo-style text
-            if (wall) {
-                wall.innerHTML = clients.map(name => `
-                    <div class="client-cell" title="${escapeHtml(name)}">
-                        <span class="client-name">${escapeHtml(name)}</span>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        }
-
-            loadLecturesByYear();
-        } // end loadFirebase
-
-        // #projects 섹션이 뷰포트에 진입할 때만 Firebase 로드
+        // #projects 섹션이 뷰포트에 진입할 때만 로드
         const projectsSection = document.getElementById('projects');
         if (projectsSection) {
             const observer = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting) {
-                    // SDK 로드 실패(네트워크·차단 등) 시에도 정적 fallback 표시
-                    loadFirebase().catch((err) => {
-                        console.error('Firebase load failed:', err);
-                        renderLecturesFallback();
-                    });
+                    if (!lecturesLoaded) {
+                        lecturesLoaded = true;
+                        loadLecturesByYear();
+                    }
                     observer.disconnect();
                 }
             }, { rootMargin: '200px' });

@@ -729,14 +729,31 @@
             gap: 0.75rem;
             width: 100%;
             padding: 0.875rem 1.5rem;
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
+            background: var(--primary);
+            border: 1px solid var(--primary);
             border-radius: var(--radius);
             font-size: 0.9375rem;
-            font-weight: 500;
-            color: var(--text-primary);
+            font-weight: 600;
+            color: #fff;
             cursor: pointer;
             transition: all 0.2s;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-primary);
+            font-size: 0.9375rem;
+        }
+
+        .login-input:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 1px;
+            border-color: var(--primary);
         }
 
         .btn-google:hover {
@@ -924,15 +941,12 @@
             </div>
             <p class="subtitle">강의 이력 관리 시스템</p>
 
-            <button class="btn-google" id="googleLoginBtn" onclick="signInWithGoogle()">
-                <svg viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                Google로 로그인
-            </button>
+            <form id="loginForm" onsubmit="signInCognito(event)" style="display:flex; flex-direction:column; gap:0.6rem;">
+                <input type="email" id="loginEmail" class="login-input" placeholder="이메일" required autocomplete="username">
+                <input type="password" id="loginPassword" class="login-input" placeholder="비밀번호" required autocomplete="current-password">
+                <input type="password" id="loginNewPassword" class="login-input" placeholder="새 비밀번호 설정 (10자 이상, 소문자·숫자 포함)" autocomplete="new-password" style="display:none;">
+                <button class="btn-google" id="loginBtn" type="submit">로그인</button>
+            </form>
 
             <div class="login-error" id="loginError"></div>
 
@@ -1310,58 +1324,90 @@
 
     </div><!-- End of mainContent -->
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import {
-            getFirestore,
-            collection,
-            addDoc,
-            updateDoc,
-            deleteDoc,
-            doc,
-            onSnapshot,
-            query,
-            orderBy,
-            Timestamp
-        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import {
-            getAuth,
-            signInWithPopup,
-            signOut,
-            onAuthStateChanged,
-            GoogleAuthProvider
-        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDwcyLezAW4nTlfmv6FYzjEe8RgDUgJXuY",
-            authDomain: "ai-leadership-lectures-d509b.firebaseapp.com",
-            projectId: "ai-leadership-lectures-d509b",
-            storageBucket: "ai-leadership-lectures-d509b.firebasestorage.app",
-            messagingSenderId: "132724154110",
-            appId: "1:132724154110:web:ab5f507a6aee2f583d8faf"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        const googleProvider = new GoogleAuthProvider();
-        const lecturesCollection = collection(db, 'lectures');
-
-        // Allowed admin emails (add your email here)
-        const ALLOWED_ADMINS = [
-            'hyunkim.ceo@gmail.com',
-            'hyunnet@gmail.com'
-        ];
+    <!-- AWS 인증·데이터 계층 (Cognito + API Gateway) -->
+    <script>
+        // ================ AWS 설정 (Firebase → AWS 전환) ================
+        const API_URL = 'https://tnibst6km5.execute-api.ap-northeast-2.amazonaws.com/prod';
+        const COGNITO_URL = 'https://cognito-idp.ap-northeast-2.amazonaws.com/';
+        const COGNITO_CLIENT_ID = '7dpeoqp3n1870th6u6qbsj09mu';
+        const TOKEN_KEY = 'ailab_tokens';
 
         // Global state
         let lectures = [];
-        let unsubscribe = null;
         let currentUser = null;
 
-        // ================ Authentication ================
+        // ================ Token Helpers ================
+        function saveTokens(t) { localStorage.setItem(TOKEN_KEY, JSON.stringify(t)); }
+        function loadTokens() { try { return JSON.parse(localStorage.getItem(TOKEN_KEY)); } catch (e) { return null; } }
+        function clearTokens() { localStorage.removeItem(TOKEN_KEY); }
+        function parseJwt(t) {
+            try { return JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))); }
+            catch (e) { return {}; }
+        }
+
+        async function cognito(target, body) {
+            const res = await fetch(COGNITO_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-amz-json-1.1',
+                    'X-Amz-Target': 'AWSCognitoIdentityProviderService.' + target
+                },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            if (!res.ok) throw data;
+            return data;
+        }
+
+        async function refreshTokens() {
+            const t = loadTokens();
+            if (!t || !t.refreshToken) return false;
+            try {
+                const out = await cognito('InitiateAuth', {
+                    AuthFlow: 'REFRESH_TOKEN_AUTH',
+                    ClientId: COGNITO_CLIENT_ID,
+                    AuthParameters: { REFRESH_TOKEN: t.refreshToken }
+                });
+                const idToken = out.AuthenticationResult.IdToken;
+                saveTokens({ idToken: idToken, refreshToken: t.refreshToken, exp: parseJwt(idToken).exp });
+                return true;
+            } catch (e) {
+                clearTokens();
+                return false;
+            }
+        }
+
+        async function getIdToken() {
+            let t = loadTokens();
+            if (!t) return null;
+            if (t.exp && t.exp * 1000 < Date.now() + 60000) {
+                if (!await refreshTokens()) return null;
+                t = loadTokens();
+            }
+            return t.idToken;
+        }
+
+        // ================ API Helper ================
+        async function api(path, opts) {
+            opts = opts || {};
+            const token = await getIdToken();
+            if (!token) { handleSignedOut(); throw new Error('로그인이 필요합니다'); }
+            const res = await fetch(API_URL + path, Object.assign({}, opts, {
+                headers: Object.assign({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }, opts.headers || {})
+            }));
+            if (res.status === 401) {
+                if (await refreshTokens()) return api(path, opts);
+                handleSignedOut();
+                throw new Error('세션이 만료되었습니다');
+            }
+            if (!res.ok) throw new Error('API 오류 ' + res.status);
+            return res.json();
+        }
+
+        // ================ Authentication UI ================
         function showLoginScreen() {
             document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('mainContent').style.display = 'none';
@@ -1385,71 +1431,75 @@
 
         function updateUserUI(user) {
             if (user) {
-                document.getElementById('userPhoto').src = user.photoURL || '';
-                document.getElementById('userName').textContent = user.displayName || user.email;
+                const photo = document.getElementById('userPhoto');
+                if (photo) photo.style.display = 'none';
+                document.getElementById('userName').textContent = user.email;
             }
         }
 
-        window.signInWithGoogle = async function() {
+        function handleSignedOut() {
+            currentUser = null;
+            lectures = [];
+            clearTokens();
+            showLoginScreen();
+        }
+
+        window.signInCognito = async function(e) {
+            e.preventDefault();
+            hideLoginError();
+            const btn = document.getElementById('loginBtn');
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const newPwEl = document.getElementById('loginNewPassword');
+            btn.disabled = true;
             try {
-                hideLoginError();
-                document.getElementById('googleLoginBtn').disabled = true;
+                let out = await cognito('InitiateAuth', {
+                    AuthFlow: 'USER_PASSWORD_AUTH',
+                    ClientId: COGNITO_CLIENT_ID,
+                    AuthParameters: { USERNAME: email, PASSWORD: password }
+                });
 
-                const result = await signInWithPopup(auth, googleProvider);
-                const user = result.user;
-
-                // Check if user is allowed
-                if (!ALLOWED_ADMINS.includes(user.email)) {
-                    await signOut(auth);
-                    showLoginError('접근 권한이 없습니다. 관리자에게 문의하세요.');
-                    return;
+                // 첫 로그인: 새 비밀번호 설정 요구
+                if (out.ChallengeName === 'NEW_PASSWORD_REQUIRED') {
+                    if (newPwEl.style.display === 'none' || !newPwEl.value) {
+                        newPwEl.style.display = 'block';
+                        showLoginError('첫 로그인입니다. 새 비밀번호를 입력하고 다시 로그인을 누르세요.');
+                        return;
+                    }
+                    out = await cognito('RespondToAuthChallenge', {
+                        ClientId: COGNITO_CLIENT_ID,
+                        ChallengeName: 'NEW_PASSWORD_REQUIRED',
+                        Session: out.Session,
+                        ChallengeResponses: { USERNAME: email, NEW_PASSWORD: newPwEl.value }
+                    });
                 }
 
-            } catch (error) {
-                console.error('Login error:', error);
-                if (error.code === 'auth/popup-closed-by-user') {
-                    // User closed popup, no error message needed
-                } else if (error.code === 'auth/cancelled-popup-request') {
-                    // Multiple popups, ignore
-                } else {
-                    showLoginError('로그인 실패: ' + error.message);
-                }
-            } finally {
-                document.getElementById('googleLoginBtn').disabled = false;
-            }
-        };
-
-        window.signOutUser = async function() {
-            try {
-                if (unsubscribe) {
-                    unsubscribe();
-                    unsubscribe = null;
-                }
-                await signOut(auth);
-                showToast('로그아웃되었습니다.', 'success');
-            } catch (error) {
-                console.error('Logout error:', error);
-                showToast('로그아웃 실패', 'error');
-            }
-        };
-
-        // Auth state listener
-        onAuthStateChanged(auth, (user) => {
-            if (user && ALLOWED_ADMINS.includes(user.email)) {
-                currentUser = user;
+                const idToken = out.AuthenticationResult.IdToken;
+                saveTokens({
+                    idToken: idToken,
+                    refreshToken: out.AuthenticationResult.RefreshToken,
+                    exp: parseJwt(idToken).exp
+                });
+                currentUser = { email: parseJwt(idToken).email || email };
+                newPwEl.style.display = 'none';
                 hideLoginScreen();
-                updateUserUI(user);
-                startRealtimeSync();
-            } else {
-                currentUser = null;
-                if (unsubscribe) {
-                    unsubscribe();
-                    unsubscribe = null;
-                }
-                lectures = [];
-                showLoginScreen();
+                updateUserUI(currentUser);
+                await loadLectures();
+            } catch (err) {
+                console.error('Login error:', err);
+                const type = err.__type || '';
+                if (type.indexOf('NotAuthorized') !== -1) showLoginError('이메일 또는 비밀번호가 올바르지 않습니다.');
+                else if (type.indexOf('InvalidPassword') !== -1) showLoginError('비밀번호 정책에 맞지 않습니다. (10자 이상, 소문자·숫자 포함)');
+                else showLoginError('로그인 실패: ' + (err.message || type || '알 수 없는 오류'));
+            } finally {
+                btn.disabled = false;
             }
-        });
+        };
+
+        window.signOutUser = function() {
+            handleSignedOut();
+            showToast('로그아웃되었습니다.', 'success');
+        };
 
         // ================ Connection Status ================
         function updateSyncStatus(status, message) {
@@ -1458,55 +1508,35 @@
             el.querySelector('span').textContent = message;
         }
 
-        // ================ Real-time Listener ================
-        function startRealtimeSync() {
-            const q = query(lecturesCollection, orderBy('date', 'desc'));
-
-            unsubscribe = onSnapshot(q,
-                (snapshot) => {
-                    lectures = snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }));
-
-                    updateSyncStatus('connected', 'Firebase 연결됨');
-                    hideLoading();
-                    updateYearFilter();
-                    applyFilters();
-                    updateDashboard();
-                },
-                (error) => {
-                    console.error('Firestore error:', error);
-                    updateSyncStatus('error', '연결 오류');
-                    hideLoading();
-
-                    // 권한 오류인 경우 안내 메시지
-                    if (error.code === 'permission-denied') {
-                        showToast('Firebase 권한 오류: Firestore 규칙을 확인해주세요.', 'error');
-                    } else {
-                        showToast('데이터 동기화 오류: ' + error.message, 'error');
-                    }
-                }
-            );
+        // ================ Data Load ================
+        async function loadLectures() {
+            try {
+                const out = await api('/lectures');
+                lectures = (out.items || []).sort(function(a, b) { return (b.date || '').localeCompare(a.date || ''); });
+                updateSyncStatus('connected', 'AWS 연결됨');
+                hideLoading();
+                updateYearFilter();
+                applyFilters();
+                updateDashboard();
+            } catch (error) {
+                console.error('Load error:', error);
+                updateSyncStatus('error', '연결 오류');
+                hideLoading();
+                showToast('데이터 로드 오류: ' + error.message, 'error');
+            }
         }
 
         // ================ CRUD Operations ================
         window.addLecture = async function(lectureData) {
             try {
                 document.getElementById('submitBtn').disabled = true;
-                await addDoc(lecturesCollection, {
-                    ...lectureData,
-                    createdAt: Timestamp.now()
-                });
+                await api('/lectures', { method: 'POST', body: JSON.stringify(lectureData) });
                 showToast('강의가 등록되었습니다.', 'success');
+                await loadLectures();
                 return true;
             } catch (error) {
                 console.error('Add error:', error);
-                if (error.code === 'permission-denied') {
-                    showToast('권한 오류: Firebase Console에서 Firestore 규칙을 확인해주세요.', 'error');
-                } else {
-                    showToast('강의 등록 실패: ' + error.message, 'error');
-                }
+                showToast('강의 등록 실패: ' + error.message, 'error');
                 return false;
             } finally {
                 document.getElementById('submitBtn').disabled = false;
@@ -1516,12 +1546,9 @@
         window.updateLecture = async function(id, lectureData) {
             try {
                 document.getElementById('saveEditBtn').disabled = true;
-                const docRef = doc(db, 'lectures', id);
-                await updateDoc(docRef, {
-                    ...lectureData,
-                    updatedAt: Timestamp.now()
-                });
+                await api('/lectures/' + encodeURIComponent(id), { method: 'PUT', body: JSON.stringify(lectureData) });
                 showToast('강의가 수정되었습니다.', 'success');
+                await loadLectures();
                 return true;
             } catch (error) {
                 console.error('Update error:', error);
@@ -1534,9 +1561,9 @@
 
         window.deleteLectureFromDB = async function(id) {
             try {
-                const docRef = doc(db, 'lectures', id);
-                await deleteDoc(docRef);
+                await api('/lectures/' + encodeURIComponent(id), { method: 'DELETE' });
                 showToast('강의가 삭제되었습니다.', 'success');
+                await loadLectures();
                 return true;
             } catch (error) {
                 console.error('Delete error:', error);
@@ -1548,20 +1575,16 @@
         window.importLecturesToDB = async function(lecturesData) {
             try {
                 let added = 0;
-                const existingDates = new Set(lectures.map(l => l.date + l.name + l.client));
-
+                const existing = new Set(lectures.map(function(l) { return l.date + l.name + l.client; }));
                 for (const lecture of lecturesData) {
                     const key = lecture.date + lecture.name + lecture.client;
-                    if (!existingDates.has(key)) {
-                        await addDoc(lecturesCollection, {
-                            ...lecture,
-                            createdAt: Timestamp.now()
-                        });
+                    if (!existing.has(key)) {
+                        await api('/lectures', { method: 'POST', body: JSON.stringify(lecture) });
                         added++;
                     }
                 }
-
-                showToast(`${added}개의 강의가 추가되었습니다.`, 'success');
+                showToast(added + '개의 강의가 추가되었습니다.', 'success');
+                await loadLectures();
                 return added;
             } catch (error) {
                 console.error('Import error:', error);
@@ -1571,15 +1594,20 @@
         };
 
         // ================ Expose to global ================
-        window.getLectures = () => lectures;
+        window.getLectures = function() { return lectures; };
 
         // ================ Initialize ================
-        // Auth state listener handles initialization now
-
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            if (unsubscribe) unsubscribe();
-        });
+        (async function() {
+            const token = await getIdToken();
+            if (token) {
+                currentUser = { email: parseJwt(token).email };
+                hideLoginScreen();
+                updateUserUI(currentUser);
+                await loadLectures();
+            } else {
+                showLoginScreen();
+            }
+        })();
     </script>
 
     <script>
