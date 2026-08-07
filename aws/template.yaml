@@ -184,6 +184,39 @@ Resources:
             Method: DELETE
             Auth: { Authorizer: CognitoJwt }
 
+  # ===== AI 비서 Lambda =====
+  AssistantFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub AILab-Assistant-${Stage}
+      CodeUri: lambda/
+      Handler: assistant.handler
+      Timeout: 90
+      MemorySize: 512
+      Environment:
+        Variables:
+          LECTURES_TABLE: !Ref LecturesTable
+          CLIENTS_TABLE: !Ref ClientsTable
+          MODEL_ID: claude-sonnet-5
+          ANTHROPIC_KEY_PARAM: /ailab/anthropic-api-key
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref LecturesTable
+        - DynamoDBReadPolicy:
+            TableName: !Ref ClientsTable
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/ailab/anthropic-api-key
+      Events:
+        Assistant:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /assistant
+            Method: POST
+            Auth: { Authorizer: CognitoJwt }
+
 Outputs:
   ApiUrl:
     Value: !Sub https://${Api}.execute-api.${AWS::Region}.amazonaws.com/${Stage}
