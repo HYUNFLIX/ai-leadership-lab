@@ -84,8 +84,15 @@ export const handler = async (event) => {
       },
       body: JSON.stringify({
         model: MODEL_ID,
-        max_tokens: 2048,
-        system: buildSystemPrompt(lectures, clients),
+        max_tokens: 3000,
+        // 조회·요약 용도 — thinking 비활성화로 응답 속도·비용 최적화
+        thinking: { type: 'disabled' },
+        // 대용량 데이터 컨텍스트는 캐싱 (반복 질문 시 입력 비용 ~90% 절감)
+        system: [{
+          type: 'text',
+          text: buildSystemPrompt(lectures, clients),
+          cache_control: { type: 'ephemeral' },
+        }],
         messages: trimmed,
       }),
     });

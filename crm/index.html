@@ -1,1415 +1,524 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>CRM - 고객사 관리 시스템</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
-    <style>
-        * { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
-        body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); min-height: 100vh; }
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고객사 관리 - AI Leadership Lab</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --primary:#6366f1; --primary-soft:#818cf8; --secondary:#a855f7;
+    --success:#10b981; --warning:#f59e0b; --danger:#ef4444; --info:#38bdf8;
+    --ink:#e2e8f0; --ink-soft:#94a3b8; --ink-mute:#64748b;
+    --bg:#0a0e1a; --panel:rgba(255,255,255,.06); --panel-line:rgba(255,255,255,.12);
+    --radius:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Pretendard',-apple-system,sans-serif; background:var(--bg); color:var(--ink);
+    line-height:1.6; min-height:100vh; word-break:keep-all;
+  }
+  button{font-family:inherit;}
+  .hidden{display:none!important;}
 
-        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .glass-dark { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+  /* ── 로그인 ── */
+  .login-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:1000;}
+  .login-box{width:min(380px,90vw);padding:2.2rem;border-radius:16px;background:var(--panel);
+    border:1px solid var(--panel-line);backdrop-filter:blur(20px);}
+  .login-box .logo{font-size:1.3rem;font-weight:800;margin-bottom:.3rem;}
+  .login-box .logo span{background:linear-gradient(135deg,var(--primary-soft),var(--secondary));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .login-box .subtitle{font-size:.85rem;color:var(--ink-soft);margin-bottom:1.4rem;}
+  .login-box form{display:flex;flex-direction:column;gap:.6rem;}
+  .login-input{padding:.8rem 1rem;border-radius:10px;border:1px solid var(--panel-line);
+    background:rgba(255,255,255,.05);color:var(--ink);font-size:.94rem;font-family:inherit;}
+  .login-input:focus{outline:2px solid var(--primary);}
+  .btn-login{padding:.85rem;border:none;border-radius:10px;background:var(--primary);color:#fff;
+    font-weight:700;font-size:.95rem;cursor:pointer;}
+  .btn-login:hover{background:#5558e6;}
+  .login-error{margin-top:.8rem;font-size:.82rem;color:#fca5a5;display:none;}
+  .login-error.show{display:block;}
 
-        /* Status Colors */
-        .status-lead { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
-        .status-proposal { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .status-negotiation { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-        .status-contract { background: linear-gradient(135deg, #10b981, #059669); }
-        .status-lost { background: linear-gradient(135deg, #ef4444, #dc2626); }
+  /* ── 레이아웃 ── */
+  .topbar{position:sticky;top:0;z-index:100;background:rgba(10,14,26,.92);backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--panel-line);padding:.9rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;}
+  .topbar .brand{font-weight:800;font-size:1.05rem;display:flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--ink);}
+  .topbar .brand span{background:linear-gradient(135deg,var(--primary-soft),var(--secondary));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .topbar nav{display:flex;gap:.4rem;align-items:center;}
+  .topbar nav a, .topbar nav button{font-size:.84rem;color:var(--ink-soft);text-decoration:none;
+    padding:.45rem .8rem;border-radius:8px;border:none;background:none;cursor:pointer;}
+  .topbar nav a:hover, .topbar nav button:hover{background:var(--panel);color:var(--ink);}
+  .wrap{max-width:1200px;margin:0 auto;padding:1.6rem 1.5rem 5rem;}
 
-        .status-badge-lead { background: rgba(99,102,241,0.2); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
-        .status-badge-proposal { background: rgba(245,158,11,0.2); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
-        .status-badge-negotiation { background: rgba(59,130,246,0.2); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
-        .status-badge-contract { background: rgba(16,185,129,0.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
-        .status-badge-lost { background: rgba(239,68,68,0.2); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+  /* ── 파이프라인 요약 ── */
+  .pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin-bottom:1.4rem;}
+  .pipe-card{padding:.9rem 1rem;border-radius:var(--radius);background:var(--panel);
+    border:1px solid var(--panel-line);cursor:pointer;transition:.15s;text-align:center;}
+  .pipe-card:hover,.pipe-card.on{border-color:var(--st,var(--primary));background:rgba(255,255,255,.09);}
+  .pipe-card .n{font-size:1.5rem;font-weight:800;color:var(--st,#fff);}
+  .pipe-card .l{font-size:.78rem;color:var(--ink-soft);}
+  @media(max-width:720px){.pipeline{gap:.4rem;}
+    .pipe-card{padding:.6rem .3rem;}.pipe-card .n{font-size:1.15rem;}.pipe-card .l{font-size:.66rem;}}
 
-        /* Kanban */
-        .kanban-column { min-height: 500px; }
-        .kanban-card { cursor: grab; transition: all 0.2s; }
-        .kanban-card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .kanban-card.dragging { opacity: 0.5; cursor: grabbing; }
-        .kanban-column.drag-over { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.5); }
+  /* ── 툴바 ── */
+  .toolbar{display:flex;gap:.7rem;margin-bottom:1.1rem;flex-wrap:wrap;}
+  .search{flex:1;min-width:220px;padding:.7rem 1rem;border-radius:10px;border:1px solid var(--panel-line);
+    background:var(--panel);color:var(--ink);font-size:.9rem;font-family:inherit;}
+  .search:focus{outline:2px solid var(--primary);}
+  .btn-add{padding:.7rem 1.3rem;border:none;border-radius:10px;background:var(--primary);color:#fff;
+    font-weight:700;font-size:.9rem;cursor:pointer;white-space:nowrap;}
+  .btn-add:hover{background:#5558e6;}
 
-        /* Modal */
-        .modal { display: none; }
-        .modal.active { display: flex; }
-        .modal-content { animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  /* ── 고객 카드 그리드 ── */
+  .clients{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.9rem;}
+  .client-card{padding:1.1rem 1.2rem;border-radius:var(--radius);background:var(--panel);
+    border:1px solid var(--panel-line);cursor:pointer;transition:.15s;}
+  .client-card:hover{border-color:var(--primary-soft);transform:translateY(-2px);}
+  .client-card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem;margin-bottom:.45rem;}
+  .client-card h3{font-size:1rem;font-weight:700;}
+  .client-card .contact{font-size:.82rem;color:var(--ink-soft);}
+  .client-card .meta{display:flex;gap:.5rem;margin-top:.55rem;font-size:.75rem;color:var(--ink-mute);flex-wrap:wrap;}
+  .badge{font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:99px;white-space:nowrap;
+    background:color-mix(in srgb,var(--st) 16%,transparent);color:var(--st);border:1px solid color-mix(in srgb,var(--st) 35%,transparent);}
+  .tagchip{background:rgba(255,255,255,.07);border:1px solid var(--panel-line);border-radius:99px;padding:.1rem .55rem;}
+  .empty{padding:3rem 1rem;text-align:center;color:var(--ink-soft);font-size:.9rem;grid-column:1/-1;}
 
-        /* Toast */
-        .toast { transform: translateX(150%); transition: transform 0.3s ease; }
-        .toast.show { transform: translateX(0); }
+  /* ── 모달 ── */
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:500;
+    display:none;align-items:flex-start;justify-content:center;padding:4vh 1rem;overflow-y:auto;}
+  .modal-bg.open{display:flex;}
+  .modal{width:min(560px,100%);border-radius:16px;background:#131829;border:1px solid var(--panel-line);
+    padding:1.6rem;box-shadow:0 24px 60px rgba(0,0,0,.5);}
+  .modal h2{font-size:1.1rem;margin-bottom:1.2rem;}
+  .f-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+  @media(max-width:520px){.f-row{grid-template-columns:1fr;}}
+  .f{margin-bottom:.9rem;}
+  .f label{display:block;font-size:.8rem;font-weight:600;color:var(--ink-soft);margin-bottom:.35rem;}
+  .f input,.f select,.f textarea{width:100%;padding:.65rem .85rem;border-radius:9px;font-size:.9rem;
+    border:1px solid var(--panel-line);background:rgba(255,255,255,.05);color:var(--ink);font-family:inherit;}
+  .f textarea{resize:vertical;min-height:70px;}
+  .f input:focus,.f select:focus,.f textarea:focus{outline:2px solid var(--primary);}
+  .interests{display:flex;flex-wrap:wrap;gap:.45rem;}
+  .interests label{display:inline-flex;cursor:pointer;font-size:.8rem;padding:.35rem .8rem;border-radius:99px;
+    background:rgba(255,255,255,.05);border:1px solid var(--panel-line);color:var(--ink-soft);margin:0;font-weight:500;}
+  .interests input{display:none;}
+  .interests label:has(input:checked){background:rgba(99,102,241,.25);border-color:var(--primary-soft);color:#fff;}
+  .modal-actions{display:flex;justify-content:space-between;gap:.7rem;margin-top:1.3rem;}
+  .modal-actions .right{display:flex;gap:.7rem;margin-left:auto;}
+  .btn{padding:.65rem 1.2rem;border-radius:9px;font-size:.88rem;font-weight:700;cursor:pointer;border:none;}
+  .btn-primary{background:var(--primary);color:#fff;}
+  .btn-primary:hover{background:#5558e6;}
+  .btn-ghost{background:none;border:1px solid var(--panel-line);color:var(--ink-soft);}
+  .btn-ghost:hover{color:var(--ink);border-color:var(--ink-soft);}
+  .btn-danger{background:none;border:1px solid rgba(239,68,68,.4);color:#f87171;}
+  .btn-danger:hover{background:rgba(239,68,68,.12);}
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+  /* ── 상세 강의 이력 ── */
+  .detail-lectures{margin-top:1rem;border-top:1px solid var(--panel-line);padding-top:1rem;}
+  .detail-lectures h4{font-size:.85rem;color:var(--ink-soft);margin-bottom:.5rem;}
+  .dl-item{display:flex;justify-content:space-between;gap:.8rem;font-size:.83rem;padding:.35rem 0;
+    border-bottom:1px dashed rgba(255,255,255,.07);}
+  .dl-item .d{color:var(--ink-mute);white-space:nowrap;}
 
-        /* Tab */
-        .tab-btn { transition: all 0.2s; }
-        .tab-btn.active { background: rgba(99,102,241,0.3); border-color: #6366f1; }
-
-        /* Input */
-        input, select, textarea {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
-            transition: all 0.2s;
-        }
-        input:focus, select:focus, textarea:focus {
-            border-color: #6366f1;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
-        }
-        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4); }
-        select option { background: #1e293b; color: white; }
-
-        /* Login */
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .login-box {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 1.5rem;
-            padding: 3rem;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-        .google-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            width: 100%;
-            padding: 0.875rem 1.5rem;
-            background: white;
-            color: #1f2937;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-        }
-        .google-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .google-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-    </style>
+  /* ── 토스트 ── */
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);z-index:9500;
+    background:#1e2540;border:1px solid var(--panel-line);color:var(--ink);padding:.7rem 1.3rem;
+    border-radius:10px;font-size:.87rem;opacity:0;transition:.25s;pointer-events:none;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .toast.error{border-color:rgba(239,68,68,.5);color:#fca5a5;}
+</style>
 </head>
-<body class="text-white">
+<body>
 
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-box">
-            <div class="mb-6">
-                <i class="ri-building-4-line text-5xl text-indigo-400"></i>
-            </div>
-            <h1 class="text-2xl font-bold mb-2">CRM 고객사 관리</h1>
-            <p class="text-gray-400 mb-8">관리자 로그인이 필요합니다</p>
-            <button id="googleLoginBtn" onclick="signInWithGoogle()" class="google-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                Google로 로그인
-            </button>
-            <p id="loginError" class="mt-4 text-red-400 text-sm hidden"></p>
+<!-- 로그인 -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="logo"><span>AI</span> Leadership Lab</div>
+    <p class="subtitle">고객사 관리 (CRM)</p>
+    <form id="loginForm" onsubmit="signInCognito(event)">
+      <input type="email" id="loginEmail" class="login-input" placeholder="이메일" required autocomplete="username">
+      <input type="password" id="loginPassword" class="login-input" placeholder="비밀번호" required autocomplete="current-password">
+      <input type="password" id="loginNewPassword" class="login-input" placeholder="새 비밀번호 설정 (10자 이상)" autocomplete="new-password" style="display:none;">
+      <button class="btn-login" id="loginBtn" type="submit">로그인</button>
+    </form>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- 메인 -->
+<div id="mainContent" style="display:none;">
+  <div class="topbar">
+    <a class="brand" href="/"><span>AI</span> CRM</a>
+    <nav>
+      <a href="/lectures.html">강의 이력</a>
+      <button onclick="signOutUser()">로그아웃</button>
+    </nav>
+  </div>
+
+  <div class="wrap">
+    <div class="pipeline" id="pipeline"></div>
+
+    <div class="toolbar">
+      <input type="search" class="search" id="searchInput" placeholder="회사명·담당자 검색…">
+      <button class="btn-add" onclick="openModal()">+ 고객사 추가</button>
+    </div>
+
+    <div class="clients" id="clientList"></div>
+  </div>
+</div>
+
+<!-- 추가/수정 모달 -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h2 id="modalTitle">고객사 추가</h2>
+    <form id="clientForm" onsubmit="saveClient(event)">
+      <div class="f-row">
+        <div class="f"><label>회사명 *</label><input type="text" id="fCompany" required></div>
+        <div class="f"><label>상태</label>
+          <select id="fStatus">
+            <option value="lead">잠재고객</option>
+            <option value="proposal">제안중</option>
+            <option value="negotiation">협상중</option>
+            <option value="contract">계약완료</option>
+            <option value="lost">실패</option>
+          </select>
         </div>
-    </div>
-
-    <!-- Main Content (hidden until login) -->
-    <div id="mainContent" class="hidden">
-        <!-- Header -->
-        <header class="glass-dark sticky top-0 z-40">
-            <div class="max-w-7xl mx-auto px-4 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <a href="../index.html" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="ri-arrow-left-line text-xl"></i>
-                        </a>
-                        <h1 class="text-xl font-bold flex items-center gap-2">
-                            <i class="ri-building-4-line text-indigo-400"></i>
-                            고객사 관리 (CRM)
-                        </h1>
-                        <span id="syncStatus" class="text-xs px-2 py-1 rounded-full bg-gray-700 text-gray-400">
-                            <i class="ri-loader-4-line animate-spin"></i> 연결중...
-                        </span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <!-- View Toggle -->
-                        <div class="flex glass rounded-lg p-1">
-                            <button id="kanban-view-btn" class="tab-btn active px-3 py-1.5 rounded-md text-sm flex items-center gap-1">
-                                <i class="ri-layout-column-line"></i> 파이프라인
-                            </button>
-                            <button id="list-view-btn" class="tab-btn px-3 py-1.5 rounded-md text-sm flex items-center gap-1">
-                                <i class="ri-list-check"></i> 목록
-                            </button>
-                        </div>
-                        <!-- Export -->
-                        <div class="relative">
-                            <button id="export-btn" class="glass px-3 py-2 rounded-lg text-sm hover:bg-white/10 transition-colors flex items-center gap-1">
-                                <i class="ri-download-line"></i> 내보내기
-                            </button>
-                            <div id="export-menu" class="hidden absolute right-0 top-full mt-2 glass rounded-lg py-2 min-w-[140px] z-50">
-                                <button onclick="exportCSV()" class="w-full px-4 py-2 text-left text-sm hover:bg-white/10 flex items-center gap-2">
-                                    <i class="ri-file-excel-line text-green-400"></i> CSV (Excel)
-                                </button>
-                                <button onclick="exportJSON()" class="w-full px-4 py-2 text-left text-sm hover:bg-white/10 flex items-center gap-2">
-                                    <i class="ri-braces-line text-yellow-400"></i> JSON
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Add Client -->
-                        <button onclick="openAddModal()" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">
-                            <i class="ri-add-line"></i> 고객사 추가
-                        </button>
-                        <!-- User Menu -->
-                        <div class="flex items-center gap-2 ml-2 pl-3 border-l border-white/10">
-                            <img id="userPhoto" src="" alt="" class="w-8 h-8 rounded-full">
-                            <button onclick="signOutUser()" class="text-gray-400 hover:text-white text-sm">
-                                <i class="ri-logout-box-r-line"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Stats -->
-        <section class="max-w-7xl mx-auto px-4 py-6">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div class="glass rounded-xl p-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg status-lead flex items-center justify-center">
-                            <i class="ri-user-search-line"></i>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold" id="stat-lead">0</div>
-                            <div class="text-xs text-gray-400">잠재고객</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass rounded-xl p-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg status-proposal flex items-center justify-center">
-                            <i class="ri-file-list-3-line"></i>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold" id="stat-proposal">0</div>
-                            <div class="text-xs text-gray-400">제안중</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass rounded-xl p-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg status-negotiation flex items-center justify-center">
-                            <i class="ri-discuss-line"></i>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold" id="stat-negotiation">0</div>
-                            <div class="text-xs text-gray-400">협상중</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass rounded-xl p-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg status-contract flex items-center justify-center">
-                            <i class="ri-checkbox-circle-line"></i>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold" id="stat-contract">0</div>
-                            <div class="text-xs text-gray-400">계약완료</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass rounded-xl p-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
-                            <i class="ri-money-dollar-circle-line"></i>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold" id="stat-total-amount">0</div>
-                            <div class="text-xs text-gray-400">총 계약금액</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Search & Filter -->
-        <section class="max-w-7xl mx-auto px-4 pb-4">
-            <div class="flex flex-wrap gap-3">
-                <div class="flex-1 min-w-[200px]">
-                    <div class="relative">
-                        <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="search-input" placeholder="회사명, 담당자 검색..."
-                               class="w-full pl-10 pr-4 py-2.5 rounded-lg">
-                    </div>
-                </div>
-                <select id="filter-status" class="px-4 py-2.5 rounded-lg min-w-[120px]">
-                    <option value="all">전체 상태</option>
-                    <option value="lead">잠재고객</option>
-                    <option value="proposal">제안중</option>
-                    <option value="negotiation">협상중</option>
-                    <option value="contract">계약완료</option>
-                    <option value="lost">실패</option>
-                </select>
-                <select id="filter-interest" class="px-4 py-2.5 rounded-lg min-w-[140px]">
-                    <option value="all">전체 관심사</option>
-                    <option value="ai-leadership">AI 리더십</option>
-                    <option value="digital-transformation">디지털 전환</option>
-                    <option value="innovation">혁신</option>
-                    <option value="leadership">리더십</option>
-                    <option value="communication">소통</option>
-                    <option value="team-building">팀빌딩</option>
-                </select>
-                <!-- Link to Lectures -->
-                <a href="../lectures.html" class="glass px-4 py-2.5 rounded-lg text-sm hover:bg-white/10 transition-colors flex items-center gap-2">
-                    <i class="ri-presentation-line text-indigo-400"></i> 강의 관리
-                </a>
-            </div>
-        </section>
-
-        <!-- Kanban View -->
-        <section id="kanban-view" class="max-w-7xl mx-auto px-4 pb-8">
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <!-- Lead Column -->
-                <div class="kanban-column glass rounded-xl p-4" data-status="lead">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
-                            잠재고객
-                        </h3>
-                        <span class="text-sm text-gray-400 kanban-count">0</span>
-                    </div>
-                    <div class="kanban-cards space-y-3"></div>
-                </div>
-
-                <!-- Proposal Column -->
-                <div class="kanban-column glass rounded-xl p-4" data-status="proposal">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
-                            제안중
-                        </h3>
-                        <span class="text-sm text-gray-400 kanban-count">0</span>
-                    </div>
-                    <div class="kanban-cards space-y-3"></div>
-                </div>
-
-                <!-- Negotiation Column -->
-                <div class="kanban-column glass rounded-xl p-4" data-status="negotiation">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-blue-500"></span>
-                            협상중
-                        </h3>
-                        <span class="text-sm text-gray-400 kanban-count">0</span>
-                    </div>
-                    <div class="kanban-cards space-y-3"></div>
-                </div>
-
-                <!-- Contract Column -->
-                <div class="kanban-column glass rounded-xl p-4" data-status="contract">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                            계약완료
-                        </h3>
-                        <span class="text-sm text-gray-400 kanban-count">0</span>
-                    </div>
-                    <div class="kanban-cards space-y-3"></div>
-                </div>
-
-                <!-- Lost Column -->
-                <div class="kanban-column glass rounded-xl p-4" data-status="lost">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                            실패
-                        </h3>
-                        <span class="text-sm text-gray-400 kanban-count">0</span>
-                    </div>
-                    <div class="kanban-cards space-y-3"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- List View -->
-        <section id="list-view" class="max-w-7xl mx-auto px-4 pb-8 hidden">
-            <div class="glass rounded-xl overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-white/5 border-b border-white/10">
-                            <tr>
-                                <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">회사명</th>
-                                <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">담당자</th>
-                                <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">연락처</th>
-                                <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">상태</th>
-                                <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">계약금액</th>
-                                <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">마지막 연락</th>
-                                <th class="text-left px-4 py-3 text-sm font-medium text-gray-400">강의 수</th>
-                                <th class="text-center px-4 py-3 text-sm font-medium text-gray-400">작업</th>
-                            </tr>
-                        </thead>
-                        <tbody id="client-table-body" class="divide-y divide-white/5">
-                        </tbody>
-                    </table>
-                </div>
-                <div id="empty-list" class="hidden py-12 text-center text-gray-400">
-                    <i class="ri-inbox-line text-4xl mb-3"></i>
-                    <p>등록된 고객사가 없습니다.</p>
-                    <button onclick="openAddModal()" class="mt-3 text-indigo-400 hover:text-indigo-300">
-                        + 첫 고객사 추가하기
-                    </button>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Add/Edit Client Modal -->
-    <div id="client-modal" class="modal fixed inset-0 z-50 items-center justify-center p-4 bg-black/70">
-        <div class="modal-content glass-dark rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div class="p-6 border-b border-white/10">
-                <div class="flex items-center justify-between">
-                    <h2 id="modal-title" class="text-xl font-bold">고객사 추가</h2>
-                    <button onclick="closeModal()" class="text-gray-400 hover:text-white">
-                        <i class="ri-close-line text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-            <form id="client-form" class="p-6 space-y-6">
-                <input type="hidden" id="client-id">
-
-                <!-- Company Info -->
-                <div class="space-y-4">
-                    <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">회사 정보</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm mb-1">회사명 <span class="text-red-400">*</span></label>
-                            <input type="text" id="company-name" required class="w-full px-4 py-2.5 rounded-lg" placeholder="예: 삼성전자">
-                        </div>
-                        <div>
-                            <label class="block text-sm mb-1">상태</label>
-                            <select id="client-status" class="w-full px-4 py-2.5 rounded-lg">
-                                <option value="lead">잠재고객</option>
-                                <option value="proposal">제안중</option>
-                                <option value="negotiation">협상중</option>
-                                <option value="contract">계약완료</option>
-                                <option value="lost">실패</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact Info -->
-                <div class="space-y-4">
-                    <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">담당자 정보</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm mb-1">담당자명</label>
-                            <input type="text" id="contact-name" class="w-full px-4 py-2.5 rounded-lg" placeholder="예: 김철수">
-                        </div>
-                        <div>
-                            <label class="block text-sm mb-1">직책</label>
-                            <input type="text" id="contact-title" class="w-full px-4 py-2.5 rounded-lg" placeholder="예: 인사팀장">
-                        </div>
-                        <div>
-                            <label class="block text-sm mb-1">전화번호</label>
-                            <input type="tel" id="contact-phone" class="w-full px-4 py-2.5 rounded-lg" placeholder="예: 010-1234-5678">
-                        </div>
-                        <div>
-                            <label class="block text-sm mb-1">이메일</label>
-                            <input type="email" id="contact-email" class="w-full px-4 py-2.5 rounded-lg" placeholder="예: kim@company.com">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Interest & Contract -->
-                <div class="space-y-4">
-                    <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">강의/계약 정보</h3>
-                    <div>
-                        <label class="block text-sm mb-2">관심 주제</label>
-                        <div class="flex flex-wrap gap-2" id="interest-tags">
-                            <label class="cursor-pointer">
-                                <input type="checkbox" name="interests" value="ai-leadership" class="hidden peer">
-                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">AI 리더십</span>
-                            </label>
-                            <label class="cursor-pointer">
-                                <input type="checkbox" name="interests" value="digital-transformation" class="hidden peer">
-                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">디지털 전환</span>
-                            </label>
-                            <label class="cursor-pointer">
-                                <input type="checkbox" name="interests" value="innovation" class="hidden peer">
-                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">혁신</span>
-                            </label>
-                            <label class="cursor-pointer">
-                                <input type="checkbox" name="interests" value="leadership" class="hidden peer">
-                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">리더십</span>
-                            </label>
-                            <label class="cursor-pointer">
-                                <input type="checkbox" name="interests" value="communication" class="hidden peer">
-                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">소통</span>
-                            </label>
-                            <label class="cursor-pointer">
-                                <input type="checkbox" name="interests" value="team-building" class="hidden peer">
-                                <span class="px-3 py-1.5 rounded-lg glass text-sm peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-colors">팀빌딩</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm mb-1">계약금액 (만원)</label>
-                            <input type="number" id="contract-amount" class="w-full px-4 py-2.5 rounded-lg" placeholder="예: 500">
-                        </div>
-                        <div>
-                            <label class="block text-sm mb-1">마지막 연락일</label>
-                            <input type="date" id="last-contact" class="w-full px-4 py-2.5 rounded-lg">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Notes -->
-                <div>
-                    <label class="block text-sm mb-1">메모</label>
-                    <textarea id="client-notes" rows="3" class="w-full px-4 py-2.5 rounded-lg resize-none" placeholder="고객사 관련 메모..."></textarea>
-                </div>
-
-                <!-- Submit -->
-                <div class="flex justify-end gap-3 pt-4 border-t border-white/10">
-                    <button type="button" onclick="closeModal()" class="px-6 py-2.5 rounded-lg glass hover:bg-white/10 transition-colors">
-                        취소
-                    </button>
-                    <button type="submit" class="px-6 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors font-medium">
-                        저장
-                    </button>
-                </div>
-            </form>
+      </div>
+      <div class="f-row">
+        <div class="f"><label>담당자명</label><input type="text" id="fContactName"></div>
+        <div class="f"><label>직책</label><input type="text" id="fContactTitle"></div>
+      </div>
+      <div class="f-row">
+        <div class="f"><label>전화번호</label><input type="tel" id="fContactPhone"></div>
+        <div class="f"><label>이메일</label><input type="email" id="fContactEmail"></div>
+      </div>
+      <div class="f"><label>관심 주제</label>
+        <div class="interests" id="fInterests">
+          <label><input type="checkbox" value="AI 리터러시"><span>AI 리터러시</span></label>
+          <label><input type="checkbox" value="AI 리더십"><span>AI 리더십</span></label>
+          <label><input type="checkbox" value="바이브코딩"><span>바이브코딩</span></label>
+          <label><input type="checkbox" value="디지털 전환"><span>디지털 전환</span></label>
+          <label><input type="checkbox" value="조직문화"><span>조직문화</span></label>
+          <label><input type="checkbox" value="코칭"><span>코칭</span></label>
         </div>
-    </div>
+      </div>
+      <div class="f"><label>메모</label><textarea id="fMemo"></textarea></div>
 
-    <!-- Client Detail Modal -->
-    <div id="detail-modal" class="modal fixed inset-0 z-50 items-center justify-center p-4 bg-black/70">
-        <div class="modal-content glass-dark rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div class="p-6 border-b border-white/10">
-                <div class="flex items-center justify-between">
-                    <h2 id="detail-company-name" class="text-xl font-bold">회사명</h2>
-                    <div class="flex items-center gap-2">
-                        <button onclick="editCurrentClient()" class="px-3 py-1.5 rounded-lg glass hover:bg-white/10 text-sm flex items-center gap-1">
-                            <i class="ri-edit-line"></i> 수정
-                        </button>
-                        <button onclick="deleteCurrentClient()" class="px-3 py-1.5 rounded-lg glass hover:bg-red-500/20 text-red-400 text-sm flex items-center gap-1">
-                            <i class="ri-delete-bin-line"></i> 삭제
-                        </button>
-                        <button onclick="closeDetailModal()" class="text-gray-400 hover:text-white ml-2">
-                            <i class="ri-close-line text-2xl"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Client Info -->
-                    <div class="space-y-4">
-                        <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">고객 정보</h3>
-                        <div class="glass rounded-xl p-4 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-400">상태</span>
-                                <span id="detail-status" class="px-3 py-1 rounded-full text-sm status-badge-lead">잠재고객</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-400">담당자</span>
-                                <span id="detail-contact"></span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-400">전화번호</span>
-                                <a id="detail-phone" href="#" class="text-indigo-400 hover:underline"></a>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-400">이메일</span>
-                                <a id="detail-email" href="#" class="text-indigo-400 hover:underline"></a>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-400">계약금액</span>
-                                <span id="detail-amount" class="font-semibold text-emerald-400"></span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-400">마지막 연락</span>
-                                <span id="detail-last-contact"></span>
-                            </div>
-                        </div>
+      <div class="detail-lectures hidden" id="detailLectures">
+        <h4>이 고객사 강의 이력</h4>
+        <div id="detailLectureList"></div>
+      </div>
 
-                        <div>
-                            <h4 class="text-sm text-gray-400 mb-2">관심 주제</h4>
-                            <div id="detail-interests" class="flex flex-wrap gap-2"></div>
-                        </div>
-
-                        <div>
-                            <h4 class="text-sm text-gray-400 mb-2">메모</h4>
-                            <div id="detail-notes" class="glass rounded-xl p-4 text-sm whitespace-pre-wrap"></div>
-                        </div>
-                    </div>
-
-                    <!-- Lecture History from lectures collection -->
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">강의 이력</h3>
-                            <span id="lecture-count" class="text-xs text-indigo-400">0건</span>
-                        </div>
-                        <div id="lecture-list" class="space-y-3 max-h-[400px] overflow-y-auto">
-                        </div>
-                        <div id="lecture-empty" class="hidden text-center py-8 text-gray-400">
-                            <i class="ri-presentation-line text-3xl mb-2"></i>
-                            <p class="text-sm">강의 이력이 없습니다.</p>
-                        </div>
-                    </div>
-
-                    <!-- Contact History -->
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider">상담 이력</h3>
-                            <button onclick="openHistoryForm()" class="text-indigo-400 hover:text-indigo-300 text-sm flex items-center gap-1">
-                                <i class="ri-add-line"></i> 추가
-                            </button>
-                        </div>
-
-                        <!-- Add History Form -->
-                        <div id="history-form" class="hidden glass rounded-xl p-4 space-y-3">
-                            <div class="grid grid-cols-2 gap-3">
-                                <select id="history-type" class="px-3 py-2 rounded-lg text-sm">
-                                    <option value="call">전화</option>
-                                    <option value="meeting">미팅</option>
-                                    <option value="email">이메일</option>
-                                    <option value="other">기타</option>
-                                </select>
-                                <input type="date" id="history-date" class="px-3 py-2 rounded-lg text-sm">
-                            </div>
-                            <textarea id="history-content" rows="2" class="w-full px-3 py-2 rounded-lg text-sm resize-none" placeholder="상담 내용..."></textarea>
-                            <div class="flex justify-end gap-2">
-                                <button type="button" onclick="closeHistoryForm()" class="px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:text-white">취소</button>
-                                <button type="button" onclick="saveHistory()" class="px-3 py-1.5 rounded-lg text-sm bg-indigo-600 hover:bg-indigo-500">저장</button>
-                            </div>
-                        </div>
-
-                        <div id="history-list" class="space-y-3 max-h-[400px] overflow-y-auto">
-                        </div>
-                        <div id="history-empty" class="hidden text-center py-8 text-gray-400">
-                            <i class="ri-chat-history-line text-3xl mb-2"></i>
-                            <p class="text-sm">상담 이력이 없습니다.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-danger hidden" id="deleteBtn" onclick="deleteClient()">삭제</button>
+        <div class="right">
+          <button type="button" class="btn btn-ghost" onclick="closeModal()">취소</button>
+          <button type="submit" class="btn btn-primary" id="saveBtn">저장</button>
         </div>
-    </div>
+      </div>
+    </form>
+  </div>
+</div>
 
-    <!-- Toast -->
-    <div id="toast" class="toast fixed bottom-6 right-6 px-6 py-3 rounded-xl shadow-lg z-50">
-        <span id="toast-message"></span>
-    </div>
+<div class="toast" id="toast"></div>
 
-    <!-- Firebase SDK (ES Module) -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import {
-            getFirestore,
-            collection,
-            addDoc,
-            updateDoc,
-            deleteDoc,
-            doc,
-            onSnapshot,
-            query,
-            orderBy,
-            where,
-            Timestamp
-        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import {
-            getAuth,
-            signInWithPopup,
-            signOut,
-            onAuthStateChanged,
-            GoogleAuthProvider
-        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+<script>
+  // ================ AWS 설정 (lectures.html과 토큰 공유) ================
+  const API_URL = 'https://tnibst6km5.execute-api.ap-northeast-2.amazonaws.com/prod';
+  const COGNITO_URL = 'https://cognito-idp.ap-northeast-2.amazonaws.com/';
+  const COGNITO_CLIENT_ID = '7dpeoqp3n1870th6u6qbsj09mu';
+  const TOKEN_KEY = 'ailab_tokens';
 
-        // Firebase Configuration (same as lectures.html)
-        const firebaseConfig = {
-            apiKey: "AIzaSyDwcyLezAW4nTlfmv6FYzjEe8RgDUgJXuY",
-            authDomain: "ai-leadership-lectures-d509b.firebaseapp.com",
-            projectId: "ai-leadership-lectures-d509b",
-            storageBucket: "ai-leadership-lectures-d509b.firebasestorage.app",
-            messagingSenderId: "132724154110",
-            appId: "1:132724154110:web:ab5f507a6aee2f583d8faf"
-        };
+  const STATUS = {
+    lead:        { label: '잠재고객', color: '#94a3b8' },
+    proposal:    { label: '제안중',   color: '#38bdf8' },
+    negotiation: { label: '협상중',   color: '#f59e0b' },
+    contract:    { label: '계약완료', color: '#10b981' },
+    lost:        { label: '실패',     color: '#ef4444' },
+  };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        const googleProvider = new GoogleAuthProvider();
+  let clients = [];
+  let lectures = [];      // 고객사별 이력 표시용 (읽기 전용)
+  let editingId = null;
+  let statusFilter = null;
 
-        // Collections
-        const clientsCollection = collection(db, 'clients');
-        const historyCollection = collection(db, 'clientHistory');
-        const lecturesCollection = collection(db, 'lectures');
+  // ================ 토큰/인증 ================
+  function saveTokens(t) { localStorage.setItem(TOKEN_KEY, JSON.stringify(t)); }
+  function loadTokens() { try { return JSON.parse(localStorage.getItem(TOKEN_KEY)); } catch (e) { return null; } }
+  function clearTokens() { localStorage.removeItem(TOKEN_KEY); }
+  function parseJwt(t) {
+    try { return JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))); }
+    catch (e) { return {}; }
+  }
+  async function cognito(target, body) {
+    const res = await fetch(COGNITO_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-amz-json-1.1', 'X-Amz-Target': 'AWSCognitoIdentityProviderService.' + target },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (!res.ok) throw data;
+    return data;
+  }
+  async function refreshTokens() {
+    const t = loadTokens();
+    if (!t || !t.refreshToken) return false;
+    try {
+      const out = await cognito('InitiateAuth', { AuthFlow: 'REFRESH_TOKEN_AUTH', ClientId: COGNITO_CLIENT_ID, AuthParameters: { REFRESH_TOKEN: t.refreshToken } });
+      const idToken = out.AuthenticationResult.IdToken;
+      saveTokens({ idToken: idToken, refreshToken: t.refreshToken, exp: parseJwt(idToken).exp });
+      return true;
+    } catch (e) { clearTokens(); return false; }
+  }
+  async function getIdToken() {
+    let t = loadTokens();
+    if (!t) return null;
+    if (t.exp && t.exp * 1000 < Date.now() + 60000) {
+      if (!await refreshTokens()) return null;
+      t = loadTokens();
+    }
+    return t.idToken;
+  }
+  async function api(path, opts) {
+    opts = opts || {};
+    const token = await getIdToken();
+    if (!token) { showLogin(); throw new Error('로그인이 필요합니다'); }
+    const res = await fetch(API_URL + path, Object.assign({}, opts, {
+      headers: Object.assign({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, opts.headers || {}),
+    }));
+    if (res.status === 401) {
+      if (await refreshTokens()) return api(path, opts);
+      showLogin();
+      throw new Error('세션이 만료되었습니다');
+    }
+    if (!res.ok) throw new Error('API 오류 ' + res.status);
+    return res.json();
+  }
 
-        // Allowed admin emails
-        const ALLOWED_ADMINS = [
-            'hyunkim.ceo@gmail.com',
-            'hyunnet@gmail.com'
-        ];
+  function showLogin() {
+    document.getElementById('loginScreen').classList.remove('hidden');
+    document.getElementById('mainContent').style.display = 'none';
+  }
+  function hideLogin() {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('mainContent').style.display = 'block';
+  }
+  function showLoginError(msg) {
+    const el = document.getElementById('loginError');
+    el.textContent = msg;
+    el.classList.add('show');
+  }
 
-        // ==================== Constants ====================
-        const STATUS_CONFIG = {
-            lead: { label: '잠재고객', color: 'indigo' },
-            proposal: { label: '제안중', color: 'amber' },
-            negotiation: { label: '협상중', color: 'blue' },
-            contract: { label: '계약완료', color: 'emerald' },
-            lost: { label: '실패', color: 'red' }
-        };
-
-        const INTEREST_LABELS = {
-            'ai-leadership': 'AI 리더십',
-            'digital-transformation': '디지털 전환',
-            'innovation': '혁신',
-            'leadership': '리더십',
-            'communication': '소통',
-            'team-building': '팀빌딩'
-        };
-
-        const HISTORY_TYPE_ICONS = {
-            call: 'ri-phone-line',
-            meeting: 'ri-team-line',
-            email: 'ri-mail-line',
-            other: 'ri-chat-3-line'
-        };
-
-        // ==================== Global State ====================
-        let clients = [];
-        let lectures = [];
-        let currentClientId = null;
-        let currentView = 'kanban';
-        let unsubscribeClients = null;
-        let unsubscribeLectures = null;
-        let currentUser = null;
-
-        // ==================== DOM Elements ====================
-        const kanbanView = document.getElementById('kanban-view');
-        const listView = document.getElementById('list-view');
-        const kanbanViewBtn = document.getElementById('kanban-view-btn');
-        const listViewBtn = document.getElementById('list-view-btn');
-        const searchInput = document.getElementById('search-input');
-        const filterStatus = document.getElementById('filter-status');
-        const filterInterest = document.getElementById('filter-interest');
-        const exportBtn = document.getElementById('export-btn');
-        const exportMenu = document.getElementById('export-menu');
-        const clientModal = document.getElementById('client-modal');
-        const detailModal = document.getElementById('detail-modal');
-        const clientForm = document.getElementById('client-form');
-
-        // ==================== Authentication ====================
-        window.signInWithGoogle = async function() {
-            try {
-                document.getElementById('googleLoginBtn').disabled = true;
-                const result = await signInWithPopup(auth, googleProvider);
-                const user = result.user;
-
-                if (!ALLOWED_ADMINS.includes(user.email)) {
-                    await signOut(auth);
-                    showLoginError('접근 권한이 없습니다. 관리자에게 문의하세요.');
-                    return;
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
-                    showLoginError('로그인 실패: ' + error.message);
-                }
-            } finally {
-                document.getElementById('googleLoginBtn').disabled = false;
-            }
-        };
-
-        window.signOutUser = async function() {
-            try {
-                if (unsubscribeClients) unsubscribeClients();
-                if (unsubscribeLectures) unsubscribeLectures();
-                await signOut(auth);
-                showToast('로그아웃되었습니다.');
-            } catch (error) {
-                console.error('Logout error:', error);
-                showToast('로그아웃 실패', 'error');
-            }
-        };
-
-        function showLoginError(message) {
-            const errorEl = document.getElementById('loginError');
-            errorEl.textContent = message;
-            errorEl.classList.remove('hidden');
+  window.signInCognito = async function (e) {
+    e.preventDefault();
+    document.getElementById('loginError').classList.remove('show');
+    const btn = document.getElementById('loginBtn');
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const newPwEl = document.getElementById('loginNewPassword');
+    btn.disabled = true;
+    try {
+      let out = await cognito('InitiateAuth', {
+        AuthFlow: 'USER_PASSWORD_AUTH', ClientId: COGNITO_CLIENT_ID,
+        AuthParameters: { USERNAME: email, PASSWORD: password },
+      });
+      if (out.ChallengeName === 'NEW_PASSWORD_REQUIRED') {
+        if (newPwEl.style.display === 'none' || !newPwEl.value) {
+          newPwEl.style.display = 'block';
+          showLoginError('첫 로그인입니다. 새 비밀번호를 입력하고 다시 로그인을 누르세요.');
+          return;
         }
-
-        onAuthStateChanged(auth, (user) => {
-            if (user && ALLOWED_ADMINS.includes(user.email)) {
-                currentUser = user;
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainContent').classList.remove('hidden');
-                document.getElementById('userPhoto').src = user.photoURL || '';
-                startRealtimeSync();
-            } else {
-                currentUser = null;
-                if (unsubscribeClients) unsubscribeClients();
-                if (unsubscribeLectures) unsubscribeLectures();
-                clients = [];
-                lectures = [];
-                document.getElementById('loginScreen').classList.remove('hidden');
-                document.getElementById('mainContent').classList.add('hidden');
-            }
+        out = await cognito('RespondToAuthChallenge', {
+          ClientId: COGNITO_CLIENT_ID, ChallengeName: 'NEW_PASSWORD_REQUIRED',
+          Session: out.Session, ChallengeResponses: { USERNAME: email, NEW_PASSWORD: newPwEl.value },
         });
-
-        // ==================== Real-time Sync ====================
-        function startRealtimeSync() {
-            // Clients
-            const clientsQuery = query(clientsCollection, orderBy('updatedAt', 'desc'));
-            unsubscribeClients = onSnapshot(clientsQuery, (snapshot) => {
-                clients = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                updateSyncStatus('connected');
-                renderCurrentView();
-                updateStats();
-            }, (error) => {
-                console.error('Clients sync error:', error);
-                updateSyncStatus('error');
-            });
-
-            // Lectures (for linking)
-            const lecturesQuery = query(lecturesCollection, orderBy('date', 'desc'));
-            unsubscribeLectures = onSnapshot(lecturesQuery, (snapshot) => {
-                lectures = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            }, (error) => {
-                console.error('Lectures sync error:', error);
-            });
-        }
-
-        function updateSyncStatus(status) {
-            const el = document.getElementById('syncStatus');
-            if (status === 'connected') {
-                el.innerHTML = '<i class="ri-wifi-line text-emerald-400"></i> <span class="text-emerald-400">연결됨</span>';
-                el.className = 'text-xs px-2 py-1 rounded-full bg-emerald-500/20';
-            } else if (status === 'error') {
-                el.innerHTML = '<i class="ri-wifi-off-line text-red-400"></i> <span class="text-red-400">오류</span>';
-                el.className = 'text-xs px-2 py-1 rounded-full bg-red-500/20';
-            }
-        }
-
-        // ==================== Event Listeners ====================
-        function setupEventListeners() {
-            kanbanViewBtn.addEventListener('click', () => switchView('kanban'));
-            listViewBtn.addEventListener('click', () => switchView('list'));
-
-            searchInput.addEventListener('input', debounce(renderCurrentView, 300));
-            filterStatus.addEventListener('change', renderCurrentView);
-            filterInterest.addEventListener('change', renderCurrentView);
-
-            exportBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                exportMenu.classList.toggle('hidden');
-            });
-            document.addEventListener('click', () => exportMenu.classList.add('hidden'));
-
-            clientForm.addEventListener('submit', handleFormSubmit);
-
-            clientModal.addEventListener('click', (e) => {
-                if (e.target === clientModal) closeModal();
-            });
-            detailModal.addEventListener('click', (e) => {
-                if (e.target === detailModal) closeDetailModal();
-            });
-
-            setupDragAndDrop();
-        }
-
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => { clearTimeout(timeout); func(...args); };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        // ==================== View ====================
-        function switchView(view) {
-            currentView = view;
-            if (view === 'kanban') {
-                kanbanView.classList.remove('hidden');
-                listView.classList.add('hidden');
-                kanbanViewBtn.classList.add('active');
-                listViewBtn.classList.remove('active');
-            } else {
-                kanbanView.classList.add('hidden');
-                listView.classList.remove('hidden');
-                kanbanViewBtn.classList.remove('active');
-                listViewBtn.classList.add('active');
-            }
-            renderCurrentView();
-        }
-
-        function renderCurrentView() {
-            const filtered = getFilteredClients();
-            if (currentView === 'kanban') {
-                renderKanban(filtered);
-            } else {
-                renderList(filtered);
-            }
-        }
-
-        function getFilteredClients() {
-            const searchQuery = searchInput.value.toLowerCase().trim();
-            const statusFilter = filterStatus.value;
-            const interestFilter = filterInterest.value;
-
-            return clients.filter(client => {
-                const matchesSearch = !searchQuery ||
-                    client.companyName?.toLowerCase().includes(searchQuery) ||
-                    client.contactName?.toLowerCase().includes(searchQuery) ||
-                    client.email?.toLowerCase().includes(searchQuery);
-                const matchesStatus = statusFilter === 'all' || client.status === statusFilter;
-                const matchesInterest = interestFilter === 'all' ||
-                    (Array.isArray(client.interests) && client.interests.includes(interestFilter));
-                return matchesSearch && matchesStatus && matchesInterest;
-            });
-        }
-
-        // ==================== Kanban Render ====================
-        function renderKanban(filteredClients) {
-            const columns = document.querySelectorAll('.kanban-column');
-            columns.forEach(column => {
-                const status = column.dataset.status;
-                const cardsContainer = column.querySelector('.kanban-cards');
-                const countEl = column.querySelector('.kanban-count');
-
-                const statusClients = filteredClients.filter(c => c.status === status);
-                countEl.textContent = statusClients.length;
-
-                cardsContainer.innerHTML = statusClients.map(client => {
-                    const lectureCount = getLectureCountForClient(client.companyName);
-                    return `
-                    <div class="kanban-card glass rounded-xl p-4 cursor-pointer"
-                         data-id="${client.id}"
-                         draggable="true"
-                         onclick="window.openDetailModal('${client.id}')">
-                        <div class="flex items-start justify-between mb-2">
-                            <h4 class="font-semibold text-sm">${escapeHtml(client.companyName)}</h4>
-                            ${client.contractAmount ? `<span class="text-xs text-emerald-400 font-medium">${formatAmount(client.contractAmount)}</span>` : ''}
-                        </div>
-                        ${client.contactName ? `
-                            <div class="text-xs text-gray-400 mb-2">
-                                <i class="ri-user-line mr-1"></i>
-                                ${escapeHtml(client.contactName)}${client.contactTitle ? ` (${escapeHtml(client.contactTitle)})` : ''}
-                            </div>
-                        ` : ''}
-                        ${client.interests && client.interests.length > 0 ? `
-                            <div class="flex flex-wrap gap-1 mb-2">
-                                ${client.interests.slice(0, 2).map(i => `<span class="text-[10px] px-2 py-0.5 rounded-full bg-white/10">${INTEREST_LABELS[i] || i}</span>`).join('')}
-                                ${client.interests.length > 2 ? `<span class="text-[10px] px-2 py-0.5 rounded-full bg-white/10">+${client.interests.length - 2}</span>` : ''}
-                            </div>
-                        ` : ''}
-                        <div class="flex items-center justify-between text-[10px] text-gray-500">
-                            <span><i class="ri-time-line mr-1"></i>${formatDate(client.lastContactDate)}</span>
-                            ${lectureCount > 0 ? `<span class="text-indigo-400"><i class="ri-presentation-line"></i> ${lectureCount}</span>` : ''}
-                        </div>
-                    </div>
-                `}).join('');
-            });
-        }
-
-        // ==================== List Render ====================
-        function renderList(filteredClients) {
-            const tableBody = document.getElementById('client-table-body');
-            const emptyList = document.getElementById('empty-list');
-
-            if (filteredClients.length === 0) {
-                tableBody.innerHTML = '';
-                emptyList.classList.remove('hidden');
-                return;
-            }
-
-            emptyList.classList.add('hidden');
-
-            tableBody.innerHTML = filteredClients.map(client => {
-                const lectureCount = getLectureCountForClient(client.companyName);
-                return `
-                <tr class="hover:bg-white/5 cursor-pointer transition-colors" onclick="window.openDetailModal('${client.id}')">
-                    <td class="px-4 py-3">
-                        <div class="font-medium">${escapeHtml(client.companyName)}</div>
-                        ${client.interests && client.interests.length > 0 ? `<div class="text-xs text-gray-500 mt-1">${client.interests.map(i => INTEREST_LABELS[i] || i).join(', ')}</div>` : ''}
-                    </td>
-                    <td class="px-4 py-3">
-                        <div>${escapeHtml(client.contactName || '-')}</div>
-                        ${client.contactTitle ? `<div class="text-xs text-gray-500">${escapeHtml(client.contactTitle)}</div>` : ''}
-                    </td>
-                    <td class="px-4 py-3 text-sm">
-                        ${client.phone ? `<div><i class="ri-phone-line mr-1 text-gray-500"></i>${escapeHtml(client.phone)}</div>` : ''}
-                        ${client.email ? `<div class="text-gray-400"><i class="ri-mail-line mr-1"></i>${escapeHtml(client.email)}</div>` : ''}
-                        ${!client.phone && !client.email ? '-' : ''}
-                    </td>
-                    <td class="px-4 py-3">
-                        <span class="px-3 py-1 rounded-full text-xs status-badge-${client.status}">${STATUS_CONFIG[client.status]?.label || client.status}</span>
-                    </td>
-                    <td class="px-4 py-3 text-emerald-400 font-medium">${client.contractAmount ? formatAmount(client.contractAmount) : '-'}</td>
-                    <td class="px-4 py-3 text-sm text-gray-400">${formatDate(client.lastContactDate)}</td>
-                    <td class="px-4 py-3 text-center text-indigo-400">${lectureCount > 0 ? lectureCount + '건' : '-'}</td>
-                    <td class="px-4 py-3 text-center">
-                        <button onclick="event.stopPropagation(); window.openEditModal('${client.id}')" class="p-2 hover:bg-white/10 rounded-lg transition-colors text-gray-400 hover:text-white">
-                            <i class="ri-edit-line"></i>
-                        </button>
-                        <button onclick="event.stopPropagation(); window.confirmDelete('${client.id}')" class="p-2 hover:bg-red-500/20 rounded-lg transition-colors text-gray-400 hover:text-red-400">
-                            <i class="ri-delete-bin-line"></i>
-                        </button>
-                    </td>
-                </tr>
-            `}).join('');
-        }
-
-        // ==================== Stats ====================
-        function updateStats() {
-            document.getElementById('stat-lead').textContent = clients.filter(c => c.status === 'lead').length;
-            document.getElementById('stat-proposal').textContent = clients.filter(c => c.status === 'proposal').length;
-            document.getElementById('stat-negotiation').textContent = clients.filter(c => c.status === 'negotiation').length;
-            document.getElementById('stat-contract').textContent = clients.filter(c => c.status === 'contract').length;
-
-            const totalAmount = clients
-                .filter(c => c.status === 'contract')
-                .reduce((sum, c) => sum + (parseInt(c.contractAmount) || 0), 0);
-            document.getElementById('stat-total-amount').textContent = formatAmount(totalAmount);
-        }
-
-        // ==================== Drag & Drop ====================
-        function setupDragAndDrop() {
-            document.addEventListener('dragstart', (e) => {
-                if (e.target.classList.contains('kanban-card')) {
-                    e.target.classList.add('dragging');
-                    e.dataTransfer.setData('text/plain', e.target.dataset.id);
-                }
-            });
-
-            document.addEventListener('dragend', (e) => {
-                if (e.target.classList.contains('kanban-card')) {
-                    e.target.classList.remove('dragging');
-                }
-                document.querySelectorAll('.kanban-column').forEach(col => col.classList.remove('drag-over'));
-            });
-
-            document.querySelectorAll('.kanban-column').forEach(column => {
-                column.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    column.classList.add('drag-over');
-                });
-
-                column.addEventListener('dragleave', (e) => {
-                    if (!column.contains(e.relatedTarget)) {
-                        column.classList.remove('drag-over');
-                    }
-                });
-
-                column.addEventListener('drop', async (e) => {
-                    e.preventDefault();
-                    column.classList.remove('drag-over');
-
-                    const clientId = e.dataTransfer.getData('text/plain');
-                    const newStatus = column.dataset.status;
-                    const client = clients.find(c => c.id === clientId);
-
-                    if (client && client.status !== newStatus) {
-                        try {
-                            await updateDoc(doc(db, 'clients', clientId), {
-                                status: newStatus,
-                                updatedAt: Timestamp.now()
-                            });
-                            showToast(`${client.companyName}이(가) "${STATUS_CONFIG[newStatus].label}"로 이동되었습니다.`);
-                        } catch (error) {
-                            console.error('Status update error:', error);
-                            showToast('상태 변경 실패', 'error');
-                        }
-                    }
-                });
-            });
-        }
-
-        // ==================== Modal Functions ====================
-        window.openAddModal = function() {
-            document.getElementById('modal-title').textContent = '고객사 추가';
-            document.getElementById('client-id').value = '';
-            clientForm.reset();
-            document.getElementById('last-contact').value = new Date().toISOString().split('T')[0];
-            clientModal.classList.add('active');
-        };
-
-        window.openEditModal = function(id) {
-            const client = clients.find(c => c.id === id);
-            if (!client) return;
-
-            document.getElementById('modal-title').textContent = '고객사 수정';
-            document.getElementById('client-id').value = client.id;
-            document.getElementById('company-name').value = client.companyName || '';
-            document.getElementById('client-status').value = client.status || 'lead';
-            document.getElementById('contact-name').value = client.contactName || '';
-            document.getElementById('contact-title').value = client.contactTitle || '';
-            document.getElementById('contact-phone').value = client.phone || '';
-            document.getElementById('contact-email').value = client.email || '';
-            document.getElementById('contract-amount').value = client.contractAmount || '';
-            document.getElementById('last-contact').value = client.lastContactDate || '';
-            document.getElementById('client-notes').value = client.notes || '';
-
-            document.querySelectorAll('input[name="interests"]').forEach(cb => {
-                cb.checked = Array.isArray(client.interests) && client.interests.includes(cb.value);
-            });
-
-            clientModal.classList.add('active');
-        };
-
-        window.closeModal = function() {
-            clientModal.classList.remove('active');
-        };
-
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-
-            const clientId = document.getElementById('client-id').value;
-            const interests = Array.from(document.querySelectorAll('input[name="interests"]:checked')).map(cb => cb.value);
-
-            const clientData = {
-                companyName: document.getElementById('company-name').value.trim(),
-                status: document.getElementById('client-status').value,
-                contactName: document.getElementById('contact-name').value.trim(),
-                contactTitle: document.getElementById('contact-title').value.trim(),
-                phone: document.getElementById('contact-phone').value.trim(),
-                email: document.getElementById('contact-email').value.trim(),
-                contractAmount: parseInt(document.getElementById('contract-amount').value) || 0,
-                lastContactDate: document.getElementById('last-contact').value,
-                notes: document.getElementById('client-notes').value.trim(),
-                interests: interests,
-                updatedAt: Timestamp.now()
-            };
-
-            try {
-                if (clientId) {
-                    await updateDoc(doc(db, 'clients', clientId), clientData);
-                    showToast(`${clientData.companyName} 정보가 수정되었습니다.`);
-                } else {
-                    clientData.createdAt = Timestamp.now();
-                    await addDoc(clientsCollection, clientData);
-                    showToast(`${clientData.companyName}이(가) 추가되었습니다.`);
-                }
-                closeModal();
-            } catch (error) {
-                console.error('Save error:', error);
-                showToast('저장 실패: ' + error.message, 'error');
-            }
-        }
-
-        // ==================== Detail Modal ====================
-        window.openDetailModal = async function(id) {
-            const client = clients.find(c => c.id === id);
-            if (!client) return;
-
-            currentClientId = id;
-
-            document.getElementById('detail-company-name').textContent = client.companyName;
-            document.getElementById('detail-status').textContent = STATUS_CONFIG[client.status]?.label || client.status;
-            document.getElementById('detail-status').className = `px-3 py-1 rounded-full text-sm status-badge-${client.status}`;
-            document.getElementById('detail-contact').textContent = client.contactName ?
-                `${client.contactName}${client.contactTitle ? ` (${client.contactTitle})` : ''}` : '-';
-
-            const phoneEl = document.getElementById('detail-phone');
-            phoneEl.textContent = client.phone || '-';
-            phoneEl.href = client.phone ? `tel:${client.phone}` : '#';
-
-            const emailEl = document.getElementById('detail-email');
-            emailEl.textContent = client.email || '-';
-            emailEl.href = client.email ? `mailto:${client.email}` : '#';
-
-            document.getElementById('detail-amount').textContent = client.contractAmount ? formatAmount(client.contractAmount) : '-';
-            document.getElementById('detail-last-contact').textContent = formatDate(client.lastContactDate);
-
-            const interestsEl = document.getElementById('detail-interests');
-            if (client.interests && client.interests.length > 0) {
-                interestsEl.innerHTML = client.interests.map(i =>
-                    `<span class="px-3 py-1 rounded-full text-sm glass">${INTEREST_LABELS[i] || i}</span>`
-                ).join('');
-            } else {
-                interestsEl.innerHTML = '<span class="text-gray-500">-</span>';
-            }
-
-            document.getElementById('detail-notes').textContent = client.notes || '메모가 없습니다.';
-
-            // Load lectures for this client
-            loadLecturesForClient(client.companyName);
-
-            // Load contact history
-            loadHistory(id);
-
-            detailModal.classList.add('active');
-        };
-
-        window.closeDetailModal = function() {
-            detailModal.classList.remove('active');
-            currentClientId = null;
-        };
-
-        window.editCurrentClient = function() {
-            if (currentClientId) {
-                closeDetailModal();
-                openEditModal(currentClientId);
-            }
-        };
-
-        window.deleteCurrentClient = function() {
-            if (currentClientId) {
-                confirmDelete(currentClientId);
-            }
-        };
-
-        window.confirmDelete = async function(id) {
-            const client = clients.find(c => c.id === id);
-            if (!client) return;
-
-            if (confirm(`"${client.companyName}"을(를) 정말 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) {
-                try {
-                    await deleteDoc(doc(db, 'clients', id));
-                    showToast(`${client.companyName}이(가) 삭제되었습니다.`, 'warning');
-                    closeDetailModal();
-                } catch (error) {
-                    console.error('Delete error:', error);
-                    showToast('삭제 실패', 'error');
-                }
-            }
-        };
-
-        // ==================== Lectures Integration ====================
-        function getLectureCountForClient(companyName) {
-            if (!companyName || !lectures.length) return 0;
-            const normalizedName = companyName.toLowerCase().trim();
-            return lectures.filter(l =>
-                l.organization?.toLowerCase().trim().includes(normalizedName) ||
-                normalizedName.includes(l.organization?.toLowerCase().trim())
-            ).length;
-        }
-
-        function loadLecturesForClient(companyName) {
-            const lectureList = document.getElementById('lecture-list');
-            const lectureEmpty = document.getElementById('lecture-empty');
-            const lectureCount = document.getElementById('lecture-count');
-
-            const normalizedName = companyName.toLowerCase().trim();
-            const clientLectures = lectures.filter(l =>
-                l.organization?.toLowerCase().trim().includes(normalizedName) ||
-                normalizedName.includes(l.organization?.toLowerCase().trim())
-            );
-
-            lectureCount.textContent = clientLectures.length + '건';
-
-            if (clientLectures.length === 0) {
-                lectureList.innerHTML = '';
-                lectureEmpty.classList.remove('hidden');
-                return;
-            }
-
-            lectureEmpty.classList.add('hidden');
-            lectureList.innerHTML = clientLectures.map(l => `
-                <div class="glass rounded-xl p-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm font-medium">${escapeHtml(l.topic || l.title || '강의')}</span>
-                        <span class="text-xs text-gray-500">${formatDate(l.date)}</span>
-                    </div>
-                    <div class="text-xs text-gray-400">
-                        ${l.participants ? `<span><i class="ri-group-line mr-1"></i>${l.participants}명</span>` : ''}
-                        ${l.fee ? `<span class="ml-2 text-emerald-400"><i class="ri-money-dollar-circle-line mr-1"></i>${formatAmount(l.fee)}</span>` : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // ==================== Contact History ====================
-        async function loadHistory(clientId) {
-            const historyList = document.getElementById('history-list');
-            const historyEmpty = document.getElementById('history-empty');
-
-            try {
-                const q = query(historyCollection, where('clientId', '==', clientId), orderBy('date', 'desc'));
-                const unsubHistory = onSnapshot(q, (snapshot) => {
-                    const history = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-                    if (history.length === 0) {
-                        historyList.innerHTML = '';
-                        historyEmpty.classList.remove('hidden');
-                        return;
-                    }
-
-                    historyEmpty.classList.add('hidden');
-                    historyList.innerHTML = history.map(h => `
-                        <div class="glass rounded-xl p-4">
-                            <div class="flex items-center gap-2 mb-2">
-                                <i class="${HISTORY_TYPE_ICONS[h.type] || 'ri-chat-3-line'} text-indigo-400"></i>
-                                <span class="text-sm font-medium">${getHistoryTypeLabel(h.type)}</span>
-                                <span class="text-xs text-gray-500 ml-auto">${formatDate(h.date)}</span>
-                            </div>
-                            <p class="text-sm text-gray-300">${escapeHtml(h.content)}</p>
-                        </div>
-                    `).join('');
-                });
-            } catch (error) {
-                console.error('History load error:', error);
-            }
-        }
-
-        function getHistoryTypeLabel(type) {
-            const labels = { call: '전화', meeting: '미팅', email: '이메일', other: '기타' };
-            return labels[type] || type;
-        }
-
-        window.openHistoryForm = function() {
-            document.getElementById('history-form').classList.remove('hidden');
-            document.getElementById('history-date').value = new Date().toISOString().split('T')[0];
-        };
-
-        window.closeHistoryForm = function() {
-            document.getElementById('history-form').classList.add('hidden');
-            document.getElementById('history-content').value = '';
-        };
-
-        window.saveHistory = async function() {
-            const type = document.getElementById('history-type').value;
-            const date = document.getElementById('history-date').value;
-            const content = document.getElementById('history-content').value.trim();
-
-            if (!content) {
-                showToast('상담 내용을 입력해주세요.', 'error');
-                return;
-            }
-
-            try {
-                await addDoc(historyCollection, {
-                    clientId: currentClientId,
-                    type,
-                    date,
-                    content,
-                    createdAt: Timestamp.now()
-                });
-
-                // Update last contact date
-                await updateDoc(doc(db, 'clients', currentClientId), {
-                    lastContactDate: date,
-                    updatedAt: Timestamp.now()
-                });
-
-                showToast('상담 이력이 추가되었습니다.');
-                closeHistoryForm();
-            } catch (error) {
-                console.error('Save history error:', error);
-                showToast('저장 실패', 'error');
-            }
-        };
-
-        // ==================== Export ====================
-        window.exportCSV = function() {
-            const statusLabels = {
-                lead: '잠재고객', proposal: '제안중', negotiation: '협상중', contract: '계약완료', lost: '실패'
-            };
-
-            const headers = ['회사명', '담당자', '직책', '전화번호', '이메일', '상태', '관심 주제', '계약금액', '마지막연락일', '강의수', '메모'];
-            const rows = clients.map(c => [
-                c.companyName,
-                c.contactName,
-                c.contactTitle,
-                c.phone,
-                c.email,
-                statusLabels[c.status] || c.status,
-                Array.isArray(c.interests) ? c.interests.map(i => INTEREST_LABELS[i] || i).join(', ') : '',
-                c.contractAmount,
-                c.lastContactDate,
-                getLectureCountForClient(c.companyName),
-                c.notes?.replace(/\n/g, ' ')
-            ]);
-
-            const csvContent = '\uFEFF' + [headers, ...rows]
-                .map(row => row.map(cell => `"${cell || ''}"`).join(','))
-                .join('\n');
-
-            downloadFile(csvContent, `crm-clients-${getDateString()}.csv`, 'text/csv;charset=utf-8');
-            showToast('CSV 파일이 다운로드되었습니다.');
-        };
-
-        window.exportJSON = function() {
-            const data = clients.map(c => ({
-                ...c,
-                lectureCount: getLectureCountForClient(c.companyName)
-            }));
-            downloadFile(JSON.stringify(data, null, 2), `crm-clients-${getDateString()}.json`, 'application/json');
-            showToast('JSON 파일이 다운로드되었습니다.');
-        };
-
-        function downloadFile(content, filename, type) {
-            const blob = new Blob([content], { type });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        // ==================== Utilities ====================
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function formatAmount(amount) {
-            if (!amount) return '-';
-            return Number(amount).toLocaleString() + '만원';
-        }
-
-        function formatDate(dateStr) {
-            if (!dateStr) return '-';
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' });
-        }
-
-        function getDateString() {
-            return new Date().toISOString().split('T')[0];
-        }
-
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toast-message');
-            toastMessage.textContent = message;
-            toast.className = 'toast fixed bottom-6 right-6 px-6 py-3 rounded-xl shadow-lg z-50';
-
-            if (type === 'success') toast.classList.add('bg-emerald-600');
-            else if (type === 'warning') toast.classList.add('bg-amber-600');
-            else if (type === 'error') toast.classList.add('bg-red-600');
-
-            toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 3000);
-        }
-
-        // ==================== Initialize ====================
-        setupEventListeners();
-    </script>
+      }
+      const idToken = out.AuthenticationResult.IdToken;
+      saveTokens({ idToken: idToken, refreshToken: out.AuthenticationResult.RefreshToken, exp: parseJwt(idToken).exp });
+      hideLogin();
+      await boot();
+    } catch (err) {
+      const type = err.__type || '';
+      if (type.indexOf('NotAuthorized') !== -1) showLoginError('이메일 또는 비밀번호가 올바르지 않습니다.');
+      else showLoginError('로그인 실패: ' + (err.message || type || '오류'));
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  window.signOutUser = function () {
+    clearTokens();
+    clients = [];
+    showLogin();
+  };
+
+  // ================ 데이터 ================
+  async function boot() {
+    try {
+      const [c, l] = await Promise.all([api('/clients'), api('/lectures')]);
+      clients = c.items || [];
+      lectures = l.items || [];
+      render();
+    } catch (e) {
+      toast('데이터 로드 실패: ' + e.message, true);
+    }
+  }
+
+  function lectureCountFor(name) {
+    if (!name) return 0;
+    return lectures.filter(l => (l.client || '').trim() === name.trim()).length;
+  }
+
+  // ================ 렌더 ================
+  function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+  function render() {
+    // 파이프라인 요약
+    const pipe = document.getElementById('pipeline');
+    pipe.innerHTML = Object.entries(STATUS).map(([key, s]) => {
+      const n = clients.filter(c => c.status === key).length;
+      return `<div class="pipe-card ${statusFilter === key ? 'on' : ''}" style="--st:${s.color}" onclick="toggleFilter('${key}')">
+        <div class="n">${n}</div><div class="l">${s.label}</div></div>`;
+    }).join('');
+
+    // 목록
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    let list = clients.slice().sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+    if (statusFilter) list = list.filter(c => c.status === statusFilter);
+    if (q) list = list.filter(c =>
+      (c.companyName || '').toLowerCase().includes(q) ||
+      (c.contactName || '').toLowerCase().includes(q));
+
+    const el = document.getElementById('clientList');
+    if (!list.length) {
+      el.innerHTML = `<div class="empty">${clients.length ? '조건에 맞는 고객사가 없습니다.' : '아직 등록된 고객사가 없습니다.<br>+ 고객사 추가로 시작하세요.'}</div>`;
+      return;
+    }
+    el.innerHTML = list.map(c => {
+      const s = STATUS[c.status] || STATUS.lead;
+      const cnt = lectureCountFor(c.companyName);
+      return `<div class="client-card" onclick="openModal('${c.id}')">
+        <div class="top">
+          <h3>${esc(c.companyName)}</h3>
+          <span class="badge" style="--st:${s.color}">${s.label}</span>
+        </div>
+        <div class="contact">${esc(c.contactName || '담당자 미등록')}${c.contactTitle ? ' · ' + esc(c.contactTitle) : ''}</div>
+        <div class="meta">
+          ${cnt ? `<span class="tagchip">강의 ${cnt}건</span>` : ''}
+          ${(c.interests || []).slice(0, 3).map(i => `<span class="tagchip">${esc(i)}</span>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  window.toggleFilter = function (key) {
+    statusFilter = statusFilter === key ? null : key;
+    render();
+  };
+  document.getElementById('searchInput').addEventListener('input', render);
+
+  // ================ 모달 ================
+  window.openModal = function (id) {
+    editingId = id || null;
+    const c = id ? (clients.find(x => x.id === id) || {}) : {};
+    document.getElementById('modalTitle').textContent = id ? '고객사 정보' : '고객사 추가';
+    document.getElementById('fCompany').value = c.companyName || '';
+    document.getElementById('fStatus').value = c.status || 'lead';
+    document.getElementById('fContactName').value = c.contactName || '';
+    document.getElementById('fContactTitle').value = c.contactTitle || '';
+    document.getElementById('fContactPhone').value = c.contactPhone || '';
+    document.getElementById('fContactEmail').value = c.contactEmail || '';
+    document.getElementById('fMemo').value = c.memo || '';
+    document.querySelectorAll('#fInterests input').forEach(cb => {
+      cb.checked = (c.interests || []).includes(cb.value);
+    });
+    document.getElementById('deleteBtn').classList.toggle('hidden', !id);
+
+    // 강의 이력
+    const dl = document.getElementById('detailLectures');
+    if (id && c.companyName) {
+      const rows = lectures
+        .filter(l => (l.client || '').trim() === c.companyName.trim())
+        .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+      if (rows.length) {
+        dl.classList.remove('hidden');
+        document.getElementById('detailLectureList').innerHTML = rows.slice(0, 8).map(l =>
+          `<div class="dl-item"><span>${esc(l.name)}</span><span class="d">${esc(l.date)}</span></div>`
+        ).join('') + (rows.length > 8 ? `<div class="dl-item"><span style="color:var(--ink-mute)">외 ${rows.length - 8}건</span></div>` : '');
+      } else dl.classList.add('hidden');
+    } else dl.classList.add('hidden');
+
+    document.getElementById('modalBg').classList.add('open');
+  };
+  window.closeModal = function () {
+    document.getElementById('modalBg').classList.remove('open');
+  };
+  document.getElementById('modalBg').addEventListener('click', (e) => {
+    if (e.target.id === 'modalBg') closeModal();
+  });
+
+  window.saveClient = async function (e) {
+    e.preventDefault();
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true;
+    const payload = {
+      companyName: document.getElementById('fCompany').value.trim(),
+      status: document.getElementById('fStatus').value,
+      contactName: document.getElementById('fContactName').value.trim(),
+      contactTitle: document.getElementById('fContactTitle').value.trim(),
+      contactPhone: document.getElementById('fContactPhone').value.trim(),
+      contactEmail: document.getElementById('fContactEmail').value.trim(),
+      memo: document.getElementById('fMemo').value.trim(),
+      interests: [...document.querySelectorAll('#fInterests input:checked')].map(cb => cb.value),
+    };
+    try {
+      if (editingId) await api('/clients/' + encodeURIComponent(editingId), { method: 'PUT', body: JSON.stringify(payload) });
+      else await api('/clients', { method: 'POST', body: JSON.stringify(payload) });
+      toast(editingId ? '수정되었습니다.' : '등록되었습니다.');
+      closeModal();
+      await boot();
+    } catch (err) {
+      toast('저장 실패: ' + err.message, true);
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  window.deleteClient = async function () {
+    if (!editingId) return;
+    const c = clients.find(x => x.id === editingId);
+    if (!confirm((c ? c.companyName : '') + ' 고객사를 삭제할까요?')) return;
+    try {
+      await api('/clients/' + encodeURIComponent(editingId), { method: 'DELETE' });
+      toast('삭제되었습니다.');
+      closeModal();
+      await boot();
+    } catch (err) {
+      toast('삭제 실패: ' + err.message, true);
+    }
+  };
+
+  // ================ 토스트 ================
+  let toastTimer = null;
+  function toast(msg, isError) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show' + (isError ? ' error' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+  }
+
+  // ================ 초기화 ================
+  (async function () {
+    const token = await getIdToken();
+    if (token) { hideLogin(); await boot(); }
+    else showLogin();
+  })();
+</script>
+
+<!-- AI 비서 패널 -->
+<script src="/js/assistant-panel.js" defer></script>
 </body>
 </html>
