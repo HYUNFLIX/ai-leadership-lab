@@ -149,7 +149,10 @@
             <div class="container">
                 <div class="hero-grid">
                     <div class="hero-content">
-                        <span class="hero-badge animate-fade-in">AI Leadership Innovation</span>
+                        <span class="hero-badge hero-badge-live animate-fade-in">
+                            <span class="live-dot" aria-hidden="true"></span>
+                            <span id="heroBadgeText">2026년 올해만 85회 출강</span>
+                        </span>
                         <h1 id="hero-title" class="hero-title animate-slide-up">
                             AI가 아니라<br>
                             <span class="text-highlight">AI를 쓰는 리더</span>가<br>
@@ -167,6 +170,23 @@
                             <a href="#director" class="btn btn-secondary">
                                 <span>연구소장 소개</span>
                             </a>
+                        </div>
+
+                        <div class="hero-stats animate-fade-in-delay" aria-label="교육 실적 요약">
+                            <a href="#projects" class="hero-stat" aria-label="올해 강의 실적 전체 보기">
+                                <span class="hero-stat-label" id="heroStatYearLabel">올해 강의</span>
+                                <span class="hero-stat-num"><span data-hero-count id="heroStatYear">85</span>회</span>
+                            </a>
+                            <span class="hero-stat-divider" aria-hidden="true"></span>
+                            <a href="#projects" class="hero-stat" aria-label="출강 기업·기관 실적 전체 보기">
+                                <span class="hero-stat-label">출강 기업·기관</span>
+                                <span class="hero-stat-num"><span data-hero-count id="heroStatClients">60</span>곳</span>
+                            </a>
+                            <span class="hero-stat-divider" aria-hidden="true"></span>
+                            <span class="hero-stat">
+                                <span class="hero-stat-label">교육 수료생</span>
+                                <span class="hero-stat-num"><span data-hero-count id="heroStatGrads">3,000</span>+</span>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -1134,6 +1154,78 @@
         let lecturesLoaded = false;
         const LECTURES_API = 'https://tnibst6km5.execute-api.ap-northeast-2.amazonaws.com/prod/public/lectures';
 
+        // 페이지당 1회만 fetch — 히어로 스탯과 #projects 로더가 공유
+        let lecturesDataPromise = null;
+        function fetchLectures() {
+            if (!lecturesDataPromise) {
+                lecturesDataPromise = fetch(LECTURES_API)
+                    .then(res => {
+                        if (!res.ok) throw new Error('API ' + res.status);
+                        return res.json();
+                    })
+                    .then(data => data.items || []);
+            }
+            return lecturesDataPromise;
+        }
+
+        // ===== 히어로 라이브 배지 + 스탯 바 =====
+        (function initHeroStats() {
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function animateNum(el, target) {
+                const from = parseInt(el.textContent.replace(/[^0-9]/g, ''), 10) || 0;
+                if (reduceMotion || from === target) {
+                    el.textContent = target.toLocaleString();
+                    return;
+                }
+                const duration = 1200;
+                const start = performance.now();
+                function tick(now) {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - (1 - progress) * (1 - progress);
+                    el.textContent = Math.round(from + (target - from) * eased).toLocaleString();
+                    if (progress < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            }
+
+            // 정적 기본값으로 먼저 카운트업 (API 실패 시에도 그대로 유지)
+            document.querySelectorAll('[data-hero-count]').forEach(el => {
+                const target = parseInt(el.textContent.replace(/[^0-9]/g, ''), 10) || 0;
+                el.textContent = '0';
+                animateNum(el, target);
+            });
+
+            fetchLectures().then(items => {
+                const year = new Date().getFullYear();
+                const yearCount = items.filter(i => (i.date || '').startsWith(String(year))).length;
+                const clientCount = new Set(
+                    items.map(i => (i.client || '').trim()).filter(Boolean)
+                ).size;
+
+                const badgeEl = document.getElementById('heroBadgeText');
+                const yearNumEl = document.getElementById('heroStatYear');
+                const yearLabelEl = document.getElementById('heroStatYearLabel');
+                const clientsEl = document.getElementById('heroStatClients');
+
+                // 연초 보정: 올해 건수가 적으면 "최근 12개월"로 전환
+                if (yearCount >= 20) {
+                    if (badgeEl) badgeEl.textContent = year + '년 올해만 ' + yearCount + '회 출강';
+                    if (yearLabelEl) yearLabelEl.textContent = '올해 강의';
+                    if (yearNumEl) animateNum(yearNumEl, yearCount);
+                } else {
+                    const cutoff = new Date();
+                    cutoff.setFullYear(cutoff.getFullYear() - 1);
+                    const cutoffStr = cutoff.toISOString().slice(0, 10);
+                    const recentCount = items.filter(i => (i.date || '') >= cutoffStr).length;
+                    if (badgeEl) badgeEl.textContent = '최근 12개월 ' + recentCount + '회 출강';
+                    if (yearLabelEl) yearLabelEl.textContent = '최근 12개월 강의';
+                    if (yearNumEl) animateNum(yearNumEl, recentCount);
+                }
+                if (clientsEl && clientCount > 0) animateNum(clientsEl, clientCount);
+            }).catch(() => { /* 정적 숫자 유지 */ });
+        })();
+
         // API 실패 시에도 보여줄 대표 출강 이력 (정적 fallback)
         const FALLBACK_CLIENTS = [
             '삼성전자', '현대자동차', 'LG CNS', 'KT', 'SK텔레콤',
@@ -1189,9 +1281,7 @@
             const containerEl = document.getElementById('lecturesByYear');
 
             try {
-                const res = await fetch(LECTURES_API);
-                if (!res.ok) throw new Error('API ' + res.status);
-                const lectures = ((await res.json()).items || [])
+                const lectures = (await fetchLectures()).slice()
                     .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
                 if (!lectures.length) {

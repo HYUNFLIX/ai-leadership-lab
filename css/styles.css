@@ -480,6 +480,94 @@ a.sr-only:focus {
   flex-wrap: wrap;
 }
 
+/* Live badge — 실시간 출강 실적 */
+.hero-badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.55);
+  animation: liveDotPulse 2.2s ease-out infinite;
+}
+
+@keyframes liveDotPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.55); }
+  70%  { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+/* Hero stats — 실적 요약 바 */
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: var(--spacing-lg);
+}
+
+.hero-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  color: #b0b8c8;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.hero-stat-num {
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
+}
+
+a.hero-stat:hover,
+a.hero-stat:focus-visible {
+  color: #d7deeb;
+}
+
+a.hero-stat:hover .hero-stat-num,
+a.hero-stat:focus-visible .hero-stat-num {
+  color: #5b8bff;
+}
+
+.hero-stat-divider {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .hero-stat-divider {
+    display: none;
+  }
+
+  .hero-stats {
+    gap: 10px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot {
+    animation: none;
+  }
+}
+
 /* Hero Split Layout */
 .hero-split .hero-content {
   text-align: left;
@@ -498,6 +586,10 @@ a.sr-only:focus {
   justify-content: flex-start;
 }
 
+.hero-split .hero-stats {
+  justify-content: flex-start;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .hero-grid {
@@ -512,6 +604,10 @@ a.sr-only:focus {
   }
 
   .hero-split .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-split .hero-stats {
     justify-content: center;
   }
 }
