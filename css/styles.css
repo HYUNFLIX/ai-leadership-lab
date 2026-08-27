@@ -2125,6 +2125,246 @@ a.hero-stat:focus-visible .hero-stat-num {
   color: #64748b;
 }
 
+/* --- Sejong Award Banner --- */
+.sejong-banner {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 780px;
+  margin: 0 auto 3rem;
+  padding: 1.75rem;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1px solid rgba(180, 130, 20, 0.22);
+  box-shadow: 0 18px 40px -22px rgba(146, 100, 10, 0.35);
+}
+
+.sejong-banner-thumb {
+  flex: 0 0 200px;
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 14px 30px -14px rgba(60, 40, 5, 0.45);
+  transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.sejong-banner-thumb:hover { transform: translateY(-4px); }
+.sejong-banner-thumb img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.sejong-banner-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.sejong-banner-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #fffbeb;
+  background: linear-gradient(120deg, #b8860b, #daa520);
+  box-shadow: 0 4px 12px -4px rgba(146, 100, 10, 0.55);
+}
+
+.sejong-banner-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #451a03;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+.sejong-banner-desc {
+  font-size: 0.88rem;
+  color: #78500f;
+  line-height: 1.65;
+}
+
+.sejong-banner-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #92610a;
+  width: fit-content;
+  transition: gap 0.25s ease, color 0.2s ease;
+}
+.sejong-banner-link:hover { gap: 0.6rem; color: #6d4708; }
+
+@media (max-width: 640px) {
+  .sejong-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+  .sejong-banner-thumb {
+    flex: none;
+    max-width: 240px;
+    margin: 0 auto;
+  }
+  .sejong-banner-title { font-size: 1.1rem; }
+}
+
+/* --- Book cover award badge --- */
+.book-award-badge {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  z-index: 2;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fffbeb;
+  background: linear-gradient(120deg, #b8860b, #daa520);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+/* --- Sejong Award Popup --- */
+.sejong-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.sejong-popup-overlay[hidden] { display: none; }
+
+.sejong-popup-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.62);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.sejong-popup-overlay.is-visible::before { opacity: 1; }
+
+.sejong-popup-card {
+  position: relative;
+  width: min(400px, 88vw);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.65);
+  opacity: 0;
+  transform: translateY(20px) scale(0.94);
+  transition: transform 0.55s cubic-bezier(0.34, 1.3, 0.64, 1),
+              opacity 0.4s ease;
+  will-change: transform, opacity;
+}
+.sejong-popup-overlay.is-visible .sejong-popup-card {
+  opacity: 1;
+  transform: none;
+}
+/* 축소 비행: JS가 인라인 transform/opacity로 목적지를 지정 */
+.sejong-popup-overlay.is-flying .sejong-popup-card {
+  transition: transform 0.75s cubic-bezier(0.55, -0.05, 0.7, 0.5),
+              opacity 0.5s ease 0.25s;
+}
+.sejong-popup-overlay.is-flying::before { opacity: 0; }
+
+.sejong-popup-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: cover;
+  object-position: top;
+}
+
+.sejong-popup-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #fef3c7;
+  background: rgba(15, 23, 42, 0.45);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.sejong-popup-close:hover {
+  background: rgba(15, 23, 42, 0.7);
+  transform: rotate(90deg);
+}
+
+.sejong-popup-actions {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding: 1rem 1rem 1.1rem;
+  background: linear-gradient(180deg, rgba(38, 24, 8, 0) 0%, rgba(38, 24, 8, 0.72) 55%);
+}
+
+.sejong-popup-btn {
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #451a03;
+  background: linear-gradient(120deg, #f5d47a, #daa520);
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.sejong-popup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px -8px rgba(0, 0, 0, 0.65);
+}
+
+/* 착지 후 배너 골드 글로우 펄스 */
+@keyframes sejongGlow {
+  0%, 100% {
+    box-shadow: 0 18px 40px -22px rgba(146, 100, 10, 0.35);
+  }
+  40% {
+    box-shadow: 0 0 0 8px rgba(218, 165, 32, 0.28),
+                0 18px 55px -16px rgba(180, 134, 11, 0.65);
+  }
+}
+.sejong-banner-glow { animation: sejongGlow 1.1s ease 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sejong-popup-card,
+  .sejong-popup-overlay.is-flying .sejong-popup-card {
+    transition: opacity 0.3s ease;
+    transform: none !important;
+  }
+  .sejong-banner-glow { animation: none; }
+}
+
 /* --- Books Gallery (3-column showcase) --- */
 .books-gallery {
   display: grid;

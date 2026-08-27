@@ -921,3 +921,95 @@
 
   requestAnimationFrame(tick);
 }());
+
+/* ================ Sejong Award Popup ================
+ * 하루 1회 노출. 닫히면 저서 섹션의 .sejong-banner 방향으로 축소 비행.
+ */
+(function () {
+  var KEY = 'sejong_popup_seen';
+  var DAY = 24 * 60 * 60 * 1000;
+  var AUTO_DISMISS_MS = 5000;
+
+  var overlay = document.getElementById('sejongPopup');
+  if (!overlay) return;
+
+  var last = 0;
+  try { last = Number(localStorage.getItem(KEY)) || 0; } catch (e) {}
+  if (Date.now() - last < DAY) return;
+
+  var card = document.getElementById('sejongPopupCard');
+  var closeBtn = document.getElementById('sejongPopupClose');
+  var goBtn = document.getElementById('sejongPopupGo');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var autoTimer = null;
+  var closed = false;
+
+  function onKey(e) {
+    if (e.key === 'Escape') dismiss(false);
+  }
+
+  function show() {
+    overlay.hidden = false;
+    // 다음 프레임에 클래스 부여 → 트랜지션 발동
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        overlay.classList.add('is-visible');
+      });
+    });
+    try { localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
+    autoTimer = setTimeout(function () { dismiss(false); }, AUTO_DISMISS_MS);
+    document.addEventListener('keydown', onKey);
+    if (closeBtn) closeBtn.focus({ preventScroll: true });
+  }
+
+  function dismiss(scrollToBooks) {
+    if (closed) return;
+    closed = true;
+    clearTimeout(autoTimer);
+    document.removeEventListener('keydown', onKey);
+
+    var banner = document.querySelector('.sejong-banner');
+
+    if (reduceMotion || !banner) {
+      overlay.classList.remove('is-visible');
+      setTimeout(finish, 350);
+    } else {
+      var b = banner.getBoundingClientRect();
+      var c = card.getBoundingClientRect();
+      // 배너의 이미지 영역(왼쪽 썸네일) 중심을 향해 비행
+      var targetX = (b.left + b.width * 0.2) - (c.left + c.width / 2);
+      var targetY = (b.top + Math.min(b.height, 400) * 0.5) - (c.top + c.height / 2);
+      var scale = Math.max(0.22, Math.min(0.45, (b.width * 0.28) / c.width));
+      overlay.classList.add('is-flying');
+      overlay.classList.remove('is-visible');
+      card.style.transform = 'translate(' + Math.round(targetX) + 'px, ' + Math.round(targetY) + 'px) scale(' + scale.toFixed(2) + ')';
+      card.style.opacity = '0';
+      setTimeout(finish, 800);
+    }
+
+    if (banner) {
+      banner.classList.add('sejong-banner-glow');
+      setTimeout(function () { banner.classList.remove('sejong-banner-glow'); }, 2400);
+    }
+
+    if (scrollToBooks) {
+      setTimeout(function () {
+        var pub = document.getElementById('publications');
+        if (pub) pub.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      }, reduceMotion ? 0 : 250);
+    }
+  }
+
+  function finish() {
+    overlay.hidden = true;
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', function () { dismiss(false); });
+  if (goBtn) goBtn.addEventListener('click', function () { dismiss(true); });
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) dismiss(false);
+  });
+
+  // 히어로가 먼저 그려진 뒤 등장
+  setTimeout(show, 800);
+})();
