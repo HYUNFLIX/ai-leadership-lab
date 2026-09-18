@@ -5072,6 +5072,15 @@ a.hero-stat:focus-visible .hero-stat-num {
     0 16px 40px rgba(0,0,0,0.35);
 }
 
+/* 홀수 개일 때 마지막 카드는 가운데로 */
+@media (min-width: 1025px) {
+  .works-showcase:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 0.75rem);
+  }
+}
+
 @supports not (backdrop-filter: blur(1px)) {
   .works-showcase { background: rgba(20,25,45,0.92); }
 }
@@ -5086,6 +5095,12 @@ a.hero-stat:focus-visible .hero-stat-num {
     inset 0 1px 0 rgba(255,255,255,0.1),
     0 20px 44px rgba(0,0,0,0.5);
   background: #151b2e;
+}
+
+/* 데스크톱 앱 화면 — 폰 대신 창 프레임 */
+.works-phone--screen {
+  border-width: 6px;
+  border-radius: 14px;
 }
 
 .works-phone img {
