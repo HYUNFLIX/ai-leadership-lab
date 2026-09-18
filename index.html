@@ -215,12 +215,12 @@
             <div class="about-inner">
                 <!-- Header -->
                 <div class="about-header" data-about-animate>
-                    <span class="about-label">About Us</span>
+                    <span class="about-label" data-reveal="up" style="--reveal-order: 0">About Us</span>
                     <h2 id="about-title" class="about-title">
-                        우리는 <span class="about-title-accent">미래의 리더십</span>을<br>
-                        오늘, 여기에서 정의합니다
+                        <span data-reveal="line" class="reveal-line-block" style="--reveal-order: 1"><span class="reveal-text">우리는 <span class="about-title-accent">미래의 리더십</span>을</span></span>
+                        <span data-reveal="line" class="reveal-line-block" style="--reveal-order: 2"><span class="reveal-text">오늘, 여기에서 정의합니다</span></span>
                     </h2>
-                    <p class="about-subtitle">
+                    <p class="about-subtitle" data-reveal="up" style="--reveal-order: 3">
                         AI Leadership Lab은 단순한 기술 교육 기관이 아닙니다.
                         인공지능이라는 거대한 패러다임의 전환 속에서
                         조직의 운명을 결정할 리더들을 위한 <strong>전략적 파트너</strong>입니다.
@@ -229,7 +229,7 @@
 
                 <!-- Feature cards (3 columns) -->
                 <div class="about-features">
-                    <div class="about-feature-card" data-about-card>
+                    <div class="about-feature-card" data-about-card data-reveal="up" style="--reveal-order: 4">
                         <div class="about-feature-icon">
                             <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
                         </div>
@@ -238,7 +238,7 @@
                             <p>현장에서 바로 적용 가능한 실용적 커리큘럼</p>
                         </div>
                     </div>
-                    <div class="about-feature-card" data-about-card>
+                    <div class="about-feature-card" data-about-card data-reveal="up" style="--reveal-order: 5">
                         <div class="about-feature-icon">
                             <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                         </div>
@@ -247,7 +247,7 @@
                             <p>가르치는 것을 실제 서비스로 구축·운영하는 실전형 연구소</p>
                         </div>
                     </div>
-                    <div class="about-feature-card" data-about-card>
+                    <div class="about-feature-card" data-about-card data-reveal="up" style="--reveal-order: 6">
                         <div class="about-feature-icon">
                             <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                         </div>
@@ -259,7 +259,7 @@
                 </div>
 
                 <!-- Stats row -->
-                <div class="about-stats" data-about-animate>
+                <div class="about-stats" data-about-animate data-reveal="up" style="--reveal-order: 7">
                     <div class="about-stat">
                         <span class="about-stat-num" data-count="6000">6,000</span><span class="about-stat-plus">+</span>
                         <span class="about-stat-label">교육 수료생</span>
@@ -366,12 +366,12 @@
         <section id="services" class="section-services">
             <div class="container">
                 <div class="services-header">
-                    <span class="services-label">Services</span>
-                    <h2 class="services-title">AI 리더십, 어떻게 도와드릴까요</h2>
-                    <p class="services-desc">AI 리터러시부터 바이브코딩까지, 조직에 맞게 설계하는 3가지 강의 분야와 저서</p>
+                    <span class="services-label" data-reveal="up" style="--reveal-order: 0">Services</span>
+                    <h2 class="services-title" data-reveal="line" style="--reveal-order: 1"><span class="reveal-text">AI 리더십, 어떻게 도와드릴까요</span></h2>
+                    <p class="services-desc" data-reveal="up" style="--reveal-order: 2">AI 리터러시부터 바이브코딩까지, 조직에 맞게 설계하는 3가지 강의 분야와 저서</p>
                 </div>
                 <div class="services-grid">
-                    <div class="service-card service-card--literacy">
+                    <div class="service-card service-card--literacy" data-reveal="up" style="--reveal-order: 3">
                         <div class="service-icon">
                             <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
                         </div>
@@ -385,7 +385,7 @@
                         </ul>
                         <a href="#contact" class="service-link">문의하기 →</a>
                     </div>
-                    <div class="service-card service-card--leadership">
+                    <div class="service-card service-card--leadership" data-reveal="up" style="--reveal-order: 4">
                         <div class="service-icon">
                             <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
                         </div>
@@ -402,7 +402,7 @@
                             <p class="service-clients-names">삼성전자 · HD현대 · 아스트라제네카 · STX엔진 · 빙그레 · 미원상사 · 한국동서발전 ⋯ <a href="#projects" class="service-clients-more" aria-label="전체 강의 실적 보기">더보기<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a></p>
                         </div>
                     </div>
-                    <div class="service-card service-card--vibe">
+                    <div class="service-card service-card--vibe" data-reveal="up" style="--reveal-order: 5">
                         <div class="service-icon">
                             <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                         </div>
@@ -419,7 +419,7 @@
                             <p class="service-clients-names">현대자동차그룹 · 유진그룹 · 삼양그룹 · 상미당홀딩스(SPC그룹) · 풀무원 · 한국산업인력공단 ⋯ <a href="#projects" class="service-clients-more" aria-label="전체 강의 실적 보기">더보기<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a></p>
                         </div>
                     </div>
-                    <div class="service-card service-card--books">
+                    <div class="service-card service-card--books" data-reveal="up" style="--reveal-order: 6">
                         <div class="service-icon">
                             <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
                         </div>
@@ -441,12 +441,12 @@
         <section id="works" class="section-works" aria-labelledby="works-title">
             <div class="container">
                 <div class="works-header">
-                    <span class="works-label">Project</span>
-                    <h2 id="works-title" class="works-title">직접 만들며 가르칩니다</h2>
-                    <p class="works-desc">바이브코딩 강의는 이론이 아닙니다 — 실제 운영 중인 AI 프로젝트로 증명합니다.</p>
+                    <span class="works-label" data-reveal="up" style="--reveal-order: 0">Project</span>
+                    <h2 id="works-title" class="works-title" data-reveal="line" style="--reveal-order: 1"><span class="reveal-text">직접 만들며 가르칩니다</span></h2>
+                    <p class="works-desc" data-reveal="up" style="--reveal-order: 2">바이브코딩 강의는 이론이 아닙니다 — 실제 운영 중인 AI 프로젝트로 증명합니다.</p>
                 </div>
                 <div class="works-grid">
-                    <div class="works-showcase">
+                    <div class="works-showcase" data-reveal="up" style="--reveal-order: 3">
                         <div class="works-phone">
                             <img src="images/project-forum-app.webp"
                                  alt="경제단체 CEO 하계포럼 참가자 앱 첫 화면"
@@ -466,7 +466,7 @@
                         </div>
                     </div>
 
-                    <div class="works-showcase">
+                    <div class="works-showcase" data-reveal="up" style="--reveal-order: 4">
                         <div class="works-phone">
                             <img src="images/project-yeogi-app.webp"
                                  alt="연수원 여기어때 지도 검색 화면"
@@ -486,7 +486,7 @@
                         </div>
                     </div>
 
-                    <div class="works-showcase works-showcase--wide">
+                    <div class="works-showcase works-showcase--wide" data-reveal="up" style="--reveal-order: 5">
                         <picture class="works-phone">
                             <source media="(min-width: 1025px)" srcset="images/project-kuhrd-mentor-wide.webp" width="1000" height="625">
                             <img src="images/project-kuhrd-mentor.webp"
@@ -507,7 +507,7 @@
                         </div>
                     </div>
 
-                    <div class="works-showcase works-showcase--wide">
+                    <div class="works-showcase works-showcase--wide" data-reveal="up" style="--reveal-order: 6">
                         <picture class="works-phone works-phone--screen">
                             <source media="(min-width: 1025px)" srcset="images/project-paper-review-wide.webp" width="1000" height="625">
                             <img src="images/project-paper-review.webp"
@@ -538,14 +538,14 @@
         <section id="publications" class="section section-publications" aria-labelledby="publications-title">
             <div class="container">
                 <div class="section-header text-center">
-                    <span class="section-label">Publications</span>
-                    <h2 id="publications-title" class="section-title">저서 소개</h2>
-                    <p class="section-description">
+                    <span class="section-label" data-reveal="up" style="--reveal-order: 0">Publications</span>
+                    <h2 id="publications-title" class="section-title" data-reveal="line" style="--reveal-order: 1"><span class="reveal-text">저서 소개</span></h2>
+                    <p class="section-description" data-reveal="up" style="--reveal-order: 2">
                         AI 리더십에 대한 깊이 있는 통찰과 실용적인 지혜를 책으로 만나보세요.
                     </p>
                 </div>
 
-                <aside class="sejong-banner" aria-label="2026년 세종도서 교양부문 선정 소식">
+                <aside class="sejong-banner" data-reveal="up" style="--reveal-order: 3" aria-label="2026년 세종도서 교양부문 선정 소식">
                     <a href="images/202608.jpg" target="_blank" rel="noopener noreferrer" class="sejong-banner-thumb" aria-label="세종도서 선정 기념 이미지 크게 보기">
                         <img src="images/202608.webp" alt="2026년 세종도서 교양부문 선정 — AI 시대의 팀장은 다르게 일합니다" loading="lazy" width="800" height="1000">
                     </a>
@@ -567,7 +567,7 @@
                 </aside>
 
                 <div class="books-gallery">
-                    <article class="book-tile">
+                    <article class="book-tile" data-reveal="up" style="--reveal-order: 4">
                         <a href="https://product.kyobobook.co.kr/detail/S000219080456" target="_blank" rel="noopener noreferrer" class="book-tile-cover" aria-label="AI 시대의 팀장은 다르게 일합니다 - 교보문고에서 보기">
                             <img src="images/Book3.webp" alt="AI 시대의 팀장은 다르게 일합니다 책 표지" loading="lazy" width="200" height="280">
                             <span class="book-award-badge" aria-label="2026 세종도서 교양부문 선정">2026 세종도서 선정</span>
@@ -587,7 +587,7 @@
                         </div>
                     </article>
 
-                    <article class="book-tile">
+                    <article class="book-tile" data-reveal="up" style="--reveal-order: 5">
                         <a href="https://product.kyobobook.co.kr/detail/S000216754567" target="_blank" rel="noopener noreferrer" class="book-tile-cover" aria-label="AI 대전환 시대, 조직은 문화다 - 교보문고에서 보기">
                             <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791199224612.jpg" alt="AI 대전환 시대, 조직은 문화다 책 표지" loading="lazy">
                         </a>
@@ -604,7 +604,7 @@
                         </div>
                     </article>
 
-                    <article class="book-tile">
+                    <article class="book-tile" data-reveal="up" style="--reveal-order: 6">
                         <a href="https://product.kyobobook.co.kr/detail/S000214511968" target="_blank" rel="noopener noreferrer" class="book-tile-cover" aria-label="코칭 레볼루션 - 교보문고에서 보기">
                             <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791198345370.jpg" alt="코칭 레볼루션 책 표지" loading="lazy">
                         </a>
@@ -628,16 +628,16 @@
         <section id="media" class="section section-media" aria-labelledby="media-title">
             <div class="container">
                 <div class="section-header text-center">
-                    <span class="section-label">Media</span>
-                    <h2 id="media-title" class="section-title">미디어 활동</h2>
-                    <p class="section-description">
+                    <span class="section-label" data-reveal="up" style="--reveal-order: 0">Media</span>
+                    <h2 id="media-title" class="section-title" data-reveal="line" style="--reveal-order: 1"><span class="reveal-text">미디어 활동</span></h2>
+                    <p class="section-description" data-reveal="up" style="--reveal-order: 2">
                         기고문과 인터뷰를 통해 AI 리더십에 대한 인사이트를 나눕니다.
                     </p>
                 </div>
 
                 <div class="media-grid">
                     <!-- HRinsight 기고문 -->
-                    <article class="media-card" data-type="article">
+                    <article class="media-card" data-reveal="up" style="--reveal-order: 3" data-type="article">
                         <div class="media-thumb media-thumb-article media-thumb-hrinsight">
                             <div class="article-brand">
                                 <span class="article-brand-name">HR</span><span class="article-brand-accent">insight</span>
@@ -662,7 +662,7 @@
                     </article>
 
                     <!-- 인사뱅크 기고문 -->
-                    <article class="media-card" data-type="article">
+                    <article class="media-card" data-reveal="up" style="--reveal-order: 4" data-type="article">
                         <div class="media-thumb media-thumb-article media-thumb-insabank">
                             <div class="article-brand">
                                 <span class="article-brand-name">월간</span><span class="article-brand-accent">인사관리</span>
@@ -687,7 +687,7 @@
                     </article>
 
                     <!-- 알라딘TV 유튜브 1부 -->
-                    <article class="media-card" data-type="video">
+                    <article class="media-card" data-reveal="up" style="--reveal-order: 5" data-type="video">
                         <div class="media-thumb media-thumb-video">
                             <img src="https://img.youtube.com/vi/Rp4AwBZthUo/hqdefault.jpg"
                                  alt="AI 시대의 팀장은 다르게 일합니다 1부 썸네일"
@@ -714,7 +714,7 @@
                     </article>
 
                     <!-- 알라딘TV 유튜브 2부 -->
-                    <article class="media-card" data-type="video">
+                    <article class="media-card" data-reveal="up" style="--reveal-order: 6" data-type="video">
                         <div class="media-thumb media-thumb-video">
                             <img src="https://img.youtube.com/vi/ehROy257jys/hqdefault.jpg"
                                  alt="AI 시대의 팀장은 다르게 일합니다 2부 썸네일"
@@ -741,7 +741,7 @@
                     </article>
 
                     <!-- 북콘서트 YouTube -->
-                    <article class="media-card" data-type="video">
+                    <article class="media-card" data-reveal="up" style="--reveal-order: 7" data-type="video">
                         <div class="media-thumb media-thumb-video">
                             <img src="https://img.youtube.com/vi/dNCr2Imqj8Y/hqdefault.jpg"
                                  alt="AI 리더십 북콘서트 썸네일"
@@ -774,14 +774,14 @@
         <section id="projects" class="section section-projects" aria-labelledby="projects-title">
             <div class="container">
                 <div class="section-header text-center">
-                    <span class="section-label">Lecture History</span>
-                    <h2 id="projects-title" class="section-title">강의 실적</h2>
-                    <p class="section-description">
+                    <span class="section-label" data-reveal="up" style="--reveal-order: 0">Lecture History</span>
+                    <h2 id="projects-title" class="section-title" data-reveal="line" style="--reveal-order: 1"><span class="reveal-text">강의 실적</span></h2>
+                    <p class="section-description" data-reveal="up" style="--reveal-order: 2">
                         다양한 산업 분야의 기업 및 기관에서 AI 리더십 교육을 진행하고 있습니다.
                     </p>
                 </div>
 
-                <div class="lectures-by-year" id="lecturesByYear">
+                <div class="lectures-by-year" id="lecturesByYear" data-reveal="up" style="--reveal-order: 3">
                     <div class="lectures-loading">
                         <div class="loading-spinner-small"></div>
                         <span>강의 정보를 불러오는 중...</span>
@@ -794,11 +794,11 @@
         <section id="testimonials" class="section section-testimonials" aria-labelledby="testimonials-title">
             <div class="container">
                 <div class="section-header text-center">
-                    <span class="section-label">Testimonials</span>
-                    <h2 id="testimonials-title" class="section-title">고객 후기</h2>
-                    <p class="section-description">현장에서 받은 수강 후기를 익명으로 전합니다.</p>
+                    <span class="section-label" data-reveal="up" style="--reveal-order: 0">Testimonials</span>
+                    <h2 id="testimonials-title" class="section-title" data-reveal="line" style="--reveal-order: 1"><span class="reveal-text">고객 후기</span></h2>
+                    <p class="section-description" data-reveal="up" style="--reveal-order: 2">현장에서 받은 수강 후기를 익명으로 전합니다.</p>
                 </div>
-                <div class="testimonials-marquee" aria-label="고객 후기 모음">
+                <div class="testimonials-marquee" aria-label="고객 후기 모음" data-reveal="up" style="--reveal-order: 3">
                     <div class="testimonials-track" id="testimonialsTrack"></div>
                 </div>
             </div>
@@ -808,10 +808,10 @@
         <section id="faq" class="section-faq">
             <div class="container">
                 <div class="faq-header">
-                    <span class="faq-label">FAQ</span>
-                    <h2 class="faq-title">자주 묻는 질문</h2>
+                    <span class="faq-label" data-reveal="up" style="--reveal-order: 0">FAQ</span>
+                    <h2 class="faq-title" data-reveal="line" style="--reveal-order: 1"><span class="reveal-text">자주 묻는 질문</span></h2>
                 </div>
-                <div class="faq-list">
+                <div class="faq-list" data-reveal="up" style="--reveal-order: 2">
                     <div class="faq-item open">
                         <button class="faq-question" aria-expanded="true">
                             <span>강의료는 어떻게 되나요?</span>
@@ -874,12 +874,12 @@
         <section id="contact" class="section section-contact" aria-labelledby="contact-title">
             <div class="container">
                 <div class="contact-centered">
-                    <span class="section-label">Contact</span>
+                    <span class="section-label" data-reveal="up" style="--reveal-order: 0">Contact</span>
                     <h2 id="contact-title" class="section-title">
-                        AI 리더십,<br>
-                        <span class="text-highlight">지금 시작하세요.</span>
+                        <span data-reveal="line" class="reveal-line-block" style="--reveal-order: 1"><span class="reveal-text">AI 리더십,</span></span>
+                        <span data-reveal="line" class="reveal-line-block" style="--reveal-order: 2"><span class="reveal-text"><span class="text-highlight">지금 시작하세요.</span></span></span>
                     </h2>
-                    <p class="contact-description">
+                    <p class="contact-description" data-reveal="up" style="--reveal-order: 3">
                         강의·컨설팅·코칭 문의를 환영합니다.<br>
                         1영업일 이내 신속하게 답변드립니다.
                     </p>
@@ -897,7 +897,7 @@
                     </div>
 
                     <!-- Contact Form -->
-                    <form id="contactForm" class="contact-form" novalidate aria-label="문의 폼">
+                    <form id="contactForm" data-reveal="up" style="--reveal-order: 4" class="contact-form" novalidate aria-label="문의 폼">
                         <div class="cf-row">
                             <div class="cf-field">
                                 <label for="cf-name">이름 <span class="cf-required" aria-label="필수">*</span></label>
@@ -1550,5 +1550,6 @@
         }
     </script>
 
+    <script src="js/scroll-reveal.js" data-scope="#main" defer></script>
 </body>
 </html>
