@@ -5072,6 +5072,20 @@ a.hero-stat:focus-visible .hero-stat-num {
     0 16px 40px rgba(0,0,0,0.35);
 }
 
+picture.works-phone { display: block; }
+
+/* PC: 가로 화면 캡처를 위에, 설명은 아래로 */
+@media (min-width: 1025px) {
+  .works-showcase--wide {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .works-showcase--wide .works-phone {
+    border-width: 6px;
+    border-radius: 14px;
+  }
+}
+
 /* 홀수 개일 때 마지막 카드는 가운데로 */
 @media (min-width: 1025px) {
   .works-showcase:last-child:nth-child(odd) {
