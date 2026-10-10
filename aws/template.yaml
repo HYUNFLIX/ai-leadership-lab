@@ -48,6 +48,24 @@ Resources:
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
 
+  # 방문자 일별 집계 (pk=날짜, sk=total|page#|ref#|dev#)
+  AnalyticsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      TableName: !Sub AILab-Analytics-${Stage}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+
   # ===== Cognito (관리자 1인 전용) =====
   AdminUserPool:
     Type: AWS::Cognito::UserPool
@@ -215,6 +233,36 @@ Resources:
             ApiId: !Ref Api
             Path: /assistant
             Method: POST
+            Auth: { Authorizer: CognitoJwt }
+
+  # ===== 방문자 집계 Lambda =====
+  AnalyticsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub AILab-Analytics-${Stage}
+      CodeUri: lambda/
+      Handler: analytics.handler
+      Environment:
+        Variables:
+          ANALYTICS_TABLE: !Ref AnalyticsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AnalyticsTable
+      Events:
+        # 공개: 홈페이지 페이지뷰 기록
+        Track:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /public/track
+            Method: POST
+        # 인증 필요: 관리자 통계 조회
+        Report:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /analytics
+            Method: GET
             Auth: { Authorizer: CognitoJwt }
 
 Outputs:

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>방문자 통계 - AI Leadership Lab</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --primary:#6366f1; --primary-soft:#818cf8; --secondary:#a855f7;
+    --ink:#e2e8f0; --ink-soft:#94a3b8; --ink-mute:#64748b;
+    --bg:#0a0e1a; --panel:rgba(255,255,255,.06); --panel-line:rgba(255,255,255,.12);
+    --radius:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--ink);
+    line-height:1.6;min-height:100vh;word-break:keep-all;}
+  button{font-family:inherit;}
+  .hidden{display:none!important;}
+
+  /* ── 로그인 ── */
+  .login-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:1000;}
+  .login-box{width:min(380px,90vw);padding:2.2rem;border-radius:16px;background:var(--panel);
+    border:1px solid var(--panel-line);backdrop-filter:blur(20px);}
+  .login-box .logo{font-size:1.3rem;font-weight:800;margin-bottom:.3rem;}
+  .login-box .logo span,.topbar .brand span{background:linear-gradient(135deg,var(--primary-soft),var(--secondary));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .login-box .subtitle{font-size:.85rem;color:var(--ink-soft);margin-bottom:1.4rem;}
+  .login-box form{display:flex;flex-direction:column;gap:.6rem;}
+  .login-input{padding:.8rem 1rem;border-radius:10px;border:1px solid var(--panel-line);
+    background:rgba(255,255,255,.05);color:var(--ink);font-size:.94rem;font-family:inherit;}
+  .login-input:focus{outline:2px solid var(--primary);}
+  .btn-login{padding:.85rem;border:none;border-radius:10px;background:var(--primary);color:#fff;font-weight:700;font-size:.95rem;cursor:pointer;}
+  .login-error{margin-top:.8rem;font-size:.82rem;color:#fca5a5;display:none;}
+  .login-error.show{display:block;}
+
+  /* ── 레이아웃 ── */
+  .topbar{position:sticky;top:0;z-index:100;background:rgba(10,14,26,.92);backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--panel-line);padding:.9rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;}
+  .topbar .brand{font-weight:800;font-size:1.05rem;text-decoration:none;color:var(--ink);}
+  .topbar nav{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;}
+  .topbar nav a,.topbar nav button{font-size:.84rem;color:var(--ink-soft);text-decoration:none;
+    padding:.45rem .8rem;border-radius:8px;border:none;background:none;cursor:pointer;}
+  .topbar nav a:hover,.topbar nav button:hover{background:var(--panel);color:var(--ink);}
+  .topbar nav a.on{color:var(--ink);background:var(--panel);}
+  .wrap{max-width:1200px;margin:0 auto;padding:1.6rem 1.5rem 5rem;}
+  @media(max-width:600px){.wrap{padding:1.2rem 1rem 4rem;}.topbar{padding:.8rem 1rem;}}
+
+  .head{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.2rem;flex-wrap:wrap;}
+  .head h1{font-size:1.25rem;font-weight:800;}
+  .range{display:flex;gap:.3rem;padding:.25rem;border-radius:10px;background:var(--panel);border:1px solid var(--panel-line);}
+  .range button{padding:.4rem .85rem;border-radius:7px;border:none;background:none;color:var(--ink-soft);font-size:.82rem;font-weight:600;cursor:pointer;}
+  .range button.on{background:var(--primary);color:#fff;}
+
+  /* ── 요약 타일 ── */
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.2rem;}
+  @media(max-width:760px){.tiles{grid-template-columns:repeat(2,1fr);}}
+  .tile{padding:1rem 1.1rem;border-radius:var(--radius);background:var(--panel);border:1px solid var(--panel-line);}
+  .tile .l{font-size:.78rem;color:var(--ink-soft);}
+  .tile .n{font-size:1.7rem;font-weight:800;line-height:1.25;font-variant-numeric:tabular-nums;}
+  .tile .s{font-size:.74rem;color:var(--ink-mute);}
+
+  /* ── 카드 ── */
+  .card{padding:1.2rem 1.3rem;border-radius:var(--radius);background:var(--panel);border:1px solid var(--panel-line);margin-bottom:1.2rem;}
+  .card h2{font-size:.95rem;font-weight:700;margin-bottom:.2rem;}
+  .card .sub{font-size:.76rem;color:var(--ink-mute);margin-bottom:.9rem;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+  @media(max-width:860px){.grid2{grid-template-columns:1fr;}}
+  .grid2 .card{margin-bottom:0;}
+
+  /* ── 막대 차트 ── */
+  .chart{position:relative;}
+  .chart svg{display:block;width:100%;height:220px;overflow:visible;}
+  .chart .grid line{stroke:rgba(255,255,255,.07);}
+  .chart .axis text{fill:var(--ink-mute);font-size:11px;}
+  .chart .bar{fill:var(--primary-soft);pointer-events:none;}
+  .chart .hit:hover + .bar,.chart .bar.hl{fill:#a5b4fc;}
+  .tip{position:absolute;pointer-events:none;transform:translate(-50%,-100%);background:#1e2540;border:1px solid var(--panel-line);
+    border-radius:8px;padding:.45rem .7rem;font-size:.78rem;white-space:nowrap;opacity:0;transition:opacity .1s;}
+  .tip.show{opacity:1;}
+  .tip b{display:block;font-size:.74rem;color:var(--ink-soft);font-weight:600;}
+
+  /* ── 순위 표 ── */
+  .rank{width:100%;border-collapse:collapse;font-size:.85rem;}
+  .rank td{padding:.45rem 0;border-bottom:1px dashed rgba(255,255,255,.07);vertical-align:middle;}
+  .rank td.name{max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:.8rem;}
+  .rank td.num{width:4.5rem;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;}
+  .rank .bg{height:4px;border-radius:2px;background:rgba(129,140,248,.55);margin-top:.25rem;}
+  .empty{padding:1.5rem 0;text-align:center;color:var(--ink-mute);font-size:.85rem;}
+
+  details.table{margin-top:.8rem;font-size:.8rem;color:var(--ink-soft);}
+  details.table summary{cursor:pointer;}
+  details.table table{width:100%;border-collapse:collapse;margin-top:.5rem;}
+  details.table th,details.table td{padding:.3rem .4rem;text-align:right;border-bottom:1px solid rgba(255,255,255,.05);font-variant-numeric:tabular-nums;}
+  details.table th:first-child,details.table td:first-child{text-align:left;}
+  .note{font-size:.76rem;color:var(--ink-mute);line-height:1.7;}
+</style>
+</head>
+<body>
+
+<!-- 로그인 -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="logo"><span>AI</span> Leadership Lab</div>
+    <p class="subtitle">방문자 통계</p>
+    <form id="loginForm" onsubmit="signInCognito(event)">
+      <input type="email" id="loginEmail" class="login-input" placeholder="이메일" required autocomplete="username">
+      <input type="password" id="loginPassword" class="login-input" placeholder="비밀번호" required autocomplete="current-password">
+      <button class="btn-login" id="loginBtn" type="submit">로그인</button>
+    </form>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- 메인 -->
+<div id="mainContent" style="display:none;">
+  <div class="topbar">
+    <a class="brand" href="/"><span>AI</span> 관리자</a>
+    <nav>
+      <a href="/lectures.html">강의 이력</a>
+      <a href="/crm/">고객사</a>
+      <a href="/crm/visitors.html" class="on">방문자</a>
+      <button onclick="signOutUser()">로그아웃</button>
+    </nav>
+  </div>
+
+  <div class="wrap">
+    <div class="head">
+      <h1>홈페이지 방문자</h1>
+      <div class="range" id="range">
+        <button data-days="7">7일</button>
+        <button data-days="30" class="on">30일</button>
+        <button data-days="90">90일</button>
+      </div>
+    </div>
+
+    <div class="tiles" id="tiles"></div>
+
+    <div class="card">
+      <h2>일별 방문자</h2>
+      <p class="sub">하루에 처음 들어온 사람 수 · 막대에 마우스를 올리면 자세히 보여요</p>
+      <div class="chart" id="chart"></div>
+      <details class="table"><summary>표로 보기</summary><div id="dailyTable"></div></details>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>어디서 왔나</h2>
+        <p class="sub">방문 세션 기준 · 검색·SNS·직접 방문</p>
+        <div id="refs"></div>
+      </div>
+      <div class="card">
+        <h2>많이 본 페이지</h2>
+        <p class="sub">페이지뷰 기준</p>
+        <div id="pages"></div>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:1.2rem;">
+      * 쿠키나 개인을 알아볼 수 있는 정보는 저장하지 않고 날짜별 숫자만 셉니다. 검색엔진 로봇과 이 관리자 계정으로 로그인한 브라우저의 방문은 빠집니다.<br>
+      * 집계는 2026년 10월부터 시작되었습니다.
+    </p>
+  </div>
+</div>
+
+<script>
+  const API_URL = 'https://tnibst6km5.execute-api.ap-northeast-2.amazonaws.com/prod';
+  const COGNITO_URL = 'https://cognito-idp.ap-northeast-2.amazonaws.com/';
+  const COGNITO_CLIENT_ID = '7dpeoqp3n1870th6u6qbsj09mu';
+  const TOKEN_KEY = 'ailab_tokens';
+
+  // 유입처 도메인 → 읽기 쉬운 이름
+  const SOURCE_NAMES = [
+    [/naver\.com$/, '네이버'], [/google\./, '구글'], [/daum\.net$|kakao\.com$/, '다음·카카오'],
+    [/bing\.com$/, '빙'], [/facebook\.com$|fb\.com$/, '페이스북'], [/instagram\.com$/, '인스타그램'],
+    [/linkedin\.com$|lnkd\.in$/, '링크드인'], [/youtube\.com$/, '유튜브'], [/t\.co$|x\.com$|twitter\.com$/, 'X(트위터)'],
+    [/chatgpt\.com$|openai\.com$/, 'ChatGPT'], [/claude\.ai$/, 'Claude'], [/perplexity\.ai$/, 'Perplexity'],
+  ];
+
+  let days = 30;
+  let lastDaily = null;
+
+  // ================ 토큰/인증 (crm/index.html과 동일) ================
+  function saveTokens(t) { localStorage.setItem(TOKEN_KEY, JSON.stringify(t)); }
+  function loadTokens() { try { return JSON.parse(localStorage.getItem(TOKEN_KEY)); } catch (e) { return null; } }
+  function clearTokens() { localStorage.removeItem(TOKEN_KEY); }
+  function parseJwt(t) {
+    try { return JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))); }
+    catch (e) { return {}; }
+  }
+  async function cognito(target, body) {
+    const res = await fetch(COGNITO_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-amz-json-1.1', 'X-Amz-Target': 'AWSCognitoIdentityProviderService.' + target },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (!res.ok) throw data;
+    return data;
+  }
+  async function refreshTokens() {
+    const t = loadTokens();
+    if (!t || !t.refreshToken) return false;
+    try {
+      const out = await cognito('InitiateAuth', { AuthFlow: 'REFRESH_TOKEN_AUTH', ClientId: COGNITO_CLIENT_ID, AuthParameters: { REFRESH_TOKEN: t.refreshToken } });
+      const idToken = out.AuthenticationResult.IdToken;
+      saveTokens({ idToken: idToken, refreshToken: t.refreshToken, exp: parseJwt(idToken).exp });
+      return true;
+    } catch (e) { clearTokens(); return false; }
+  }
+  async function getIdToken() {
+    let t = loadTokens();
+    if (!t) return null;
+    if (t.exp && t.exp * 1000 < Date.now() + 60000) {
+      if (!await refreshTokens()) return null;
+      t = loadTokens();
+    }
+    return t.idToken;
+  }
+  async function api(path) {
+    const token = await getIdToken();
+    if (!token) { showLogin(); throw new Error('로그인이 필요합니다'); }
+    const res = await fetch(API_URL + path, { headers: { 'Authorization': 'Bearer ' + token } });
+    if (res.status === 401) {
+      if (await refreshTokens()) return api(path);
+      showLogin();
+      throw new Error('세션이 만료되었습니다');
+    }
+    if (!res.ok) throw new Error('API 오류 ' + res.status);
+    return res.json();
+  }
+
+  function showLogin() {
+    document.getElementById('loginScreen').classList.remove('hidden');
+    document.getElementById('mainContent').style.display = 'none';
+  }
+  function hideLogin() {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('mainContent').style.display = 'block';
+  }
+
+  window.signInCognito = async function (e) {
+    e.preventDefault();
+    const errEl = document.getElementById('loginError');
+    errEl.classList.remove('show');
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true;
+    try {
+      const out = await cognito('InitiateAuth', {
+        AuthFlow: 'USER_PASSWORD_AUTH', ClientId: COGNITO_CLIENT_ID,
+        AuthParameters: { USERNAME: document.getElementById('loginEmail').value.trim(), PASSWORD: document.getElementById('loginPassword').value },
+      });
+      const idToken = out.AuthenticationResult.IdToken;
+      saveTokens({ idToken: idToken, refreshToken: out.AuthenticationResult.RefreshToken, exp: parseJwt(idToken).exp });
+      hideLogin();
+      await load();
+    } catch (err) {
+      errEl.textContent = (err.__type || '').indexOf('NotAuthorized') !== -1 ? '이메일 또는 비밀번호가 올바르지 않습니다.' : '로그인 실패: ' + (err.message || err.__type || '오류');
+      errEl.classList.add('show');
+    } finally {
+      btn.disabled = false;
+    }
+  };
+  window.signOutUser = function () { clearTokens(); showLogin(); };
+
+  // ================ 렌더 ================
+  function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+  const fmt = n => (n || 0).toLocaleString('ko-KR');
+  const sum = (arr, k) => arr.reduce((a, r) => a + (r[k] || 0), 0);
+  function sourceName(s) {
+    if (!s || s === '(직접 방문)') return '직접 방문 · 북마크';
+    const hit = SOURCE_NAMES.find(([re]) => re.test(s));
+    return hit ? hit[1] : s;
+  }
+  function shortDate(d) { const [, m, dd] = d.split('-'); return `${+m}/${+dd}`; }
+  function weekday(d) { return '일월화수목금토'[new Date(d + 'T00:00:00+09:00').getDay()]; }
+
+  function renderTiles(daily) {
+    const today = daily[daily.length - 1] || {};
+    const uv = sum(daily, 'uv'), pv = sum(daily, 'pv'), ss = sum(daily, 'ss');
+    document.getElementById('tiles').innerHTML = [
+      ['오늘 방문자', fmt(today.uv), `페이지뷰 ${fmt(today.pv)}`],
+      [`${days}일 방문자`, fmt(uv), `하루 평균 ${fmt(Math.round(uv / days))}명`],
+      [`${days}일 페이지뷰`, fmt(pv), `방문당 ${ss ? (pv / ss).toFixed(1) : '0'}쪽`],
+      [`${days}일 방문 횟수`, fmt(ss), '같은 사람의 재방문 포함'],
+    ].map(([l, n, s]) => `<div class="tile"><div class="l">${l}</div><div class="n">${n}</div><div class="s">${s}</div></div>`).join('');
+  }
+
+  function renderChart(daily) {
+    const el = document.getElementById('chart');
+    const W = el.clientWidth || 1000, H = 220, padL = 34, padB = 24, padT = 8;
+    const max = Math.max(4, ...daily.map(r => r.uv));
+    const step = Math.pow(10, Math.floor(Math.log10(max)));
+    const tick = [1, 2, 5, 10].map(m => m * step).find(t => max / t <= 4);
+    const top = Math.ceil(max / tick) * tick;
+    const y = v => padT + (H - padT - padB) * (1 - v / top);
+    const slot = (W - padL) / daily.length;
+    const bw = Math.max(2, Math.min(28, slot - 2));
+    const r = Math.min(4, bw / 2);
+    const labelEvery = Math.ceil(daily.length / 10);
+
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="일별 방문자 막대 차트">`;
+    s += '<g class="grid axis">';
+    for (let v = 0; v <= top; v += tick) {
+      s += `<line x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text x="${padL - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+    }
+    s += '</g><g class="axis">';
+    daily.forEach((d, i) => {
+      if ((daily.length - 1 - i) % labelEvery === 0) s += `<text x="${padL + slot * i + slot / 2}" y="${H - 6}" text-anchor="middle">${shortDate(d.date)}</text>`;
+    });
+    s += '</g>';
+    daily.forEach((d, i) => {
+      const x = padL + slot * i + (slot - bw) / 2, yt = y(d.uv), base = y(0), h = base - yt;
+      // 위쪽 모서리만 둥근 막대 (바닥선에 붙음)
+      const path = h <= 0 ? '' : h < r
+        ? `M${x},${base}V${yt}H${x + bw}V${base}Z`
+        : `M${x},${base}V${yt + r}Q${x},${yt} ${x + r},${yt}H${x + bw - r}Q${x + bw},${yt} ${x + bw},${yt + r}V${base}Z`;
+      s += `<rect class="hit" data-i="${i}" x="${padL + slot * i}" y="${padT}" width="${slot}" height="${H - padT - padB}" fill="transparent"/>`;
+      s += `<path class="bar" d="${path}"/>`;
+    });
+    s += '</svg><div class="tip" id="tip"></div>';
+    el.innerHTML = s;
+
+    const tip = document.getElementById('tip');
+    el.querySelectorAll('.hit').forEach(h => {
+      h.addEventListener('mouseenter', () => {
+        const d = daily[+h.dataset.i];
+        const box = el.getBoundingClientRect(), hb = h.getBoundingClientRect();
+        tip.innerHTML = `<b>${shortDate(d.date)} (${weekday(d.date)})</b>방문자 ${fmt(d.uv)}명 · 페이지뷰 ${fmt(d.pv)}`;
+        tip.style.left = Math.min(Math.max(hb.left - box.left + hb.width / 2, 70), box.width - 70) + 'px';
+        tip.style.top = (y(d.uv) - 6) + 'px';
+        tip.classList.add('show');
+      });
+      h.addEventListener('mouseleave', () => tip.classList.remove('show'));
+    });
+
+    document.getElementById('dailyTable').innerHTML =
+      '<table><tr><th>날짜</th><th>방문자</th><th>방문 횟수</th><th>페이지뷰</th></tr>' +
+      daily.slice().reverse().map(d => `<tr><td>${d.date} (${weekday(d.date)})</td><td>${fmt(d.uv)}</td><td>${fmt(d.ss)}</td><td>${fmt(d.pv)}</td></tr>`).join('') +
+      '</table>';
+  }
+
+  function renderRank(elId, obj, nameFn) {
+    // 같은 이름(예: m.search.naver.com·search.naver.com → 네이버)은 합친다
+    const merged = {};
+    Object.entries(obj).forEach(([k, n]) => { const name = nameFn(k); merged[name] = (merged[name] || 0) + n; });
+    const rows = Object.entries(merged).sort((a, b) => b[1] - a[1]).slice(0, 10);
+    const el = document.getElementById(elId);
+    if (!rows.length) { el.innerHTML = '<div class="empty">아직 기록이 없습니다.</div>'; return; }
+    const max = rows[0][1];
+    el.innerHTML = '<table class="rank">' + rows.map(([k, n]) =>
+      `<tr><td class="name" title="${esc(k)}">${esc(k)}<div class="bg" style="width:${(n / max * 100).toFixed(1)}%"></div></td><td class="num">${fmt(n)}</td></tr>`
+    ).join('') + '</table>';
+  }
+
+  function pageName(p) {
+    if (p === '/' || p === '/index.html') return '메인 홈페이지';
+    return p;
+  }
+
+  async function load() {
+    try {
+      const data = await api('/analytics?days=' + days);
+      renderTiles(data.daily);
+      lastDaily = data.daily;
+      renderChart(data.daily);
+      renderRank('refs', data.refs, sourceName);
+      renderRank('pages', data.pages, pageName);
+    } catch (e) {
+      document.getElementById('tiles').innerHTML = `<div class="empty" style="grid-column:1/-1">불러오기 실패: ${esc(e.message)}</div>`;
+    }
+  }
+
+  document.getElementById('range').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    days = +b.dataset.days;
+    document.querySelectorAll('#range button').forEach(x => x.classList.toggle('on', x === b));
+    load();
+  });
+
+  let resizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => lastDaily && renderChart(lastDaily), 150); });
+
+  (async function () {
+    const token = await getIdToken();
+    if (token) { hideLogin(); await load(); }
+    else showLogin();
+  })();
+</script>
+</body>
+</html>
