@@ -3860,7 +3860,7 @@ a.hero-stat:focus-visible .hero-stat-num {
 
 .media-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
 }
 
@@ -3904,6 +3904,22 @@ a.hero-stat:focus-visible .hero-stat-num {
 /* 월간 인사관리 — 브랜드 컬러 */
 .media-thumb-insabank {
     background: linear-gradient(135deg, #1a3a2e 0%, #1a6b4a 100%);
+}
+
+/* KG에듀원 — 브랜드 컬러 */
+.media-thumb-kgedu {
+    background: linear-gradient(135deg, #2e1065 0%, #6d28d9 100%);
+}
+
+.media-thumb-kgedu .article-brand-accent {
+    color: #fdba74;
+}
+
+.media-badge.media-badge-best {
+    left: auto;
+    right: 0.75rem;
+    background: #f59e0b;
+    color: #1f1300;
 }
 
 .article-brand {
