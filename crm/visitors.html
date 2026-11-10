@@ -45,7 +45,11 @@
   .topbar nav a:hover,.topbar nav button:hover{background:var(--panel);color:var(--ink);}
   .topbar nav a.on{color:var(--ink);background:var(--panel);}
   .wrap{max-width:1200px;margin:0 auto;padding:1.6rem 1.5rem 5rem;}
-  @media(max-width:600px){.wrap{padding:1.2rem 1rem 4rem;}.topbar{padding:.8rem 1rem;}}
+  @media(max-width:600px){.wrap{padding:1.2rem 1rem 4rem;}.topbar{padding:.8rem 1rem;gap:.5rem;}
+    /* 좁은 화면: 상단 메뉴를 한 줄로 유지 (넘치면 메뉴만 가로 스크롤) */
+    .topbar .brand{white-space:nowrap;}
+    .topbar nav{flex-wrap:nowrap;gap:.15rem;min-width:0;overflow-x:auto;}
+    .topbar nav a,.topbar nav button{padding:.45rem .5rem;font-size:.8rem;white-space:nowrap;}}
 
   .head{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.2rem;flex-wrap:wrap;}
   .head h1{font-size:1.25rem;font-weight:800;}
@@ -298,7 +302,9 @@
     const slot = (W - padL) / daily.length;
     const bw = Math.max(2, Math.min(28, slot - 2));
     const r = Math.min(4, bw / 2);
-    const labelEvery = Math.ceil(daily.length / 10);
+    // 날짜 눈금은 최대 10개, 좁은 화면에서는 겹치지 않을 만큼만(눈금당 약 48px)
+    const maxLabels = Math.max(2, Math.min(10, Math.floor((W - padL) / 48)));
+    const labelEvery = Math.ceil(daily.length / maxLabels);
 
     let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="일별 방문자 막대 차트">`;
     s += '<g class="grid axis">';
