@@ -1491,7 +1491,8 @@
                 });
 
                 const years = Object.keys(lecturesByYear).sort((a, b) => b - a);
-                const recentYears = ['2025', '2026'];
+                // 최근 2개 연도(데이터가 있는 가장 최근 연도 기준)를 펼쳐서 표시 — 해가 바뀌어도 수정 불필요
+                const recentYears = years.filter(y => y !== 'Unknown').slice(0, 2);
 
                 function getUniqueClients(list) {
                     return [...new Set(list.map(l => l.client).filter(Boolean))];
