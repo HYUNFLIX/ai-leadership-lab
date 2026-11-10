@@ -18,7 +18,6 @@ ai-leadership-lab/
 ├── sitemap.xml        # SEO 사이트맵
 ├── robots.txt         # 검색 엔진 설정
 ├── CNAME             # GitHub Pages 도메인
-├── .htaccess         # Apache 서버 설정
 └── README.md         # 이 파일
 ```
 
