@@ -45,10 +45,12 @@ HTTP API는 응답 제한이 30초라, 긴 초안 한 번의 모델 호출만으
 
 ### `POST /assistant`
 
-요청 본문은 둘 중 하나.
+요청 본문은 셋 중 하나.
 
 - 새 질문: `{ "conversationId": "<선택>", "text": "<질문>" }` — `conversationId`가 없으면 새 대화
 - 확인 응답: `{ "conversationId": "<필수>", "decisions": [{ "toolUseId": "...", "approved": true }] }`
+- 다시 시도: `{ "conversationId": "<필수>", "retry": true }` — 오류나 시간 초과로 멈춘 대화를
+  새 메시지 없이 이어서 처리한다
 
 응답: `202 { "conversationId": "..." }`
 
@@ -56,7 +58,8 @@ HTTP API는 응답 제한이 30초라, 긴 초안 한 번의 모델 호출만으
 취소한 것으로 처리하고 그 질문을 이어서 받는다. `decisions`에 빠진 `toolUseId`도 취소로 본다.
 
 오류: `400` 본문 형식 오류·빈 질문·8,000자 초과, `404` 대화 없음, `409` 이미 처리 중이거나
-확인 대기 상태가 아닌데 `decisions`를 보냄, `413` 대화가 300KB를 넘음(새 대화 안내).
+확인 대기 상태가 아닌데 `decisions`를 보냄, 또는 멈춘 상태가 아닌데 `retry`를 보냄,
+`413` 대화가 300KB를 넘음(새 대화 안내).
 
 ### `GET /assistant/{id}`
 
@@ -66,7 +69,8 @@ HTTP API는 응답 제한이 30초라, 긴 초안 한 번의 모델 호출만으
   "view": [
     { "role": "user", "text": "..." },
     { "role": "assistant", "text": "..." },
-    { "role": "action", "name": "create_lecture", "summary": "...", "outcome": "done | declined | failed" }
+    { "role": "action", "toolUseId": "...", "title": "강의 등록 · ...", "table": "lectures | clients", "outcome": "done | declined | failed" },
+    { "role": "notice", "text": "<단계 상한·길이 제한 안내>" }
   ],
   "events": ["강의 조회 중", "집계 중"],
   "pending": [{ "toolUseId": "...", "name": "update_lecture", "title": "...", "rows": [{ "label": "입금 여부", "before": "대기", "after": "완료" }] }],
@@ -96,8 +100,10 @@ HTTP API는 응답 제한이 30초라, 긴 초안 한 번의 모델 호출만으
 
 ## 도구
 
-모든 도구는 `strict: true`, `additionalProperties: false`, 전 필드 `required`이고 선택 값은
-`null` 허용 타입으로 표현한다. 날짜는 `YYYY-MM-DD`(한국시간).
+모든 도구 스키마는 `additionalProperties: false`이고 선택 값은 생략할 수 있다. `strict: true`는
+쓰지 않는다. 도구 7개에 선택 필드가 많아 엄격 스키마의 복잡도 제한에 걸릴 수 있기 때문이다.
+대신 서버가 모든 도구 입력을 실행 전에 직접 검증한다(모르는 필드, 타입, 날짜, 열거값, 음수).
+`null`은 생략과 같게 취급한다. 날짜는 `YYYY-MM-DD`(한국시간).
 
 ### 조회 — 서버가 즉시 실행
 
@@ -123,12 +129,13 @@ HTTP API는 응답 제한이 30초라, 긴 초안 한 번의 모델 호출만으
 `location`, `fee`, `taxDeduction`(`none|3.3|8.8|vat`), `netPayment`, `paymentStatus`, `notes`.
 `netPayment`가 `null`이면 위 식으로 계산해 저장한다.
 
-**`update_lecture`** — `id` 필수 + 위 필드 전부(`null` = 바꾸지 않음).
+**`update_lecture`** — `id` 필수 + 바꿀 필드만. 강의료나 세금공제를 바꾸면서 실지급액을
+주지 않으면 실지급액을 다시 계산한다. 현재 값과 같은 필드는 변경에서 뺀다.
 
 **`create_client`** — `companyName` 필수. `status`, `contactName`, `contactTitle`, `contactPhone`,
 `contactEmail`, `memo`, `followUpDate`, `interests[]`.
 
-**`update_client`** — `id` 필수 + 위 필드 전부(`null` = 바꾸지 않음).
+**`update_client`** — `id` 필수 + 바꿀 필드만.
 
 실행 규칙:
 
@@ -199,10 +206,13 @@ client.beta.messages.create({
 
 | 파일 | 역할 |
 |---|---|
-| `aws/lambda/assistant.mjs` | 핸들러: 접수(POST), 조회(GET), 작업(비동기 호출) 분기 |
-| `aws/lambda/assistant-loop.mjs` | 작업 루프. 모델 클라이언트와 저장소를 인자로 받아 테스트에서 대체 가능 |
-| `aws/lambda/assistant-tools.mjs` | 도구 스키마, 필터·집계·검증·확인 카드 생성. AWS 의존 없음 |
+| `aws/lambda/assistant.mjs` | 핸들러와 실제 의존성 연결(SSM 키, Anthropic 클라이언트, 비동기 자기 호출) |
+| `aws/lambda/assistant-app.mjs` | 접수·조회·작업의 요청 처리와 상태 코드. 의존성을 인자로 받음 |
+| `aws/lambda/assistant-loop.mjs` | 대화 상태 머신: 모델 호출 루프, 확인 대기, 화면용 요약, 시스템 프롬프트 |
+| `aws/lambda/assistant-tools.mjs` | 도구 스키마, 입력 검증, 조회 도구(검색·집계). AWS 의존 없음 |
+| `aws/lambda/assistant-actions.mjs` | 변경 도구: 검증, 저장할 값 결정, 확인 카드, 실행. AWS 의존 없음 |
 | `aws/lambda/assistant-store.mjs` | DynamoDB 접근: 강의·고객 읽기/쓰기, 대화 읽기/쓰기 |
+| `js/assistant-markdown.js` | 답변 서식 변환(제목·목록·표·코드). 패널과 테스트가 함께 씀 |
 | `aws/lambda/package.json` | `@anthropic-ai/sdk` 의존성 |
 | `aws/lambda/test/*.test.mjs` | `node --test` 단위 테스트 |
 | `aws/template.yaml` | 테이블, `GET /assistant/{id}` 경로, 환경 변수, 권한, 타임아웃 |
