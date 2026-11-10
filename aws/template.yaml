@@ -111,6 +111,12 @@ Resources:
         AllowMethods: [GET, POST, PUT, DELETE, OPTIONS]
         AllowHeaders: [Content-Type, Authorization]
         MaxAge: 86400
+      # 공개 쓰기 엔드포인트 요청량 상한 — 초과분은 429로 거절되어 Lambda·DynamoDB 비용이 묶인다.
+      # (수업 중 QR 접속 같은 순간 몰림은 Burst가 흡수)
+      RouteSettings:
+        "POST /public/track":
+          ThrottlingRateLimit: 5
+          ThrottlingBurstLimit: 100
       Auth:
         Authorizers:
           CognitoJwt:

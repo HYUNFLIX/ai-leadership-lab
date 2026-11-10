@@ -49,17 +49,34 @@ function add(pk, sk, counts) {
   }));
 }
 
+// 집계를 받아줄 출처 — 브라우저는 교차 출처 POST(sendBeacon 포함)에 Origin 헤더를 항상 붙인다.
+// 위조는 가능하지만 스크립트·curl의 무작정 호출은 걸러낸다. (요청량 상한은 template.yaml의 스로틀)
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://leadership.ai.kr').split(',').map((s) => s.trim());
+
+// track.js를 싣는 페이지만 개별 집계 — 그 밖의 경로는 한 칸에 모아 항목 수가 무한정 늘지 않게 한다.
+// 다른 페이지에 track.js를 추가하면 여기에도 경로를 추가할 것.
+const KNOWN_PAGES = new Set(['/']);
+const MAX_BODY = 512;
+
+function normalizePage(p) {
+  const path = (clean(p, 80) || '/').replace(/\/index\.html$/, '/');
+  return KNOWN_PAGES.has(path) ? path : '(기타)';
+}
+
 async function track(event) {
   const ua = event.headers?.['user-agent'] || '';
   if (!ua || BOT_UA.test(ua)) return { statusCode: 204 };
+  if (!ALLOWED_ORIGINS.includes(event.headers?.origin || '')) return { statusCode: 204 };
 
   let raw = event.body || '';
   if (event.isBase64Encoded) raw = Buffer.from(raw, 'base64').toString('utf8');
+  if (raw.length > MAX_BODY) return json(413, { error: 'too large' });
   let b;
   try { b = JSON.parse(raw); } catch { return json(400, { error: 'invalid JSON' }); }
+  if (!b || typeof b !== 'object' || Array.isArray(b)) return json(400, { error: 'invalid body' });
 
   const day = kstDate();
-  const path = clean(b.p, 80) || '/';
+  const path = normalizePage(b.p);
   const newVisitor = b.n === 1 ? 1 : 0;
   const newSession = b.s === 1 ? 1 : 0;
   const source = clean(b.r, 60) || '(직접 방문)';
@@ -81,12 +98,20 @@ async function report(event) {
   const days = Math.min(Math.max(parseInt(event.queryStringParameters?.days, 10) || 30, 1), 365);
   const dates = Array.from({ length: days }, (_, i) => kstDate(i));
   const results = await Promise.all(dates.map(async (pk) => {
-    const out = await ddb.send(new QueryCommand({
-      TableName: TABLE,
-      KeyConditionExpression: 'pk = :pk',
-      ExpressionAttributeValues: { ':pk': pk },
-    }));
-    return { date: pk, items: out.Items ?? [] };
+    // 하루치가 1MB를 넘어도 잘리지 않도록 끝까지 읽는다
+    const items = [];
+    let ExclusiveStartKey;
+    do {
+      const out = await ddb.send(new QueryCommand({
+        TableName: TABLE,
+        KeyConditionExpression: 'pk = :pk',
+        ExpressionAttributeValues: { ':pk': pk },
+        ExclusiveStartKey,
+      }));
+      items.push(...(out.Items ?? []));
+      ExclusiveStartKey = out.LastEvaluatedKey;
+    } while (ExclusiveStartKey);
+    return { date: pk, items };
   }));
 
   // 날짜별 행 + 기간 합계(페이지·유입처·기기)
