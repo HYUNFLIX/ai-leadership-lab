@@ -1,16 +1,74 @@
-// AI 비서 — 강의·고객 데이터를 컨텍스트로 Claude API 호출 (Cognito JWT 뒤에서만 동작)
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
+// AI 비서 Lambda — Cognito JWT 뒤에서만 호출된다.
+//   POST /assistant       질문·확인 응답·다시 시도를 접수하고 자기 자신을 비동기로 호출한다
+//   GET  /assistant/{id}  대화 상태와 화면용 요약을 돌려준다
+//   { worker: true }      비동기 호출: 모델 루프를 실제로 돌린다
+import Anthropic from '@anthropic-ai/sdk';
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
+import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
+import { createApp } from './assistant-app.mjs';
+import { store, data } from './assistant-store.mjs';
+import { TOOLS } from './assistant-tools.mjs';
+import { buildSystemPrompt, kstToday } from './assistant-loop.mjs';
 
-const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
-const ssm = new SSMClient({});
-const LECTURES = process.env.LECTURES_TABLE;
-const CLIENTS = process.env.CLIENTS_TABLE;
-const MODEL_ID = process.env.MODEL_ID || 'claude-sonnet-5';
+const MODEL_ID = process.env.MODEL_ID || 'claude-opus-5-5';
 const KEY_PARAM = process.env.ANTHROPIC_KEY_PARAM || '/ailab/anthropic-api-key';
 
-let cachedKey = null;
+const ssm = new SSMClient({});
+const lambda = new LambdaClient({});
+let anthropic = null;
+
+async function getAnthropic() {
+  if (anthropic) return anthropic;
+  const out = await ssm.send(new GetParameterCommand({ Name: KEY_PARAM, WithDecryption: true }));
+  // 작업 Lambda의 제한(120초) 안에 끝나도록 요청 제한을 100초로 둔다
+  anthropic = new Anthropic({ apiKey: out.Parameter.Value, timeout: 100_000, maxRetries: 1 });
+  return anthropic;
+}
+
+async function makeModel() {
+  const client = await getAnthropic();
+  const system = buildSystemPrompt(kstToday());
+  return {
+    create: (messages) => client.beta.messages.create({
+      model: MODEL_ID,
+      max_tokens: 8000,
+      output_config: { effort: 'medium' },
+      // 안전 정책으로 거절되면 Anthropic이 권장하는 모델로 같은 요청을 다시 처리한다
+      betas: ['server-side-fallback-2026-07-01'],
+      fallbacks: 'default',
+      // 도구 루프의 단계 사이에 대화 앞부분을 캐시한다
+      cache_control: { type: 'ephemeral' },
+      system,
+      tools: TOOLS,
+      messages,
+    }),
+  };
+}
+
+async function invokeWorker(conversationId) {
+  await lambda.send(new InvokeCommand({
+    FunctionName: process.env.AWS_LAMBDA_FUNCTION_NAME,
+    InvocationType: 'Event',
+    Payload: Buffer.from(JSON.stringify({ worker: true, conversationId })),
+  }));
+}
+
+function explainError(err) {
+  if (err instanceof Anthropic.AuthenticationError) return 'AI 서비스 인증에 실패했습니다. API 키 설정을 확인해 주세요.';
+  if (err instanceof Anthropic.RateLimitError) return '요청이 몰려 있습니다. 잠시 후 다시 시도해 주세요.';
+  if (err instanceof Anthropic.APIConnectionError) return 'AI 서비스에 연결하지 못했습니다. 다시 시도해 주세요.';
+  if (err instanceof Anthropic.APIError) {
+    return err.status >= 500
+      ? 'AI 서비스가 일시적으로 불안정합니다. 다시 시도해 주세요.'
+      : 'AI 요청이 거부됐습니다. 새 대화로 다시 시도해 주세요.';
+  }
+  return '처리 중 오류가 발생했습니다. 다시 시도해 주세요.';
+}
+
+const app = createApp({
+  store, data, makeModel, invokeWorker, explainError,
+  log: (entry) => console.log(JSON.stringify(entry)),
+});
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -18,93 +76,24 @@ const json = (statusCode, body) => ({
   body: JSON.stringify(body),
 });
 
-async function getApiKey() {
-  if (cachedKey) return cachedKey;
-  const out = await ssm.send(new GetParameterCommand({ Name: KEY_PARAM, WithDecryption: true }));
-  cachedKey = out.Parameter.Value;
-  return cachedKey;
-}
-
-async function scanAll(TableName) {
-  const items = [];
-  let ExclusiveStartKey;
-  do {
-    const out = await ddb.send(new ScanCommand({ TableName, ExclusiveStartKey }));
-    items.push(...(out.Items ?? []));
-    ExclusiveStartKey = out.LastEvaluatedKey;
-  } while (ExclusiveStartKey);
-  return items;
-}
-
-function buildSystemPrompt(lectures, clients) {
-  const today = new Date().toISOString().slice(0, 10);
-  return `당신은 AI 리더십연구소 김현 소장의 개인 업무 비서입니다.
-소장의 강의 이력과 고객사 데이터를 바탕으로 정확하게 답합니다.
-
-규칙:
-- 데이터에 근거해 답하고, 데이터에 없는 내용은 추측하지 말고 없다고 말할 것
-- 금액 계산·집계는 신중하게, 단위(원)를 명시할 것
-- 제안서·이메일 초안 요청 시 소장의 전문 분야(AI 리더십·AI 리터러시·바이브코딩 강의)를 반영할 것
-- 간결하고 실용적으로 답할 것. 오늘 날짜: ${today}
-
-paymentStatus 값: paid(지급완료), pending(지급대기)
-
-## 강의 이력 데이터 (${lectures.length}건)
-${JSON.stringify(lectures)}
-
-## 고객사 데이터 (${clients.length}건)
-${JSON.stringify(clients)}`;
-}
-
 export const handler = async (event) => {
-  let body = {};
-  try { body = JSON.parse(event.body || '{}'); } catch { return json(400, { error: 'invalid JSON' }); }
-
-  const messages = Array.isArray(body.messages) ? body.messages : null;
-  if (!messages || !messages.length) return json(400, { error: 'messages required' });
-  // 히스토리 상한 (토큰 비용 보호)
-  const trimmed = messages.slice(-20).map((m) => ({
-    role: m.role === 'assistant' ? 'assistant' : 'user',
-    content: String(m.content || '').slice(0, 8000),
-  }));
-
-  let apiKey;
-  try { apiKey = await getApiKey(); }
-  catch { return json(503, { error: 'API 키가 설정되지 않았습니다. SSM 파라미터(/ailab/anthropic-api-key)를 등록하세요.' }); }
-
+  if (event && event.worker === true) {
+    await app.work(String(event.conversationId));
+    return { ok: true };
+  }
   try {
-    const [lectures, clients] = await Promise.all([scanAll(LECTURES), scanAll(CLIENTS)]);
-
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: MODEL_ID,
-        max_tokens: 3000,
-        // 조회·요약 용도 — thinking 비활성화로 응답 속도·비용 최적화
-        thinking: { type: 'disabled' },
-        // 대용량 데이터 컨텍스트는 캐싱 (반복 질문 시 입력 비용 ~90% 절감)
-        system: [{
-          type: 'text',
-          text: buildSystemPrompt(lectures, clients),
-          cache_control: { type: 'ephemeral' },
-        }],
-        messages: trimmed,
-      }),
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      console.error('Anthropic error:', JSON.stringify(data).slice(0, 500));
-      return json(502, { error: 'AI 응답 실패: ' + (data.error?.message || res.status) });
+    const method = event.requestContext?.http?.method;
+    if (method === 'GET') {
+      const out = await app.view(event.pathParameters?.id);
+      return json(out.statusCode, out.body);
     }
-
-    const text = (data.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('\n');
-    return json(200, { reply: text, usage: data.usage });
+    if (method === 'POST') {
+      let body;
+      try { body = JSON.parse(event.body || '{}'); } catch { return json(400, { error: 'invalid JSON' }); }
+      const out = await app.accept(body);
+      return json(out.statusCode, out.body);
+    }
+    return json(405, { error: 'method not allowed' });
   } catch (err) {
     console.error(err);
     return json(500, { error: 'internal error' });

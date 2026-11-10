@@ -24,7 +24,10 @@ lectures.html / crm/ / 홈페이지
 # 아티팩트 버킷 (최초 1회)
 aws s3 mb s3://ailab-cfn-artifacts-534347546901 --region ap-northeast-2
 
-# 패키징 & 배포
+# Lambda 의존성 설치 (@anthropic-ai/sdk — AI 비서가 사용)
+cd aws/lambda && npm ci --omit=dev && cd ../..
+
+# 패키징 & 배포 (한글 주석 때문에 AWS_CLI_FILE_ENCODING=UTF-8 필요)
 cd aws
 aws cloudformation package \
   --template-file template.yaml \
