@@ -380,6 +380,9 @@
     }
   }
 
+  // AI 비서가 강의·고객 데이터를 바꾸면 다시 불러온다
+  window.addEventListener('ailab:data-changed', () => { boot(); });
+
   function lectureCountFor(name) {
     if (!name) return 0;
     return lectures.filter(l => (l.client || '').trim() === name.trim()).length;
@@ -591,6 +594,7 @@
 </script>
 
 <!-- AI 비서 패널 -->
+<script src="/js/assistant-markdown.js" defer></script>
 <script src="/js/assistant-panel.js" defer></script>
 </body>
 </html>

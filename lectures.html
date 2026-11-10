@@ -2477,6 +2477,11 @@
             if (e.key === 'Escape') closeModal();
         });
 
+        // AI 비서가 강의 데이터를 바꾸면 목록을 다시 불러온다
+        window.addEventListener('ailab:data-changed', function(e) {
+            if (e.detail && e.detail.table === 'lectures') loadLectures();
+        });
+
         // ================ 모바일 헤더 메뉴 ================
         (function() {
             const toggle = document.getElementById('menuToggle');
@@ -2507,6 +2512,7 @@
     </script>
 
     <!-- AI 비서 패널 -->
+    <script src="js/assistant-markdown.js" defer></script>
     <script src="js/assistant-panel.js" defer></script>
 </body>
 </html>
