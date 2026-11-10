@@ -19,7 +19,7 @@
 - 변경 도구는 사용자가 승인하기 전에는 절대 실행하지 않는다. 삭제 도구는 만들지 않는다.
 - `assistant-tools.mjs`, `assistant-actions.mjs`, `assistant-loop.mjs`, `assistant-app.mjs`는 AWS·Anthropic 패키지를 import하지 않는다(로컬 단위 테스트 대상).
 - 날짜는 `YYYY-MM-DD` 문자열, 기준은 한국시간.
-- 테스트 명령: `node --test aws/lambda/test/` (저장소 루트에서). 패널 서식 테스트: `node --test js/test/`.
+- 테스트 명령: `node --test "aws/lambda/test/*.test.mjs"` (저장소 루트에서). 패널 서식 테스트: `node --test "js/test/*.test.mjs"`.
 - 커밋 메시지는 한국어 conventional commits(`feat(assistant): ...`)이고 마지막 줄에 `Co-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>`.
 - `git push`와 AWS 배포는 사용자가 지시할 때만 한다.
 
@@ -263,7 +263,7 @@ test('TOOLS: 조회·변경 도구 7개가 모두 정의돼 있고 삭제 도구
 
 - [ ] **Step 3: 테스트가 실패하는지 확인**
 
-Run: `node --test aws/lambda/test/`
+Run: `node --test "aws/lambda/test/*.test.mjs"`
 Expected: FAIL — `Cannot find module '.../aws/lambda/assistant-tools.mjs'`
 
 - [ ] **Step 4: 구현**
@@ -547,7 +547,7 @@ export async function runReadTool(name, input, data) {
 
 - [ ] **Step 5: 테스트 통과 확인**
 
-Run: `node --test aws/lambda/test/`
+Run: `node --test "aws/lambda/test/*.test.mjs"`
 Expected: PASS — `# pass 11`, `# fail 0`
 
 - [ ] **Step 6: 커밋**
@@ -680,7 +680,7 @@ test('executeAction: 잘못된 입력은 저장하지 않고 던진다', async (
 
 - [ ] **Step 2: 테스트가 실패하는지 확인**
 
-Run: `node --test aws/lambda/test/`
+Run: `node --test "aws/lambda/test/*.test.mjs"`
 Expected: FAIL — `Cannot find module '.../aws/lambda/assistant-actions.mjs'`
 
 - [ ] **Step 3: 구현**
@@ -838,7 +838,7 @@ export async function executeAction(name, input, data) {
 
 - [ ] **Step 4: 테스트 통과 확인**
 
-Run: `node --test aws/lambda/test/`
+Run: `node --test "aws/lambda/test/*.test.mjs"`
 Expected: PASS — `# pass 19`, `# fail 0`
 
 - [ ] **Step 5: 커밋**
@@ -1083,7 +1083,7 @@ test('kstToday는 한국시간 기준 날짜를 돌려준다', () => {
 
 - [ ] **Step 2: 테스트가 실패하는지 확인**
 
-Run: `node --test aws/lambda/test/`
+Run: `node --test "aws/lambda/test/*.test.mjs"`
 Expected: FAIL — `Cannot find module '.../aws/lambda/assistant-loop.mjs'`
 
 - [ ] **Step 3: 구현**
@@ -1329,7 +1329,7 @@ export function snapshot(conv) {
 
 - [ ] **Step 4: 테스트 통과 확인**
 
-Run: `node --test aws/lambda/test/`
+Run: `node --test "aws/lambda/test/*.test.mjs"`
 Expected: PASS — `# pass 33`, `# fail 0`
 
 - [ ] **Step 5: 커밋**
@@ -1508,7 +1508,7 @@ test('작업은 running 상태가 아니면 아무것도 하지 않는다', asyn
 
 - [ ] **Step 2: 테스트가 실패하는지 확인**
 
-Run: `node --test aws/lambda/test/`
+Run: `node --test "aws/lambda/test/*.test.mjs"`
 Expected: FAIL — `Cannot find module '.../aws/lambda/assistant-app.mjs'`
 
 - [ ] **Step 3: 구현**
@@ -1602,7 +1602,7 @@ export function createApp({
 
 - [ ] **Step 4: 테스트 통과 확인**
 
-Run: `node --test aws/lambda/test/`
+Run: `node --test "aws/lambda/test/*.test.mjs"`
 Expected: PASS — `# pass 44`, `# fail 0`
 
 - [ ] **Step 5: 커밋**
@@ -1636,7 +1636,7 @@ git commit -m "feat(assistant): 접수·조회·작업 요청 처리"
   "private": true,
   "description": "AI Leadership Lab Lambda 함수들 (AWS SDK v3는 Lambda 런타임이 제공)",
   "scripts": {
-    "test": "node --test test/"
+    "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "latest"
@@ -1871,7 +1871,7 @@ Expected: `SYNTAX_OK`
 Run: `cd aws/lambda && node -e "import('@anthropic-ai/sdk').then(m=>{const c=new m.default({apiKey:'x'});console.log(typeof c.beta.messages.create, typeof m.default.APIError, typeof m.default.RateLimitError)})"`
 Expected: `function function function`
 
-Run: `node --test aws/lambda/test/`
+Run: `node --test "aws/lambda/test/*.test.mjs"`
 Expected: PASS — `# pass 44`, `# fail 0` (기존 테스트가 그대로 통과)
 
 - [ ] **Step 5: `aws/template.yaml` — 대화 테이블 추가**
@@ -2044,7 +2044,7 @@ test('표 모양이 아닌 세로선은 문단으로 둔다', () => {
 
 - [ ] **Step 2: 테스트가 실패하는지 확인**
 
-Run: `node --test js/test/`
+Run: `node --test "js/test/*.test.mjs"`
 Expected: FAIL — `Cannot find module '../assistant-markdown.js'`
 
 - [ ] **Step 3: 구현**
@@ -2152,7 +2152,7 @@ Expected: FAIL — `Cannot find module '../assistant-markdown.js'`
 
 - [ ] **Step 4: 테스트 통과 확인**
 
-Run: `node --test js/test/`
+Run: `node --test "js/test/*.test.mjs"`
 Expected: PASS — `# pass 8`, `# fail 0`
 
 - [ ] **Step 5: 커밋**
@@ -2702,13 +2702,13 @@ await browser.close();
 - [ ] **Step 5: 화면 검증 실행**
 
 Run: `node panel-check.mjs "<저장소 루트 절대 경로>"`
-Expected: 13줄 모두 `OK`
+Expected: 12줄 모두 `OK`
 
 `panel-check.jpg`를 열어 패널이 깨지지 않았는지 눈으로 확인한다.
 
 - [ ] **Step 6: 전체 테스트와 커밋**
 
-Run: `node --test aws/lambda/test/ && node --test js/test/`
+Run: `node --test "aws/lambda/test/*.test.mjs" && node --test "js/test/*.test.mjs"`
 Expected: 두 번 모두 `# fail 0`
 
 ```bash
