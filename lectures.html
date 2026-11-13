@@ -402,7 +402,7 @@
             border-collapse: collapse;
             font-size: 0.875rem;
             table-layout: fixed;
-            min-width: 1200px;
+            min-width: 1240px;
         }
 
         .table th,
@@ -436,7 +436,7 @@
         .table .col-fee { width: 110px; }
         .table .col-net { width: 110px; }
         .table .col-status { width: 80px; }
-        .table .col-actions { width: 90px; }
+        .table .col-actions { width: 132px; }
 
         /* Sticky management column */
         .table th.col-actions,
@@ -678,6 +678,23 @@
 
         .toast.error {
             border-left: 4px solid var(--danger);
+        }
+
+        .toast-action {
+            margin-left: 0.5rem;
+            padding: 0.25rem 0.625rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background: var(--bg-secondary);
+            color: var(--primary);
+            font-family: inherit;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .toast-action:hover {
+            background: var(--bg-tertiary);
         }
 
         @keyframes slideIn {
@@ -1821,7 +1838,6 @@
         window.deleteLectureFromDB = async function(id) {
             try {
                 await api('/lectures/' + encodeURIComponent(id), { method: 'DELETE' });
-                showToast('강의가 삭제되었습니다.', 'success');
                 await loadLectures();
                 return true;
             } catch (error) {
@@ -1920,24 +1936,39 @@
             toggleText.textContent = isOpen ? '접기' : '보기';
         }
 
-        function showToast(message, type = 'success') {
+        // 알림. options.actionLabel을 주면 버튼이 붙고, 누르면 onAction을 호출한다. 닫는 함수를 돌려준다.
+        function showToast(message, type = 'success', options = {}) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
+            toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
             toast.innerHTML = `
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     ${type === 'success'
                         ? '<path d="M20 6L9 17l-5-5"/>'
                         : '<circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/>'}
                 </svg>
-                <span>${message}</span>
+                <span></span>
             `;
-            container.appendChild(toast);
+            toast.querySelector('span').textContent = message;
 
-            setTimeout(() => {
+            let timer = null;
+            const close = () => {
+                clearTimeout(timer);
                 toast.style.opacity = '0';
                 setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            };
+            if (options.actionLabel) {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'toast-action';
+                button.textContent = options.actionLabel;
+                button.addEventListener('click', () => { close(); options.onAction(); });
+                toast.appendChild(button);
+            }
+            container.appendChild(toast);
+            timer = setTimeout(close, options.duration || 3000);
+            return close;
         }
 
         // ================ Form Handling ================
@@ -2159,13 +2190,18 @@
                     <td class="col-status">${getPaymentBadge(lecture.paymentStatus)}</td>
                     <td class="col-actions">
                         <div class="actions">
-                            <button class="btn-icon" onclick="editLecture('${lecture.id}')" title="수정">
-                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                            <button type="button" class="btn-icon" data-action="edit" data-id="${escapeHtml(lecture.id)}" title="수정" aria-label="수정">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                     <path d="M10.5 1.5a2.121 2.121 0 113 3L5 13l-4 1 1-4 8.5-8.5z"/>
                                 </svg>
                             </button>
-                            <button class="btn-icon danger" onclick="deleteLecture('${lecture.id}')" title="삭제">
-                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                            <button type="button" class="btn-icon" data-action="clone" data-id="${escapeHtml(lecture.id)}" title="복제해서 새로 등록" aria-label="복제">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <rect x="4.5" y="4.5" width="8" height="8" rx="1.5"/><path d="M9.5 4.5V3a1.5 1.5 0 00-1.5-1.5H3A1.5 1.5 0 001.5 3v5A1.5 1.5 0 003 9.5h1.5"/>
+                                </svg>
+                            </button>
+                            <button type="button" class="btn-icon danger" data-action="delete" data-id="${escapeHtml(lecture.id)}" title="삭제" aria-label="삭제">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                     <path d="M1 3h12M4.5 3V2a1 1 0 011-1h3a1 1 0 011 1v1M11 3v9a1 1 0 01-1 1H4a1 1 0 01-1-1V3"/>
                                 </svg>
                             </button>
@@ -2277,10 +2313,40 @@
             }
         }
 
+        // 확인 창 대신 되돌리기: 바로 삭제하고 8초 동안 되돌릴 수 있게 한다
         async function deleteLecture(id) {
-            if (!confirm('정말로 이 강의 이력을 삭제하시겠습니까?')) return;
-            await window.deleteLectureFromDB(id);
+            const lecture = window.getLectures().find(l => l.id === id);
+            if (!lecture) return;
+            const deleted = await window.deleteLectureFromDB(id);
+            if (!deleted) return;
+            showToast('강의를 삭제했습니다.', 'success', {
+                actionLabel: '되돌리기',
+                duration: 8000,
+                onAction: () => restoreLecture(lecture)
+            });
         }
+
+        // 같은 id와 등록 시각으로 다시 만든다(POST /lectures가 id·createdAt을 그대로 받는다)
+        async function restoreLecture(lecture) {
+            try {
+                await api('/lectures', { method: 'POST', body: JSON.stringify(lecture) });
+                showToast('삭제를 되돌렸습니다.', 'success');
+                await loadLectures();
+            } catch (error) {
+                console.error('Restore error:', error);
+                showToast('되돌리기에 실패했습니다: ' + error.message, 'error');
+            }
+        }
+
+        // 행 버튼(수정·복제·삭제)
+        document.getElementById('lectureTableBody').addEventListener('click', function(e) {
+            const button = e.target.closest('button[data-action]');
+            if (!button) return;
+            const id = button.dataset.id;
+            if (button.dataset.action === 'edit') editLecture(id);
+            else if (button.dataset.action === 'clone') cloneLecture(id);
+            else if (button.dataset.action === 'delete') deleteLecture(id);
+        });
 
         function closeModal() {
             document.getElementById('editModal').classList.remove('active');
@@ -2458,14 +2524,15 @@
                 'paid': '<span class="badge badge-success">완료</span>',
                 'partial': '<span class="badge badge-danger">일부</span>'
             };
-            return badges[status] || status || '-';
+            return badges[status] || escapeHtml(status) || '-';
         }
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
+        // 본문과 속성 값 모두에 쓸 수 있게 따옴표까지 바꾼다
+        function escapeHtml(value) {
+            if (value === null || value === undefined) return '';
+            return String(value)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
         // ================ Modal Event Handlers ================
