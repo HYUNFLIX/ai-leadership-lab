@@ -192,48 +192,131 @@
             to { transform: rotate(360deg); }
         }
 
-        /* ================ Dashboard ================ */
-        .dashboard {
+        /* ================ Summary & Chart ================ */
+        .summary-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--bg-primary);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-        }
-
-        .stat-card .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
             margin-bottom: 1rem;
         }
 
-        .stat-card .stat-icon.purple { background: rgba(99, 102, 241, 0.1); color: var(--primary); }
-        .stat-card .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .stat-card .stat-icon.yellow { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .stat-card .stat-icon.blue { background: rgba(59, 130, 246, 0.1); color: var(--info); }
-
-        .stat-card .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1.2;
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            text-align: left;
+            font-family: inherit;
+            color: inherit;
+            min-width: 0;
         }
 
-        .stat-card .stat-label {
-            font-size: 0.875rem;
+        .summary-label {
+            font-size: 0.8125rem;
             color: var(--text-secondary);
-            margin-top: 0.25rem;
+        }
+
+        .summary-value {
+            font-size: 1.375rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .summary-outstanding {
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .summary-outstanding .summary-value {
+            color: var(--warning);
+        }
+
+        .summary-outstanding:hover,
+        .summary-outstanding[aria-pressed="true"] {
+            border-color: var(--warning);
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .chart-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+        }
+
+        .chart-toggle {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.875rem 1.25rem;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .chart-toggle .toggle-icon {
+            transition: transform 0.2s;
+        }
+
+        .chart-toggle[aria-expanded="true"] .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .chart-body {
+            padding: 0 1.25rem 1rem;
+        }
+
+        .chart-body[hidden] {
+            display: none;
+        }
+
+        #monthlyChart svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        #monthlyChart .bar {
+            fill: var(--primary);
+            opacity: 0.75;
+            cursor: pointer;
+        }
+
+        #monthlyChart .bar:hover,
+        #monthlyChart .bar:focus,
+        #monthlyChart .bar.selected {
+            opacity: 1;
+            outline: none;
+        }
+
+        #monthlyChart .bar.empty {
+            fill: var(--border-color);
+        }
+
+        #monthlyChart text {
+            fill: var(--text-secondary);
+            font-size: 11px;
+            font-family: var(--font-primary);
+        }
+
+        .chart-detail {
+            margin-top: 0.5rem;
+            min-height: 1.4em;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
         }
 
         /* ================ Section ================ */
@@ -858,68 +941,6 @@
             border-color: var(--danger);
         }
 
-        /* Dashboard Toggle */
-        .dashboard-section {
-            background: var(--bg-primary);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            margin-bottom: 2rem;
-        }
-
-        .dashboard-header {
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-            transition: background 0.2s;
-        }
-
-        .dashboard-header:hover {
-            background: var(--bg-secondary);
-        }
-
-        .dashboard-header h2 {
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .dashboard-toggle {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .dashboard-toggle .toggle-icon {
-            transition: transform 0.3s;
-        }
-
-        .dashboard-toggle.open .toggle-icon {
-            transform: rotate(180deg);
-        }
-
-        .dashboard-content {
-            display: none;
-            padding: 0 1.5rem 1.5rem;
-        }
-
-        .dashboard-content.open {
-            display: block;
-        }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
         /* ================ Utilities ================ */
         .text-success { color: var(--success); }
         .text-warning { color: var(--warning); }
@@ -934,8 +955,17 @@
                 padding: 1rem;
             }
 
-            .dashboard {
+            .summary-bar {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .summary-item {
+                padding: 0.75rem 0.875rem;
+            }
+
+            .summary-value {
+                font-size: 1.0625rem;
             }
 
             .section-header {
@@ -1272,6 +1302,44 @@
     </header>
 
     <div class="container">
+        <!-- 요약 줄: 현재 필터에 걸린 강의 기준 -->
+        <div class="summary-bar" id="summaryBar" aria-label="현재 목록 요약">
+            <div class="summary-item">
+                <span class="summary-label">강의</span>
+                <span class="summary-value" id="sumCount">-</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">강의료</span>
+                <span class="summary-value" id="sumFee">-</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">실지급액</span>
+                <span class="summary-value" id="sumNet">-</span>
+            </div>
+            <button type="button" class="summary-item summary-outstanding" id="outstandingBtn" aria-pressed="false" title="누르면 입금 대기·일부입금 강의만 봅니다">
+                <span class="summary-label">미수금 <span id="sumOutstandingCount"></span></span>
+                <span class="summary-value" id="sumOutstanding">-</span>
+            </button>
+            <div class="summary-item">
+                <span class="summary-label">교육시간</span>
+                <span class="summary-value" id="sumHours">-</span>
+            </div>
+        </div>
+
+        <!-- 월별 추이: 선택한 연도의 월별 강의료 -->
+        <div class="chart-card" id="chartCard" hidden>
+            <button type="button" class="chart-toggle" id="chartToggle" aria-expanded="true" aria-controls="chartBody">
+                <span id="chartTitle">월별 강의료</span>
+                <svg class="toggle-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M4 6l4 4 4-4"/>
+                </svg>
+            </button>
+            <div class="chart-body" id="chartBody">
+                <div id="monthlyChart"></div>
+                <p class="chart-detail" id="chartDetail" aria-live="polite"></p>
+            </div>
+        </div>
+
         <!-- Lecture List Section -->
         <div class="section">
             <div class="section-header">
@@ -1319,6 +1387,7 @@
                             <option value="pending">대기</option>
                             <option value="paid">완료</option>
                             <option value="partial">일부입금</option>
+                            <option value="outstanding">미수(대기+일부)</option>
                         </select>
                     </div>
                     <div class="filter-group mobile-sort">
@@ -1674,9 +1743,9 @@
                 updateSyncStatus('connected', 'AWS 연결됨');
                 hideLoading();
                 updateYearFilter();
+                selectDefaultYear();
                 updateSuggestions();
                 applyFilters();
-                updateDashboard();
             } catch (error) {
                 console.error('Load error:', error);
                 updateSyncStatus('error', '연결 오류');
@@ -1879,7 +1948,9 @@
                 filtered = filtered.filter(l => l.date && l.date.substring(5, 7) === monthFilter);
             }
 
-            if (paymentFilter !== 'all') {
+            if (paymentFilter === 'outstanding') {
+                filtered = filtered.filter(LectureStats.isOutstanding);
+            } else if (paymentFilter !== 'all') {
                 filtered = filtered.filter(l => l.paymentStatus === paymentFilter);
             }
 
@@ -1911,6 +1982,7 @@
             mobileLimit = MOBILE_PAGE_SIZE; // 필터·정렬이 바뀌면 처음 30건부터
             renderLectures(filtered);
             updateDashboard(filtered);
+            renderMonthlyChart();
         }
 
         function sortBy(field) {
@@ -2060,20 +2132,86 @@
             document.getElementById('totalNetSum').style.color = 'var(--success)';
         }
 
+        // 요약 줄: 현재 필터에 걸린 강의 기준
         function updateDashboard(filtered) {
-            if (!filtered) {
-                filtered = window.getLectures();
+            const s = LectureStats.summarize(filtered || lastFiltered);
+            document.getElementById('sumCount').textContent = s.count.toLocaleString() + '건';
+            document.getElementById('sumFee').textContent = s.sumFee ? formatCurrency(s.sumFee) : '₩0';
+            document.getElementById('sumNet').textContent = s.sumNet ? formatCurrency(s.sumNet) : '₩0';
+            document.getElementById('sumOutstanding').textContent = s.outstandingNet ? formatCurrency(s.outstandingNet) : '₩0';
+            document.getElementById('sumOutstandingCount').textContent = s.outstandingCount ? `(${s.outstandingCount}건)` : '';
+            document.getElementById('sumHours').textContent = s.sumHours.toLocaleString() + '시간';
+            document.getElementById('outstandingBtn').setAttribute('aria-pressed',
+                document.getElementById('paymentFilter').value === 'outstanding' ? 'true' : 'false');
+        }
+
+        // 미수금을 누르면 미수만 보고, 다시 누르면 전체로 돌아간다
+        document.getElementById('outstandingBtn').addEventListener('click', function() {
+            const select = document.getElementById('paymentFilter');
+            select.value = select.value === 'outstanding' ? 'all' : 'outstanding';
+            applyFilters();
+        });
+
+        // 월별 추이: 선택한 연도의 월별 강의료(다른 필터와 무관하게 그 연도 전체)
+        const CHART_KEY = 'ailab_lectures_chart';
+
+        function setChartOpen(open) {
+            document.getElementById('chartToggle').setAttribute('aria-expanded', open ? 'true' : 'false');
+            document.getElementById('chartBody').hidden = !open;
+        }
+
+        document.getElementById('chartToggle').addEventListener('click', function() {
+            const open = this.getAttribute('aria-expanded') !== 'true';
+            setChartOpen(open);
+            try { localStorage.setItem(CHART_KEY, open ? 'open' : 'closed'); } catch (e) { /* 저장 불가 */ }
+        });
+        setChartOpen(localStorage.getItem(CHART_KEY) !== 'closed');
+
+        function renderMonthlyChart() {
+            const year = document.getElementById('yearFilter').value;
+            const card = document.getElementById('chartCard');
+            if (year === 'all') { card.hidden = true; return; }
+            card.hidden = false;
+
+            const months = LectureStats.monthlyTotals(window.getLectures(), year);
+            const total = months.reduce((sum, m) => sum + m.sumFee, 0);
+            document.getElementById('chartTitle').textContent = `${year}년 월별 강의료 · 합계 ${total ? formatCurrency(total) : '₩0'}`;
+
+            const selectedMonth = document.getElementById('monthFilter').value;
+            const W = 720, H = 150, top = 8, bottom = 22, slot = W / 12, barW = slot * 0.62;
+            const max = Math.max(1, ...months.map(m => m.sumFee));
+            const bars = months.map((m, i) => {
+                const h = m.sumFee ? Math.max(3, (H - top - bottom) * m.sumFee / max) : 3;
+                const x = slot * i + (slot - barW) / 2;
+                const cls = 'bar' + (m.sumFee ? '' : ' empty') + (m.month === selectedMonth ? ' selected' : '');
+                const label = `${parseInt(m.month)}월: ${m.count}건, 강의료 ${m.sumFee ? formatCurrency(m.sumFee) : '₩0'}, 실지급액 ${m.sumNet ? formatCurrency(m.sumNet) : '₩0'}`;
+                return `<rect class="${cls}" x="${x.toFixed(1)}" y="${(H - bottom - h).toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" rx="3" tabindex="0" role="img" aria-label="${escapeHtml(label)}" data-label="${escapeHtml(label)}"></rect>`
+                    + `<text x="${(slot * i + slot / 2).toFixed(1)}" y="${H - 6}" text-anchor="middle">${parseInt(m.month)}월</text>`;
+            }).join('');
+            document.getElementById('monthlyChart').innerHTML =
+                `<svg viewBox="0 0 ${W} ${H}" role="group" aria-label="${escapeHtml(year)}년 월별 강의료 막대 차트">${bars}</svg>`;
+            document.getElementById('chartDetail').textContent = '막대에 마우스를 올리거나 누르면 그 달의 건수와 금액이 보입니다.';
+        }
+
+        // 막대에 올리거나 누르면 그 달의 내용을 보여준다
+        ['mouseover', 'focusin', 'click'].forEach(function(type) {
+            document.getElementById('monthlyChart').addEventListener(type, function(e) {
+                const bar = e.target.closest('.bar');
+                if (bar) document.getElementById('chartDetail').textContent = bar.dataset.label;
+            });
+        });
+
+        // 처음 한 번만: 연도 필터의 기본값을 올해(한국시간)로. 올해 데이터가 없으면 전체 그대로.
+        let defaultYearApplied = false;
+        function selectDefaultYear() {
+            if (defaultYearApplied) return;
+            defaultYearApplied = true;
+            const thisYear = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 4);
+            const select = document.getElementById('yearFilter');
+            if ([...select.options].some(o => o.value === thisYear)) {
+                select.value = thisYear;
+                updateMonthFilter();
             }
-
-            const totalLectures = filtered.length;
-            const totalRevenue = filtered.reduce((sum, l) => sum + (l.fee || 0), 0);
-            const totalHours = filtered.reduce((sum, l) => sum + (l.duration || 0), 0);
-            const paidCount = filtered.filter(l => l.paymentStatus === 'paid').length;
-
-            document.getElementById('totalLectures').textContent = totalLectures.toLocaleString();
-            document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
-            document.getElementById('totalHours').textContent = totalHours.toLocaleString() + 'h';
-            document.getElementById('paidCount').textContent = paidCount.toLocaleString();
         }
 
         function updateYearFilter() {
