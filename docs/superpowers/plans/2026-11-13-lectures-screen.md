@@ -1520,3 +1520,12 @@ git commit -m "fix(lectures): 화면 검증에서 드러난 문제 수정"
 - **설계 대비:** 화면 구성(Task 3·4), 요약 줄 다섯 값과 미수금 필터(Task 4), 월별 추이와 접힘 기억(Task 4), 기본 연도·머리글 고정·도구줄(Task 4·5), 등록·수정·복제 한 창과 자동완성(Task 3), 삭제 되돌리기(Task 2), 고칠 문제 네 가지(Task 2·5), 파일 구성(Task 1). 누락 없음.
 - **설계와 달라진 점:** 머리글 고정 기준을 1281px에서 1400px로 바꿨다. 버튼이 세 개가 되며 표 최소 폭이 1240px가 돼, 가로 스크롤 없이 들어가는 폭이 그만큼 넓어졌기 때문이다. Task 5에서 설계 문서도 함께 고친다.
 - **이름 일치:** `showToast`의 세 번째 인자, `data-action` 값(`edit`·`clone`·`delete`), `openCreate`·`cloneLecture`·`editLecture`·`saveEdit`·`updateSuggestions`·`selectDefaultYear`·`renderMonthlyChart`·`syncHeaderHeight`, 요소 id(`createBtn`·`modalTitle`·`outstandingBtn`·`chartCard`·`chartToggle`·`chartBody`·`monthlyChart`·`chartDetail`·`moreMenu`·`sumCount`·`sumFee`·`sumNet`·`sumOutstanding`·`sumOutstandingCount`·`sumHours`)가 만드는 태스크와 검증 스크립트에서 같다.
+
+## 실행 중 달라진 점 (2026-11-13)
+
+화면 검증(Task 6)에서 드러나 계획의 코드와 다르게 고친 것:
+
+- **알림 위치**: 알림이 오른쪽 아래 AI 비서 버튼에 가려 "되돌리기"를 누를 수 없었다. 알림 영역을 버튼 위(`bottom: 5.75rem`)로 올렸다.
+- **월별 추이 크기**: SVG를 고정 좌표(720×150)로 그려 폭에 맞춰 확대하면 데스크톱에서는 너무 커지고 모바일에서는 글자가 작아졌다. 실제 폭에 맞춰 높이 120px로 그리고, 창 폭이 바뀌거나 펼칠 때 다시 그린다.
+- **월별 추이 기본 상태**: 저장된 선택이 없으면 768px 초과에서는 펼치고 그 이하에서는 접는다.
+- **모바일 요약 줄**: 교육시간 칸을 숨기고 건수 옆에 함께 보여줘 2×2로 줄였다.
