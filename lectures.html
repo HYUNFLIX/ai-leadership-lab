@@ -264,6 +264,12 @@
             padding: 1.5rem;
         }
 
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
         /* ================ Buttons ================ */
         .btn {
             display: inline-flex;
@@ -1266,150 +1272,18 @@
     </header>
 
     <div class="container">
-        <!-- Dashboard -->
-        <div class="dashboard-section">
-            <div class="dashboard-header" onclick="toggleDashboard()">
-                <h2>
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7" rx="1"/>
-                        <rect x="14" y="3" width="7" height="7" rx="1"/>
-                        <rect x="3" y="14" width="7" height="7" rx="1"/>
-                        <rect x="14" y="14" width="7" height="7" rx="1"/>
-                    </svg>
-                    대시보드
-                </h2>
-                <div class="dashboard-toggle" id="dashboardToggle">
-                    <span id="dashboardToggleText">보기</span>
-                    <svg class="toggle-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 6l4 4 4-4"/>
-                    </svg>
-                </div>
-            </div>
-            <div class="dashboard-content" id="dashboardContent">
-                <div class="dashboard">
-                    <div class="stat-card">
-                        <div class="stat-icon purple">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="4" width="18" height="18" rx="2"/>
-                                <path d="M16 2v4M8 2v4M3 10h18"/>
-                            </svg>
-                        </div>
-                        <div class="stat-value" id="totalLectures">0</div>
-                        <div class="stat-label">총 강의 수</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon green">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-                            </svg>
-                        </div>
-                        <div class="stat-value" id="totalRevenue">0</div>
-                        <div class="stat-label">총 강의료</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon yellow">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <path d="M12 6v6l4 2"/>
-                            </svg>
-                        </div>
-                        <div class="stat-value" id="totalHours">0</div>
-                        <div class="stat-label">총 교육시간</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon blue">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                                <path d="M22 4L12 14.01l-3-3"/>
-                            </svg>
-                        </div>
-                        <div class="stat-value" id="paidCount">0</div>
-                        <div class="stat-label">입금 완료</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add Lecture Section -->
-        <div class="section">
-            <div class="section-header">
-                <h2 class="section-title">강의 등록</h2>
-            </div>
-            <div class="section-body">
-                <form id="lectureForm" class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">강의일자 *</label>
-                        <input type="date" class="form-control" id="lectureDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">교육시간 (시간)</label>
-                        <input type="number" class="form-control" id="duration" min="0" step="0.5" placeholder="예: 2">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">강의명 *</label>
-                        <input type="text" class="form-control" id="lectureName" required placeholder="예: AI 리더십 워크샵">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">고객사 *</label>
-                        <input type="text" class="form-control" id="client" required placeholder="예: 삼성전자">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">대상</label>
-                        <input type="text" class="form-control" id="audience" placeholder="예: 신입사원 30명">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">계약 주체</label>
-                        <input type="text" class="form-control" id="contractor" placeholder="예: 능률협회">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">교육장소</label>
-                        <input type="text" class="form-control" id="location" placeholder="예: 서울 본사 대강당">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">강의료 (원)</label>
-                        <input type="number" class="form-control" id="fee" min="0" step="10000" placeholder="예: 1000000">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">세금공제</label>
-                        <select class="form-control" id="taxDeduction">
-                            <option value="none">없음</option>
-                            <option value="3.3">3.3% 원천징수</option>
-                            <option value="8.8">8.8% 원천징수</option>
-                            <option value="vat">부가세 별도</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">실지급액</label>
-                        <input type="number" class="form-control" id="netPayment" min="0" step="1" placeholder="자동계산 또는 직접입력" style="font-weight: 600; color: var(--success);">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">입금 여부</label>
-                        <select class="form-control" id="paymentStatus">
-                            <option value="pending">대기</option>
-                            <option value="paid">완료</option>
-                            <option value="partial">일부입금</option>
-                        </select>
-                    </div>
-                    <div class="form-group full-width">
-                        <label class="form-label">기타사항</label>
-                        <textarea class="form-control" id="notes" placeholder="추가 메모..."></textarea>
-                    </div>
-                    <div class="form-group full-width">
-                        <button type="submit" class="btn btn-primary" id="submitBtn">
-                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 5v14M5 12h14"/>
-                            </svg>
-                            강의 등록
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
         <!-- Lecture List Section -->
         <div class="section">
             <div class="section-header">
-                <h2 class="section-title">강의 이력</h2>
+                <div class="section-heading">
+                    <h2 class="section-title">강의 이력</h2>
+                    <button type="button" class="btn btn-primary" id="createBtn" onclick="openCreate()">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M8 3v10M3 8h10"/>
+                        </svg>
+                        강의 등록
+                    </button>
+                </div>
                 <div class="filters">
                     <div class="filter-group search-group">
                         <input type="text" class="form-control" id="searchInput" placeholder="검색어 입력..." oninput="applyFilters()" style="min-width: 180px;">
@@ -1519,7 +1393,7 @@
     <div class="modal-overlay" id="editModal">
         <div class="modal">
             <div class="modal-header">
-                <h3 class="modal-title">강의 수정</h3>
+                <h3 class="modal-title" id="modalTitle">강의 수정</h3>
                 <button class="modal-close" onclick="closeModal()">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M15 5L5 15M5 5l10 10"/>
@@ -1539,11 +1413,11 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">강의명 *</label>
-                        <input type="text" class="form-control" id="editLectureName" required>
+                        <input type="text" class="form-control" id="editLectureName" list="dlName" autocomplete="off" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">고객사 *</label>
-                        <input type="text" class="form-control" id="editClient" required>
+                        <input type="text" class="form-control" id="editClient" list="dlClient" autocomplete="off" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">대상</label>
@@ -1551,11 +1425,11 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">계약 주체</label>
-                        <input type="text" class="form-control" id="editContractor">
+                        <input type="text" class="form-control" id="editContractor" list="dlContractor" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label class="form-label">교육장소</label>
-                        <input type="text" class="form-control" id="editLocation">
+                        <input type="text" class="form-control" id="editLocation" list="dlLocation" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label class="form-label">강의료 (원)</label>
@@ -1595,8 +1469,16 @@
         </div>
     </div>
 
+    <!-- 자동완성 후보 (기존 강의에서 많이 쓴 값) -->
+    <datalist id="dlName"></datalist>
+    <datalist id="dlClient"></datalist>
+    <datalist id="dlContractor"></datalist>
+    <datalist id="dlLocation"></datalist>
+
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/lecture-stats.js"></script>
 
     </div><!-- End of mainContent -->
 
@@ -1792,6 +1674,7 @@
                 updateSyncStatus('connected', 'AWS 연결됨');
                 hideLoading();
                 updateYearFilter();
+                updateSuggestions();
                 applyFilters();
                 updateDashboard();
             } catch (error) {
@@ -1805,7 +1688,7 @@
         // ================ CRUD Operations ================
         window.addLecture = async function(lectureData) {
             try {
-                document.getElementById('submitBtn').disabled = true;
+                document.getElementById('saveEditBtn').disabled = true;
                 await api('/lectures', { method: 'POST', body: JSON.stringify(lectureData) });
                 showToast('강의가 등록되었습니다.', 'success');
                 await loadLectures();
@@ -1815,7 +1698,7 @@
                 showToast('강의 등록 실패: ' + error.message, 'error');
                 return false;
             } finally {
-                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('saveEditBtn').disabled = false;
             }
         };
 
@@ -1912,10 +1795,6 @@
 
         // Add event listeners for auto-calculation
         document.addEventListener('DOMContentLoaded', function() {
-            // Main form
-            document.getElementById('fee').addEventListener('input', () => updateNetPaymentDisplay('fee', 'taxDeduction', 'netPayment'));
-            document.getElementById('taxDeduction').addEventListener('change', () => updateNetPaymentDisplay('fee', 'taxDeduction', 'netPayment'));
-
             // Edit form
             document.getElementById('editFee').addEventListener('input', () => updateNetPaymentDisplay('editFee', 'editTaxDeduction', 'editNetPayment'));
             document.getElementById('editTaxDeduction').addEventListener('change', () => updateNetPaymentDisplay('editFee', 'editTaxDeduction', 'editNetPayment'));
@@ -1926,15 +1805,7 @@
             document.getElementById('loadingOverlay').classList.add('hidden');
         }
 
-        function toggleDashboard() {
-            const content = document.getElementById('dashboardContent');
-            const toggle = document.getElementById('dashboardToggle');
-            const toggleText = document.getElementById('dashboardToggleText');
 
-            const isOpen = content.classList.toggle('open');
-            toggle.classList.toggle('open', isOpen);
-            toggleText.textContent = isOpen ? '접기' : '보기';
-        }
 
         // 알림. options.actionLabel을 주면 버튼이 붙고, 누르면 onAction을 호출한다. 닫는 함수를 돌려준다.
         function showToast(message, type = 'success', options = {}) {
@@ -1970,38 +1841,6 @@
             timer = setTimeout(close, options.duration || 3000);
             return close;
         }
-
-        // ================ Form Handling ================
-        document.getElementById('lectureForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const fee = parseInt(document.getElementById('fee').value) || 0;
-            const taxDeduction = document.getElementById('taxDeduction').value;
-            const manualNetPayment = parseInt(document.getElementById('netPayment').value);
-            const netPayment = manualNetPayment || calculateNetPayment(fee, taxDeduction);
-
-            const lectureData = {
-                date: document.getElementById('lectureDate').value,
-                duration: parseFloat(document.getElementById('duration').value) || 0,
-                name: document.getElementById('lectureName').value,
-                client: document.getElementById('client').value,
-                audience: document.getElementById('audience').value,
-                contractor: document.getElementById('contractor').value,
-                location: document.getElementById('location').value,
-                fee: fee,
-                taxDeduction: taxDeduction,
-                netPayment: netPayment,
-                paymentStatus: document.getElementById('paymentStatus').value,
-                notes: document.getElementById('notes').value
-            };
-
-            const success = await window.addLecture(lectureData);
-            if (success) {
-                this.reset();
-                document.getElementById('netPayment').value = '';
-                document.getElementById('lectureDate').focus();
-            }
-        });
 
         // ================ Sorting & Filtering ================
         let currentSort = { field: 'date', direction: 'desc' };
@@ -2256,12 +2095,8 @@
         }
 
         // ================ Edit/Delete Operations ================
-        function editLecture(id) {
-            const lectures = window.getLectures();
-            const lecture = lectures.find(l => l.id === id);
-            if (!lecture) return;
-
-            document.getElementById('editId').value = lecture.id;
+        // 창에 값을 채운다. 빈 객체를 주면 빈 창이 된다.
+        function fillModal(lecture) {
             document.getElementById('editLectureDate').value = lecture.date || '';
             document.getElementById('editDuration').value = lecture.duration || '';
             document.getElementById('editLectureName').value = lecture.name || '';
@@ -2273,18 +2108,46 @@
             document.getElementById('editTaxDeduction').value = lecture.taxDeduction || 'none';
             document.getElementById('editPaymentStatus').value = lecture.paymentStatus || 'pending';
             document.getElementById('editNotes').value = lecture.notes || '';
+            if (lecture.netPayment) document.getElementById('editNetPayment').value = lecture.netPayment;
+            else updateNetPaymentDisplay('editFee', 'editTaxDeduction', 'editNetPayment');
+        }
 
-            // Load saved netPayment or calculate if not exists
-            if (lecture.netPayment) {
-                document.getElementById('editNetPayment').value = lecture.netPayment;
-            } else {
-                updateNetPaymentDisplay('editFee', 'editTaxDeduction', 'editNetPayment');
-            }
-
+        function openModal(id, title, saveLabel) {
+            document.getElementById('editId').value = id;
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('saveEditBtn').textContent = saveLabel;
             document.getElementById('editModal').classList.add('active');
         }
 
+        // 등록. prefill을 주면 그 값으로 채운다(복제).
+        function openCreate(prefill = {}) {
+            fillModal(prefill);
+            openModal('', '강의 등록', '등록');
+            document.getElementById('editLectureDate').focus();
+        }
+
+        function editLecture(id) {
+            const lecture = window.getLectures().find(l => l.id === id);
+            if (!lecture) return;
+            fillModal(lecture);
+            openModal(lecture.id, '강의 수정', '저장');
+        }
+
+        // 복제: 날짜·입금 여부·기타사항·실지급액은 새로 정한다
+        function cloneLecture(id) {
+            const lecture = window.getLectures().find(l => l.id === id);
+            if (!lecture) return;
+            openCreate({
+                name: lecture.name, client: lecture.client, audience: lecture.audience,
+                contractor: lecture.contractor, location: lecture.location, duration: lecture.duration,
+                fee: lecture.fee, taxDeduction: lecture.taxDeduction
+            });
+        }
+
+        // 등록과 수정 겸용: editId가 비어 있으면 등록
         async function saveEdit() {
+            const form = document.getElementById('editForm');
+            if (!form.reportValidity()) return;
             const id = document.getElementById('editId').value;
 
             const fee = parseInt(document.getElementById('editFee').value) || 0;
@@ -2295,11 +2158,11 @@
             const lectureData = {
                 date: document.getElementById('editLectureDate').value,
                 duration: parseFloat(document.getElementById('editDuration').value) || 0,
-                name: document.getElementById('editLectureName').value,
-                client: document.getElementById('editClient').value,
-                audience: document.getElementById('editAudience').value,
-                contractor: document.getElementById('editContractor').value,
-                location: document.getElementById('editLocation').value,
+                name: document.getElementById('editLectureName').value.trim(),
+                client: document.getElementById('editClient').value.trim(),
+                audience: document.getElementById('editAudience').value.trim(),
+                contractor: document.getElementById('editContractor').value.trim(),
+                location: document.getElementById('editLocation').value.trim(),
                 fee: fee,
                 taxDeduction: taxDeduction,
                 netPayment: netPayment,
@@ -2307,10 +2170,23 @@
                 notes: document.getElementById('editNotes').value
             };
 
-            const success = await window.updateLecture(id, lectureData);
-            if (success) {
-                closeModal();
-            }
+            const success = id ? await window.updateLecture(id, lectureData) : await window.addLecture(lectureData);
+            if (success) closeModal();
+        }
+
+        // 자동완성 후보를 기존 강의에서 다시 만든다
+        function updateSuggestions() {
+            const lectures = window.getLectures();
+            const fields = { dlName: 'name', dlClient: 'client', dlContractor: 'contractor', dlLocation: 'location' };
+            Object.keys(fields).forEach(function(listId) {
+                const list = document.getElementById(listId);
+                list.textContent = '';
+                LectureStats.suggestions(lectures, fields[listId]).forEach(function(value) {
+                    const option = document.createElement('option');
+                    option.value = value;
+                    list.appendChild(option);
+                });
+            });
         }
 
         // 확인 창 대신 되돌리기: 바로 삭제하고 8초 동안 되돌릴 수 있게 한다
